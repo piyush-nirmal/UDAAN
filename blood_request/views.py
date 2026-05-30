@@ -475,8 +475,9 @@ def projects_page(request):
     return render(request, 'projects.html', {'projects': projects})
 
 def report_list(request):
-
-    return render(request, 'annual_reports.html')
+    from .models import Report
+    reports = Report.objects.all().order_by('-published_date')
+    return render(request, 'annual_reports.html', {'reports': reports})
 
 def blog_detail(request, id):
     blog = get_object_or_404(Blog, id=id)

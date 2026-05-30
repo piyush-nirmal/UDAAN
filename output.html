@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annual Report - UDAAN Society</title>
+    <meta name="description" content="UDAAN Society works for underserved and neglected communities.">
+    <meta property="og:title" content="UDAAN Society">
+    <meta property="og:description" content="UDAAN Society works for underserved and neglected communities.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+    <!-- Tailwind CSS (CDN for prototype) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom Config for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#E63946',
+                            dark: '#1D3557',
+                            light: '#F1FAEE',
+                            blue: '#457B9D',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="/static/css/nav.css?v=4">
+    <link rel="stylesheet" href="/static/css/style.css?v=4">
+    
+<link rel="stylesheet" href="/static/css/annual.css">
+
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="/">
+                    <img class="logo-circle" src="/static/assets/logo.webp" alt="UDAAN Society" />
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Who We Are <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/about-us/" class="dropdown-item">About</a>
+                        <a href="/our-mission-values/" class="dropdown-item">Our Mission & Values</a>
+                        <a href="/appreciation-and-accolades/" class="dropdown-item">Appreciation and Accolades</a>
+                        <a href="/our-partners/" class="dropdown-item">Our Partners</a>
+                        <a href="/policies/" class="dropdown-item">Our Policies</a>
+                        <a href="/contact-us/" class="dropdown-item">
+                            Contact Us
+                        </a>
+
+                        <a href="/our-team/" class="dropdown-item">
+                            Our Team
+                        </a>
+
+                        <a href="/faq/" class="dropdown-item">FAQs</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Make a Difference <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/career-and-fellowship/" class="dropdown-item">
+                            Career and Fellowship
+                        </a>
+
+                        <a href="/workplace-living/" class="dropdown-item">
+                            Workplace Giving
+                        </a>
+
+                        <a href="/volunteering/" class="dropdown-item">
+                            Volunteering
+                        </a>
+
+                        <a href="/internships/" class="dropdown-item">
+                            Internships
+                        </a>
+
+                        <a href="/campus-ambassador/" class="dropdown-item">
+                            Campus Ambassador
+                        </a>
+
+                        <a href="/jobs/" class="dropdown-item">
+                            Jobs at UDAAN Society
+                        </a>
+
+
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Impact <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/reports/" class="dropdown-item">Annual Report</a>
+                        <a href="/locations/" class="dropdown-item">Our Locations</a>
+                        <a href="/projects/" class="dropdown-item">Projects</a>
+                        <a href="/our-activities/" class="dropdown-item">Our Activities</a>
+                        <a href="/blogs/" class="dropdown-item">Blogs</a>
+                        <a href="/news-clippings/" class="dropdown-item">News Clippings</a>
+                        <a href="/resources/" class="dropdown-item">Resources</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="/blood-donation/" class="nav-link">Blood Request</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/campaigns/" class="nav-link">Campaigns</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/donate/" class="donate-btn">
+                        📱 Donate Now <span>Secured by RazorPay</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Annual Report</h1>
+        <p>Our Annual Reports</p>
+    </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+    <div class="container">
+        Home <span>&raquo;</span> Annual Report
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <div class="section-title">
+        <h2>ANNUAL <span>REPORTS</span></h2>
+        <p>A course or principle of action proposed by UDAAN Society.</p>
+    </div>
+
+    <div class="report-viewer-wrapper" id="reportViewer">
+
+        <!-- Year Tabs -->
+        <div class="year-tabs">
+            
+            <div class="year-tab active" data-year="Annual report 24-25" data-file="/media/reports/annual_report_2024-25.pdf">Annual report 24-25</div>
+            
+            <div class="year-tab " data-year="Annual Report 2020-21" data-file="/media/reports/2020-21.pdf">Annual Report 2020-21</div>
+            
+            <div class="year-tab " data-year="Annual Report 2018-19" data-file="/media/reports/2018-19.pdf">Annual Report 2018-19</div>
+            
+            <div class="year-tab " data-year="Annual Report 2017-18" data-file="/media/reports/2017-18.pdf">Annual Report 2017-18</div>
+            
+            <div class="year-tab " data-year="Annual Report 2016-17" data-file="/media/reports/2016-17.pdf">Annual Report 2016-17</div>
+            
+            <div class="year-tab " data-year="Annual Report 2015-16" data-file="/media/reports/2015-16.pdf">Annual Report 2015-16</div>
+            
+            <div class="year-tab " data-year="Annual Report 2014-15" data-file="/media/reports/2014-15.pdf">Annual Report 2014-15</div>
+            
+            <div class="year-tab " data-year="Annual Report 2013-14" data-file="/media/reports/2013-14.pdf">Annual Report 2013-14</div>
+            
+            <div class="year-tab " data-year="Annual Report 2012-13" data-file="/media/reports/2012-13.pdf">Annual Report 2012-13</div>
+            
+            <div class="year-tab " data-year="Annual Report 2011-12" data-file="/media/reports/2011-12.pdf">Annual Report 2011-12</div>
+            
+            <div class="year-tab " data-year="Annual Report 2010-11" data-file="/media/reports/2010-11.pdf">Annual Report 2010-11</div>
+            
+            <div class="year-tab " data-year="Annual Report 2009-10" data-file="/media/reports/2009-10.pdf">Annual Report 2009-10</div>
+            
+            <div class="year-tab " data-year="Annual Report 2008-09" data-file="/media/reports/2008-09.pdf">Annual Report 2008-09</div>
+            
+            <div class="year-tab " data-year="Annual Report 2007-08" data-file="/media/reports/2007-08.pdf">Annual Report 2007-08</div>
+            
+            <div class="year-tab " data-year="Annual Report 2006-07" data-file="/media/reports/2006-07.pdf">Annual Report 2006-07</div>
+            
+            <div class="year-tab " data-year="Annual Report 2005-06" data-file="/media/reports/2005-06.pdf">Annual Report 2005-06</div>
+            
+            <div class="year-tab " data-year="Annual Report 2004-05" data-file="/media/reports/2004-05.pdf">Annual Report 2004-05</div>
+            
+        </div>
+
+        <!-- Toolbar -->
+        <div class="viewer-toolbar">
+
+            <div class="toolbar-group">
+                <button class="toolbar-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="page-indicator">
+                    <input type="number" id="pageInput" value="1" min="1">
+                    <span>of <span id="totalPages">--</span></span>
+                </div>
+
+                <button class="toolbar-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="toolbar-group zoom-controls">
+                <button class="toolbar-btn" id="zoomOut"><i class="fas fa-minus"></i></button>
+                <span id="zoomLevel">100%</span>
+                <button class="toolbar-btn" id="zoomIn"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <div class="toolbar-group">
+                <button class="toolbar-btn icon-btn" id="downloadBtn">
+                    <i class="fas fa-download"></i>
+                </button>
+
+                <button class="toolbar-btn icon-btn" id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="pdf-container" id="pdfContainer">
+            <div class="pdf-loading" id="pdfLoading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>Loading PDF...</span>
+            </div>
+            
+            <div class="pdf-error" id="pdfError" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Failed to load PDF. Please try again.</span>
+            </div>
+
+            <canvas id="pdfCanvas"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="/static/js/annual.js"></script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto">
+
+        <!-- Support Section -->
+        <div class="bg-white py-12 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div
+                    class="bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
+                    <div class="mb-6 md:mb-0">
+                        <span class="text-gray-500 font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A
+                            HAND</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
+                            <span class="text-brand-red">Support Us</span> And Change The <br class="hidden md:block">
+                            Course Of A Child's Life Today!
+                        </h2>
+                        <button class="text-brand-red font-medium text-sm hover:underline mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
+                                data-title="Change a Child's Life"
+                                data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future.">
+                            Read more...
+                        </button>
+                    </div>
+                    <div>
+                        <button
+                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded flex items-center shadow-lg transition-all">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                            Donate Now
+                            <span class="text-xs font-normal ml-1 opacity-80 block sm:inline">Secured by Razorpay</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer Links -->
+        <div class="bg-gray-100 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+
+                    <!-- Brand -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <img src="/static/assets/logo.webp" alt="UDAAN Society" class="h-12 w-auto mr-3">
+                            <span class="text-xl font-bold text-gray-900">UDAAN Society</span>
+                        </div>
+                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+                            We strive for underserved and neglected communities. Service, Responsibility, Determination,
+                            Kindness, and Contribution are our values.
+                        </p>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-6">Quick Links</h4>
+                        <ul class="space-y-4 text-sm text-gray-600">
+                            <li><a href="#" class="hover:text-brand-red transition-colors">About UDAAN</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Our Team</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Projects</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Gallery</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Contact Us</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Policies -->
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-6">Policies</h4>
+                        <ul class="space-y-4 text-sm text-gray-600">
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Terms of Use</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Refund Policy</a></li>
+                            <li><a href="#" class="hover:text-brand-red transition-colors">Child Protection Policy</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Updates & Social -->
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-6">Get All Updates</h4>
+                        <div class="mb-6">
+                            <input type="email" placeholder="Your Email Address"
+                                class="w-full px-4 py-3 rounded border border-gray-300 focus:outline-none focus:border-brand-red text-sm mb-3">
+                            <button
+                                class="w-full bg-white border border-blue-500 text-blue-500 font-bold py-3 rounded hover:bg-blue-50 transition-colors uppercase text-sm tracking-wider">
+                                Subscribe
+                            </button>
+                        </div>
+
+                        <h4 class="text-lg font-bold text-gray-900 mb-4">Find us on social</h4>
+                        <div class="flex space-x-3">
+                            <a href="https://facebook.com/UDAAN" target="_blank" aria-label="Facebook"
+                                class="h-10 w-10 bg-blue-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+                                </svg></a>
+                            <a href="https://instagram.com/UDAAN" target="_blank" aria-label="Instagram"
+                                class="h-10 w-10 bg-pink-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg></a>
+                            <a href="https://linkedin.com/company/UDAAN" target="_blank" aria-label="LinkedIn"
+                                class="h-10 w-10 bg-blue-700 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                </svg></a>
+                        </div>
+                        <div class="flex space-x-3 mt-3">
+                            <a href="https://youtube.com/UDAAN" target="_blank" aria-label="YouTube"
+                                class="h-10 w-10 bg-red-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                </svg></a>
+                            <a href="https://wa.me/919876543210" target="_blank" aria-label="WhatsApp"
+                                class="h-10 w-10 bg-green-500 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.897.003-6.556 5.338-11.891 11.894-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                                </svg></a>
+                            <a href="https://twitter.com/UDAAN" target="_blank" aria-label="Twitter"
+                                class="h-10 w-10 bg-blue-400 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
+                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.899 7.821l-2.074 9.773c-.156.696-.583.864-1.18.536l-3.266-2.407-1.576 1.517c-.173.175-.321.321-.656.321l.235-3.326 6.056-5.474c.264-.236-.057-.366-.409-.132l-7.485 4.71-3.227-1.01c-.702-.218-.716-.704.147-1.043l12.608-4.856c.585-.218 1.096.132.827 1.391z" />
+                                </svg></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="bg-gray-900 py-6 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-500 text-sm mb-4 md:mb-0">
+                    Copyright © 2026 UDAAN Society | Created by <span class="text-brand-red">Udaan Society
+                        Team</span>
+                </div>
+                <div class="flex space-x-6 text-sm">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Terms and Conditions</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Refund Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">Disclaimer</a>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+
+    <!-- AI Chatbot Integration (Microservice Architecture) -->
+    <link rel="stylesheet" href="/static/chatbot/chatbot.css">
+    <!-- Chatbot Widget HTML -->
+<div id="ai-chatbot-container" class="fixed bottom-6 right-6 z-[9999] font-sans text-base">
+    
+    <!-- Floating Chat Button -->
+    <button id="chatbot-toggle-btn" class="w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 hover:scale-105 transition-all duration-300">
+        <i class="fas fa-comment-dots text-2xl"></i>
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbot-window" class="hidden absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right">
+        
+        <!-- Header -->
+        <div class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md z-10">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <i class="fas fa-robot text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg leading-none m-0">AI Assistant</h3>
+                    <p class="text-xs text-blue-100 mt-1 mb-0 flex items-center">
+                        <span class="w-2 h-2 bg-green-400 rounded-full mr-1 inline-block"></span> Online
+                    </p>
+                </div>
+            </div>
+            <div class="flex space-x-2">
+                <button id="chatbot-clear-btn" class="text-white hover:text-red-200 transition-colors p-2" title="Clear Chat">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button id="chatbot-close-btn" class="text-white hover:text-gray-200 transition-colors p-2" title="Close Chat">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+            <!-- Welcome Message -->
+            <div class="flex items-start">
+                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs shadow-sm">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="ml-3 bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 max-w-[85%] text-gray-800 text-sm">
+                    Hello! I'm the Udaan Society AI assistant. How can I help you today?
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing Indicator (Hidden by default) -->
+        <div id="chatbot-typing-indicator" class="hidden p-4 bg-gray-50 flex items-start -mt-4">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs shadow-sm">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="ml-3 bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100">
+                <div class="flex space-x-1 items-center h-4">
+                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 bg-white border-t border-gray-100 shadow-inner z-10">
+            <form id="chatbot-form" class="flex items-end space-x-2">
+                <textarea id="chatbot-input" rows="1" class="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm resize-none overflow-hidden max-h-24 bg-gray-50" placeholder="Ask me anything..." required></textarea>
+                <button type="submit" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 mb-0.5">
+                    <i class="fas fa-paper-plane text-sm"></i>
+                </button>
+            </form>
+            <div class="text-center mt-2">
+                <span class="text-[10px] text-gray-400">Powered by Gemini AI</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="/static/chatbot/chatbot.js"></script>
+    <!-- Global Workspace FAB Removed -->
+    
+    <!-- Global Read More Modal -->
+    <div id="globalReadMoreModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-5 border-b border-gray-200">
+                <h3 id="modalTitle" class="text-2xl font-bold text-gray-900"></h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 max-h-[70vh] overflow-y-auto">
+                <img id="modalImage" src="" alt="Modal Image" class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64">
+                <div id="modalContent" class="text-gray-700 leading-relaxed text-lg"></div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-5 border-t border-gray-200 flex justify-end">
+                <button id="closeModalFooterBtn" class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('globalReadMoreModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalFooterBtn')];
+            
+            // Function to open modal
+            window.openReadMoreModal = function(title, content, imageUrl = null) {
+                modalTitle.textContent = title || 'Details';
+                modalContent.innerHTML = content || '';
+                
+                if (imageUrl) {
+                    modalImage.src = imageUrl;
+                    modalImage.classList.remove('hidden');
+                } else {
+                    modalImage.src = '';
+                    modalImage.classList.add('hidden');
+                }
+                
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                // Trigger reflow for transition
+                void modal.offsetWidth;
+                modal.classList.remove('opacity-0');
+                modal.querySelector('div').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            };
+
+            // Function to close modal
+            const closeModal = () => {
+                modal.classList.add('opacity-0');
+                modal.querySelector('div').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }, 300); // Wait for transition
+            };
+
+            closeBtns.forEach(btn => {
+                if(btn) btn.addEventListener('click', closeModal);
+            });
+
+            // Close on outside click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Handle ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            // Auto-bind to elements with generic class if they provide data attributes
+            document.querySelectorAll('.open-modal-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Stop propagation so parent link clicks aren't triggered
+                    e.stopPropagation();
+                    const title = btn.getAttribute('data-title');
+                    const content = btn.getAttribute('data-content');
+                    const image = btn.getAttribute('data-image');
+                    window.openReadMoreModal(title, content, image);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
