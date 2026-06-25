@@ -530,10 +530,13 @@
   }
 
   function closeModal(event, force) {
-    if (force || event.target.id === 'testimonial-modal') {
+    if (event && event.stopPropagation && force) {
+      event.stopPropagation();
+    }
+    if (force || (event && event.target && event.target.id === 'testimonial-modal')) {
       const modal = document.getElementById('testimonial-modal');
       modal.classList.remove('show');
-      setTimeout(() => { modal.style.display = 'none'; }, 300);
+      modal.style.display = 'none';
     }
   }
 </script>
