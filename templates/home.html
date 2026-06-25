@@ -412,9 +412,9 @@
 </section>
 
 <!-- Testimonial Modal -->
-<div id="testimonial-modal" class="modal" onclick="closeModal(event)">
+<div id="testimonial-modal" class="modal" onclick="if(event.target.id === 'testimonial-modal') closeTestimonialModal();">
   <div class="modal-content">
-    <span class="close-modal" onclick="closeModal(event, true)">&times;</span>
+    <span class="close-modal" onclick="closeTestimonialModal();">&times;</span>
     <div class="modal-icon">"</div>
     <p id="modal-text" class="modal-text"></p>
     <div class="modal-author-block">
@@ -529,16 +529,13 @@
     setTimeout(() => modal.classList.add('show'), 10);
   }
 
-  function closeModal(event, force) {
-    if (event && event.stopPropagation && force) {
-      event.stopPropagation();
-    }
-    if (force || (event && event.target && event.target.id === 'testimonial-modal')) {
-      const modal = document.getElementById('testimonial-modal');
+  window.closeTestimonialModal = function() {
+    const modal = document.getElementById('testimonial-modal');
+    if (modal) {
       modal.classList.remove('show');
       modal.style.display = 'none';
     }
-  }
+  };
 </script>
 
 <script>
