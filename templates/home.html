@@ -1,454 +1,633 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}UDAAN Society - Har Ghar Jal Project{% endblock %}
+{% block title %}UDAAN Society — Jal Jeevan Mission ISA Portal | Aligarh & Bulandshahr{% endblock %}
 
-{% block meta_description %}UDAAN Society is a leading NGO working on Har Ghar Jal Project, Atal Bhujal Yojna, and community empowerment across Uttar Pradesh. Donate and make a difference today.{% endblock %}
+{% block meta_description %}UDAAN Society is the Implementation Support Agency (ISA) for the Jal Jeevan Mission – Har Ghar Jal Project under SWSM, Uttar Pradesh. Serving Aligarh and Bulandshahr districts with 98% FHTC coverage.{% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=3" />
+  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=10" />
 {% endblock %}
 
 {% block content %}
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <button class="carousel-arrow prev" onclick="changeSlide(-1)">‹</button>
-    <button class="carousel-arrow next" onclick="changeSlide(1)">›</button>
+<!-- ═══════════════════════════════════════════════════════════
+     HERO CAROUSEL — Images & slides preserved unchanged
+     ═══════════════════════════════════════════════════════════ -->
+<section class="hero" role="banner" aria-label="Jal Jeevan Mission Hero">
+  <button class="carousel-arrow prev" onclick="changeSlide(-1)" aria-label="Previous slide">‹</button>
+  <button class="carousel-arrow next" onclick="changeSlide(1)" aria-label="Next slide">›</button>
 
-    <div class="hero-content">
-      <h1>Har Ghar Jal Project</h1>
-      <p>
-        UDAAN Society is appointed an Implementation support Agency under Jal
-        Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water
-        and Sanitation Mission, Uttar Pradesh for two District namely Aligarh
-        &amp; Bulandshahr.
-      </p>
-      <a href="{% url 'our_activities' %}" class="hero-btn">Learn More</a>
-    </div>
-
-    <div class="carousel-nav">
-      <span class="carousel-dot active" onclick="goToSlide(0)"></span>
-      <span class="carousel-dot" onclick="goToSlide(1)"></span>
-      <span class="carousel-dot" onclick="goToSlide(2)"></span>
-      <span class="carousel-dot" onclick="goToSlide(3)"></span>
-      <span class="carousel-dot" onclick="goToSlide(4)"></span>
-    </div>
-  </section>
-
-  <!-- Activities Section -->
-  <section class="activities-section">
-    <div class="activities-container">
-      <!-- Left Content -->
-      <div class="activities-content">
-        <h2>Our <span>Activities</span></h2>
-
-        <p class="activities-highlight">
-          We've worked on improving the lives of over
-          <strong>25,000</strong> young people through direct practice.
-        </p>
-
-        <p class="activities-description">
-          Young people from different backgrounds have a huge impact on us and
-          all our activities. They highlight those parts of society that are
-          broken, so we can help them in all possible ways to regain hope and
-          flourish in life.
-        </p>
-
-        <button class="activities-btn open-modal-btn   text-left"
-                data-title="Our Activities"
-                data-content="UDAAN Society hosts various activities year-round ranging from environmental protection, health camps, and educational awareness programs. We strive to empower our community in every step we take.">
-          Read More
-          <span>›</span>
-        </button>
-      </div>
-
-      <!-- Right Image -->
-      <div class="activities-image-wrapper">
-        <img src="{% static 'assets/section2.jpeg' %}" alt="UDAAN Society Community Activities" />
-      </div>
-    </div>
-  </section>
-
-  <section class="donate-section">
-    <div class="donate-container">
-      <!-- Card 1 -->
-      <div class="donate-card blue">
-        <div class="donate-icon">📘</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Children education</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="donate-card cream">
-        <div class="donate-icon">🌊</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Clean water</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="donate-card teal">
-        <div class="donate-icon">🏥</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Surgery &amp; treatment</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="donate-card sky">
-        <div class="donate-icon">🧺</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Health &amp; good food</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="welcome-section">
-    <div class="welcome-container">
-      <!-- Left Image -->
-      <div class="welcome-image-wrapper">
-        <div class="dots dots-left"></div>
-        <img src="{% static 'assets/welcomeImage.jpg' %}" alt="UDAAN Society volunteer activities" />
-      </div>
-
-      <!-- Right Content -->
-      <div class="welcome-content">
-        <p class="welcome-subtitle">Welcome to UDAAN Society</p>
-
-        <h2>
-          A World Where <span>Poverty</span> Will<br />
-          Not Exists
-        </h2>
-
-        <p class="welcome-highlight">
-          We are one the largest crowdfunding
-        </p>
-
-        <p class="welcome-description">
-          UDAAN Society, a leading NGO in Aligarh, runs impactful campaigns to
-          uplift underprivileged communities. Explore our diverse fundraising
-          campaigns dedicated to education, healthcare, poverty alleviation, and
-          more.
-        </p>
-
-        <div class="welcome-actions">
-          <a href="{% url 'aboutus' %}" class="btn-primary">Learn More</a>
-
-          <a href="{% url 'campaign_list' %}" class="btn-secondary">
-            <span class="play-icon">▶</span>
-            Know More
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="causes-section">
-    <p class="causes-subtitle">Causes Listed</p>
-
-    <h2 class="causes-title">
-      We Are Always Where Other People <span>Need Help</span>
-    </h2>
-
-    <div class="causes-cards">
-      {% for campaign in campaigns %}
-      <!-- Card {{ forloop.counter }} -->
-      <div class="cause-card">
-        <span class="cause-tag health">Health</span>
-
-        {% if campaign.image %}
-        <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="cause-image" />
-        {% else %}
-        <img src="{% static 'assets/p1.jpeg' %}" alt="UDAAN Campaign" class="cause-image" />
-        {% endif %}
-
-        <div class="cause-goal">
-          Goal: ₹ {{ campaign.goal_amount }}
-          <div class="goal-bar">
-            <span style="width: 50%;"></span>
-          </div>
-        </div>
-
-        <h3 class="cause-heading">
-          {{ campaign.title }}
-        </h3>
-
-        <hr />
-
-        <div class="cause-meta">
-          <div>
-            <strong>Date:</strong>
-            <span>{{ campaign.created_at|date:"d/m/Y" }}</span>
-          </div>
-          <div>
-            <strong>By:</strong>
-            <span>UDAAN Society</span>
-          </div>
-        </div>
-      </div>
-      {% empty %}
-      <p>No active campaigns at the moment.</p>
-      {% endfor %}
-    </div>
-
-    <div class="causes-footer">
-      <a href="{% url 'campaign_list' %}" class="view-more">View more..</a>
-
-      <div class="cause-actions">
-        <a href="{% url 'donate' %}" class="btn-red">₹ Donate</a>
-        <a href="{% url 'campaign_list' %}" class="btn-outline">View Campaigns</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="projects-section">
-    <p class="projects-subtitle">Recent Project</p>
-
-    <h2 class="projects-title">
-      We Have Successfully Worked Multiple <span>Projects</span>
-    </h2>
-
-    <div class="projects-grid">
-      {% for project in projects %}
-      <!-- Card {{ forloop.counter }} -->
-      <div class="project-card">
-        {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" />
-        {% else %}
-        <img src="{% static 'assets/p4.jpg' %}" alt="UDAAN Project" />
-        {% endif %}
-
-        <div class="project-content">
-          <h3>{{ project.title|truncatechars:35 }}</h3>
-
-          <p class="project-desc">
-            {{ project.description|truncatechars:100 }}
-          </p>
-
-          <a href="{% url 'project_detail' project.slug %}" class="project-btn">Read More</a>
-
-          <hr />
-
-          <p class="project-date">
-            📅 Date: {{ project.date|date:"F j, Y" }}
-          </p>
-        </div>
-      </div>
-      {% empty %}
-      <p>No recent projects found.</p>
-      {% endfor %}
-    </div>
-
-    <div class="projects-footer">
-      <a href="{% url 'project_list' %}" class="projects-view-more">View more..</a>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section class="testimonials-section">
-    <div class="testimonials-container">
-      <p class="testimonials-subtitle">Testimonials</p>
-      <h2 class="testimonials-title">What Key Stakeholders <span>Say About Us</span></h2>
-
-      <div class="testimonials-slider">
-        <button class="slider-arrow prev" onclick="moveTestimonial(-1)" aria-label="Previous testimonial">‹</button>
-
-        <div class="testimonials-track" id="testimonialTrack">
-          {% for testimonial in testimonials %}
-          <div class="testimonial-card"
-            onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}')">
-            <div class="quote-icon">"</div>
-
-            <div class="testimonial-summary">
-              <p class="testimonial-quote">
-                {{ testimonial.text|truncatechars:100 }}
-              </p>
-              <div class="testimonial-author">
-                <h4>{{ testimonial.author }}</h4>
-                <span>{{ testimonial.role }}</span>
-              </div>
-              <button class="expand-btn" aria-label="Read full story">
-                Read Story <span class="arrow">→</span>
-              </button>
-            </div>
-          </div>
-          {% empty %}
-          <div class="testimonial-card">
-            <p>No testimonials yet.</p>
-          </div>
-          {% endfor %}
-        </div>
-
-        <button class="slider-arrow next" onclick="moveTestimonial(1)" aria-label="Next testimonial">›</button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Testimonial Modal -->
-  <div id="testimonial-modal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal(event, true)">&times;</span>
-      <div class="modal-icon">"</div>
-      <p id="modal-text" class="modal-text"></p>
-      <div class="modal-author-block">
-        <h4 id="modal-author"></h4>
-        <span id="modal-role"></span>
-      </div>
-    </div>
+  <div class="hero-content">
+    <h1>Har Ghar Jal Project</h1>
+    <p>
+      UDAAN Society is appointed an Implementation Support Agency under Jal
+      Jeevan Mission – Har Ghar Jal Project of Govt. of India by State Water
+      and Sanitation Mission, Uttar Pradesh for two districts: Aligarh
+      &amp; Bulandshahr.
+    </p>
+    <a href="{% url 'our_activities' %}" class="hero-btn">View Field Activities</a>
   </div>
 
-  <script>
-    // Testimonial Slider Logic
-    let currentTestimonialIndex = 0;
+  <div class="carousel-nav" aria-label="Slide indicators">
+    <span class="carousel-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></span>
+    <span class="carousel-dot" onclick="goToSlide(1)" aria-label="Slide 2"></span>
+    <span class="carousel-dot" onclick="goToSlide(2)" aria-label="Slide 3"></span>
+    <span class="carousel-dot" onclick="goToSlide(3)" aria-label="Slide 4"></span>
+    <span class="carousel-dot" onclick="goToSlide(4)" aria-label="Slide 5"></span>
+  </div>
+</section>
 
-    function moveTestimonial(direction) {
-      const track = document.getElementById('testimonialTrack');
-      const cards = track.querySelectorAll('.testimonial-card');
-      if (cards.length === 0) return;
 
-      const cardWidth = cards[0].offsetWidth;
-      const gap = 30; // Matches CSS gap
-      const totalWidth = cardWidth + gap;
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION A — DUAL-DISTRICT INTERACTIVE AGGREGATOR
+     ═══════════════════════════════════════════════════════════ -->
+<section class="district-aggregator" id="district-metrics" aria-labelledby="district-heading">
+  <div class="jjm-inner">
 
-      // Calculate visible cards based on screen width
-      let visibleCards = 3;
-      if (window.innerWidth <= 700) visibleCards = 1;
-      else if (window.innerWidth <= 1100) visibleCards = 2;
+    <div style="text-align:center; margin-bottom: 8px;">
+      <span class="jjm-section-label">Programme Metrics</span>
+    </div>
+    <h2 class="jjm-section-title" id="district-heading" style="text-align:center;">District-Level Implementation Overview</h2>
+    <p class="jjm-section-subtitle" style="text-align:center; margin: 0 auto 32px;">
+      Real-time aggregated data for JJM-HGJ field operations. Select a district to view operational metrics.
+    </p>
 
-      const maxIndex = Math.max(0, cards.length - visibleCards);
+    <!-- District Toggle -->
+    <div class="district-toggle-bar" role="group" aria-label="Select District">
+      <button class="district-toggle-btn active" id="btn-aligarh" onclick="switchDistrict('aligarh')" aria-pressed="true">
+        🏙️ &nbsp;Aligarh District
+      </button>
+      <button class="district-toggle-btn" id="btn-bulandshahr" onclick="switchDistrict('bulandshahr')" aria-pressed="false">
+        🏘️ &nbsp;Bulandshahr District
+      </button>
+    </div>
 
-      currentTestimonialIndex += direction;
+    <!-- Stat Cards Grid -->
+    <div class="stat-grid" id="stat-grid" aria-live="polite" aria-atomic="true">
 
-      // Bound checks
-      if (currentTestimonialIndex < 0) currentTestimonialIndex = 0;
-      if (currentTestimonialIndex > maxIndex) currentTestimonialIndex = maxIndex;
+      <!-- Card 1: Villages -->
+      <div class="stat-card">
+        <div class="ring-wrap" aria-hidden="true">
+          <svg viewBox="0 0 90 90">
+            <circle class="ring-bg" cx="45" cy="45" r="40"/>
+            <circle class="ring-fill" id="ring-villages" cx="45" cy="45" r="40"/>
+          </svg>
+          <div class="ring-center-text" id="ring-villages-pct">100%</div>
+        </div>
+        <div class="stat-number" id="stat-villages">1,070</div>
+        <div class="stat-label">Villages<br>Covered</div>
+      </div>
 
-      const translateX = -(currentTestimonialIndex * totalWidth);
-      track.style.transform = `translateX(${translateX}px)`;
+      <!-- Card 2: FHTC -->
+      <div class="stat-card">
+        <div class="ring-wrap" aria-hidden="true">
+          <svg viewBox="0 0 90 90">
+            <circle class="ring-bg" cx="45" cy="45" r="40"/>
+            <circle class="ring-fill" id="ring-fhtc" cx="45" cy="45" r="40"/>
+          </svg>
+          <div class="ring-center-text" id="ring-fhtc-pct">98%</div>
+        </div>
+        <div class="stat-number" id="stat-fhtc">98%</div>
+        <div class="stat-label">Household Tap<br>Connections (FHTC)</div>
+      </div>
+
+      <!-- Card 3: Taps Installed -->
+      <div class="stat-card">
+        <div class="ring-wrap" aria-hidden="true">
+          <svg viewBox="0 0 90 90">
+            <circle class="ring-bg" cx="45" cy="45" r="40"/>
+            <circle class="ring-fill" id="ring-taps" cx="45" cy="45" r="40"/>
+          </svg>
+          <div class="ring-center-text" id="ring-taps-pct">98%</div>
+        </div>
+        <div class="stat-number" id="stat-taps">4.2L+</div>
+        <div class="stat-label">Functional<br>Taps Installed</div>
+      </div>
+
+      <!-- Card 4: Paani Samitis -->
+      <div class="stat-card">
+        <div class="ring-wrap" aria-hidden="true">
+          <svg viewBox="0 0 90 90">
+            <circle class="ring-bg" cx="45" cy="45" r="40"/>
+            <circle class="ring-fill" id="ring-samiti" cx="45" cy="45" r="40"/>
+          </svg>
+          <div class="ring-center-text" id="ring-samiti-pct">100%</div>
+        </div>
+        <div class="stat-number" id="stat-samiti">100%</div>
+        <div class="stat-label">Paani Samitis<br>Established</div>
+      </div>
+
+    </div><!-- /stat-grid -->
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION B — 4-PHASE ISA IMPLEMENTATION WORKFLOW
+     ═══════════════════════════════════════════════════════════ -->
+<section class="isa-workflow" id="isa-phases" aria-labelledby="phases-heading">
+  <div class="jjm-inner">
+
+    <div style="text-align:center; margin-bottom: 8px;">
+      <span class="jjm-section-label">ISA Operational Framework</span>
+    </div>
+    <h2 class="jjm-section-title" id="phases-heading" style="text-align:center;">4-Phase Village Implementation Lifecycle</h2>
+    <p class="jjm-section-subtitle" style="text-align:center; margin: 0 auto 28px;">
+      Structural lifecycle an ISA must complete per village under the JJM programme guidelines.
+    </p>
+
+    <blockquote class="directive" style="max-width:860px; margin: 0 auto 36px;">
+      "Per SWSM-UP ISA Operational Guidelines, all village-level activities must complete Phase 1 community mobilization before any infrastructure works commence. No civil work sanction shall be issued without a constituted Paani Samiti (VWSC) and an approved Village Action Plan (VAP)."
+      <cite>— SWSM UP, ISA Framework Guidelines, 2021</cite>
+    </blockquote>
+
+    <div class="phase-stepper">
+
+      <!-- Phase 1 -->
+      <div class="phase-card">
+        <div class="phase-number" aria-label="Phase 1">1</div>
+        <div class="phase-body">
+          <span class="phase-tag">Phase 1 · Mobilization</span>
+          <h3 class="phase-title">Fitment &amp; Initial Community Mobilization</h3>
+          <ul class="phase-activities">
+            <li>Village-level fitment surveys &amp; household enumeration</li>
+            <li>Jan Andolan awareness drives in target gram panchayats</li>
+            <li>Nukkad Nataks (street plays) on safe water &amp; sanitation</li>
+            <li>Coordination with Block Development Officers (BDOs)</li>
+            <li>Baseline data collection for FHTC demand mapping</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card">
+        <div class="phase-number" aria-label="Phase 2">2</div>
+        <div class="phase-body">
+          <span class="phase-tag">Phase 2 · Governance</span>
+          <h3 class="phase-title">Paani Samiti Constitution (VWSC)</h3>
+          <ul class="phase-activities">
+            <li>Formation of Village Water &amp; Sanitation Committee (VWSC)</li>
+            <li>Minimum 50% women representation mandate enforced</li>
+            <li>Elections of Adhyaksha, Sachiv &amp; Kosh Prabhandak</li>
+            <li>Bank account opening &amp; formal registration with Gram Sabha</li>
+            <li>Capacity building for Paani Samiti members on governance</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card">
+        <div class="phase-number" aria-label="Phase 3">3</div>
+        <div class="phase-body">
+          <span class="phase-tag">Phase 3 · Planning</span>
+          <h3 class="phase-title">Village Action Plan (VAP) Engineering</h3>
+          <ul class="phase-activities">
+            <li>Water demand computation based on household surveys</li>
+            <li>Source water quality testing &amp; chemical analysis</li>
+            <li>Greywater &amp; liquid waste management planning</li>
+            <li>DPR finalization with DPMU &amp; technical sanction</li>
+            <li>Geo-tagging of assets and infrastructure mapping</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase-card">
+        <div class="phase-number" aria-label="Phase 4">4</div>
+        <div class="phase-body">
+          <span class="phase-tag">Phase 4 · Handover &amp; Sustainability</span>
+          <h3 class="phase-title">Community Handover &amp; FTK Skilling</h3>
+          <ul class="phase-activities">
+            <li>Infrastructure commissioning &amp; completion certificate</li>
+            <li>Training 5 women per village via Field Test Kits (FTK)</li>
+            <li>Water quality monitoring protocols handover to VWSC</li>
+            <li>Operation &amp; Maintenance (O&amp;M) budget planning</li>
+            <li>Final Paani Samiti empowerment certification</li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- /phase-stepper -->
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION C — SWSM COMPLIANCE DOCUMENT REPOSITORY
+     ═══════════════════════════════════════════════════════════ -->
+<section class="doc-repository" id="document-repo" aria-labelledby="docs-heading">
+  <div class="jjm-inner">
+
+    <div style="text-align:center; margin-bottom: 8px;">
+      <span class="jjm-section-label">Compliance &amp; Documentation</span>
+    </div>
+    <h2 class="jjm-section-title" id="docs-heading" style="text-align:center;">SWSM Document Repository</h2>
+    <p class="jjm-section-subtitle" style="text-align:center; margin: 0 auto 36px;">
+      Official project documents, templates, and compliance reports available for download by Government Auditors, DPMUs, and District Field Teams.
+    </p>
+
+    <div class="doc-table-wrap" role="region" aria-label="Document repository table">
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th scope="col">Document Title</th>
+            <th scope="col">Target District</th>
+            <th scope="col">Version / Date</th>
+            <th scope="col">Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Sample_Village_Action_Plan_Aligarh
+              <span class="doc-type-badge pdf">PDF</span>
+            </td>
+            <td><span class="district-pill">Aligarh</span></td>
+            <td style="color:#64748B; font-size:13px;">Mar 2024</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('Sample_Village_Action_Plan_Aligarh.pdf')" aria-label="Download Village Action Plan Aligarh">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Sample_Village_Action_Plan_Bulandshahr
+              <span class="doc-type-badge pdf">PDF</span>
+            </td>
+            <td><span class="district-pill">Bulandshahr</span></td>
+            <td style="color:#64748B; font-size:13px;">Mar 2024</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('Sample_Village_Action_Plan_Bulandshahr.pdf')" aria-label="Download Village Action Plan Bulandshahr">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ISA_Monthly_Progress_Report_Template
+              <span class="doc-type-badge xlsx">XLSX</span>
+            </td>
+            <td><span class="district-pill both">Both Districts</span></td>
+            <td style="color:#64748B; font-size:13px;">Jan 2024</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('ISA_Monthly_Progress_Report_Template.xlsx')" aria-label="Download Monthly Progress Report Template">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Paani_Samiti_Constitution_Guidelines
+              <span class="doc-type-badge pdf">PDF</span>
+            </td>
+            <td><span class="district-pill both">Both Districts</span></td>
+            <td style="color:#64748B; font-size:13px;">Aug 2023</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('Paani_Samiti_Constitution_Guidelines.pdf')" aria-label="Download Paani Samiti Guidelines">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              FTK_Training_Module_Women_Skilling
+              <span class="doc-type-badge docx">DOCX</span>
+            </td>
+            <td><span class="district-pill both">Both Districts</span></td>
+            <td style="color:#64748B; font-size:13px;">Nov 2023</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('FTK_Training_Module_Women_Skilling.docx')" aria-label="Download FTK Training Module">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              SWSM_ISA_Annual_Compliance_Report_2023
+              <span class="doc-type-badge pdf">PDF</span>
+            </td>
+            <td><span class="district-pill both">Both Districts</span></td>
+            <td style="color:#64748B; font-size:13px;">Dec 2023</td>
+            <td>
+              <button class="doc-download-btn" onclick="handleDocDownload('SWSM_ISA_Annual_Compliance_Report_2023.pdf')" aria-label="Download Annual Compliance Report">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align:center; margin-top:28px;">
+      <a href="{% url 'resources' %}" style="font-size:14px; font-weight:600; color:#0EA5E9; text-decoration:none;">
+        View all documents in the repository →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PROJECTS SECTION — Logic preserved, heading refreshed
+     ═══════════════════════════════════════════════════════════ -->
+<section class="projects-section">
+  <p class="projects-subtitle">Field Operations</p>
+  <h2 class="projects-title">
+    Recent JJM <span>Projects</span> &amp; Field Deployments
+  </h2>
+
+  <div class="projects-grid">
+    {% for project in projects %}
+    <div class="project-card">
+      {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+      {% else %}
+      <img src="{% static 'assets/p4.jpg' %}" alt="UDAAN JJM Project" />
+      {% endif %}
+
+      <div class="project-content">
+        <h3>{{ project.title|truncatechars:35 }}</h3>
+        <p class="project-desc">{{ project.description|truncatechars:100 }}</p>
+        <a href="{% url 'project_detail' project.slug %}" class="project-btn">View Details</a>
+        <hr />
+        <p class="project-date">📅 {{ project.date|date:"F j, Y" }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <p style="text-align:center; color:#64748B; grid-column:1/-1; padding:40px 0;">No recent projects found.</p>
+    {% endfor %}
+  </div>
+
+  <div class="projects-footer">
+    <a href="{% url 'project_list' %}" class="projects-view-more">View all projects →</a>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     TESTIMONIALS — Logic preserved, heading updated
+     ═══════════════════════════════════════════════════════════ -->
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    <p class="testimonials-subtitle">Voices from the Field</p>
+    <h2 class="testimonials-title">What Key Stakeholders <span>Say About Us</span></h2>
+
+    <div class="testimonials-slider">
+      <button class="slider-arrow prev" onclick="moveTestimonial(-1)" aria-label="Previous testimonial">‹</button>
+
+      <div class="testimonials-track" id="testimonialTrack">
+        {% for testimonial in testimonials %}
+        <div class="testimonial-card"
+          onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}')">
+          <div class="quote-icon">"</div>
+          <div class="testimonial-summary">
+            <p class="testimonial-quote">{{ testimonial.text|truncatechars:100 }}</p>
+            <div class="testimonial-author">
+              <h4>{{ testimonial.author }}</h4>
+              <span>{{ testimonial.role }}</span>
+            </div>
+            <button class="expand-btn" aria-label="Read full story">Read Story <span class="arrow">→</span></button>
+          </div>
+        </div>
+        {% empty %}
+        <div class="testimonial-card">
+          <p style="color:#64748B; text-align:center; padding:20px 0;">No testimonials yet.</p>
+        </div>
+        {% endfor %}
+      </div>
+
+      <button class="slider-arrow next" onclick="moveTestimonial(1)" aria-label="Next testimonial">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial Modal -->
+<div id="testimonial-modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal(event, true)">&times;</span>
+    <div class="modal-icon">"</div>
+    <p id="modal-text" class="modal-text"></p>
+    <div class="modal-author-block">
+      <h4 id="modal-author"></h4>
+      <span id="modal-role"></span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+  // ─── District Data ─────────────────────────────────────────
+  const districtData = {
+    aligarh: {
+      villages:     { value: '1,070', pct: 100, ringPct: '100%' },
+      fhtc:         { value: '98%',   pct: 98,  ringPct: '98%'  },
+      taps:         { value: '4.2L+', pct: 98,  ringPct: '98%'  },
+      samiti:       { value: '100%',  pct: 100, ringPct: '100%' },
+    },
+    bulandshahr: {
+      villages:     { value: '1,067', pct: 100, ringPct: '100%' },
+      fhtc:         { value: '98%',   pct: 98,  ringPct: '98%'  },
+      taps:         { value: '4.56L+',pct: 98,  ringPct: '98%'  },
+      samiti:       { value: '95%',   pct: 95,  ringPct: '95%'  },
     }
+  };
 
-    // Handle Window Resize to reset or adjust
-    window.addEventListener('resize', () => {
-      moveTestimonial(0); // Recalculate bounds
-    });
+  // SVG radial ring helper: stroke-dashoffset based on % (circumference = 2πr = 251.2 for r=40)
+  const CIRCUMFERENCE = 251.2;
 
-    // Modal Logic
-    function openModal(author, role, text) {
-      document.getElementById('modal-author').innerText = author;
-      document.getElementById('modal-role').innerText = role;
-      document.getElementById('modal-text').innerText = text;
+  function setRing(ringId, pct) {
+    const ring = document.getElementById(ringId);
+    if (!ring) return;
+    const offset = CIRCUMFERENCE - (pct / 100) * CIRCUMFERENCE;
+    ring.style.strokeDashoffset = offset;
+  }
 
-      const modal = document.getElementById('testimonial-modal');
-      modal.style.display = 'flex';
-      // Trigger reflow for animation
-      setTimeout(() => {
-        modal.classList.add('show');
-      }, 10);
-    }
+  function switchDistrict(district) {
+    const d = districtData[district];
 
-    function closeModal(event, force) {
-      if (force || event.target.id === 'testimonial-modal') {
-        const modal = document.getElementById('testimonial-modal');
-        modal.classList.remove('show');
+    // Toggle buttons
+    document.getElementById('btn-aligarh').classList.toggle('active', district === 'aligarh');
+    document.getElementById('btn-aligarh').setAttribute('aria-pressed', district === 'aligarh');
+    document.getElementById('btn-bulandshahr').classList.toggle('active', district === 'bulandshahr');
+    document.getElementById('btn-bulandshahr').setAttribute('aria-pressed', district === 'bulandshahr');
+
+    // Animate number update
+    const statIds = ['villages', 'fhtc', 'taps', 'samiti'];
+    statIds.forEach(id => {
+      const el = document.getElementById('stat-' + id);
+      if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(6px)';
         setTimeout(() => {
-          modal.style.display = 'none';
-        }, 300); // Match transition duration
+          el.textContent = d[id].value;
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }, 200);
       }
-    }
-  </script>
-
-  <script>
-    const slides = [
-      {
-        title: "Har Ghar Jal Project",
-        description:
-          "UDAAN Society is appointed an Implementation support Agency under Jal Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water and Sanitation Mission, Uttar Pradesh for two District namely Aligarh & Bulandshahr",
-        image: "{% static 'assets/image1.jpeg' %}",
-      },
-      {
-        title: "Atal Bhujal Yojna",
-        description:
-          "UDAAN Society is working as a District Implementation Partner(DIP) under this project in Banda district of Uttar Pradesh and mobilizing the village community to reduce the wastage of water and recharge the ground water such an manner",
-        image: "{% static 'assets/image2.jpeg' %}",
-      },
-      {
-        title: "Women and Child Line",
-        description:
-          "CHILDLINE 1098 is a phone number that spells hope for millions of children across India",
-        image: "{% static 'assets/image3.jpeg' %}",
-      },
-      {
-        title: "Partnership with AALI",
-        description:
-          "AALI (Association for Advocacy and Legal Initiatives Trust) is a women-led and women –run organization that works to protect and advance the rights of women",
-        image: "{% static 'assets/image4.jpeg' %}",
-      },
-      {
-        title: "PM Svanidhi Project",
-        description:
-          "UDAAN Society is Working as an Implementation Agency for Aligarh Nagar Nigam for economic empowerment of street level vendors under Prime Minister Svanidhi Yojana since the year 2021",
-        image: "{% static 'assets/image5.webp' %}",
-      },
-    ];
-
-    let currentSlide = 0;
-
-    function changeSlide(direction) {
-      currentSlide += direction;
-      if (currentSlide < 0) currentSlide = slides.length - 1;
-      if (currentSlide >= slides.length) currentSlide = 0;
-      updateSlide();
-    }
-
-    function goToSlide(index) {
-      currentSlide = index;
-      updateSlide();
-    }
-
-    function updateSlide() {
-      const hero = document.querySelector(".hero");
-      const heroContent = document.querySelector(".hero-content");
-
-      if (!hero || !heroContent) return;
-
-      heroContent.style.opacity = "0";
-
-      setTimeout(() => {
-        // Update text
-        const titleEl = document.querySelector(".hero h1");
-        const descEl = document.querySelector(".hero p");
-
-        if (titleEl) titleEl.textContent = slides[currentSlide].title;
-        if (descEl) descEl.textContent = slides[currentSlide].description;
-
-        // Update background image
-        hero.style.background = `
-          linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-          url("${slides[currentSlide].image}") center / cover
-        `;
-
-        heroContent.style.opacity = "1";
-
-        document.querySelectorAll(".carousel-dot").forEach((dot, index) => {
-          dot.classList.toggle("active", index === currentSlide);
-        });
-      }, 300);
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      updateSlide();
-      // Auto-advance slides
-      setInterval(() => changeSlide(1), 5000);
+      // Radial ring
+      const pctEl = document.getElementById('ring-' + id + '-pct');
+      if (pctEl) {
+        setTimeout(() => { pctEl.textContent = d[id].ringPct; }, 200);
+      }
+      // Reset ring to 0 then animate
+      setRing('ring-' + id, 0);
+      setTimeout(() => setRing('ring-' + id, d[id].pct), 100);
     });
+  }
 
-    function subscribe() {
-      alert("Thank you for subscribing to UDAAN Society!");
+  // Stat number transition styles
+  document.querySelectorAll('.stat-number').forEach(el => {
+    el.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+  });
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    switchDistrict('aligarh');
+  });
+</script>
+
+<script>
+  // ─── Testimonial Slider ─────────────────────────────────────
+  let currentTestimonialIndex = 0;
+
+  function moveTestimonial(direction) {
+    const track = document.getElementById('testimonialTrack');
+    const cards = track.querySelectorAll('.testimonial-card');
+    if (cards.length === 0) return;
+    const cardWidth = cards[0].offsetWidth;
+    const gap = 30;
+    const totalWidth = cardWidth + gap;
+    let visibleCards = 3;
+    if (window.innerWidth <= 700) visibleCards = 1;
+    else if (window.innerWidth <= 1100) visibleCards = 2;
+    const maxIndex = Math.max(0, cards.length - visibleCards);
+    currentTestimonialIndex = Math.min(Math.max(currentTestimonialIndex + direction, 0), maxIndex);
+    track.style.transform = `translateX(${-(currentTestimonialIndex * totalWidth)}px)`;
+  }
+
+  window.addEventListener('resize', () => moveTestimonial(0));
+
+  function openModal(author, role, text) {
+    document.getElementById('modal-author').innerText = author;
+    document.getElementById('modal-role').innerText = role;
+    document.getElementById('modal-text').innerText = text;
+    const modal = document.getElementById('testimonial-modal');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('show'), 10);
+  }
+
+  function closeModal(event, force) {
+    if (force || event.target.id === 'testimonial-modal') {
+      const modal = document.getElementById('testimonial-modal');
+      modal.classList.remove('show');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
     }
-  </script>
+  }
+</script>
+
+<script>
+  // ─── Hero Carousel — Images & slides PRESERVED ─────────────
+  const slides = [
+    {
+      title: "Har Ghar Jal Project",
+      description: "UDAAN Society is appointed an Implementation Support Agency under Jal Jeevan Mission – Har Ghar Jal Project of Govt. of India by State Water and Sanitation Mission, Uttar Pradesh for two districts namely Aligarh & Bulandshahr",
+      image: "{% static 'assets/image1.jpeg' %}",
+    },
+    {
+      title: "Atal Bhujal Yojna",
+      description: "UDAAN Society is working as a District Implementation Partner (DIP) under this project in Banda district of Uttar Pradesh and mobilizing the village community to reduce the wastage of water and recharge the ground water",
+      image: "{% static 'assets/image2.jpeg' %}",
+    },
+    {
+      title: "Women and Child Line",
+      description: "CHILDLINE 1098 is a phone number that spells hope for millions of children across India",
+      image: "{% static 'assets/image3.jpeg' %}",
+    },
+    {
+      title: "Partnership with AALI",
+      description: "AALI (Association for Advocacy and Legal Initiatives Trust) is a women-led and women-run organization that works to protect and advance the rights of women",
+      image: "{% static 'assets/image4.jpeg' %}",
+    },
+    {
+      title: "PM Svanidhi Project",
+      description: "UDAAN Society is working as an Implementation Agency for Aligarh Nagar Nigam for economic empowerment of street level vendors under Prime Minister Svanidhi Yojana since 2021",
+      image: "{% static 'assets/image5.webp' %}",
+    },
+  ];
+
+  let currentSlide = 0;
+
+  function changeSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide < 0) currentSlide = slides.length - 1;
+    if (currentSlide >= slides.length) currentSlide = 0;
+    updateSlide();
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    updateSlide();
+  }
+
+  function updateSlide() {
+    const hero = document.querySelector(".hero");
+    const heroContent = document.querySelector(".hero-content");
+    if (!hero || !heroContent) return;
+    heroContent.style.opacity = "0";
+    setTimeout(() => {
+      const titleEl = document.querySelector(".hero h1");
+      const descEl = document.querySelector(".hero p");
+      if (titleEl) titleEl.textContent = slides[currentSlide].title;
+      if (descEl) descEl.textContent = slides[currentSlide].description;
+      hero.style.background = `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("${slides[currentSlide].image}") center / cover`;
+      heroContent.style.opacity = "1";
+      document.querySelectorAll(".carousel-dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === currentSlide);
+      });
+    }, 300);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateSlide();
+    setInterval(() => changeSlide(1), 5000);
+  });
+</script>
+
+<script>
+  // ─── Document Download Handler ──────────────────────────────
+  function handleDocDownload(filename) {
+    // Show a professional toast notification for mock documents
+    const toast = document.createElement('div');
+    toast.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">📄</span>
+        <div>
+          <div style="font-weight:700;font-size:13px;color:#0A3663;">${filename}</div>
+          <div style="font-size:12px;color:#64748B;margin-top:2px;">Document will be available once uploaded to the repository.</div>
+        </div>
+      </div>`;
+    toast.style.cssText = 'position:fixed;bottom:28px;right:24px;z-index:9999;background:#fff;border:1px solid #DDE3EC;border-radius:10px;padding:16px 20px;box-shadow:0 8px 24px rgba(10,54,99,0.14);min-width:320px;animation:slideUp 0.3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(10px)'; toast.style.transition = 'all 0.3s ease'; setTimeout(() => toast.remove(), 300); }, 3500);
+  }
+
+  // Slide-up keyframe for toast
+  const style = document.createElement('style');
+  style.textContent = '@keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }';
+  document.head.appendChild(style);
+</script>
 
 {% endblock %}

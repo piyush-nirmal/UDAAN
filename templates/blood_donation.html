@@ -5,7 +5,7 @@
 
 {% block extra_css %}
 
-<link rel="stylesheet" href="{% static 'css/blood_donation.css' %}">
+<link rel="stylesheet" href="{% static 'css/blood_donation.css' %}?v=2">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 {% endblock %}
@@ -942,40 +942,16 @@ ${percent>=70 ? "You meet the basic eligibility requirements to donate blood." :
 
 
 // ================= FAQ ACCORDION =================
-
 document.querySelectorAll(".faq-question").forEach(question => {
-
-question.addEventListener("click", () => {
-
-const item = question.parentElement
-const answer = question.nextElementSibling
-
-document.querySelectorAll(".faq-item").forEach(i=>{
-
-if(i !== item){
-
-i.classList.remove("active")
-i.querySelector(".faq-answer").style.maxHeight = null
-
-}
-
-})
-
-item.classList.toggle("active")
-
-if(answer.style.maxHeight){
-
-answer.style.maxHeight = null
-
-}else{
-
-answer.style.maxHeight = answer.scrollHeight + "px"
-
-}
-
-})
-
-})
+  question.addEventListener("click", () => {
+    const item = question.parentElement;
+    const isOpen = item.classList.contains("open");
+    // Close all
+    document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("open"));
+    // Toggle clicked
+    if (!isOpen) item.classList.add("open");
+  });
+});
 
 
 // ================= CSRF TOKEN HELPER =================

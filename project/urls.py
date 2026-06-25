@@ -97,6 +97,7 @@ urlpatterns = [
 
     path('news-clippings/', views.news_clippings, name='news_clippings'),
     path("policies/", views.our_policies, name="our_policies"),
+    path("our-policies/", views.our_policies),  # alias — resolves /our-policies/ to same view
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
