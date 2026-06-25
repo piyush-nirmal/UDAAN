@@ -1320,3 +1320,64 @@ body {
   color: #0EA5E9;
   font-weight: 600;
 }
+
+/* Testimonial Author & Modal Avatar Styles */
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.author-avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid #0EA5E9;
+  box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.author-meta h4 {
+  font-size: 17px;
+  color: #0A3663;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+}
+
+.author-meta span {
+  font-size: 13px;
+  color: #64748B;
+  display: block;
+  line-height: 1.3;
+}
+
+.modal-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  padding-right: 40px;
+}
+
+.modal-avatar {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #0EA5E9;
+  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.3);
+}
+
+.modal-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

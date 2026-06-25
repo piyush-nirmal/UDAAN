@@ -388,13 +388,20 @@
       <div class="testimonials-track" id="testimonialTrack">
         {% for testimonial in testimonials %}
         <div class="testimonial-card"
-          onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}')">
+          onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}', '{% if testimonial.image %}{{ testimonial.image.url|escapejs }}{% endif %}')">
           <div class="quote-icon">"</div>
           <div class="testimonial-summary">
             <p class="testimonial-quote">{{ testimonial.text|truncatechars:100 }}</p>
             <div class="testimonial-author">
-              <h4>{{ testimonial.author }}</h4>
-              <span>{{ testimonial.role }}</span>
+              {% if testimonial.image %}
+              <div class="author-avatar">
+                <img src="{{ testimonial.image.url }}" alt="{{ testimonial.author }}">
+              </div>
+              {% endif %}
+              <div class="author-meta">
+                <h4>{{ testimonial.author }}</h4>
+                <span>{{ testimonial.role }}</span>
+              </div>
             </div>
             <button class="expand-btn" aria-label="Read full story">Read Story <span class="arrow">→</span></button>
           </div>
@@ -415,7 +422,12 @@
 <div id="testimonial-modal" class="modal" onclick="if(event.target.id === 'testimonial-modal') closeTestimonialModal();">
   <div class="modal-content">
     <span class="close-modal" onclick="closeTestimonialModal();">&times;</span>
-    <div class="modal-icon">"</div>
+    <div class="modal-header-top">
+      <div id="modal-avatar-container" class="modal-avatar" style="display: none;">
+        <img id="modal-author-img" src="" alt="Author Image">
+      </div>
+      <div class="modal-icon">"</div>
+    </div>
     <p id="modal-text" class="modal-text"></p>
     <div class="modal-author-block">
       <h4 id="modal-author"></h4>
@@ -520,10 +532,18 @@
 
   window.addEventListener('resize', () => moveTestimonial(0));
 
-  function openModal(author, role, text) {
+  function openModal(author, role, text, imageUrl) {
     document.getElementById('modal-author').innerText = author;
     document.getElementById('modal-role').innerText = role;
     document.getElementById('modal-text').innerText = text;
+    const avatarContainer = document.getElementById('modal-avatar-container');
+    const authorImg = document.getElementById('modal-author-img');
+    if (imageUrl) {
+      authorImg.src = imageUrl;
+      avatarContainer.style.display = 'block';
+    } else {
+      avatarContainer.style.display = 'none';
+    }
     const modal = document.getElementById('testimonial-modal');
     modal.style.display = 'flex';
     setTimeout(() => modal.classList.add('show'), 10);
