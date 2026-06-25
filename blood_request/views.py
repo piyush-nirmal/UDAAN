@@ -66,7 +66,7 @@ def register_donor(request):
             if donor.email:
                 send_din_email(donor.email, din, record_type='donor')
                 
-            return JsonResponse({'success': True, 'message': 'Registration successful! Your DIN is generated.'})
+            return JsonResponse({'success': True, 'message': f'Registration successful! Your DIN is: {din}'})
 
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
@@ -128,7 +128,7 @@ def blood_request_create(request):
             if req_data.contact_email:
                 send_din_email(req_data.contact_email, din, record_type='request')
                 
-            return JsonResponse({"success": True, "message": "Blood request submitted successfully!"})
+            return JsonResponse({"success": True, "message": f"Blood request submitted successfully! Your DIN is: {din}"})
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
         except Exception as e:
@@ -1634,4 +1634,4 @@ def blood_request_submit(request):
             return JsonResponse({'success': True, 'message': 'Blood request submitted successfully!'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
-    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
+    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
