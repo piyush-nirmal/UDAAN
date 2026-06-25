@@ -64,4 +64,15 @@ for t_data in testimonials_data:
     )
     print(f"Added Testimonial: {t_data['author']}")
 
-print("Blogs and Testimonials populated successfully.")
+# Ensure admin superuser exists
+from django.contrib.auth.models import User
+if not User.objects.filter(username='gyanendra').exists():
+    User.objects.create_superuser('gyanendra', 'gyanendra@udaansociety.org', 'Udaan@123')
+    print("Created superuser 'gyanendra' with password 'Udaan@123'")
+else:
+    u = User.objects.get(username='gyanendra')
+    u.set_password('Udaan@123')
+    u.save()
+    print("Reset superuser 'gyanendra' password to 'Udaan@123'")
+
+print("Blogs, Testimonials, and Superuser populated successfully.")
