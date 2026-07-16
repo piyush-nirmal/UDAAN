@@ -17,3 +17,29 @@ html {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
 }
+/* Mouse Glow Effect */
+
+.mouse-glow{
+    position: fixed;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle,
+        rgba(225, 32, 32, 0.565) 0%,
+    rgba(240, 68, 25, 0.827) 40%,
+        transparent 70%);
+    filter:blur(5px);
+    z-index:1;
+
+
+
+
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    /* background: black; */
+    border-radius: 50%;
+    left: 100px;
+    top: 100px;
+    z-index: 999999;
+}

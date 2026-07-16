@@ -12,7 +12,7 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="hero-content">
-        <h1>Campaigns</h1>
+        <h1>CAMPAIGNS</h1>
     </div>
 </section>
 
@@ -93,42 +93,65 @@
             {% for campaign in campaigns %}
             <article class="campaign-card" data-category="general" data-date="{{ campaign.created_at|date:'Y-m-d' }}"
                 data-goal="{{ campaign.goal_amount|floatformat:0 }}"
-                data-raised="{{ campaign.raised_amount|floatformat:0 }}">
+                data-raised="{{ campaign.raised_amount|floatformat:0 }}"
+                onclick="window.location.href='{% url 'campaign_detail' campaign.slug %}'"
+                style="cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
                 <div class="card-image">
                     {% if campaign.image %}
                     <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy">
                     {% else %}
                     <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy">
                     {% endif %}
-                    <span class="category-badge">General</span>
-                    <button class="quick-donate" onclick="quickDonate('{{ campaign.title|escapejs }}')"
+                    {% if campaign.timeline_status_text == "Campaign Completed" %}
+                    <span class="category-badge" style="background-color: #6c757d; color: white;">Completed</span>
+                    {% else %}
+                    <span class="category-badge" style="background-color: #28a745; color: white;">{{ campaign.timeline_status_text }}</span>
+                    {% endif %}
+                    <button class="quick-donate" onclick="event.stopPropagation(); quickDonate('{{ campaign.title|escapejs }}')"
                         aria-label="Quick donate">
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <div class="card-body">
-                    <div class="progress-section">
-                        <div class="goal-text">
-                            <span class="raised-amount">Raised: {% if campaign.raised_amount > 0 %}₹{{
-                                campaign.raised_amount }}{% else %}No Amount{% endif %}</span>
-                            <span class="goal-amount">Goal: ₹{{ campaign.goal_amount }}</span>
-                        </div>
-                        <div class="progress-bar">
-                            <!-- Calculate progress percentage -->
-                            <div class="progress-fill"
-                                style="width: {% widthratio campaign.raised_amount campaign.goal_amount 100 %}%"
-                                data-progress="{% widthratio campaign.raised_amount campaign.goal_amount 100 %}">
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                    <div>
+                        <div class="progress-section">
+                            <div class="goal-text">
+                                <span class="raised-amount">Raised: ₹{{ campaign.raised_amount }}</span>
+                                <span class="goal-amount">Goal: ₹{{ campaign.goal_amount }}</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill"
+                                    style="width: {{ campaign.percentage_raised }}%; background: #E63946;"
+                                    data-progress="{{ campaign.percentage_raised }}">
+                                </div>
+                            </div>
+                            <div style="font-size: 0.75rem; text-align: right; margin-top: 4px; font-weight: bold; color: #E63946;">
+                                {{ campaign.percentage_raised }}% Raised
                             </div>
                         </div>
+                        <h3 class="card-title" style="margin-top: 10px; font-size: 1.25rem;"><a href="{% url 'campaign_detail' campaign.slug %}" style="text-decoration: none; color: #1D3557;">{{ campaign.title }}</a></h3>
+                        <p class="card-description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 0.9rem; color: #666; line-height: 1.5;">{{ campaign.description }}</p>
                     </div>
-                    <h3 class="card-title">{{ campaign.title }}</h3>
-                    <p class="card-description">{{ campaign.description|truncatewords:20 }}</p>
-                    <div class="card-meta">
-                        <span class="meta-item">
-                            <i class="fas fa-calendar"></i>
-                            Date - <time datetime="{{ campaign.created_at|date:'Y-m-d' }}">{{
-                                campaign.created_at|date:"d/m/Y" }}</time>
-                        </span>
+                    <div>
+                        <div class="card-meta" style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+                            <span class="meta-item" style="font-size: 0.8rem; color: #777;">
+                                <i class="fas fa-calendar"></i>
+                                {% if campaign.start_date and campaign.end_date %}
+                                    {{ campaign.start_date|date:"d M Y" }} - {{ campaign.end_date|date:"d M Y" }}
+                                {% elif campaign.start_date %}
+                                    Starts {{ campaign.start_date|date:"d M Y" }}
+                                {% elif campaign.end_date %}
+                                    Ends {{ campaign.end_date|date:"d M Y" }}
+                                {% else %}
+                                    {{ campaign.created_at|date:"d/m/Y" }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div style="text-align: right; margin-top: 15px;">
+                            <a href="{% url 'campaign_detail' campaign.slug %}" class="read-more-btn" style="color: #E63946; font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 4px;">
+                                Read More <span class="arrow">&rarr;</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </article>

@@ -174,15 +174,57 @@
         </p>
 
         <!-- Google Form Embed Area -->
-        <div class="google-form-box">
-
-          <!-- 👇 Yahan baad me apna Google Form iframe paste karna -->
-
-          <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSeEztmO0eMQK3bRAO2ow4bgk_R7m8K2R1FV-lFsTLlj1zgHHA/viewform?embedded=true"
-            width="100%" height="700" frameborder="0" marginheight="0" marginwidth="0">
-          </iframe>
-
+        {% if messages %}
+        <div class="messages" style="margin-bottom: 20px;">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" style="padding: 15px; border-radius: 5px; {% if message.tags == 'success' %}background-color: #d4edda; color: #155724;{% else %}background-color: #f8d7da; color: #721c24;{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="google-form-box" style="padding: 20px; text-align: left;">
+          <form method="POST" action="{% url 'internships' %}">
+            {% csrf_token %}
+            <div style="margin-bottom: 15px;">
+              <label for="name" style="font-weight: bold; display: block; margin-bottom: 5px;">Name *</label>
+              <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="father_name" style="font-weight: bold; display: block; margin-bottom: 5px;">Father's Name *</label>
+              <input type="text" id="father_name" name="father_name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="email" style="font-weight: bold; display: block; margin-bottom: 5px;">Email *</label>
+              <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="contact_number" style="font-weight: bold; display: block; margin-bottom: 5px;">Contact Number *</label>
+              <input type="text" id="contact_number" name="contact_number" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="educational_qualification" style="font-weight: bold; display: block; margin-bottom: 5px;">Educational Qualification *</label>
+              <input type="text" id="educational_qualification" name="educational_qualification" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="permanent_address" style="font-weight: bold; display: block; margin-bottom: 5px;">Permanent Address *</label>
+              <textarea id="permanent_address" name="permanent_address" required rows="3" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="internship_area" style="font-weight: bold; display: block; margin-bottom: 5px;">Area of Internship *</label>
+              <input type="text" id="internship_area" name="internship_area" placeholder="e.g. Data Analytics, Social Work" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="start_date" style="font-weight: bold; display: block; margin-bottom: 5px;">Expected Start Date *</label>
+              <input type="date" id="start_date" name="start_date" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <label for="duration_months" style="font-weight: bold; display: block; margin-bottom: 5px;">Duration (Months) *</label>
+              <input type="number" id="duration_months" name="duration_months" value="3" min="1" max="12" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            </div>
+            <button type="submit" style="background-color: #b30000; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; width: 100%;">Submit Application</button>
+          </form>
         </div>
 
       </div>

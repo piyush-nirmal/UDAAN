@@ -13,8 +13,7 @@ body {
 
 /* Hero Section */
 .hero {
-  margin-top: 80px;
-  height: 600px;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,6 +100,7 @@ body {
   cursor: pointer;
   transition: background 0.3s;
   z-index: 3;
+  border-radius: 5px;
 }
 
 .carousel-arrow:hover {
@@ -161,18 +161,15 @@ body {
 
 /* Button */
 .activities-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
-  background-color: #e74c3c;
-  color: #ffffff;
+  padding: 14px 30px;
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   border-radius: 8px;
-  box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+  /* box-shadow: 0 6px 15px rgba(231, 76, 60, 0.35); */
   transition: all 0.3s ease;
+  background-color: #e74c3c;
+  color: #fff;
 }
 
 .activities-btn span {
@@ -259,7 +256,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .donate-card:hover {
@@ -448,25 +447,63 @@ body {
 }
 
 .btn-secondary {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  color: #111;
-  font-weight: 600;
-  font-size: 14px;
+  color: #1b254b;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.35s ease;
 }
 
+/* Play Icon */
+
 .play-icon {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
+  border: 2px solid #ff6b6b;
   border-radius: 50%;
-  border: 3px solid #e74c3c;
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: #e74c3c;
-  font-size: 14px;
+  align-items: center;
+  color: #ff6b6b;
+  font-size: 18px;
+  transition: all 0.35s ease;
+}
+
+/* Text */
+
+.btn-secondary .text {
+  transition: all 0.35s ease;
+}
+
+/* Arrow */
+
+.btn-secondary .arrow {
+  opacity: 0;
+  transform: translateX(-12px);
+  transition: all 0.35s ease;
+  color: #ff6b6b;
+  font-size: 18px;
+}
+
+/* Hover */
+
+.btn-secondary:hover .play-icon {
+  background: #ff6b6b;
+  color: #fff;
+  transform: translateX(5px) scale(1.08);
+}
+
+.btn-secondary:hover .text {
+  transform: translateX(8px);
+  color: #ff6b6b;
+}
+
+.btn-secondary:hover .arrow {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Responsive */
@@ -627,6 +664,7 @@ body {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-outline {
@@ -636,6 +674,12 @@ body {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  transition: all 0.3s ease;
+}
+.btn-red:hover,
+.btn-outline:hover {
+  background-color: #cf3f31;
+  transform: translateY(-2px);
 }
 
 /* Responsive */
@@ -694,18 +738,24 @@ body {
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
+
+  display: flex;
+  flex-direction: column;
   text-align: left;
 }
 
 .project-card img {
   width: 100%;
-  height: 220px;
+  height: 240px;
   object-fit: cover;
 }
 
 /* Content */
 .project-content {
   padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .project-content h3 {
@@ -713,6 +763,7 @@ body {
   font-weight: 700;
   margin-bottom: 15px;
   line-height: 1.3;
+  min-height: 60px;
 }
 
 .project-desc {
@@ -720,6 +771,7 @@ body {
   color: #555;
   line-height: 1.7;
   margin-bottom: 20px;
+  min-height: 70px;
 }
 
 /* Button */
@@ -733,6 +785,7 @@ body {
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 20px;
+  margin-top: auto;
 }
 
 .project-btn:hover {
@@ -743,10 +796,11 @@ body {
 .project-content hr {
   border: none;
   border-top: 1px solid #e0e0e0;
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
 .project-date {
+  margin-top: 5px;
   font-size: 14px;
   color: #333;
 }
@@ -1027,7 +1081,6 @@ body {
   }
 }
 
-
 /* Expandable Testimonials Logic */
 .testimonial-card {
   cursor: pointer;
@@ -1080,7 +1133,9 @@ body {
 .testimonial-details {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease-out, opacity 0.4s ease;
+  transition:
+    max-height 0.5s ease-out,
+    opacity 0.4s ease;
   opacity: 0;
 }
 
@@ -1095,7 +1150,6 @@ body {
   font-size: 15px;
   line-height: 1.6;
 }
-
 
 /* Testimonial Slider Styles */
 .testimonials-slider {
@@ -1176,7 +1230,6 @@ body {
     right: -10px;
   }
 }
-
 
 /* Testimonial Modal Styles */
 .modal {

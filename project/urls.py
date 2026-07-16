@@ -72,6 +72,7 @@ urlpatterns = [
     path("", home_view, name="home"),
     path("donate/", views.donate_page, name="donate"),
     path("campaigns/", campaign_list, name="campaign_list"),
+    path("campaigns/<slug:slug>/", views.campaign_detail, name="campaign_detail"),
     path("projects/", project_list, name="project_list"),
     path("projects/<slug:slug>/", project_detail, name="project_detail"),
     path("blogs/", blogs_page, name="blogs"),

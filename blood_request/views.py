@@ -468,6 +468,18 @@ def campaign_list(request):
     campaigns = Campaign.objects.all().order_by('-created_at')
     return render(request, 'campaigns.html', {'campaigns': campaigns})
 
+def campaign_detail(request, slug):
+    """
+    Specific Campaign Detail Page
+    """
+    campaign = get_object_or_404(Campaign, slug=slug)
+    related_campaigns = Campaign.objects.exclude(id=campaign.id).order_by('-created_at')[:4]
+    context = {
+        'campaign': campaign,
+        'related_campaigns': related_campaigns,
+    }
+    return render(request, 'campaign_detail.html', context)
+
 def project_list(request):
     """
     Public Project Listing Page
@@ -1191,6 +1203,36 @@ def news_clippings(request):
     return render(request, 'news_clippings.html', {'clippings': clippings})
 
 def internships(request):
+    from django.contrib import messages
+    from .models import InternshipRequest
+    
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        father_name = request.POST.get('father_name')
+        educational_qualification = request.POST.get('educational_qualification')
+        permanent_address = request.POST.get('permanent_address')
+        contact_number = request.POST.get('contact_number')
+        email = request.POST.get('email')
+        internship_area = request.POST.get('internship_area')
+        start_date = request.POST.get('start_date')
+        duration_months = request.POST.get('duration_months', 3)
+        
+        try:
+            InternshipRequest.objects.create(
+                name=name,
+                father_name=father_name,
+                educational_qualification=educational_qualification,
+                permanent_address=permanent_address,
+                contact_number=contact_number,
+                email=email,
+                internship_area=internship_area,
+                start_date=start_date,
+                duration_months=duration_months,
+            )
+            messages.success(request, 'Your internship request has been successfully submitted! We will contact you soon.')
+        except Exception as e:
+            messages.error(request, 'There was an error submitting your request. Please check your inputs.')
+            
     return render(request, 'internships.html')
 
 def our_mission_values(request):
@@ -1200,11 +1242,12 @@ def aboutus(request):
     return render(request, 'aboutus.html')
 def our_policies(request):
 
-    ethical = PolicyReport.objects.filter(category="ethical").first()
-    finance = PolicyReport.objects.filter(category="finance").first()
-    hr = PolicyReport.objects.filter(category="hr").first()
-    travel = PolicyReport.objects.filter(category="travel").first()
-    posh = PolicyReport.objects.filter(category="posh").first()
+    ethical = PolicyReport.objects.filter(category="ethical", published=True).first()
+    finance = PolicyReport.objects.filter(category="finance", published=True).first()
+    hr = PolicyReport.objects.filter(category="hr", published=True).first()
+    travel = PolicyReport.objects.filter(category="travel", published=True).first()
+    posh = PolicyReport.objects.filter(category="posh", published=True).first()
+    policies = PolicyReport.objects.filter(published=True).order_by('display_order', '-uploaded_at')
 
     context = {
         "ethical": ethical,
@@ -1212,6 +1255,7 @@ def our_policies(request):
         "hr": hr,
         "travel": travel,
         "posh": posh,
+        "policies": policies,
     }
 
     return render(request,"our_policies.html",context)
@@ -1634,4 +1678,4 @@ def blood_request_submit(request):
             return JsonResponse({'success': True, 'message': 'Blood request submitted successfully!'})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
-    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
+    return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)

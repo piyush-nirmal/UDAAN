@@ -1,0 +1,386 @@
+/* ================= Custom Admin Styles for Policy Management ================= */
+
+/* Font / Typography alignment */
+.admin-policy-layout,
+.submit-row,
+.help-card {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Grid Layout for Add / Change Form */
+@media (min-width: 992px) {
+    .admin-policy-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 30px;
+        align-items: start;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 991px) {
+    .admin-policy-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 10px;
+    }
+    
+    .admin-policy-help-panel {
+        order: -1; /* Help card at top on tablet/mobile */
+    }
+}
+
+/* Form Cards Wrapper */
+.admin-policy-form-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Redesign Fieldsets into modern cards supporting light/dark themes */
+.admin-policy-layout fieldset.module {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important; /* Match UDAAN theme cards */
+    box-shadow: 0 4px 12px rgba(29, 53, 87, 0.04) !important;
+    padding: 24px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Custom Fieldset Title Heading styles - Reduced size and weight */
+.admin-policy-layout fieldset.module h2 {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: var(--primary-color) !important; /* Theme Primary Blue */
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 0 0 8px 0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    margin: 0 0 16px 0 !important; /* Reset standard negative margins */
+    border-radius: 0 !important; /* Reset curves */
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+}
+
+/* Custom spacing for aligned form rows */
+.admin-policy-layout .form-row {
+    padding: 14px 0 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    background: transparent !important;
+    overflow: hidden !important; /* Clears floats */
+}
+
+.admin-policy-layout .form-row:last-child {
+    border-bottom: none !important;
+}
+
+/* Align labels vertically with input field */
+.admin-policy-layout .form-row > label:first-child {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    font-size: 13px !important;
+    padding-top: 8px !important;
+}
+
+.admin-policy-layout .form-row label.required::after {
+    content: " *";
+    color: var(--secondary-color);
+}
+
+/* Inputs & Form Controls inheriting theme styles and aligning properly */
+.admin-policy-layout input[type="text"],
+.admin-policy-layout textarea,
+.admin-policy-layout input[type="number"],
+.admin-policy-layout input[type="file"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 500px !important; /* Aligned input box width */
+    padding: 8px 12px !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important; /* Match image rounded corners */
+    font-size: 14px !important;
+    color: var(--text-color) !important;
+    background: var(--card-bg) !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+/* Align helper text and validation errors with standard 170px indent */
+.admin-policy-layout .form-row .help {
+    font-size: 12px !important;
+    color: #6B7280 !important;
+    margin-top: 6px !important;
+    margin-left: 170px !important;
+    line-height: 1.4 !important;
+    display: block !important;
+}
+
+.admin-policy-layout .errorlist {
+    margin: 0 0 8px 170px !important;
+    padding: 0 !important;
+    color: var(--secondary-color) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    list-style: none !important;
+}
+
+/* Focus and input states */
+.admin-policy-layout input[type="text"]:focus,
+.admin-policy-layout textarea:focus,
+.admin-policy-layout input[type="number"]:focus {
+    border-color: var(--primary-color) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(29, 53, 87, 0.15) !important;
+}
+
+/* Inline Description Textarea sizing */
+.admin-policy-layout textarea {
+    height: 100px !important;
+    resize: vertical !important;
+}
+
+/* Input Placeholder colors */
+.admin-policy-layout input::placeholder,
+.admin-policy-layout textarea::placeholder {
+    color: #9CA3AF !important;
+}
+
+/* Validation styling */
+.admin-policy-layout .errors input[type="text"],
+.admin-policy-layout .errors textarea,
+.admin-policy-layout .errors input[type="file"] {
+    border-color: var(--secondary-color) !important;
+}
+
+.admin-policy-layout .errors input[type="text"]:focus,
+.admin-policy-layout .errors textarea:focus {
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15) !important;
+}
+
+/* ================= Boolean Toggle Switch for Published ================= */
+
+.admin-policy-layout .field-published input[type="checkbox"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 44px !important;
+    height: 22px !important;
+    background: #E5E7EB !important;
+    border-radius: 11px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    position: relative !important;
+    outline: none !important;
+    cursor: pointer !important;
+    border: none !important;
+    transition: background 0.25s ease !important;
+    margin-right: 8px !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+[data-theme="dark"] .admin-policy-layout .field-published input[type="checkbox"] {
+    background: #4B5563 !important;
+}
+
+.admin-policy-layout .field-published input[type="checkbox"]:checked {
+    background: var(--primary-color) !important; /* Theme primary blue */
+}
+
+.admin-policy-layout .field-published input[type="checkbox"]::before {
+    content: "" !important;
+    position: absolute !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    top: 3px !important;
+    left: 3px !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15) !important;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.admin-policy-layout .field-published input[type="checkbox"]:checked::before {
+    transform: translateX(22px) !important;
+}
+
+.admin-policy-layout .field-published label.vCheckboxLabel {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    float: none !important; /* Clear default float */
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    color: var(--text-color) !important;
+}
+
+/* ================= Right Help Panel ================= */
+
+.admin-policy-help-panel .help-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(29, 53, 87, 0.04);
+    position: sticky;
+    top: 20px;
+    box-sizing: border-box !important;
+}
+
+.admin-policy-help-panel .help-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.admin-policy-help-panel .help-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-policy-help-panel .help-icon-top {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+.admin-policy-help-panel .help-content p {
+    font-size: 13px;
+    color: var(--text-color);
+    opacity: 0.8;
+    line-height: 1.6;
+    margin: 0 0 14px 0;
+}
+
+.admin-policy-help-panel .help-content p:last-child {
+    margin-bottom: 0;
+}
+
+.admin-policy-help-panel .help-warning {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FEF3C7; /* Soft amber */
+    border: 1px solid #FCD34D;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #92400E;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 16px 0 0 0;
+}
+
+[data-theme="dark"] .admin-policy-help-panel .help-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #FBBF24;
+}
+
+.admin-policy-help-panel .help-warning i {
+    font-size: 14px;
+}
+
+.admin-policy-help-panel .help-illustration {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 8px 0;
+}
+
+.admin-policy-help-panel .shield-ill-icon {
+    font-size: 72px;
+    color: var(--border-color);
+    opacity: 0.4;
+}
+
+/* ================= Bottom Buttons Bar Redesign ================= */
+
+.submit-row {
+    background: var(--bg-color) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    flex-direction: row !important; /* Left-to-right alignment matching theme image */
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    box-shadow: none !important;
+    margin: 32px 0 20px 0 !important;
+}
+
+.submit-row input, 
+.submit-row a {
+    margin: 0 !important;
+    border-radius: 6px !important; /* Match image rounded corners */
+    font-weight: 600 !important;
+    padding: 10px 18px !important;
+    font-size: 13px !important;
+    height: auto !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-transform: uppercase !important; /* Match uppercase styling in image */
+    letter-spacing: 0.5px !important;
+}
+
+/* Save (Default Submit) - Red background matching theme image */
+.submit-row input.default {
+    background: var(--secondary-color) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.submit-row input.default:hover {
+    background: #c32f3b !important; /* Darker Red */
+}
+
+/* Save and Add Another / Save and Continue Editing - Dark Blue matching theme image */
+.submit-row input[name="_addanother"], 
+.submit-row input[name="_continue"] {
+    background: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+.submit-row input[name="_addanother"]:hover, 
+.submit-row input[name="_continue"]:hover {
+    background: var(--accent-color) !important;
+}
+
+/* Cancel link button */
+.submit-row a.closelink {
+    background: #94A3B8 !important; /* Grey background */
+    color: #ffffff !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.submit-row a.closelink:hover {
+    background: #64748B !important;
+}
+
+/* Delete link button (far right side) */
+.submit-row a.deletelink {
+    background: #EF4444 !important;
+    color: #ffffff !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important; /* Push delete to far right side */
+}
+
+.submit-row a.deletelink:hover {
+    background: #DC2626 !important;
+}

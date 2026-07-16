@@ -1,0 +1,620 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ campaign.title }} - Campaign Details{% endblock %}
+
+{% block extra_css %}
+<!-- Include FontAwesome and custom styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  /* Custom modern design variables & overrides */
+  :root {
+    --color-brand-red: #E63946;
+    --color-brand-dark: #1D3557;
+    --color-brand-blue: #457B9D;
+    --color-brand-light: #F1FAEE;
+  }
+
+  /* Custom subtle animations */
+  .transition-all-custom {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Sticky sidebar behavior for desktop views */
+  @media (min-width: 1024px) {
+    .sticky-sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+  }
+
+  /* Hide scrollbar utility for thumbnails */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Breadcrumbs Styling */
+  .breadcrumbs-bar {
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .breadcrumbs-bar a {
+    transition: color 0.2s ease;
+  }
+  .breadcrumbs-bar a:hover {
+    color: var(--color-brand-red);
+  }
+
+  /* Hero Section Background Styling with Dark Overlay */
+  .campaign-hero {
+    background: linear-gradient(rgba(29, 53, 87, 0.85), rgba(69, 123, 157, 0.85)), 
+                url('{% if campaign.image %}{{ campaign.image.url }}{% else %}{% static "images/pn1.png" %}{% endif %}');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+
+  /* Slide transition */
+  .slider-slide {
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* PDF Modal Styling */
+  .pdf-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px;
+  }
+  .pdf-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .pdf-modal-container {
+    background: #ffffff;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 1000px;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px) scale(0.97);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .pdf-modal-overlay.active .pdf-modal-container {
+    transform: translateY(0) scale(1);
+  }
+
+  /* Progress bar animation */
+  .progress-bar-fill {
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="campaign-hero text-white py-16 md:py-24 px-6 md:px-12 text-center shadow-inner">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-md">
+      {{ campaign.title }}
+    </h1>
+    <p class="text-lg md:text-xl text-gray-100/90 font-medium max-w-2xl mx-auto drop-shadow-sm">
+      Help us achieve our mission. Every contribution makes a difference.
+    </p>
+  </div>
+</section>
+
+<!-- Breadcrumbs -->
+<div class="breadcrumbs-bar bg-white py-4 px-6 md:px-12">
+  <div class="max-w-7xl mx-auto text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="text-gray-600 hover:text-brand-red font-medium">Home</a>
+    <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+    <a href="{% url 'campaign_list' %}" class="text-gray-600 hover:text-brand-red font-medium">Campaigns</a>
+    <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
+    <span class="text-gray-800 font-semibold truncate">{{ campaign.title }}</span>
+  </div>
+</div>
+
+<!-- Main Details Layout Container -->
+<div class="max-w-7xl mx-auto px-6 md:px-12 py-10">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+    
+    <!-- Left Side: Main Story and Media Gallery -->
+    <div class="lg:col-span-2 space-y-8">
+      
+      <!-- Interactive Media Gallery Card -->
+      <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md">
+        <div class="relative w-full h-[280px] sm:h-[380px] md:h-[480px] overflow-hidden rounded-2xl group bg-gray-50">
+          
+          <!-- Image Slider Window -->
+          <div class="absolute inset-0" id="imageSlider">
+            {% if campaign.image %}
+              <div class="slider-slide absolute inset-0 opacity-100 transition-opacity duration-500 ease-in-out" data-slide-index="0">
+                <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="w-full h-full object-cover rounded-2xl">
+              </div>
+            {% endif %}
+            
+            {% for gallery_img in campaign.gallery_images.all %}
+              <div class="slider-slide absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out" 
+                   data-slide-index="{% if campaign.image %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
+                <img src="{{ gallery_img.image.url }}" alt="{{ gallery_img.caption|default:campaign.title }}" class="w-full h-full object-cover rounded-2xl" loading="lazy">
+              </div>
+            {% endfor %}
+            
+            {% if not campaign.image and not campaign.gallery_images.exists %}
+              <div class="slider-slide absolute inset-0 opacity-100 transition-opacity duration-500 ease-in-out" data-slide-index="0">
+                <img src="{% static 'images/pn1.png' %}" alt="Placeholder" class="w-full h-full object-cover rounded-2xl">
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Navigation Arrow Overlays -->
+          <button class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 z-10 hidden" 
+                  id="prevBtn" aria-label="Previous image">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+          <button class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md flex items-center justify-center transition-all duration-200 opacity-0 group-hover:opacity-100 focus:opacity-100 z-10 hidden" 
+                  id="nextBtn" aria-label="Next image">
+            <i class="fa-solid fa-chevron-right text-sm"></i>
+          </button>
+        </div>
+
+        <!-- Thumbnails Row (Scroller) -->
+        <div class="mt-4 flex gap-3 overflow-x-auto pb-1 no-scrollbar scroll-smooth hidden" id="thumbnailsRow">
+          {% if campaign.image %}
+            <button class="thumbnail-btn flex-shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden border-2 border-brand-red focus:outline-none transition-all duration-200" 
+                    data-index="0">
+              <img src="{{ campaign.image.url }}" alt="Primary Image Thumbnail" class="w-full h-full object-cover" loading="lazy">
+            </button>
+          {% endif %}
+          
+          {% for gallery_img in campaign.gallery_images.all %}
+            <button class="thumbnail-btn flex-shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden border-2 border-transparent hover:border-gray-200 focus:outline-none transition-all duration-200" 
+                    data-index="{% if campaign.image %}{{ forloop.counter }}{% else %}{{ forloop.counter0 }}{% endif %}">
+              <img src="{{ gallery_img.image.url }}" alt="Gallery Thumbnail {{ forloop.counter }}" class="w-full h-full object-cover" loading="lazy">
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Campaign Metadata Badges -->
+      <div class="flex flex-wrap items-center gap-4 text-sm font-semibold text-gray-600">
+        {% if campaign.timeline_status_text == "Campaign Completed" %}
+          <span class="flex items-center gap-1.5 px-4.5 py-1.5 bg-gray-100 text-gray-600 rounded-full">
+            <span class="w-2 h-2 rounded-full bg-gray-500"></span> Completed
+          </span>
+        {% elif "Starts in" in campaign.timeline_status_text %}
+          <span class="flex items-center gap-1.5 px-4.5 py-1.5 bg-amber-50 text-amber-700 rounded-full border border-amber-100">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> {{ campaign.timeline_status_text }}
+          </span>
+        {% else %}
+          <span class="flex items-center gap-1.5 px-4.5 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-100 animate-pulse">
+            <span class="w-2 h-2 rounded-full bg-green-500"></span> {{ campaign.timeline_status_text }}
+          </span>
+        {% endif %}
+        
+        <span class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full border border-gray-100">
+          <i class="fa-solid fa-folder-open text-brand-blue"></i> General Fundraising
+        </span>
+        <span class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full border border-gray-100">
+          <i class="fa-regular fa-calendar-days text-brand-blue"></i> Posted: {{ campaign.created_at|date:"d M Y" }}
+        </span>
+      </div>
+
+      <!-- About the Campaign Description -->
+      <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+        <h2 class="text-2xl font-extrabold text-brand-dark flex items-center gap-2">
+          About the Campaign
+        </h2>
+        <div class="text-gray-700 leading-relaxed text-base space-y-4">
+          {{ campaign.description|linebreaks }}
+        </div>
+      </div>
+
+      <!-- Campaign Documents Section (Dynamic) -->
+      {% if campaign.documents.exists %}
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+        <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
+          <i class="fa-regular fa-file-lines text-brand-red"></i> Campaign Documents
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {% for doc in campaign.documents.all %}
+            <div class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl bg-gray-50 hover:bg-white hover:border-gray-200 hover:shadow-sm transition-all duration-200">
+              <div class="flex items-center gap-3">
+                <div class="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-red-50 text-brand-red rounded-xl border border-red-100">
+                  <i class="fa-solid fa-file-pdf text-xl"></i>
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-bold text-gray-800 text-sm truncate pr-2" title="{{ doc.title }}">{{ doc.title }}</h4>
+                  <p class="text-xs text-gray-500 font-semibold uppercase">PDF • {{ doc.file_size|default:"1.2 MB" }}</p>
+                </div>
+              </div>
+              <button class="btn-view-doc bg-brand-red hover:bg-brand-red/90 text-white text-sm font-bold px-4 py-2 rounded-xl transition-all-custom focus:ring-2 focus:ring-brand-red/25" 
+                      data-url="{{ doc.file.url }}" data-title="{{ doc.title }}">
+                View
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Right Side: Sidebar Panel -->
+    <div class="space-y-8 sticky-sidebar">
+      
+      <!-- Fundraising Goal Progress Card -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md">
+        <h3 class="text-sm font-bold tracking-wider uppercase text-gray-400 mb-4">Fundraising Progress</h3>
+        
+        <div class="space-y-2">
+          <div class="flex justify-between items-baseline">
+            <span class="text-3xl font-extrabold text-brand-red">₹{{ campaign.raised_amount }}</span>
+            <span class="text-sm text-gray-500">raised</span>
+          </div>
+          <div class="text-sm font-semibold text-gray-500">
+            Goal: <span class="text-gray-700">₹{{ campaign.goal_amount }}</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar Component -->
+        <div class="my-6">
+          <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden border border-gray-50">
+            <div class="progress-bar-fill h-full bg-brand-red rounded-full" 
+                 style="width: {{ campaign.percentage_raised }}%;"></div>
+          </div>
+          <div class="flex justify-between text-sm font-bold text-brand-dark mt-2">
+            <span>{{ campaign.percentage_raised }}% Completed</span>
+          </div>
+        </div>
+
+        <!-- Call to Action Button -->
+        <div>
+          {% if campaign.timeline_status_text == "Campaign Completed" %}
+            <button class="w-full text-center py-4 bg-gray-200 text-gray-500 font-bold rounded-2xl text-base cursor-not-allowed" disabled>
+              Campaign Completed
+            </button>
+          {% else %}
+            <a href="{% url 'donate' %}" 
+               class="block w-full text-center py-4 bg-brand-red hover:bg-brand-red/90 text-white font-extrabold rounded-2xl text-lg shadow-lg hover:shadow-xl hover:shadow-brand-red/10 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
+              Donate Now
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Campaign Timeline Details Card -->
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md space-y-5">
+        <h3 class="text-lg font-bold text-brand-dark border-b border-gray-100 pb-3">Campaign Timeline</h3>
+        
+        <div class="space-y-3.5">
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full bg-red-50 text-brand-red flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-calendar-plus text-xs"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-400 font-bold uppercase">Date Posted</p>
+              <p class="font-bold text-gray-700">{{ campaign.created_at|date:"d F Y" }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-calendar text-xs"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-400 font-bold uppercase">Start Date</p>
+              <p class="font-bold text-gray-700">
+                {% if campaign.start_date %}{{ campaign.start_date|date:"d F Y" }}{% else %}Not specified{% endif %}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 text-sm">
+            <div class="w-8 h-8 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center flex-shrink-0">
+              <i class="fa-solid fa-calendar-check text-xs"></i>
+            </div>
+            <div>
+              <p class="text-xs text-gray-400 font-bold uppercase">End Date</p>
+              <p class="font-bold text-gray-700">
+                {% if campaign.end_date %}{{ campaign.end_date|date:"d F Y" }}{% else %}Not specified{% endif %}
+              </p>
+            </div>
+          </div>
+
+          {% if campaign.timeline_status_text != "Campaign Completed" and campaign.days_remaining is not None %}
+            <div class="flex items-center gap-3 text-sm border-t border-dashed border-gray-100 pt-3">
+              <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0 animate-pulse">
+                <i class="fa-regular fa-clock text-xs"></i>
+              </div>
+              <div>
+                <p class="text-xs text-gray-400 font-bold uppercase">Days Remaining</p>
+                <p class="font-black text-brand-red text-base">{{ campaign.days_remaining }} days left</p>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Who Will Benefit Beneficiary Card -->
+      {% if campaign.beneficiary_text %}
+      <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md space-y-4">
+        <h3 class="text-lg font-bold text-brand-dark border-b border-gray-100 pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-brand-blue"></i> Who Will Benefit?
+        </h3>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          {{ campaign.beneficiary_text }}
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Razorpay Secure Donation Card -->
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md flex items-start gap-4">
+        <div class="w-10 h-10 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center flex-shrink-0 border border-green-100">
+          <i class="fa-solid fa-shield-halved text-lg"></i>
+        </div>
+        <div>
+          <h4 class="font-extrabold text-gray-800 text-sm md:text-base">100% Secure Donations</h4>
+          <p class="text-xs text-gray-500 font-medium mt-1 leading-relaxed">
+            Your donation is processed securely through Razorpay.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Related Campaigns Carousel / Grid -->
+{% if related_campaigns %}
+<section class="max-w-7xl mx-auto px-6 md:px-12 py-16 border-t border-gray-100">
+  <div class="mb-8">
+    <h2 class="text-2xl font-extrabold text-brand-dark">Related Campaigns</h2>
+    <div class="w-12 h-1 bg-brand-red rounded-full mt-2"></div>
+  </div>
+  
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% for rel in related_campaigns %}
+      <article class="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all-custom transform hover:-translate-y-1 flex flex-col h-full cursor-pointer"
+               onclick="window.location.href='{% url 'campaign_detail' rel.slug %}'">
+        <div class="h-48 w-full overflow-hidden bg-gray-50 relative">
+          {% if rel.image %}
+            <img src="{{ rel.image.url }}" alt="{{ rel.title }}" class="w-full h-full object-cover">
+          {% else %}
+            <img src="{% static 'images/pn1.png' %}" alt="Placeholder" class="w-full h-full object-cover">
+          {% endif %}
+          <span class="absolute top-4 left-4 bg-brand-dark/80 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
+            Fundraiser
+          </span>
+        </div>
+        
+        <div class="p-5 flex-grow flex flex-col justify-between">
+          <div>
+            <h4 class="font-bold text-gray-800 text-base line-clamp-2 leading-snug hover:text-brand-red transition-colors duration-200">
+              {{ rel.title }}
+            </h4>
+            
+            <div class="my-4">
+              <div class="flex justify-between items-center text-xs font-semibold text-gray-500 mb-1.5">
+                <span>Raised: ₹{{ rel.raised_amount }}</span>
+                <span>{{ rel.percentage_raised }}%</span>
+              </div>
+              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-brand-red rounded-full" style="width: {{ rel.percentage_raised }}%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center text-xs font-bold text-gray-400 border-t border-gray-50 pt-3">
+            <span>Goal: ₹{{ rel.goal_amount }}</span>
+            <span class="flex items-center gap-1"><i class="fa-regular fa-calendar"></i> {{ rel.created_at|date:"d/m/y" }}</span>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<!-- PDF Viewer Modal System -->
+<div class="pdf-modal-overlay" id="pdfModal">
+  <div class="pdf-modal-container">
+    <div class="flex justify-between items-center px-6 py-4.5 border-b border-gray-100 bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-file-pdf text-xl text-brand-red" id="modalHeaderIcon"></i>
+        <span class="font-extrabold text-gray-800 text-base" id="modalDocTitle">Document Viewer</span>
+      </div>
+      <button class="text-gray-400 hover:text-gray-600 text-2xl font-bold leading-none p-2 focus:outline-none" 
+              id="modalCloseBtn" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="flex-grow bg-gray-100 p-2 relative h-[calc(100%-60px)]">
+      <iframe id="modalIframe" src="" class="w-full h-full rounded-xl shadow-inner border-0" allow="fullscreen"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery Slider and PDF Modal Scripting -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // ---------------- GALLERY FUNCTIONALITY ----------------
+    const slides = document.querySelectorAll('.slider-slide');
+    const thumbnails = document.querySelectorAll('.thumbnail-btn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const thumbnailsRow = document.getElementById('thumbnailsRow');
+
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+      if (totalSlides === 0) return;
+
+      // Handle cyclic index out of bounds
+      if (index < 0) {
+        currentIndex = totalSlides - 1;
+      } else if (index >= totalSlides) {
+        currentIndex = 0;
+      } else {
+        currentIndex = index;
+      }
+
+      // Update slide states (Cross-fade effect)
+      slides.forEach((slide) => {
+        const slideIndex = parseInt(slide.dataset.slideIndex);
+        if (slideIndex === currentIndex) {
+          slide.classList.remove('opacity-0');
+          slide.classList.add('opacity-100', 'z-10');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10');
+          slide.classList.add('opacity-0');
+        }
+      });
+
+      // Update active thumbnail border highlight
+      thumbnails.forEach((thumb) => {
+        const thumbIndex = parseInt(thumb.dataset.index);
+        if (thumbIndex === currentIndex) {
+          thumb.classList.remove('border-transparent', 'hover:border-gray-200');
+          thumb.classList.add('border-brand-red');
+          
+          // Smooth scroll thumbnail inside overflow container
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+          thumb.classList.remove('border-brand-red');
+          thumb.classList.add('border-transparent', 'hover:border-gray-200');
+        }
+      });
+    }
+
+    // Activate controls if gallery has multiple slides
+    if (totalSlides > 1) {
+      if (prevBtn) prevBtn.classList.remove('hidden');
+      if (nextBtn) nextBtn.classList.remove('hidden');
+      if (thumbnailsRow) thumbnailsRow.classList.remove('hidden');
+
+      // Set up click handlers
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showSlide(currentIndex - 1);
+      });
+
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showSlide(currentIndex + 1);
+      });
+
+      thumbnails.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const idx = parseInt(thumb.dataset.index);
+          showSlide(idx);
+        });
+      });
+
+      // Swipe Navigation for Mobile Devices
+      let startX = 0;
+      let endX = 0;
+      const sliderContainer = document.getElementById('imageSlider');
+
+      sliderContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+
+      sliderContainer.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        const threshold = 50; // swipe minimum travel in pixels
+
+        if (diffX > threshold) {
+          // Swipe left -> Show next image
+          showSlide(currentIndex + 1);
+        } else if (diffX < -threshold) {
+          // Swipe right -> Show previous image
+          showSlide(currentIndex - 1);
+        }
+      }, { passive: true });
+
+      // Keyboard Left/Right Navigation
+      document.addEventListener('keydown', (e) => {
+        // Run only if no modal viewer overlays are open
+        const isModalActive = modalOverlay.classList.contains('active');
+        if (!isModalActive) {
+          if (e.key === 'ArrowRight') {
+            showSlide(currentIndex + 1);
+          } else if (e.key === 'ArrowLeft') {
+            showSlide(currentIndex - 1);
+          }
+        }
+      });
+    }
+
+    // ---------------- PDF MODAL FUNCTIONALITY ----------------
+    const modalOverlay = document.getElementById("pdfModal");
+    const modalIframe = document.getElementById("modalIframe");
+    const modalTitle = document.getElementById("modalDocTitle");
+    const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+    function openPdf(url, title) {
+      if (!url) return;
+      modalIframe.src = url;
+      modalTitle.textContent = title;
+      modalOverlay.classList.add("active");
+      document.body.style.overflow = "hidden"; // disable background page scroll
+    }
+
+    // Pre-declare/expose function so inline event handlers could access it if needed
+    window.openPdfModal = openPdf;
+
+    function closePdf() {
+      modalOverlay.classList.remove("active");
+      setTimeout(() => {
+        modalIframe.src = "";
+      }, 300);
+      document.body.style.overflow = ""; // enable page scroll
+    }
+
+    // Attach click events to document "View" buttons
+    document.querySelectorAll(".btn-view-doc").forEach(button => {
+      button.addEventListener("click", () => {
+        const url = button.dataset.url;
+        const title = button.dataset.title;
+        openPdf(url, title);
+      });
+    });
+
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener("click", closePdf);
+    }
+
+    // Backdrop click close modal
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        closePdf();
+      }
+    });
+
+    // ESC key close modal
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+        closePdf();
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -3,161 +3,171 @@
 
 {% block title %}UDAAN Society - Har Ghar Jal Project{% endblock %}
 
-{% block meta_description %}UDAAN Society is a leading NGO working on Har Ghar Jal Project, Atal Bhujal Yojna, and community empowerment across Uttar Pradesh. Donate and make a difference today.{% endblock %}
+{% block meta_description %}UDAAN Society is a leading NGO working on Har Ghar Jal Project, Atal Bhujal Yojna, and
+community empowerment across Uttar Pradesh. Donate and make a difference today.{% endblock %}
 
 {% block extra_css %}
-  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=3" />
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=3" />
 {% endblock %}
 
 {% block content %}
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <button class="carousel-arrow prev" onclick="changeSlide(-1)">‹</button>
-    <button class="carousel-arrow next" onclick="changeSlide(1)">›</button>
+<!-- Hero Section -->
+<section class="hero">
 
-    <div class="hero-content">
-      <h1>Har Ghar Jal Project</h1>
-      <p>
-        UDAAN Society is appointed an Implementation support Agency under Jal
-        Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water
-        and Sanitation Mission, Uttar Pradesh for two District namely Aligarh
-        &amp; Bulandshahr.
+  <div class="hero-bg active"></div>
+  <div class="hero-bg"></div>
+
+  <button class="carousel-arrow prev" onclick="changeSlide(-1)">‹</button>
+  <button class="carousel-arrow next" onclick="changeSlide(1)">›</button>
+
+  <div class="hero-content">
+    <h1>Har Ghar Jal Project</h1>
+    <p>
+      UDAAN Society is appointed an Implementation support Agency under Jal
+      Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water
+      and Sanitation Mission, Uttar Pradesh for two District namely Aligarh
+      &amp; Bulandshahr.
+    </p>
+    <a href="{% url 'our_activities' %}" class="hero-btn">Learn More <span>›</span></a>
+  </div>
+
+  <div class="carousel-nav">
+    <span class="carousel-dot active" onclick="goToSlide(0)"></span>
+    <span class="carousel-dot" onclick="goToSlide(1)"></span>
+    <span class="carousel-dot" onclick="goToSlide(2)"></span>
+    <span class="carousel-dot" onclick="goToSlide(3)"></span>
+    <span class="carousel-dot" onclick="goToSlide(4)"></span>
+  </div>
+</section>
+
+<!-- Activities Section -->
+<section class="activities-section">
+  <div class="activities-container">
+    <!-- Left Content -->
+    <div class="activities-content">
+      <h2>Our <span>Activities</span></h2>
+
+      <p class="activities-highlight">
+        We've worked on improving the lives of over
+        <strong>25,000</strong> young people through direct practice.
       </p>
-      <a href="{% url 'our_activities' %}" class="hero-btn">Learn More</a>
+
+      <p class="activities-description">
+        Young people from different backgrounds have a huge impact on us and
+        all our activities. They highlight those parts of society that are
+        broken, so we can help them in all possible ways to regain hope and
+        flourish in life.
+      </p>
+
+      <button class="activities-btn open-modal-btn   text-left" data-title="Our Activities"
+        data-content="UDAAN Society hosts various activities year-round ranging from environmental protection, health camps, and educational awareness programs. We strive to empower our community in every step we take.">
+        Read More
+        <span>›</span>
+      </button>
     </div>
 
-    <div class="carousel-nav">
-      <span class="carousel-dot active" onclick="goToSlide(0)"></span>
-      <span class="carousel-dot" onclick="goToSlide(1)"></span>
-      <span class="carousel-dot" onclick="goToSlide(2)"></span>
-      <span class="carousel-dot" onclick="goToSlide(3)"></span>
-      <span class="carousel-dot" onclick="goToSlide(4)"></span>
+    <!-- Right Image -->
+    <div class="activities-image-wrapper">
+      <img src="{% static 'assets/section2.jpeg' %}" alt="UDAAN Society Community Activities" />
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Activities Section -->
-  <section class="activities-section">
-    <div class="activities-container">
-      <!-- Left Content -->
-      <div class="activities-content">
-        <h2>Our <span>Activities</span></h2>
-
-        <p class="activities-highlight">
-          We've worked on improving the lives of over
-          <strong>25,000</strong> young people through direct practice.
-        </p>
-
-        <p class="activities-description">
-          Young people from different backgrounds have a huge impact on us and
-          all our activities. They highlight those parts of society that are
-          broken, so we can help them in all possible ways to regain hope and
-          flourish in life.
-        </p>
-
-        <button class="activities-btn open-modal-btn   text-left"
-                data-title="Our Activities"
-                data-content="UDAAN Society hosts various activities year-round ranging from environmental protection, health camps, and educational awareness programs. We strive to empower our community in every step we take.">
-          Read More
-          <span>›</span>
-        </button>
-      </div>
-
-      <!-- Right Image -->
-      <div class="activities-image-wrapper">
-        <img src="{% static 'assets/section2.jpeg' %}" alt="UDAAN Society Community Activities" />
-      </div>
+<section class="donate-section">
+  <div class="donate-container">
+    <!-- Card 1 -->
+    <div class="donate-card blue">
+      <div class="donate-icon">📘</div>
+      <p class="donate-small">Donate for</p>
+      <h3>Children education</h3>
+      <a href="{% url 'donate' %}">More details...</a>
     </div>
-  </section>
 
-  <section class="donate-section">
-    <div class="donate-container">
-      <!-- Card 1 -->
-      <div class="donate-card blue">
-        <div class="donate-icon">📘</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Children education</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="donate-card cream">
-        <div class="donate-icon">🌊</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Clean water</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="donate-card teal">
-        <div class="donate-icon">🏥</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Surgery &amp; treatment</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="donate-card sky">
-        <div class="donate-icon">🧺</div>
-        <p class="donate-small">Donate for</p>
-        <h3>Health &amp; good food</h3>
-        <a href="{% url 'donate' %}">More details...</a>
-      </div>
+    <!-- Card 2 -->
+    <div class="donate-card cream">
+      <div class="donate-icon">🌊</div>
+      <p class="donate-small">Donate for</p>
+      <h3>Clean water</h3>
+      <a href="{% url 'donate' %}">More details...</a>
     </div>
-  </section>
 
-  <section class="welcome-section">
-    <div class="welcome-container">
-      <!-- Left Image -->
-      <div class="welcome-image-wrapper">
-        <div class="dots dots-left"></div>
-        <img src="{% static 'assets/welcomeImage.jpg' %}" alt="UDAAN Society volunteer activities" />
-      </div>
+    <!-- Card 3 -->
+    <div class="donate-card teal">
+      <div class="donate-icon">🏥</div>
+      <p class="donate-small">Donate for</p>
+      <h3>Surgery &amp; treatment</h3>
+      <a href="{% url 'donate' %}">More details...</a>
+    </div>
 
-      <!-- Right Content -->
-      <div class="welcome-content">
-        <p class="welcome-subtitle">Welcome to UDAAN Society</p>
+    <!-- Card 4 -->
+    <div class="donate-card sky">
+      <div class="donate-icon">🧺</div>
+      <p class="donate-small">Donate for</p>
+      <h3>Health &amp; good food</h3>
+      <a href="{% url 'donate' %}">More details...</a>
+    </div>
+  </div>
+</section>
 
-        <h2>
-          A World Where <span>Poverty</span> Will<br />
-          Not Exists
-        </h2>
+<section class="welcome-section">
+  <div class="welcome-container">
+    <!-- Left Image -->
+    <div class="welcome-image-wrapper">
+      <div class="dots dots-left"></div>
+      <img src="{% static 'assets/welcomeImage.jpg' %}" alt="UDAAN Society volunteer activities" />
+    </div>
 
-        <p class="welcome-highlight">
-          We are one the largest crowdfunding
-        </p>
+    <!-- Right Content -->
+    <div class="welcome-content">
+      <p class="welcome-subtitle">Welcome to UDAAN Society</p>
 
-        <p class="welcome-description">
-          UDAAN Society, a leading NGO in Aligarh, runs impactful campaigns to
-          uplift underprivileged communities. Explore our diverse fundraising
-          campaigns dedicated to education, healthcare, poverty alleviation, and
-          more.
-        </p>
+      <h2>
+        A World Where <span>Poverty</span> Will Not Exists
+      </h2>
 
-        <div class="welcome-actions">
-          <a href="{% url 'aboutus' %}" class="btn-primary">Learn More</a>
+      <p class="welcome-highlight">
+        We are one the largest crowdfunding
+      </p>
 
-          <a href="{% url 'campaign_list' %}" class="btn-secondary">
-            <span class="play-icon">▶</span>
-            Know More
-          </a>
-        </div>
+      <p class="welcome-description">
+        UDAAN Society, a leading NGO in Aligarh, runs impactful campaigns to
+        uplift underprivileged communities. Explore our diverse fundraising
+        campaigns dedicated to education, healthcare, poverty alleviation, and
+        more.
+      </p>
+
+      <div class="welcome-actions">
+        <a href="{% url 'aboutus' %}" class="btn-primary">Learn More <span>></span></a>
+
+        <a href="{% url 'campaign_list' %}" class="btn-secondary">
+          <span class="play-icon">▶</span>
+          Know More
+        </a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="causes-section">
-    <p class="causes-subtitle">Causes Listed</p>
+<section class="causes-section">
+  <p class="causes-subtitle">Causes Listed</p>
 
-    <h2 class="causes-title">
-      We Are Always Where Other People <span>Need Help</span>
-    </h2>
+  <h2 class="causes-title">
+    We Are Always Where Other People <span>Need Help</span>
+  </h2>
 
-    <div class="causes-cards">
-      {% for campaign in campaigns %}
-      <!-- Card {{ forloop.counter }} -->
-      <div class="cause-card">
-        <span class="cause-tag health">Health</span>
+  <div class="causes-cards">
+    {% for campaign in campaigns %}
+    <!-- Card {{ forloop.counter }} -->
+    <div class="cause-card" onclick="window.location.href='{% url 'campaign_detail' campaign.slug %}'"
+      style="cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: transform 0.2s, box-shadow 0.2s;">
+      <div>
+        {% if campaign.timeline_status_text == "Campaign Completed" %}
+        <span class="cause-tag" style="background-color: #6c757d; color: white;">Completed</span>
+        {% else %}
+        <span class="cause-tag" style="background-color: #28a745; color: white;">{{ campaign.timeline_status_text
+          }}</span>
+        {% endif %}
 
         {% if campaign.image %}
         <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="cause-image" />
@@ -165,290 +175,343 @@
         <img src="{% static 'assets/p1.jpeg' %}" alt="UDAAN Campaign" class="cause-image" />
         {% endif %}
 
-        <div class="cause-goal">
-          Goal: ₹ {{ campaign.goal_amount }}
+        <div class="cause-goal" style="margin-bottom: 15px;">
+          <div class="goal-text"
+            style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px;">
+            <span><strong>Raised:</strong> ₹{{ campaign.raised_amount }}</span>
+            <span><strong>Goal:</strong> ₹{{ campaign.goal_amount }}</span>
+          </div>
           <div class="goal-bar">
-            <span style="width: 50%;"></span>
+            <span
+              style="width: {{ campaign.percentage_raised }}%; background: #E63946; transition: width 0.3s ease;"></span>
+          </div>
+          <div style="font-size: 0.8rem; margin-top: 5px; text-align: right; font-weight: bold; color: #E63946;">
+            {{ campaign.percentage_raised }}% Raised
           </div>
         </div>
 
-        <h3 class="cause-heading">
-          {{ campaign.title }}
+        <h3 class="cause-heading" style="margin-top: 10px; margin-bottom: 10px; font-size: 1.25rem;">
+          <a href="{% url 'campaign_detail' campaign.slug %}"
+            style="text-decoration: none; color: #1D3557; transition: color 0.2s;">{{ campaign.title }}</a>
         </h3>
+
+        <p class="cause-description"
+          style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+          {{ campaign.description }}
+        </p>
+      </div>
+
+      <div>
+        <hr style="margin: 10px 0;" />
+
+        <div class="cause-meta" style="margin-bottom: 15px;">
+          <div>
+            <strong>Timeline:</strong>
+            <span style="font-size: 0.85rem;">
+              {% if campaign.start_date and campaign.end_date %}
+              📅 {{ campaign.start_date|date:"d M Y" }} - {{ campaign.end_date|date:"d M Y" }}
+              {% elif campaign.start_date %}
+              📅 Starts {{ campaign.start_date|date:"d M Y" }}
+              {% elif campaign.end_date %}
+              📅 Ends {{ campaign.end_date|date:"d M Y" }}
+              {% else %}
+              📅 No timeline set
+              {% endif %}
+            </span>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <a href="{% url 'campaign_detail' campaign.slug %}" class="read-more-btn"
+            style="color: #E63946; font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 4px;">
+            Read More <span class="arrow" style="transition: transform 0.2s;">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No active campaigns at the moment.</p>
+    {% endfor %}
+  </div>
+
+  <div class="causes-footer">
+    <a href="{% url 'campaign_list' %}" class="view-more">View more..</a>
+
+    <div class="cause-actions">
+      <a href="{% url 'donate' %}" class="btn-red">₹ Donate</a>
+      <a href="{% url 'campaign_list' %}" class="btn-outline">View Campaigns</a>
+    </div>
+  </div>
+</section>
+
+<section class="projects-section">
+  <p class="projects-subtitle">Recent Project</p>
+
+  <h2 class="projects-title">
+    We Have Successfully Worked Multiple <span>Projects</span>
+  </h2>
+
+  <div class="projects-grid">
+    {% for project in projects %}
+    <!-- Card {{ forloop.counter }} -->
+    <div class="project-card">
+      {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.title }}" />
+      {% else %}
+      <img src="{% static 'assets/p4.jpg' %}" alt="UDAAN Project" />
+      {% endif %}
+
+      <div class="project-content">
+        <h3>{{ project.title|truncatechars:35 }}</h3>
+
+        <p class="project-desc">
+          {{ project.description|truncatechars:100 }}
+        </p>
+
+        <a href="{% url 'project_detail' project.slug %}" class="project-btn">Read More</a>
 
         <hr />
 
-        <div class="cause-meta">
-          <div>
-            <strong>Date:</strong>
-            <span>{{ campaign.created_at|date:"d/m/Y" }}</span>
-          </div>
-          <div>
-            <strong>By:</strong>
-            <span>UDAAN Society</span>
-          </div>
-        </div>
-      </div>
-      {% empty %}
-      <p>No active campaigns at the moment.</p>
-      {% endfor %}
-    </div>
-
-    <div class="causes-footer">
-      <a href="{% url 'campaign_list' %}" class="view-more">View more..</a>
-
-      <div class="cause-actions">
-        <a href="{% url 'donate' %}" class="btn-red">₹ Donate</a>
-        <a href="{% url 'campaign_list' %}" class="btn-outline">View Campaigns</a>
+        <p class="project-date">
+          📅 Date: {{ project.date|date:"F j, Y" }}
+        </p>
       </div>
     </div>
-  </section>
-
-  <section class="projects-section">
-    <p class="projects-subtitle">Recent Project</p>
-
-    <h2 class="projects-title">
-      We Have Successfully Worked Multiple <span>Projects</span>
-    </h2>
-
-    <div class="projects-grid">
-      {% for project in projects %}
-      <!-- Card {{ forloop.counter }} -->
-      <div class="project-card">
-        {% if project.image %}
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" />
-        {% else %}
-        <img src="{% static 'assets/p4.jpg' %}" alt="UDAAN Project" />
-        {% endif %}
-
-        <div class="project-content">
-          <h3>{{ project.title|truncatechars:35 }}</h3>
-
-          <p class="project-desc">
-            {{ project.description|truncatechars:100 }}
-          </p>
-
-          <a href="{% url 'project_detail' project.slug %}" class="project-btn">Read More</a>
-
-          <hr />
-
-          <p class="project-date">
-            📅 Date: {{ project.date|date:"F j, Y" }}
-          </p>
-        </div>
-      </div>
-      {% empty %}
-      <p>No recent projects found.</p>
-      {% endfor %}
-    </div>
-
-    <div class="projects-footer">
-      <a href="{% url 'project_list' %}" class="projects-view-more">View more..</a>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section class="testimonials-section">
-    <div class="testimonials-container">
-      <p class="testimonials-subtitle">Testimonials</p>
-      <h2 class="testimonials-title">What Key Stakeholders <span>Say About Us</span></h2>
-
-      <div class="testimonials-slider">
-        <button class="slider-arrow prev" onclick="moveTestimonial(-1)" aria-label="Previous testimonial">‹</button>
-
-        <div class="testimonials-track" id="testimonialTrack">
-          {% for testimonial in testimonials %}
-          <div class="testimonial-card"
-            onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}')">
-            <div class="quote-icon">"</div>
-
-            <div class="testimonial-summary">
-              <p class="testimonial-quote">
-                {{ testimonial.text|truncatechars:100 }}
-              </p>
-              <div class="testimonial-author">
-                <h4>{{ testimonial.author }}</h4>
-                <span>{{ testimonial.role }}</span>
-              </div>
-              <button class="expand-btn" aria-label="Read full story">
-                Read Story <span class="arrow">→</span>
-              </button>
-            </div>
-          </div>
-          {% empty %}
-          <div class="testimonial-card">
-            <p>No testimonials yet.</p>
-          </div>
-          {% endfor %}
-        </div>
-
-        <button class="slider-arrow next" onclick="moveTestimonial(1)" aria-label="Next testimonial">›</button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Testimonial Modal -->
-  <div id="testimonial-modal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeModal(event, true)">&times;</span>
-      <div class="modal-icon">"</div>
-      <p id="modal-text" class="modal-text"></p>
-      <div class="modal-author-block">
-        <h4 id="modal-author"></h4>
-        <span id="modal-role"></span>
-      </div>
-    </div>
+    {% empty %}
+    <p>No recent projects found.</p>
+    {% endfor %}
   </div>
 
-  <script>
-    // Testimonial Slider Logic
-    let currentTestimonialIndex = 0;
+  <div class="projects-footer">
+    <a href="{% url 'project_list' %}" class="projects-view-more">View more..</a>
+  </div>
+</section>
 
-    function moveTestimonial(direction) {
-      const track = document.getElementById('testimonialTrack');
-      const cards = track.querySelectorAll('.testimonial-card');
-      if (cards.length === 0) return;
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+  <div class="testimonials-container">
+    <p class="testimonials-subtitle">Testimonials</p>
+    <h2 class="testimonials-title">What Key Stakeholders <span>Say About Us</span></h2>
 
-      const cardWidth = cards[0].offsetWidth;
-      const gap = 30; // Matches CSS gap
-      const totalWidth = cardWidth + gap;
+    <div class="testimonials-slider">
+      <button class="slider-arrow prev" onclick="moveTestimonial(-1)" aria-label="Previous testimonial">‹</button>
 
-      // Calculate visible cards based on screen width
-      let visibleCards = 3;
-      if (window.innerWidth <= 700) visibleCards = 1;
-      else if (window.innerWidth <= 1100) visibleCards = 2;
+      <div class="testimonials-track" id="testimonialTrack">
+        {% for testimonial in testimonials %}
+        <div class="testimonial-card"
+          onclick="openModal('{{ testimonial.author|escapejs }}', '{{ testimonial.role|escapejs }}', '{{ testimonial.detailed_text|default:testimonial.text|escapejs }}')">
+          <div class="quote-icon">"</div>
 
-      const maxIndex = Math.max(0, cards.length - visibleCards);
+          <div class="testimonial-summary">
+            <p class="testimonial-quote">
+              {{ testimonial.text|truncatechars:100 }}
+            </p>
+            <div class="testimonial-author">
+              <h4>{{ testimonial.author }}</h4>
+              <span>{{ testimonial.role }}</span>
+            </div>
+            <button class="expand-btn" aria-label="Read full story">
+              Read Story <span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+        {% empty %}
+        <div class="testimonial-card">
+          <p>No testimonials yet.</p>
+        </div>
+        {% endfor %}
+      </div>
 
-      currentTestimonialIndex += direction;
+      <button class="slider-arrow next" onclick="moveTestimonial(1)" aria-label="Next testimonial">›</button>
+    </div>
 
-      // Bound checks
-      if (currentTestimonialIndex < 0) currentTestimonialIndex = 0;
-      if (currentTestimonialIndex > maxIndex) currentTestimonialIndex = maxIndex;
+  </div>
+</section>
 
-      const translateX = -(currentTestimonialIndex * totalWidth);
-      track.style.transform = `translateX(${translateX}px)`;
-    }
+<!-- Testimonial Modal -->
+<div id="testimonial-modal" class="modal" onclick="closeModal(event)">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeModal(event, true)">&times;</span>
+    <div class="modal-icon">"</div>
+    <p id="modal-text" class="modal-text"></p>
+    <div class="modal-author-block">
+      <h4 id="modal-author"></h4>
+      <span id="modal-role"></span>
+    </div>
+  </div>
+</div>
 
-    // Handle Window Resize to reset or adjust
-    window.addEventListener('resize', () => {
-      moveTestimonial(0); // Recalculate bounds
-    });
+<script>
+  // Testimonial Slider Logic
+  let currentTestimonialIndex = 0;
 
-    // Modal Logic
-    function openModal(author, role, text) {
-      document.getElementById('modal-author').innerText = author;
-      document.getElementById('modal-role').innerText = role;
-      document.getElementById('modal-text').innerText = text;
+  function moveTestimonial(direction) {
+    const track = document.getElementById('testimonialTrack');
+    const cards = track.querySelectorAll('.testimonial-card');
+    if (cards.length === 0) return;
 
+    const cardWidth = cards[0].offsetWidth;
+    const gap = 30; // Matches CSS gap
+    const totalWidth = cardWidth + gap;
+
+    // Calculate visible cards based on screen width
+    let visibleCards = 3;
+    if (window.innerWidth <= 700) visibleCards = 1;
+    else if (window.innerWidth <= 1100) visibleCards = 2;
+
+    const maxIndex = Math.max(0, cards.length - visibleCards);
+
+    currentTestimonialIndex += direction;
+
+    // Bound checks
+    if (currentTestimonialIndex < 0) currentTestimonialIndex = 0;
+    if (currentTestimonialIndex > maxIndex) currentTestimonialIndex = maxIndex;
+
+    const translateX = -(currentTestimonialIndex * totalWidth);
+    track.style.transform = `translateX(${translateX}px)`;
+  }
+
+  // Handle Window Resize to reset or adjust
+  window.addEventListener('resize', () => {
+    moveTestimonial(0); // Recalculate bounds
+  });
+
+  // Modal Logic
+  function openModal(author, role, text) {
+    document.getElementById('modal-author').innerText = author;
+    document.getElementById('modal-role').innerText = role;
+    document.getElementById('modal-text').innerText = text;
+
+    const modal = document.getElementById('testimonial-modal');
+    modal.style.display = 'flex';
+    // Trigger reflow for animation
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+  }
+
+  function closeModal(event, force) {
+    if (force || event.target.id === 'testimonial-modal') {
       const modal = document.getElementById('testimonial-modal');
-      modal.style.display = 'flex';
-      // Trigger reflow for animation
+      modal.classList.remove('show');
       setTimeout(() => {
-        modal.classList.add('show');
-      }, 10);
+        modal.style.display = 'none';
+      }, 300); // Match transition duration
     }
+  }
+</script>
 
-    function closeModal(event, force) {
-      if (force || event.target.id === 'testimonial-modal') {
-        const modal = document.getElementById('testimonial-modal');
-        modal.classList.remove('show');
-        setTimeout(() => {
-          modal.style.display = 'none';
-        }, 300); // Match transition duration
-      }
-    }
-  </script>
+<script>
+  const slides = [
+    {
+      title: "Har Ghar Jal Project",
+      description:
+        "UDAAN Society is appointed an Implementation support Agency under Jal Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water and Sanitation Mission, Uttar Pradesh for two District namely Aligarh & Bulandshahr",
+      image: "{% static 'assets/image1.jpeg' %}",
+    },
+    {
+      title: "Atal Bhujal Yojna",
+      description:
+        "UDAAN Society is working as a District Implementation Partner(DIP) under this project in Banda district of Uttar Pradesh and mobilizing the village community to reduce the wastage of water and recharge the ground water such an manner",
+      image: "{% static 'assets/image2.jpeg' %}",
+    },
+    {
+      title: "Women and Child Line",
+      description:
+        "CHILDLINE 1098 is a phone number that spells hope for millions of children across India",
+      image: "{% static 'assets/image3.jpeg' %}",
+    },
+    {
+      title: "Partnership with AALI",
+      description:
+        "AALI (Association for Advocacy and Legal Initiatives Trust) is a women-led and women –run organization that works to protect and advance the rights of women",
+      image: "{% static 'assets/image4.jpeg' %}",
+    },
+    {
+      title: "PM Svanidhi Project",
+      description:
+        "UDAAN Society is Working as an Implementation Agency for Aligarh Nagar Nigam for economic empowerment of street level vendors under Prime Minister Svanidhi Yojana since the year 2021",
+      image: "{% static 'assets/image5.webp' %}",
+    },
+  ];
+  let currentSlide = 0;
 
-  <script>
-    const slides = [
-      {
-        title: "Har Ghar Jal Project",
-        description:
-          "UDAAN Society is appointed an Implementation support Agency under Jal Jeevan Mission –Har Ghar Jal Project of Govt. of India by State Water and Sanitation Mission, Uttar Pradesh for two District namely Aligarh & Bulandshahr",
-        image: "{% static 'assets/image1.jpeg' %}",
-      },
-      {
-        title: "Atal Bhujal Yojna",
-        description:
-          "UDAAN Society is working as a District Implementation Partner(DIP) under this project in Banda district of Uttar Pradesh and mobilizing the village community to reduce the wastage of water and recharge the ground water such an manner",
-        image: "{% static 'assets/image2.jpeg' %}",
-      },
-      {
-        title: "Women and Child Line",
-        description:
-          "CHILDLINE 1098 is a phone number that spells hope for millions of children across India",
-        image: "{% static 'assets/image3.jpeg' %}",
-      },
-      {
-        title: "Partnership with AALI",
-        description:
-          "AALI (Association for Advocacy and Legal Initiatives Trust) is a women-led and women –run organization that works to protect and advance the rights of women",
-        image: "{% static 'assets/image4.jpeg' %}",
-      },
-      {
-        title: "PM Svanidhi Project",
-        description:
-          "UDAAN Society is Working as an Implementation Agency for Aligarh Nagar Nigam for economic empowerment of street level vendors under Prime Minister Svanidhi Yojana since the year 2021",
-        image: "{% static 'assets/image5.webp' %}",
-      },
-    ];
+  const heroBgs = document.querySelectorAll(".hero-bg");
 
-    let currentSlide = 0;
+  function updateSlide() {
 
-    function changeSlide(direction) {
-      currentSlide += direction;
-      if (currentSlide < 0) currentSlide = slides.length - 1;
-      if (currentSlide >= slides.length) currentSlide = 0;
-      updateSlide();
-    }
+    const current = heroBgs[0].classList.contains("active")
+      ? heroBgs[0]
+      : heroBgs[1];
 
-    function goToSlide(index) {
-      currentSlide = index;
-      updateSlide();
-    }
+    const next = current === heroBgs[0]
+      ? heroBgs[1]
+      : heroBgs[0];
 
-    function updateSlide() {
-      const hero = document.querySelector(".hero");
-      const heroContent = document.querySelector(".hero-content");
+    next.style.transition = "none";
+    next.style.transform = "translateX(100%)";
 
-      if (!hero || !heroContent) return;
+    next.style.background = `
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url("${slides[currentSlide].image}") center/cover no-repeat
+    `;
 
-      heroContent.style.opacity = "0";
+    void next.offsetWidth;
 
-      setTimeout(() => {
-        // Update text
-        const titleEl = document.querySelector(".hero h1");
-        const descEl = document.querySelector(".hero p");
+    next.style.transition = "transform .8s ease";
+    next.style.transform = "translateX(0)";
 
-        if (titleEl) titleEl.textContent = slides[currentSlide].title;
-        if (descEl) descEl.textContent = slides[currentSlide].description;
+    current.style.transform = "translateX(-100%)";
 
-        // Update background image
-        hero.style.background = `
-          linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-          url("${slides[currentSlide].image}") center / cover
-        `;
+    next.classList.add("active");
+    current.classList.remove("active");
 
-        heroContent.style.opacity = "1";
+    document.querySelector(".hero h1").textContent =
+      slides[currentSlide].title;
 
-        document.querySelectorAll(".carousel-dot").forEach((dot, index) => {
-          dot.classList.toggle("active", index === currentSlide);
-        });
-      }, 300);
-    }
+    document.querySelector(".hero p").textContent =
+      slides[currentSlide].description;
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      updateSlide();
-      // Auto-advance slides
-      setInterval(() => changeSlide(1), 5000);
+    document.querySelectorAll(".carousel-dot").forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentSlide);
     });
+  }
 
-    function subscribe() {
-      alert("Thank you for subscribing to UDAAN Society!");
-    }
-  </script>
+  function changeSlide(dir) {
+
+    currentSlide += dir;
+
+    if (currentSlide < 0)
+      currentSlide = slides.length - 1;
+
+    if (currentSlide >= slides.length)
+      currentSlide = 0;
+
+    updateSlide();
+  }
+
+  function goToSlide(index) {
+    currentSlide = index;
+    updateSlide();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+
+    heroBgs[0].style.background = `
+    linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+    url("${slides[0].image}") center/cover no-repeat
+    `;
+
+    heroBgs[0].classList.add("active");
+
+    document.querySelector(".hero h1").textContent = slides[0].title;
+    document.querySelector(".hero p").textContent = slides[0].description;
+
+    setInterval(() => {
+      changeSlide(1);
+    }, 3000);
+
+  });
+</script>
 
 {% endblock %}

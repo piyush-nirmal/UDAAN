@@ -3,6 +3,7 @@ udaan.db
 *.pdf
 *.log
 venv/
+.venv/
 __pycache__
 udaan_project/__pycache__/*
 blood_request/__pycache__/*

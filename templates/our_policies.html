@@ -4,7 +4,9 @@
 {% block title %}Our Policies - UDAAN Society{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/policies.css' %}">
+<link rel="stylesheet" href="{% static 'css/policies.css' %}?v=6">
+<!-- Include PDF.js library for dynamic first page thumbnail generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,11 +20,10 @@
 
     <div class="hero-content">
         <h1>POLICIES</h1>
-        <p>
-            A course or principle of action proposed by a UDAAN Society.
-        </p>
+        <p>A course or principle of action proposed by UDAAN Society.</p>
     </div>
 </section>
+
 <!-- ================= BREADCRUMB ================= -->
 <div class="breadcrumb">
     <div class="breadcrumb-container">
@@ -32,212 +33,379 @@
     </div>
 </div>
 
+<!-- ================= MAIN CONTENT ================= -->
 <section class="policies-section">
+    <div class="container">
+        
+        <h2 class="policy-title">
+            OUR <span>POLICIES</span>
+        </h2>
+        
+        <p class="policy-sub">
+            Browse all official policy documents of UDAAN Society. Access governance, operational, financial, and organizational policies in one place.
+        </p>
 
-<div class="container">
+        <!-- Search Bar -->
+        <div class="search-wrapper">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="policySearch" placeholder="Search policies..." aria-label="Search policies">
+            </div>
+        </div>
 
-<h2 class="policy-title">
-    OUR <span>POLICIES</span>
-</h2>
+        <!-- POLICIES DOCUMENT LIST -->
+        <div class="policy-list">
+            {% for policy in policies %}
+            <div class="policy-card" data-pdf-url="{{ policy.pdf_file.url }}" data-id="{{ policy.id }}" data-title="{{ policy.title }}">
+                
+                <!-- Left Section (Thumbnail Preview) -->
+                <div class="doc-card-left" onclick="openPdfModal('{{ policy.pdf_file.url }}', '{{ policy.title }}')">
+                    {% if policy.thumbnail %}
+                    <div class="doc-thumbnail-container has-preview" id="thumb-container-{{ policy.id }}">
+                        <img src="{{ policy.thumbnail.url }}" alt="{{ policy.title }} Cover" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    </div>
+                    {% else %}
+                    <div class="doc-thumbnail-container" id="thumb-container-{{ policy.id }}">
+                        <i class="fa-solid fa-file-pdf fallback-pdf-icon"></i>
+                        <canvas id="canvas-{{ policy.id }}" class="pdf-thumbnail-canvas"></canvas>
+                    </div>
+                    {% endif %}
+                </div>
 
-<p class="policy-sub">
-A course or principle of action proposed by a UDAAN Society.
-</p>
+                <!-- Content Wrapper (Center & Right Sections) -->
+                <div class="doc-card-right-container">
+                    
+                    <!-- Center Section -->
+                    <div class="doc-card-center">
+                        <h3 class="doc-card-title">{{ policy.title }}</h3>
+                        {% if policy.description %}
+                        <p class="doc-card-description">{{ policy.description }}</p>
+                        {% endif %}
+                    </div>
 
-<div class="policy-tabs">
+                    <!-- Right Section -->
+                    <div class="doc-card-right">
+                        <div class="doc-meta-info">
+                            <span class="meta-item pages-badge" id="pages-{{ policy.id }}" style="display: none;">
+                                <i class="fa-solid fa-file-lines"></i> <span class="page-count">--</span> Pages
+                            </span>
+                            <span class="meta-item date-badge">
+                                <i class="fa-solid fa-calendar"></i> Updated: {% if policy.updated_at %}{{ policy.updated_at|date:"M d, Y" }}{% else %}{{ policy.uploaded_at|date:"M d, Y" }}{% endif %}
+                            </span>
+                        </div>
+                        <button class="btn-read btn-read-pdf" data-url="{{ policy.pdf_file.url }}" data-title="{{ policy.title }}">
+                            <i class="fa-solid fa-eye"></i> Read Policy
+                        </button>
+                    </div>
 
-<button class="tab active" data-tab="ethical">
-<i class="fa-solid fa-scale-balanced"></i> Ethical
-</button>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-policy-card">
+                <i class="fa-solid fa-file-circle-xmark empty-icon"></i>
+                <h3>No Policy Documents</h3>
+                <p>No official policy documents have been uploaded yet. Please check back later.</p>
+            </div>
+            {% endfor %}
 
-<button class="tab" data-tab="finance">
-<i class="fa-solid fa-chart-line"></i> Finance
-</button>
+        </div> <!-- /.policy-list -->
 
-<button class="tab" data-tab="hr">
-<i class="fa-solid fa-users"></i> HR
-</button>
+        <!-- Bottom Information Strip -->
+        <div class="policy-footer-strip">
+            <div class="info-text">
+                <i class="fa-solid fa-shield-halved shield-icon"></i>
+                <span>These policies reflect UDAAN Society's commitment to transparency, accountability, and good governance.</span>
+            </div>
+            <div class="static-links">
+                Read our <a href="javascript:void(0)" onclick="openStaticModal('privacy', 'Privacy Policy')">Privacy Policy</a> and <a href="javascript:void(0)" onclick="openStaticModal('refund', 'Refund Policy')">Refund Policy</a>.
+            </div>
+        </div>
 
-<button class="tab" data-tab="travel">
-<i class="fa-solid fa-plane"></i> Travel
-</button>
+    </div> <!-- /.container -->
+</section>
 
-<button class="tab" data-tab="posh">
-<i class="fa-solid fa-hands-holding-child"></i> POSH
-</button>
-
-<button class="tab" data-tab="privacy">
-<i class="fa-solid fa-shield-halved"></i> Privacy
-</button>
-
-<button class="tab" data-tab="refund">
-<i class="fa-solid fa-money-bill-wave"></i> Refund
-</button>
-
+<!-- ================= MODAL VIEWER SYSTEM ================= -->
+<div class="modal-overlay" id="pdfModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-title-wrapper">
+                <i class="fa-solid fa-shield-halved" id="modalHeaderIcon"></i>
+                <span class="modal-title" id="modalDocTitle">Document Viewer</span>
+            </div>
+            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Iframe for PDFs -->
+            <iframe id="modalIframe" src="" width="100%" height="100%" style="display: none;"></iframe>
+            <!-- Text Content for Static Policies -->
+            <div id="modalTextContent" class="modal-text-content" style="display: none;"></div>
+        </div>
+    </div>
 </div>
 
-
-
-<!-- TAB CONTENT -->
-
-<div class="policy-content">
-
-<!-- ETHICAL -->
-<div class="tab-panel active" id="ethical">
-
-{% if ethical %}
-<button class="fullscreen-btn">View Fullscreen</button>
-
-<iframe src="{{ ethical.pdf_file.url }}"
-        width="100%"
-        height="800px">
-</iframe>
-
-{% else %}
-<p>No ethical policy uploaded yet.</p>
-{% endif %}
-
+<!-- Static Content Storage (hidden from view, loaded into modal dynamically) -->
+<div id="privacy-content-source" style="display: none;">
+    <div class="static-policy-view">
+        <div class="policy-breadcrumb-static">Home » Privacy Policy</div>
+        <p>
+            The terms “We” / “Us” / “Our” / ”Company” individually and collectively refer to UDAAN SOCIETY and the terms “You” / ”Your” / “Yourself” refer to the users.
+        </p>
+        <p>
+            This Privacy Policy is an electronic record in the form of an electronic contract formed under the Information Technology Act, 2000 and the rules made thereunder and the amended provisions pertaining to electronic documents / records in various statutes as amended by the Information Technology Act, 2000. This Privacy Policy does not require any physical, electronic or digital signature.
+        </p>
+        <p>
+            This Privacy Policy is a legally binding document between you and UDAAN SOCIETY. The terms of this Privacy Policy will be effective upon your acceptance of the same (directly or indirectly in electronic form, by clicking on the "I accept" tab or by use of the website or by other means) and will govern the relationship between you and UDAAN SOCIETY for your use of the website.
+        </p>
+        <p>
+            This document is published and shall be construed in accordance with the provisions of the Information Technology (reasonable security practices and procedures and sensitive personal data of information) rules, 2011 under Information Technology Act, 2000; that require publishing of the Privacy Policy for collection, use, storage and transfer of sensitive personal data or information.
+        </p>
+        <p>
+            Please read this Privacy Policy carefully. By using the Website, you indicate that you understand, agree, and consent to this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not use this Website.
+        </p>
+        <p>
+            By providing us your Information or by making use of the facilities provided by the Website, you hereby consent to the collection, storage, processing, and transfer of any or all of your Personal Information and Non-Personal Information by us as specified under this Privacy Policy. You further agree that such collection, use, storage, and transfer of your Information shall not cause any loss or wrongful gain to you or any other person.
+        </p>
+    </div>
 </div>
 
-
-<!-- FINANCE -->
-<div class="tab-panel" id="finance">
-
-{% if finance %}
-<button class="fullscreen-btn">View Fullscreen</button>
-
-<iframe src="{{ finance.pdf_file.url }}"
-        width="100%"
-        height="800px">
-</iframe>
-
-{% else %}
-<p>No finance policy uploaded yet.</p>
-{% endif %}
-
+<div id="refund-content-source" style="display: none;">
+    <div class="static-policy-view">
+        <div class="policy-breadcrumb-static">Home » Refund Policy</div>
+        <p>
+            <strong>Refund Policy – UDAAN Society</strong><br>
+            UDAAN Society is grateful for your support of our mission to help underserved and neglected communities. Donations made through our website are used to directly fund our programs and services.
+        </p>
+        <p>
+            Donations are generally non-refundable. However, we understand that mistakes can happen. We will consider a refund in the following limited circumstance:
+        </p>
+        <p>
+            <strong>Fraudulent Transaction:</strong> If you believe a fraudulent transaction has been made on your account resulting in a donation to UDAAN Society, please contact us immediately at <strong>mail@udaansociety.org</strong>. We will investigate the situation and process a refund if we can verify that the donation was unauthorized. Please note: Refunds will only be issued to the original payment method used for the donation.
+        </p>
+        <p>
+            For any questions regarding our refund policy, please do not hesitate to contact us at <strong>mail@udaansociety.org</strong>.
+        </p>
+    </div>
 </div>
 
-
-<!-- HR -->
-<div class="tab-panel" id="hr">
-
-{% if hr %}
-<iframe src="{{ hr.pdf_file.url }}" width="100%" height="800"></iframe>
-{% endif %}
-
-</div>
-
-
-<!-- TRAVEL -->
-<div class="tab-panel" id="travel">
-
-{% if travel %}
-<iframe src="{{ travel.pdf_file.url }}" width="100%" height="800"></iframe>
-{% endif %}
-
-</div>
-
-
-<!-- POSH -->
-<div class="tab-panel" id="posh">
-
-{% if posh %}
-<iframe src="{{ posh.pdf_file.url }}" width="100%" height="800"></iframe>
-{% endif %}
-
-</div>
-
-
-<!-- PRIVACY POLICY -->
-<div class="tab-panel" id="privacy">
-
-<div class="policy-document">
-
-<h3 class="policy-doc-title">Privacy Policy</h3>
-
-<div class="policy-breadcrumb">
-    Home » Privacy Policy
-</div>
-
-<p>
-The terms “We” / “Us” / “Our”/” Company” individually and collectively refer to UDAAN SOCIETY and the terms “You” /”Your” / “Yourself” refer to the users.
-</p>
-
-<p>
-This Privacy Policy is an electronic record in the form of an electronic contract formed under the information Technology Act, 2000 and the rules made thereunder and the amended provisions pertaining to electronic documents / records in various statutes as amended by the information Technology Act, 2000. This Privacy Policy does not require any physical, electronic or digital signature.
-</p>
-
-<p>
-This Privacy Policy is a legally binding document between you and UDAAN SOCIETY (both terms defined below). The terms of this Privacy Policy will be effective upon your acceptance of the same (directly or indirectly in electronic form, by clicking on the I accept tab or by use of the website or by other means) and will govern the relationship between you and UDAAN SOCIETY for your use of the website “Website” (defined below).
-</p>
-
-<p>
-This document is published and shall be construed in accordance with the provisions of the Information Technology (reasonable security practices and procedures and sensitive personal data of information) rules, 2011 under Information Technology Act, 2000; that require publishing of the Privacy Policy for collection, use, storage and transfer of sensitive personal data or information.
-</p>
-
-<p>
-Please read this Privacy Policy carefully by using the Website, you indicate that you understand, agree and consent to this Privacy Policy. If you do not agree with the terms of this Privacy Policy, please do not use this Website.
-</p>
-
-<p>
-By providing us your Information or by making use of the facilities provided by the Website, You hereby consent to the collection, storage, processing and transfer of any or all of Your Personal Information and Non-Personal Information by us as specified under this Privacy Policy. You further agree that such collection, use, storage and transfer of Your Information shall not cause any loss or wrongful gain to you or any other person.
-</p>
-
-</div>
-
-</div>
-
-
-<!-- REFUND POLICY -->
-<div class="tab-panel" id="refund">
-
-<div class="policy-document">
-
-<h3 class="policy-doc-title">Refund Policy</h3>
-
-<div class="policy-breadcrumb">
-Home » Refund Policy
-</div>
-
-<p>
-<strong>Refund Policy – UDAAN Society</strong><br>
-UDAAN Society is grateful for your support of our mission to help underserved and neglected communities. Donations made through our website are used to directly fund our programs and services.
-</p>
-
-<p>
-Donations are generally non-refundable. However, we understand that mistakes can happen. We will consider a refund in the following limited circumstance:
-</p>
-
-<p>
-<strong>Fraudulent Transaction:</strong> If you believe a fraudulent transaction has been made on your account resulting in a donation to UDAAN Society, please contact us immediately at <strong>mail@udaansociety.org</strong>. We will investigate the situation and process a refund if we can verify that the donation was unauthorized. Please note: Refunds will only be issued to the original payment method used for the donation.
-</p>
-
-<p>
-For any questions regarding our refund policy, please do not hesitate to contact us at <strong>mail@udaansociety.org</strong>.
-</p>
-
-</div>
-
-</div>
-<!-- Scripting  -->
+<!-- ================= SCRIPTING ================= -->
 <script>
+// Expose modal opening functions globally
+let openPdfModal;
+let openStaticModal;
 
-const tabs = document.querySelectorAll(".tab")
-const panels = document.querySelectorAll(".tab-panel")
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Modal system functionality
+    const modal = document.getElementById("pdfModal");
+    const modalIframe = document.getElementById("modalIframe");
+    const modalTextContent = document.getElementById("modalTextContent");
+    const modalTitle = document.getElementById("modalDocTitle");
+    const modalHeaderIcon = document.getElementById("modalHeaderIcon");
+    const closeBtn = document.getElementById("modalCloseBtn");
+    
+    openPdfModal = (url, title) => {
+        modalIframe.src = url;
+        modalIframe.style.display = "block";
+        modalTextContent.style.display = "none";
+        
+        modalTitle.textContent = title;
+        modalHeaderIcon.className = "fa-solid fa-file-pdf";
+        modalHeaderIcon.style.color = "#d32f2f"; // PDF Red accent
+        
+        modal.classList.add("active");
+        document.body.style.overflow = "hidden"; // Prevent background scroll
+    };
 
-tabs.forEach(tab=>{
-    tab.addEventListener("click",()=>{
+    openStaticModal = (policyId, title) => {
+        const sourceContent = document.getElementById(`${policyId}-content-source`);
+        if (sourceContent) {
+            modalTextContent.innerHTML = sourceContent.innerHTML;
+            modalTextContent.style.display = "block";
+            modalIframe.style.display = "none";
+            modalIframe.src = "";
+            
+            modalTitle.textContent = title;
+            if (policyId === 'privacy') {
+                modalHeaderIcon.className = "fa-solid fa-shield-halved";
+                modalHeaderIcon.style.color = "#2E7D32"; // Brand Green accent
+            } else {
+                modalHeaderIcon.className = "fa-solid fa-money-bill-transfer";
+                modalHeaderIcon.style.color = "#2E7D32"; // Brand Green accent
+            }
+            
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+    };
 
-        tabs.forEach(t=>t.classList.remove("active"))
-        panels.forEach(p=>p.classList.remove("active"))
+    const closeModal = () => {
+        modal.classList.remove("active");
+        setTimeout(() => {
+            modalIframe.src = "";
+            modalTextContent.innerHTML = "";
+        }, 300);
+        document.body.style.overflow = ""; // Restore scroll
+    };
 
-        tab.classList.add("active")
+    // Attach click handlers to read buttons
+    document.querySelectorAll(".btn-read-pdf").forEach(button => {
+        button.addEventListener("click", () => {
+            const url = button.dataset.url;
+            const title = button.dataset.title;
+            if (url) openPdfModal(url, title);
+        });
+    });
 
-        const target = tab.dataset.tab
-        document.getElementById(target).classList.add("active")
+    closeBtn.addEventListener("click", closeModal);
 
-    })
-})
+    // Close on backdrop click
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
+    // Close on Escape key press
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("active")) {
+            closeModal();
+        }
+    });
+
+    // 2. Real-time Search functionality
+    const searchInput = document.getElementById("policySearch");
+    const policyList = document.querySelector(".policy-list");
+    
+    searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const cards = document.querySelectorAll(".policy-card");
+        let matches = 0;
+        
+        cards.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            if (title.includes(query)) {
+                card.classList.remove("search-hidden");
+                matches++;
+            } else {
+                card.classList.add("search-hidden");
+            }
+        });
+        
+        // Handle empty search result state
+        let emptySearchState = document.getElementById("emptySearchState");
+        if (matches === 0) {
+            if (!emptySearchState) {
+                emptySearchState = document.createElement("div");
+                emptySearchState.id = "emptySearchState";
+                emptySearchState.className = "empty-policy-card-search";
+                emptySearchState.innerHTML = `
+                    <i class="fa-solid fa-magnifying-glass empty-icon"></i>
+                    <h3>No Policies Found</h3>
+                    <p>No official policies match your search term "${e.target.value}". Try checking your spelling or search for a different keyword.</p>
+                `;
+                policyList.appendChild(emptySearchState);
+            } else {
+                emptySearchState.style.display = "block";
+                emptySearchState.querySelector("p").textContent = `No official policies match your search term "${e.target.value}". Try checking your spelling or search for a different keyword.`;
+            }
+        } else {
+            if (emptySearchState) {
+                emptySearchState.style.display = "none";
+            }
+        }
+    });
+
+    // 3. High-Performance PDF.js Preview Generator with Lazy Loading
+    if (typeof pdfjsLib !== 'undefined') {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+        const renderPdfThumbnail = (card) => {
+            const url = card.dataset.pdfUrl;
+            const id = card.dataset.id;
+            if (!url || !id) return;
+
+            const canvas = document.getElementById(`canvas-${id}`);
+            const container = document.getElementById(`thumb-container-${id}`);
+
+            // Fetch PDF to get the page count dynamically (works regardless of whether custom thumbnail is present)
+            pdfjsLib.getDocument(url).promise.then(pdf => {
+                // Update badge page count and show it
+                const pagesBadge = document.getElementById(`pages-${id}`);
+                if (pagesBadge) {
+                    pagesBadge.querySelector('.page-count').textContent = pdf.numPages;
+                    pagesBadge.style.display = "inline-flex";
+                }
+
+                // If no canvas is present (e.g. custom thumbnail image is used), return here
+                if (!canvas || !container) return;
+                const ctx = canvas.getContext('2d');
+
+                // Load first page and render to canvas
+                return pdf.getPage(1).then(page => {
+                    const viewport = page.getViewport({ scale: 1.0 });
+                    
+                    // Match card thumbnail dimension constraints (width ~90px, height ~120px)
+                    const containerWidth = 90;
+                    const containerHeight = 120;
+                    
+                    const scale = Math.min(containerWidth / viewport.width, containerHeight / viewport.height);
+                    const scaledViewport = page.getViewport({ scale: scale });
+
+                    canvas.width = scaledViewport.width;
+                    canvas.height = scaledViewport.height;
+
+                    // Adjust container sizing to avoid clipping & maintain border aspect ratio
+                    container.style.width = `${scaledViewport.width}px`;
+                    container.style.height = `${scaledViewport.height}px`;
+
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: scaledViewport
+                    };
+
+                    return page.render(renderContext).promise.then(() => {
+                        container.classList.add('has-preview');
+                    });
+                });
+            }).catch(err => {
+                console.warn(`Error generating PDF thumbnail/page count for policy ID ${id}:`, err);
+            });
+        };
+
+        // Lazy load thumbnails using IntersectionObserver
+        const docCards = document.querySelectorAll(".policy-card[data-pdf-url]");
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                root: null, // Viewport
+                rootMargin: '100px 0px', // Pre-load when within 100px of viewport
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, self) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const card = entry.target;
+                        renderPdfThumbnail(card);
+                        self.unobserve(card); // Done loading, stop observing
+                    }
+                });
+            }, observerOptions);
+
+            docCards.forEach(card => {
+                observer.observe(card);
+            });
+        } else {
+            // Fallback for older browsers
+            docCards.forEach(card => renderPdfThumbnail(card));
+        }
+    }
+    
+    // 4. Auto-open modal if URL hash matches privacy or refund (for footer links)
+    const hash = window.location.hash;
+    if (hash === '#privacy') {
+        setTimeout(() => openStaticModal('privacy', 'Privacy Policy'), 300);
+    } else if (hash === '#refund') {
+        setTimeout(() => openStaticModal('refund', 'Refund Policy'), 300);
+    }
+});
 </script>
 {% endblock %}

@@ -36,6 +36,13 @@ body {
     color: #fff;
     font-size: 36px;
     letter-spacing: 2px;
+
+    color: white;
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out;
 }
 
 .breadcrumb-container{
