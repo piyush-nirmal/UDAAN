@@ -3,6 +3,14 @@ import hashlib
 import google.generativeai as genai
 from typing import List, Dict, Optional
 from collections import OrderedDict
+from app.chatbot.retriever import Retriever
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+if api_key:
+    print("✅ Gemini API Key Loaded")
+else:
+    print("❌ Gemini API Key NOT Found")
 
 class GeminiChatbot:
     """Handles communication with the Google Gemini API."""
@@ -29,58 +37,91 @@ class GeminiChatbot:
         # Initialize a simple in-memory LRU cache to save tokens
         self.cache = OrderedDict()
         self.MAX_CACHE_SIZE = 500
+        self.retriever = Retriever()
 
     async def generate_response(self, message: str, history_records=None) -> str:
         """
-        Generate a response from Gemini based on the user message and entire conversation history.
+        Generate a response using RAG + conversation history + caching.
         """
+
         if not self.model:
-            return "Error: Gemini model not initialized. Please check your API key in .env file."
-            
-        # --- CACHING LOGIC: GENERATE UNIQUE KEY ---
-        # Create a string representation of the history to ensure context is identical
+            return "Error: Gemini model not initialized. Please check your API key."
+
+        # ---------- CACHE ----------
         history_str = ""
-        recent_history = []
         if history_records:
-            recent_history = history_records[-10:] if len(history_records) > 10 else history_records
-            for r in recent_history:
-                history_str += f"{r.role}:{r.content}|"
-                
-        # Our unique key is the exact message + the exact history context
-        cache_key_raw = f"{message.strip().lower()}|{history_str}"
-        # Hash the key to save memory and speed up dictionary lookups
-        cache_key = hashlib.sha256(cache_key_raw.encode('utf-8')).hexdigest()
-        
-        # --- CACHING LOGIC: CHECK CACHE (LRU) ---
+            for record in history_records[-10:]:
+                history_str += f"{record.role}:{record.content}|"
+
+        cache_key_raw = f"{message.lower().strip()}|{history_str}"
+        cache_key = hashlib.sha256(cache_key_raw.encode()).hexdigest()
+
         if cache_key in self.cache:
-            # Move to end to mark as most recently used
             self.cache.move_to_end(cache_key)
-            print("🟢 CACHE HIT: Returning saved response (0 tokens used)")
+            print("🟢 CACHE HIT")
             return self.cache[cache_key]
-            
-        # Convert DB history to Gemini's expected format
-        contents = []
-        if history_records:
-            for record in recent_history:
-                # Gemini expects role 'user' or 'model'
-                role = "user" if record.role == "user" else "model"
-                contents.append({"role": role, "parts": [record.content]})
-        else:
-            # If no history, just send the current message
-            contents.append({"role": "user", "parts": [message]})
-            
+
         try:
-            # Send the entire multi-turn conversation context to Gemini
-            response = self.model.generate_content(contents)
+            # ---------- RAG ----------
+            results = self.retriever.search(message)
+
+            if not results:
+                return (
+                    "I couldn't find reliable information in the UDAAN knowledge base. "
+                    "Please contact UDAAN Society through the Contact Us page."
+                )
+
+            context = "\n\n".join(doc["text"] for doc in results)
+
+            sources = ", ".join(
+                sorted(set(doc["source"] for doc in results))
+            )
+
+            # ---------- Conversation Memory ----------
+            conversation = ""
+
+            if history_records:
+                for record in history_records[-5:]:
+                    speaker = "User" if record.role == "user" else "Assistant"
+                    conversation += f"{speaker}: {record.content}\n"
+
+            prompt = f"""
+    You are UDAAN Saathi, the official AI assistant of UDAAN Society.
+
+    Answer ONLY using the knowledge below.
+
+    =========================
+    KNOWLEDGE
+    =========================
+
+    {context}
+
+    =========================
+    CONVERSATION
+    =========================
+
+    {conversation}
+
+    =========================
+    QUESTION
+    =========================
+
+    {message}
+    """
+
+            response = self.model.generate_content(prompt)
+
             response_text = response.text
-            
-            # --- CACHING LOGIC: SAVE TO CACHE (LRU) ---
+
+
+            # ---------- SAVE CACHE ----------
             self.cache[cache_key] = response_text
-            
-            # Prevent infinite memory growth by removing the least recently used item (first in OrderedDict)
+
             if len(self.cache) > self.MAX_CACHE_SIZE:
                 self.cache.popitem(last=False)
-            
+
             return response_text
+
         except Exception as e:
             return f"Error generating response from Gemini: {str(e)}"
+        
