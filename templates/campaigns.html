@@ -83,19 +83,21 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="campaignsGrid">
     {% for campaign in campaigns %}
     <!-- Campaign Card -->
-    <article class="card-premium flex flex-col justify-between h-full campaign-card" data-category="general" data-date="{{ campaign.created_at|date:'Y-m-d' }}"
+    <article class="card-premium flex flex-col justify-between h-full campaign-card relative group hover:-translate-y-1 transition-transform" data-category="general" data-date="{{ campaign.created_at|date:'Y-m-d' }}"
       data-goal="{{ campaign.goal_amount|floatformat:0 }}" data-raised="{{ campaign.raised_amount|floatformat:0 }}">
       
       <div>
         <div class="relative h-52 overflow-hidden bg-gray-100">
-          {% if campaign.image %}
-          <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy" class="w-full h-full object-cover">
-          {% else %}
-          <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy" class="w-full h-full object-cover">
-          {% endif %}
+          <a href="{% url 'campaign_detail' campaign.slug %}" class="block w-full h-full">
+            {% if campaign.image %}
+            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+            {% else %}
+            <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
+            {% endif %}
+          </a>
           <span class="absolute top-4 left-4 bg-accent text-neutral-dark text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full shadow-sm">General</span>
           
-          <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-primary hover:text-white text-primary flex items-center justify-center shadow-md transition-all quick-donate"
+          <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-primary hover:text-white text-primary flex items-center justify-center shadow-md transition-all quick-donate z-20"
             onclick="quickDonate('{{ campaign.title|escapejs }}')" aria-label="Quick donate">
             <i class="fas fa-heart"></i>
           </button>
@@ -110,13 +112,15 @@
             </div>
             <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
               <div class="h-full bg-primary rounded-full transition-all duration-1000 progress-fill"
-                style="width: {% widthratio campaign.raised_amount campaign.goal_amount 100 %}%"
-                data-progress="{% widthratio campaign.raised_amount campaign.goal_amount 100 %}">
+                style="width: {{ campaign.percentage_raised }}%"
+                data-progress="{{ campaign.percentage_raised }}">
               </div>
             </div>
           </div>
 
-          <h3 class="text-lg font-bold text-neutral-dark leading-snug card-title">{{ campaign.title }}</h3>
+          <h3 class="text-lg font-bold text-neutral-dark leading-snug card-title">
+            <a href="{% url 'campaign_detail' campaign.slug %}" class="hover:text-primary transition-colors before:absolute before:inset-0 before:z-10">{{ campaign.title }}</a>
+          </h3>
           <p class="text-gray-500 text-xs leading-relaxed line-clamp-3 card-description">{{ campaign.description }}</p>
         </div>
       </div>
@@ -125,7 +129,7 @@
         <hr class="border-gray-100 mx-6" />
         <div class="p-6 flex items-center justify-between text-xs font-semibold text-gray-400">
           <span>📅 Date: {{ campaign.created_at|date:"d/m/Y" }}</span>
-          <a href="{% url 'donate' %}" class="text-primary hover:text-primary-dark inline-flex items-center gap-1 font-bold">
+          <a href="{% url 'donate' %}" class="text-primary hover:text-primary-dark inline-flex items-center gap-1 font-bold relative z-20">
             Support Campaign <span class="text-[9px]">→</span>
           </a>
         </div>

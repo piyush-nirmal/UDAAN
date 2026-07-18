@@ -115,6 +115,7 @@
             </div>
         </div>
 
+
         <div class="nav-container">
             <div class="logo">
                 <a href="{% url 'home' %}" class="flex items-center gap-3 no-underline">
@@ -224,6 +225,13 @@
 
     <!-- Main Content -->
     <main class="flex-grow">
+        <!-- Announcement Marquee -->
+        <div class="bg-transparent text-[#024b24] text-xs sm:text-sm py-2 font-bold tracking-wide overflow-hidden flex items-center">
+            <marquee scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();" class="w-full">
+                📢 Welcome to UDAAN Society! Support our active campaigns and make a difference today. 🌟 Join us in our mission to empower underserved communities! 
+            </marquee>
+        </div>
+
         {% block content %}{% endblock %}
     </main>
 

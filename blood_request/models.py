@@ -160,8 +160,12 @@ class Campaign(models.Model):
     @property
     def percentage_raised(self):
         if self.goal_amount > 0:
-            pct = int((self.raised_amount / self.goal_amount) * 100)
-            return min(pct, 100)
+            pct = (self.raised_amount / self.goal_amount) * 100
+            if 0 < pct < 1:
+                return 1
+            return min(int(pct), 100)
+        elif self.raised_amount > 0:
+            return 100
         return 0
 
     @property

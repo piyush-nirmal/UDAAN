@@ -278,46 +278,6 @@
     </div>
   </section>
 
-  <!-- Latest Announcements & Notices -->
-  {% if announcements %}
-  <section class="py-16 bg-gradient-to-b from-neutral-light to-white border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-        <span class="inline-flex items-center gap-1.5 bg-emerald-50 text-[#024b24] text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md">
-          <i class="fa-solid fa-bullhorn"></i> Notice Board
-        </span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-dark font-heading">
-          Latest Announcements
-        </h2>
-        <div class="w-12 h-1 bg-[#FFB300] mx-auto rounded-full"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for announcement in announcements %}
-        <div class="bg-white rounded-2xl border border-gray-200/80 p-6 shadow-soft hover:shadow-premium hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex justify-between items-center">
-              <span class="inline-block bg-[#024b24]/10 text-[#024b24] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md">
-                {% if announcement.priority > 0 %}Urgent{% else %}Notice{% endif %}
-              </span>
-              <span class="text-xs text-gray-400 flex items-center gap-1">
-                <i class="fa-regular fa-calendar text-[10px]"></i>
-                {{ announcement.created_at|date:"M d, Y" }}
-              </span>
-            </div>
-            <h3 class="text-lg font-bold text-neutral-dark leading-snug">
-              {{ announcement.title }}
-            </h3>
-            <p class="text-sm text-gray-500 leading-relaxed font-light">
-              {{ announcement.content }}
-            </p>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-  {% endif %}
 
   <!-- Featured Campaigns (Causes) -->
   <section class="py-20 bg-white" id="featured-campaigns">
@@ -336,28 +296,30 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for campaign in campaigns %}
         <!-- Campaign Card -->
-        <div class="card-premium flex flex-col h-full">
+        <article class="card-premium flex flex-col h-full relative group hover:-translate-y-1 transition-transform">
           <div class="relative h-60 overflow-hidden bg-gray-100">
             {% if campaign.image %}
-            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             {% else %}
-            <img src="{% static 'assets/p1.jpeg' %}" alt="UDAAN Campaign Default" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+            <img src="{% static 'assets/p1.jpeg' %}" alt="UDAAN Campaign Default" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
             {% endif %}
             <span class="absolute top-4 left-4 bg-primary text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm">Active</span>
           </div>
 
           <div class="p-6 flex-grow flex flex-col justify-between">
             <div>
-              <h3 class="text-xl font-bold text-neutral-dark mb-4 leading-snug">{{ campaign.title }}</h3>
+              <h3 class="text-xl font-bold text-neutral-dark mb-4 leading-snug">
+                <a href="{% url 'campaign_detail' campaign.slug %}" class="hover:text-primary transition-colors before:absolute before:inset-0 before:z-10">{{ campaign.title }}</a>
+              </h3>
               
               <!-- Progress Bar -->
               <div class="space-y-2 mb-6">
-                <div class="flex justify-between text-sm">
-                  <span class="text-gray-500 font-semibold">Goal: ₹{{ campaign.goal_amount }}</span>
-                  <span class="text-primary font-bold">50%</span>
+                <div class="flex justify-between text-xs font-bold text-gray-500">
+                  <span>Raised: {% if campaign.raised_amount > 0 %}₹{{ campaign.raised_amount|floatformat:0 }}{% else %}₹0{% endif %}</span>
+                  <span>Goal: ₹{{ campaign.goal_amount|floatformat:0 }}</span>
                 </div>
                 <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div class="h-full bg-primary rounded-full" style="width: 50%;"></div>
+                  <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: {{ campaign.percentage_raised }}%;"></div>
                 </div>
               </div>
             </div>
@@ -368,12 +330,12 @@
                 <span>📅 {{ campaign.created_at|date:"d M Y" }}</span>
                 <span>By UDAAN Society</span>
               </div>
-              <a href="{% url 'donate' %}" class="w-full block text-center btn-primary rounded-lg py-3 text-sm font-bold shadow-soft">
+              <a href="{% url 'donate' %}" class="w-full block text-center btn-primary rounded-lg py-3 text-sm font-bold shadow-soft relative z-20">
                 Support Campaign
               </a>
             </div>
           </div>
-        </div>
+        </article>
         {% empty %}
         <div class="col-span-full text-center py-12 text-gray-500 bg-neutral-light rounded-2xl">No active campaigns at the moment.</div>
         {% endfor %}

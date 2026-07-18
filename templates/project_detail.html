@@ -3,42 +3,89 @@
 
 {% block title %}{{ project.title }} - Project Details - UDAAN Society{% endblock %}
 
-{% block content %}
+{% block extra_css %}
+<style>
+  /* Base Overrides for this specific page */
+  body {
+    background-color: #FAFAFA;
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #E8E8E8;
+    box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.03), 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+  }
 
-<!-- Hero Banner -->
-<section class="subpage-hero">
-  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
-    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Operational Milestone</span>
-    <h1 class="text-3xl sm:text-4xl font-extrabold font-heading tracking-tight leading-tight uppercase font-heading">Project Details</h1>
+  .prose p {
+    margin-bottom: 1.25em;
+  }
+  
+  .prose ul {
+    list-style-type: disc;
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+  }
+
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Modern Hero Section -->
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+  <!-- Decorative Leaf SVG (Low Opacity) -->
+  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
+      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <div class="max-w-3xl space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase">
+        <i class="fa-solid fa-flag-checkered"></i> Operational Milestone
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight leading-tight" style="font-family: 'Inter', sans-serif;">
+        {{ project.title }}
+      </h1>
+    </div>
   </div>
 </section>
 
 <!-- Breadcrumbs -->
-<div class="bg-neutral-light border-b border-gray-100 py-4">
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
-    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
-    <span>»</span>
-    <a href="{% url 'project_list' %}" class="hover:text-primary transition-colors">Projects</a>
-    <span>»</span>
-    <span class="text-gray-400 line-clamp-1">{{ project.title }}</span>
+<div class="bg-transparent py-4 border-b border-[#E8E8E8]/50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-gray-700 transition-colors">Home</a>
+    <span>/</span>
+    <a href="{% url 'project_list' %}" class="hover:text-gray-700 transition-colors">Projects</a>
+    <span>/</span>
+    <span class="text-gray-700 line-clamp-1">{{ project.title }}</span>
   </div>
 </div>
 
 <!-- Main Content Area -->
-<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+<div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 lg:py-16 pb-24">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
     
     <!-- Left: Project Content -->
-    <main class="lg:col-span-8 bg-white shadow-soft rounded-2xl p-6 md:p-8 border border-gray-100/50 space-y-6">
-      <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-dark font-heading leading-tight">{{ project.title }}</h2>
-
+    <main class="lg:col-span-8 glass-card rounded-3xl p-8 lg:p-10 space-y-8">
+      
       {% if project.image %}
-      <div class="rounded-xl overflow-hidden shadow-soft max-h-[450px] cursor-zoom-in" onclick="openLightbox('{{ project.image.url }}')">
-        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-full object-cover">
+      <div class="rounded-2xl overflow-hidden bg-gray-50 border border-[#E8E8E8] max-h-[500px] cursor-zoom-in relative group" onclick="openLightbox('{{ project.image.url }}')">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]">
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
+          <div class="w-12 h-12 rounded-full bg-white/90 backdrop-blur shadow-sm text-gray-700 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform scale-90 group-hover:scale-100 duration-300">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+          </div>
+        </div>
       </div>
       {% endif %}
 
-      <div class="prose max-w-none text-gray-600 leading-relaxed text-sm space-y-4 pt-2">
+      <div class="prose max-w-none text-gray-600 leading-relaxed text-[15px] pt-4">
         {% if project.content %}
           {{ project.content|safe }}
         {% else %}
@@ -48,49 +95,61 @@
     </main>
 
     <!-- Right: Sidebar details -->
-    <aside class="lg:col-span-4 space-y-8">
+    <aside class="lg:col-span-4 space-y-6">
       
       <!-- Achievements -->
-      <div class="bg-primary-light border border-primary/10 rounded-2xl p-6 space-y-3">
-        <h3 class="text-sm font-bold text-primary-dark uppercase tracking-wider">Achievements</h3>
-        <ul class="text-xs text-gray-600 space-y-2">
-          <li class="flex items-start gap-2">🎯 <span class="leading-relaxed">57,000+ youths trained and empowered across field campaigns.</span></li>
+      <div class="bg-[#EEF8F1] rounded-2xl p-6 space-y-3 border border-[#0B6B3A]/10">
+        <h3 class="text-xs font-bold text-[#0B6B3A] uppercase tracking-wider">Key Impact</h3>
+        <ul class="text-sm text-[#0B6B3A]/80 font-medium space-y-2">
+          <li class="flex items-start gap-3">
+            <i class="fa-solid fa-bullseye mt-1"></i>
+            <span class="leading-relaxed">57,000+ youths trained and empowered across field campaigns.</span>
+          </li>
         </ul>
       </div>
 
       <!-- Organizer -->
-      <div class="bg-white shadow-soft border border-gray-100/60 rounded-2xl p-6 space-y-2">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Project Organiser</h3>
-        <p class="text-sm font-bold text-neutral-dark">UDAAN Skill Development Division</p>
+      <div class="glass-card rounded-2xl p-6 space-y-1">
+        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Project Organiser</h3>
+        <p class="text-[15px] font-bold text-gray-900" style="font-family: 'Inter', sans-serif;">UDAAN Skill Development Division</p>
       </div>
 
       <!-- Project details metadata -->
-      <div class="bg-white shadow-soft border border-gray-100/60 rounded-2xl p-6 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-2">Campaign Details</h3>
-        <div class="text-xs space-y-3 font-semibold text-gray-600">
-          <div class="flex items-center gap-2.5">
-            <span class="text-gray-400 w-5 text-center">📍</span>
-            <span>Location: Aligarh, UP</span>
+      <div class="glass-card rounded-2xl p-6 space-y-5">
+        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#E8E8E8] pb-3">Campaign Details</h3>
+        
+        <div class="text-[13px] space-y-4 font-medium text-gray-600">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <span>Aligarh, UP</span>
           </div>
-          <div class="flex items-center gap-2.5">
-            <span class="text-gray-400 w-5 text-center">📅</span>
-            <span>Date: {{ project.date|date:"F d, Y" }}</span>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
+              <i class="fa-regular fa-calendar"></i>
+            </div>
+            <span>{{ project.date|date:"F d, Y" }}</span>
           </div>
-          <div class="flex items-center gap-2.5">
-            <span class="text-gray-400 w-5 text-center">✉</span>
-            <span>Email: <a href="mailto:mail@udaansociety.org" class="text-primary underline">mail@udaansociety.org</a></span>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
+              <i class="fa-regular fa-envelope"></i>
+            </div>
+            <a href="mailto:mail@udaansociety.org" class="hover:text-[#0B6B3A] transition-colors">mail@udaansociety.org</a>
           </div>
-          <div class="flex items-center gap-2.5">
-            <span class="text-gray-400 w-5 text-center">📞</span>
-            <span>Phone: +91 98370 67681</span>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <span>+91 98370 67681</span>
           </div>
         </div>
       </div>
 
       <!-- Project Map -->
-      <div class="bg-white shadow-soft border border-gray-100/60 rounded-2xl p-6 space-y-3">
-        <h3 class="text-sm font-bold text-neutral-dark uppercase tracking-wider">Geographic Map</h3>
-        <div class="rounded-xl overflow-hidden h-48 border border-gray-200">
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Geographic Location</h3>
+        <div class="rounded-xl overflow-hidden h-48 border border-[#E8E8E8] bg-gray-50">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d111812.87198755694!2d78.01633512349704!3d27.904874639906473!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3974a4362142e88b%3A0x6e788c750b3360b9!2sAligarh%2C%20Uttar%20Pradesh!5e0!3m2!1sen!2sin!4v1706597792683!5m2!1sen!2sin"
             width="100%" height="100%" class="border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -98,13 +157,13 @@
       </div>
 
       <!-- Share widget -->
-      <div class="bg-white shadow-soft border border-gray-100/60 rounded-2xl p-6 space-y-4">
-        <h3 class="text-sm font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-2">Share This Project</h3>
-        <div class="flex gap-2.5">
-          <a href="#" onclick="shareSocial('facebook')" class="bg-gray-100 hover:bg-secondary hover:text-white w-8 h-8 text-gray-600 flex items-center justify-center rounded-full transition-all text-sm" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" onclick="shareSocial('twitter')" class="bg-gray-100 hover:bg-neutral-dark hover:text-white w-8 h-8 text-gray-600 flex items-center justify-center rounded-full transition-all text-sm" aria-label="Share on Twitter"><i class="fab fa-x-twitter"></i></a>
-          <a href="#" onclick="shareSocial('linkedin')" class="bg-gray-100 hover:bg-secondary-dark hover:text-white w-8 h-8 text-gray-600 flex items-center justify-center rounded-full transition-all text-sm" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" onclick="shareSocial('whatsapp')" class="bg-gray-100 hover:bg-green-500 hover:text-white w-8 h-8 text-gray-600 flex items-center justify-center rounded-full transition-all text-sm" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#E8E8E8] pb-3">Share This Project</h3>
+        <div class="flex gap-3">
+          <a href="#" onclick="shareSocial('facebook')" class="w-10 h-10 bg-gray-50 hover:bg-[#1877F2] hover:text-white text-gray-500 flex items-center justify-center rounded-full transition-colors" aria-label="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" onclick="shareSocial('twitter')" class="w-10 h-10 bg-gray-50 hover:bg-black hover:text-white text-gray-500 flex items-center justify-center rounded-full transition-colors" aria-label="Share on X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" onclick="shareSocial('linkedin')" class="w-10 h-10 bg-gray-50 hover:bg-[#0A66C2] hover:text-white text-gray-500 flex items-center justify-center rounded-full transition-colors" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" onclick="shareSocial('whatsapp')" class="w-10 h-10 bg-gray-50 hover:bg-[#25D366] hover:text-white text-gray-500 flex items-center justify-center rounded-full transition-colors" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></a>
         </div>
       </div>
 
@@ -113,8 +172,8 @@
 </div>
 
 <!-- Simple Lightbox Modal -->
-<div id="lightbox-modal" class="fixed inset-0 bg-black/90 z-[200] hidden items-center justify-center p-4 cursor-zoom-out" onclick="closeLightbox()">
-  <img id="lightbox-img" class="max-w-full max-h-full rounded-lg shadow-2xl transition-all duration-300 transform scale-95" alt="Lightbox Image">
+<div id="lightbox-modal" class="fixed inset-0 bg-gray-900/95 backdrop-blur-sm z-[200] hidden items-center justify-center p-4 cursor-zoom-out" onclick="closeLightbox()">
+  <img id="lightbox-img" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl transition-all duration-300 transform scale-95" alt="Lightbox Image">
 </div>
 
 <script>
