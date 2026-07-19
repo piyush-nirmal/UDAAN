@@ -10,7 +10,7 @@ from django.conf import settings
 from .models import (
     BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask, 
     Interaction, Project, NewsClipping, Team, SharedNote, Workspace, Notification, Expense, TaskComment,
-    TaskAutomationRule, Donation
+    TaskAutomationRule, Donation, VolunteerRequest
 )
 from .schemas import DonorSchema, BloodRequestSchema
 from pydantic import ValidationError
@@ -19,7 +19,7 @@ from django_ratelimit.decorators import ratelimit
 from .models import Blog, Project, Task, SubTask, Team
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
-from .models import CampusAmbassador
+from .models import CampusAmbassador, CampusAmbassadorApplication
 from .models import PolicyReport
 
 from .utils import create_notification, generate_unique_din, send_din_email
@@ -1184,11 +1184,66 @@ def user_edit_portal(request, pk):
     return render(request, 'blood_request/user_edit.html', context)
 
 def volunteering(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        gender = request.POST.get('gender')
+        education = request.POST.get('education')
+        employment = request.POST.get('employment')
+        residence = request.POST.get('residence')
+        cv = request.FILES.get('cv')
+
+        if name and email and phone and gender and education and employment and residence and cv:
+            VolunteerRequest.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                gender=gender,
+                education=education,
+                employment=employment,
+                residence=residence,
+                cv=cv
+            )
+            messages.success(request, 'Your volunteer application has been submitted successfully!')
+        else:
+            messages.error(request, 'Please fill all required fields and upload your CV.')
+
     return render(request, "volunteering.html")
 
 
 
 def campus_ambassador(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        father_name = request.POST.get('father_name')
+        phone = request.POST.get('phone')
+        dob = request.POST.get('dob')
+        institution = request.POST.get('institution')
+        address = request.POST.get('address')
+        technical_skills = request.POST.get('technical_skills')
+        general_skills = request.POST.get('general_skills')
+        motivation = request.POST.get('motivation')
+        email = request.POST.get('email')
+        cv = request.FILES.get('cv')
+
+        if full_name and phone and dob and institution and address and email and cv:
+            CampusAmbassadorApplication.objects.create(
+                full_name=full_name,
+                father_name=father_name,
+                phone=phone,
+                dob=dob,
+                institution=institution,
+                address=address,
+                technical_skills=technical_skills,
+                general_skills=general_skills,
+                motivation=motivation,
+                email=email,
+                cv=cv
+            )
+            messages.success(request, 'Your Campus Ambassador application has been submitted successfully!')
+        else:
+            messages.error(request, 'Please fill all required fields and upload your CV.')
 
     ambassadors = CampusAmbassador.objects.all().order_by('-id')
 
@@ -1216,26 +1271,34 @@ def internships(request):
     
     if request.method == 'POST':
         name = request.POST.get('name')
-        father_name = request.POST.get('father_name')
+        father_name = request.POST.get('father_name', '')
+        dob = request.POST.get('dob')
+        gender = request.POST.get('gender')
         educational_qualification = request.POST.get('educational_qualification')
         permanent_address = request.POST.get('permanent_address')
         contact_number = request.POST.get('contact_number')
         email = request.POST.get('email')
         internship_area = request.POST.get('internship_area')
+        other_interest = request.POST.get('other_interest')
         start_date = request.POST.get('start_date')
         duration_months = request.POST.get('duration_months', 3)
+        cv = request.FILES.get('cv')
         
         try:
             InternshipRequest.objects.create(
                 name=name,
                 father_name=father_name,
+                dob=dob,
+                gender=gender,
                 educational_qualification=educational_qualification,
                 permanent_address=permanent_address,
                 contact_number=contact_number,
                 email=email,
                 internship_area=internship_area,
+                other_interest=other_interest,
                 start_date=start_date,
                 duration_months=duration_months,
+                cv=cv,
             )
             messages.success(request, 'Your internship request has been successfully submitted! We will contact you soon.')
         except Exception as e:

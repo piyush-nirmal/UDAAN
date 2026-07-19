@@ -56,85 +56,115 @@
       <p class="text-sm text-gray-500">Fill in details to submit your application. We will issue a confirmation letter on selection.</p>
     </div>
 
-    <form id="internship-form" class="space-y-6">
+    <form id="internship-form" method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+      
+      <!-- Display Messages -->
+      {% if messages %}
+      <div class="mb-4">
+        {% for message in messages %}
+          <div class="p-4 mb-2 rounded-lg text-sm font-bold {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
-          <input type="text" id="int-name" required placeholder="John Doe"
+          <input type="text" name="name" required placeholder="John Doe"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Parent's Name *</label>
-          <input type="text" id="int-parent" required placeholder="Robert Doe"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">University / College *</label>
-          <input type="text" id="int-college" required placeholder="University Name"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Course / Qualification *</label>
-          <input type="text" id="int-course" required placeholder="e.g. MSW, B.A. Sociology"
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email *</label>
+          <input type="email" name="email" required placeholder="john@example.com"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Contact Number *</label>
-          <input type="tel" id="int-phone" required placeholder="9876543210"
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone No. *</label>
+          <input type="tel" name="contact_number" required placeholder="9876543210"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Desired Project Area *</label>
-          <select id="int-area" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
-            <option value="water">Jal Jeevan & Atal Bhujal Yojna</option>
-            <option value="education">Children Education & Support</option>
-            <option value="shelter">Urban Shelter Management</option>
-            <option value="health">Livelihoods & Health Awareness</option>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
+          <input type="date" name="dob" required
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Gender *</label>
+          <select name="gender" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
           </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">College Name *</label>
+          <input type="text" name="educational_qualification" required placeholder="University Name"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Internship Start Date *</label>
-          <input type="date" id="int-start" required
+          <input type="date" name="start_date" required
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Duration (weeks) *</label>
-          <input type="number" id="int-duration" required placeholder="4" min="2" max="24"
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Duration of Internship *</label>
+          <select name="duration_months" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="1">One Month</option>
+            <option value="2">Two Months</option>
+            <option value="3">Three Months</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Field of Interest *</label>
+          <select name="internship_area" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="Field Work">Field Work (Only for those based in Aligarh)</option>
+            <option value="Research Work">Research Work</option>
+            <option value="Social Media and Communication">Social Media and Communication</option>
+            <option value="Fundraising">Fundraising</option>
+            <option value="Content Creation">Content Creation</option>
+            <option value="Digital Marketing">Digital Marketing</option>
+            <option value="Website and App Development">Website and App Development</option>
+            <option value="Any Other">Any Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Mention (Any Other)</label>
+          <input type="text" name="other_interest" placeholder="If 'Any Other' selected, please mention"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Current Residence Address *</label>
-        <textarea id="int-address" required placeholder="Enter full address..." rows="2"
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Residence (City, State) *</label>
+        <textarea name="permanent_address" required placeholder="e.g. Aligarh, Uttar Pradesh" rows="2"
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
       </div>
 
-      <button type="submit" onclick="submitInternship(event)" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV (Upload PDF) *</label>
+        <input type="file" name="cv" accept=".pdf" required
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary hover:file:bg-primary hover:file:text-white transition-all cursor-pointer">
+      </div>
+
+      <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
         Submit Internship Request
       </button>
     </form>
-
-    <!-- Success Screen -->
-    <div id="int-success" class="hidden text-center py-12 space-y-6 animate-fade-in-up">
-      <div class="w-16 h-16 rounded-full bg-green-100 text-primary flex items-center justify-center text-4xl mx-auto">✓</div>
-      <div>
-        <h3 class="text-2xl font-bold text-neutral-dark mb-2">Application Received!</h3>
-        <p class="text-sm text-gray-500 max-w-md mx-auto">Your details have been successfully logged. Our director will review and send confirmation reference codes via email.</p>
-      </div>
-      <button onclick="resetInternshipForm()" class="btn-primary rounded-full px-8 py-3 text-sm font-bold shadow-soft">
-        Submit New Application
-      </button>
-    </div>
   </div>
 
   <!-- Do's & Dont's Section -->
@@ -221,33 +251,5 @@
 
 </div>
 
-<!-- Multi-Step Javascript -->
-<script>
-  function submitInternship(e) {
-    e.preventDefault();
-    
-    // Check validation
-    const name = document.getElementById('int-name').value.trim();
-    const college = document.getElementById('int-college').value.trim();
-    const phone = document.getElementById('int-phone').value.trim();
-    const start = document.getElementById('int-start').value.trim();
-    
-    if (!name || !college || !phone || !start) {
-      alert("Please fill in all required application fields.");
-      return;
-    }
-
-    // Hide form
-    document.getElementById('internship-form').classList.add('hidden');
-    // Show success screen
-    document.getElementById('int-success').classList.remove('hidden');
-  }
-
-  function resetInternshipForm() {
-    document.getElementById('internship-form').reset();
-    document.getElementById('int-success').classList.add('hidden');
-    document.getElementById('internship-form').classList.remove('hidden');
-  }
-</script>
 
 {% endblock %}

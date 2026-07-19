@@ -10,7 +10,7 @@ from .models import (
     CampusAmbassador, CampusAmbassadorApplication, NewsClipping, ContactMessage,
     Activity, JobPosting, Donation, SubTask, TaskComment, Team, SharedNote,
     Workspace, WorkspaceMember, Expense, TaskAutomationRule, NewsletterSubscription, Task,
-    InternshipRequest
+    InternshipRequest, VolunteerRequest
 )
 from .utils import generate_internship_offer_letter
 
@@ -252,9 +252,9 @@ class CampusAmbassadorAdmin(admin.ModelAdmin):
 
 @admin.register(CampusAmbassadorApplication)
 class CampusAmbassadorApplicationAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'email', 'phone', 'college', 'city', 'status', 'applied_at')
-    list_filter = ('status', 'city')
-    search_fields = ('full_name', 'email', 'college')
+    list_display = ('full_name', 'email', 'phone', 'institution', 'status', 'applied_at')
+    list_filter = ('status',)
+    search_fields = ('full_name', 'email', 'institution')
     list_editable = ('status',)
 
 @admin.register(NewsClipping)
@@ -416,6 +416,7 @@ GROUP_MAPPING = {
     'blood_request.report': 'Reports & Documents',
     'blood_request.policyreport': 'Reports & Documents',
     'blood_request.jobposting': 'Jobs & Careers',
+    'blood_request.internshiprequest': 'Automatic Offer Letter Generator',
     'blood_request.workspace': 'Workspace Management',
     'blood_request.workspacemember': 'Workspace Management',
     'blood_request.team': 'Workspace Management',
@@ -519,6 +520,13 @@ class InternshipRequestAdmin(admin.ModelAdmin):
                 obj.save()
                 count += 1
         self.message_user(request, f"{count} internship request(s) were successfully approved and emails were sent.")
+
+@admin.register(VolunteerRequest)
+class VolunteerRequestAdmin(admin.ModelAdmin):
+    list_display = ('name', 'residence', 'education', 'employment', 'status', 'created_at')
+    list_filter = ('status', 'education', 'employment')
+    search_fields = ('name', 'email', 'phone', 'residence')
+    readonly_fields = ('created_at',)
 
 @property
 def custom_app_config(self):
