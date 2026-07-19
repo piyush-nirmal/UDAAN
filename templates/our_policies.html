@@ -29,123 +29,114 @@
 
 <!-- Main Body -->
 <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
-  
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+  <div class="text-center max-w-2xl mx-auto mb-16">
+    <h2 class="text-3xl font-extrabold text-neutral-dark font-heading uppercase tracking-tight mb-4">Official Documents</h2>
+    <p class="text-gray-500">Access and download our official organizational policies to learn more about how we operate.</p>
+  </div>
+
+  <!-- Documents Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
     
-    <!-- Left: Policy Tabs Sidebar -->
-    <div class="lg:col-span-4 bg-white shadow-soft rounded-2xl p-6 border border-gray-100/50 space-y-3 sticky top-24">
-      <h3 class="text-sm font-bold text-neutral-dark uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">Policy Documents</h3>
-      
-      <div class="flex flex-col gap-2">
-        <button class="policy-tab active flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-primary bg-primary-light" data-tab="ethical">
-          <i class="fa-solid fa-scale-balanced text-base w-5 text-center"></i> Ethical Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="finance">
-          <i class="fa-solid fa-chart-line text-base w-5 text-center"></i> Finance Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="hr">
-          <i class="fa-solid fa-users text-base w-5 text-center"></i> HR Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="travel">
-          <i class="fa-solid fa-plane text-base w-5 text-center"></i> Travel Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="posh">
-          <i class="fa-solid fa-hands-holding-child text-base w-5 text-center"></i> POSH Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="privacy">
-          <i class="fa-solid fa-shield-halved text-base w-5 text-center"></i> Privacy Policy
-        </button>
-        
-        <button class="policy-tab flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-left w-full transition-all text-gray-600 hover:bg-neutral-light" data-tab="refund">
-          <i class="fa-solid fa-money-bill-wave text-base w-5 text-center"></i> Refund Policy
-        </button>
+    <!-- ETHICAL -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md hover:border-[#0B6B3A] transition-all group">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <h3 class="text-xl font-bold text-neutral-dark">Ethical Policy</h3>
       </div>
+      <p class="text-gray-500 text-sm mb-8 leading-relaxed">The ethical framework and compliance principles that guide our day-to-day operations.</p>
+      {% if ethical %}
+      <a href="{{ ethical.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+        <i class="fa-regular fa-file-pdf"></i> View PDF
+      </a>
+      {% else %}
+      <div class="py-3 px-4 rounded-xl bg-gray-50 text-gray-400 font-medium text-sm text-center italic">Not available yet</div>
+      {% endif %}
     </div>
 
-    <!-- Right: Policy Content Viewer -->
-    <div class="lg:col-span-8 bg-white shadow-premium rounded-2xl p-8 border border-gray-100/50">
-      
-      <!-- ETHICAL -->
-      <div class="policy-panel space-y-6" id="ethical-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">Ethical Policy</h2>
-        <hr class="border-gray-100" />
-        {% if ethical %}
-        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 h-[600px]">
-          <iframe src="{{ ethical.pdf_file.url }}" width="100%" height="100%" class="border-0"></iframe>
+    <!-- FINANCE -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md hover:border-[#0B6B3A] transition-all group">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-chart-line"></i>
         </div>
-        <div class="text-center">
-          <a href="{{ ethical.pdf_file.url }}" target="_blank" class="btn-primary text-xs rounded-full">Open PDF in Full Screen</a>
-        </div>
-        {% else %}
-        <p class="text-gray-500 text-sm">No ethical policy document uploaded yet.</p>
-        {% endif %}
+        <h3 class="text-xl font-bold text-neutral-dark">Finance Policy</h3>
       </div>
+      <p class="text-gray-500 text-sm mb-8 leading-relaxed">Guidelines ensuring transparency, accountability, and proper management of funds.</p>
+      {% if finance %}
+      <a href="{{ finance.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+        <i class="fa-regular fa-file-pdf"></i> View PDF
+      </a>
+      {% else %}
+      <div class="py-3 px-4 rounded-xl bg-gray-50 text-gray-400 font-medium text-sm text-center italic">Not available yet</div>
+      {% endif %}
+    </div>
 
-      <!-- FINANCE -->
-      <div class="policy-panel space-y-6 hidden" id="finance-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">Finance Policy</h2>
-        <hr class="border-gray-100" />
-        {% if finance %}
-        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 h-[600px]">
-          <iframe src="{{ finance.pdf_file.url }}" width="100%" height="100%" class="border-0"></iframe>
+    <!-- HR -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md hover:border-[#0B6B3A] transition-all group">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-users"></i>
         </div>
-        <div class="text-center">
-          <a href="{{ finance.pdf_file.url }}" target="_blank" class="btn-primary text-xs rounded-full">Open PDF in Full Screen</a>
-        </div>
-        {% else %}
-        <p class="text-gray-500 text-sm">No finance policy document uploaded yet.</p>
-        {% endif %}
+        <h3 class="text-xl font-bold text-neutral-dark">HR Policy</h3>
       </div>
+      <p class="text-gray-500 text-sm mb-8 leading-relaxed">Our human resources framework outlining employee and volunteer rights and duties.</p>
+      {% if hr %}
+      <a href="{{ hr.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+        <i class="fa-regular fa-file-pdf"></i> View PDF
+      </a>
+      {% else %}
+      <div class="py-3 px-4 rounded-xl bg-gray-50 text-gray-400 font-medium text-sm text-center italic">Not available yet</div>
+      {% endif %}
+    </div>
 
-      <!-- HR -->
-      <div class="policy-panel space-y-6 hidden" id="hr-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">HR Policy</h2>
-        <hr class="border-gray-100" />
-        {% if hr %}
-        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 h-[600px]">
-          <iframe src="{{ hr.pdf_file.url }}" width="100%" height="100%" class="border-0"></iframe>
+    <!-- TRAVEL -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md hover:border-[#0B6B3A] transition-all group">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-plane"></i>
         </div>
-        {% else %}
-        <p class="text-gray-500 text-sm">No HR policy document uploaded yet.</p>
-        {% endif %}
+        <h3 class="text-xl font-bold text-neutral-dark">Travel Policy</h3>
       </div>
+      <p class="text-gray-500 text-sm mb-8 leading-relaxed">Procedures and allowances regarding organizational travel and transportation.</p>
+      {% if travel %}
+      <a href="{{ travel.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+        <i class="fa-regular fa-file-pdf"></i> View PDF
+      </a>
+      {% else %}
+      <div class="py-3 px-4 rounded-xl bg-gray-50 text-gray-400 font-medium text-sm text-center italic">Not available yet</div>
+      {% endif %}
+    </div>
 
-      <!-- TRAVEL -->
-      <div class="policy-panel space-y-6 hidden" id="travel-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">Travel Policy</h2>
-        <hr class="border-gray-100" />
-        {% if travel %}
-        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 h-[600px]">
-          <iframe src="{{ travel.pdf_file.url }}" width="100%" height="100%" class="border-0"></iframe>
+    <!-- POSH -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 hover:shadow-md hover:border-[#0B6B3A] transition-all group">
+      <div class="flex items-center gap-4 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+          <i class="fa-solid fa-hands-holding-child"></i>
         </div>
-        {% else %}
-        <p class="text-gray-500 text-sm">No travel policy document uploaded yet.</p>
-        {% endif %}
+        <h3 class="text-xl font-bold text-neutral-dark">POSH Policy</h3>
       </div>
+      <p class="text-gray-500 text-sm mb-8 leading-relaxed">Our robust framework for the Prevention of Sexual Harassment at the workplace.</p>
+      {% if posh %}
+      <a href="{{ posh.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+        <i class="fa-regular fa-file-pdf"></i> View PDF
+      </a>
+      {% else %}
+      <div class="py-3 px-4 rounded-xl bg-gray-50 text-gray-400 font-medium text-sm text-center italic">Not available yet</div>
+      {% endif %}
+    </div>
+  </div>
 
-      <!-- POSH -->
-      <div class="policy-panel space-y-6 hidden" id="posh-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">POSH Policy</h2>
-        <p class="text-xs text-gray-400">Prevention of Sexual Harassment Policy</p>
-        <hr class="border-gray-100" />
-        {% if posh %}
-        <div class="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 h-[600px]">
-          <iframe src="{{ posh.pdf_file.url }}" width="100%" height="100%" class="border-0"></iframe>
-        </div>
-        {% else %}
-        <p class="text-gray-500 text-sm">No POSH policy document uploaded yet.</p>
-        {% endif %}
+  <!-- Text Based Policies -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- PRIVACY POLICY -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-10">
+      <div class="flex items-center gap-3 mb-6">
+        <i class="fa-solid fa-shield-halved text-[#0B6B3A] text-xl"></i>
+        <h2 class="text-2xl font-bold text-neutral-dark">Privacy Policy</h2>
       </div>
-
-      <!-- PRIVACY POLICY -->
-      <div class="policy-panel space-y-6 hidden text-gray-600 leading-relaxed text-sm" id="privacy-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">Privacy Policy</h2>
-        <hr class="border-gray-100" />
+      <div class="space-y-4 text-gray-600 leading-relaxed text-sm">
         <p>
           The terms “We” / “Us” / “Our” / ”Company” individually and collectively refer to UDAAN SOCIETY and the terms “You” / ”Your” / “Yourself” refer to the users.
         </p>
@@ -156,11 +147,15 @@
           By providing us your Information or by making use of the facilities provided by the Website, you hereby consent to the collection, storage, processing, and transfer of any or all of your Personal Information and Non-Personal Information by us as specified under this Privacy Policy.
         </p>
       </div>
+    </div>
 
-      <!-- REFUND POLICY -->
-      <div class="policy-panel space-y-6 hidden text-gray-600 leading-relaxed text-sm" id="refund-panel">
-        <h2 class="text-2xl font-bold text-neutral-dark font-heading">Refund Policy</h2>
-        <hr class="border-gray-100" />
+    <!-- REFUND POLICY -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-10">
+      <div class="flex items-center gap-3 mb-6">
+        <i class="fa-solid fa-money-bill-wave text-[#0B6B3A] text-xl"></i>
+        <h2 class="text-2xl font-bold text-neutral-dark">Refund Policy</h2>
+      </div>
+      <div class="space-y-4 text-gray-600 leading-relaxed text-sm">
         <p>
           UDAAN Society is grateful for your support of our mission to help underserved and neglected communities. Donations made through our website are used to directly fund our programs and services.
         </p>
@@ -171,33 +166,9 @@
           We will investigate the situation and process a refund to the original payment method if we can verify that the donation was unauthorized.
         </p>
       </div>
-
     </div>
   </div>
+
 </div>
-
-<!-- Tab Switching Script -->
-<script>
-  document.querySelectorAll('.policy-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      // Deactivate tabs
-      document.querySelectorAll('.policy-tab').forEach(t => {
-        t.classList.remove('active', 'text-primary', 'bg-primary-light');
-        t.classList.add('text-gray-600', 'hover:bg-neutral-light');
-      });
-      // Activate this tab
-      tab.classList.add('active', 'text-primary', 'bg-primary-light');
-      tab.classList.remove('text-gray-600', 'hover:bg-neutral-light');
-
-      // Hide all panels
-      document.querySelectorAll('.policy-panel').forEach(p => {
-        p.classList.add('hidden');
-      });
-      // Show matching panel
-      const target = tab.getAttribute('data-tab');
-      document.getElementById(`${target}-panel`).classList.remove('hidden');
-    });
-  });
-</script>
 
 {% endblock %}
