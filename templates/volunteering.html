@@ -8,7 +8,7 @@
 {% block content %}
 
 <!-- Hero Banner -->
-<section class="subpage-hero">
+<section class="subpage-hero" data-aos="fade-down">
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Get Involved</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Volunteer with UDAAN</h1>
@@ -20,7 +20,7 @@
 
 <!-- Breadcrumb -->
 <div class="bg-neutral-light border-b border-gray-100 py-4">
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2"  data-aos="fade-down" data-aos-delay="100">
     <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
     <span>»</span>
     <span class="text-gray-400">Volunteering</span>
@@ -34,7 +34,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
     
     <!-- Left: Why Volunteer Information -->
-    <div class="lg:col-span-5 space-y-6">
+    <div class="lg:col-span-5 space-y-6" data-aos="fade-right">
       <span class="text-primary font-bold uppercase tracking-wider text-xs block">Join the Mission</span>
       <h2 class="text-3xl font-extrabold text-neutral-dark leading-tight font-heading">Why Volunteer with Us?</h2>
       <p class="text-gray-600 leading-relaxed">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Right: Native Onboarding Form -->
-    <div class="lg:col-span-7 bg-white shadow-premium rounded-2xl p-8 border border-gray-100/50">
+    <div class="lg:col-span-7 bg-white shadow-premium rounded-2xl p-8 border border-gray-100/50" data-aos="fade-left" data-aos-delay="150">
       <h2 class="text-2xl font-bold text-neutral-dark mb-2 font-heading">Volunteer Onboarding Form</h2>
       <p class="text-sm text-gray-500 mb-8">Fill out your details to register. Our coordinator will contact you shortly.</p>
 
@@ -144,13 +144,13 @@
   <!-- Section 2: Benefits Section -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center pt-8">
     <!-- Left: Image -->
-    <div class="lg:col-span-5 relative">
+    <div class="lg:col-span-5 relative" data-aos="fade-right">
       <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-light rounded-2xl -z-10 opacity-70"></div>
       <img src="{% static 'assets/join-volunteer.png' %}" alt="Join UDAAN Volunteers" class="rounded-3xl shadow-soft w-full object-contain max-h-[460px] bg-white p-6 border border-gray-100/50">
     </div>
 
     <!-- Right: Structured Benefits List -->
-    <div class="lg:col-span-7 space-y-6">
+   <div class="lg:col-span-7 space-y-6" data-aos="fade-left" data-aos-delay="150">
       <h3 class="text-2xl font-bold text-neutral-dark font-heading">Benefits of Joining UDAAN Society</h3>
       
       <ol class="space-y-4 list-decimal list-inside text-gray-600 leading-relaxed text-sm">

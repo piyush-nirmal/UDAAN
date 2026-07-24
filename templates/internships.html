@@ -8,7 +8,7 @@
 {% block content %}
 
 <!-- Hero Banner -->
-<section class="subpage-hero">
+<section class="subpage-hero" data-aos="fade-down">
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Academic Outreach</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Internship Program</h1>
@@ -20,7 +20,7 @@
 
 <!-- Breadcrumb -->
 <div class="bg-neutral-light border-b border-gray-100 py-4">
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2" data-aos="fade-down" data-aos-delay="100">
     <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
     <span>»</span>
     <a href="{% url 'career_fellowship' %}" class="hover:text-primary transition-colors">Careers & Fellowships</a>
@@ -34,10 +34,10 @@
   
   <!-- Intro: Why Intern? -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-    <div class="lg:col-span-5">
+    <div class="lg:col-span-5" data-aos="fade-right">
       <img src="{% static 'assets/internship-banner.png' %}" alt="Internship Banner" class="rounded-3xl shadow-soft border border-gray-100 w-full object-cover">
     </div>
-    <div class="lg:col-span-7 space-y-6">
+    <div class="lg:col-span-7 space-y-6" data-aos="fade-left" data-aos-delay="150">
       <span class="text-primary font-bold uppercase tracking-wider text-xs block">Professional Growth</span>
       <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">Sharpen Social & Field Operations Skills</h2>
       <p class="text-gray-600 leading-relaxed text-sm">
@@ -50,7 +50,7 @@
   </div>
 
   <!-- Interactive Application Form -->
-  <div class="max-w-3xl mx-auto bg-white shadow-premium rounded-3xl p-8 border border-gray-100/50 space-y-6">
+  <div class="max-w-3xl mx-auto bg-white shadow-premium rounded-3xl p-8 border border-gray-100/50 space-y-6" data-aos="zoom-in">
     <div class="text-center space-y-2">
       <h2 class="text-2xl font-bold text-neutral-dark font-heading">Internship Application</h2>
       <p class="text-sm text-gray-500">Fill in details to submit your application. We will issue a confirmation letter on selection.</p>
@@ -72,12 +72,18 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
+          <label
+  class="block text-xs font-bold text-gray-500 mb-2 uppercase"
+  data-aos="fade-up"
+  data-aos-delay="100"
+>
+  Full Name *
+</label>
           <input type="text" name="name" required placeholder="John Doe"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="150">Email *</label>
           <input type="email" name="email" required placeholder="john@example.com"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
@@ -85,12 +91,12 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone No. *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="200">Phone No. *</label>
           <input type="tel" name="contact_number" required placeholder="9876543210"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="250">Date of Birth *</label>
           <input type="date" name="dob" required
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
@@ -98,7 +104,7 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Gender *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="300">Gender *</label>
           <select name="gender" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -106,7 +112,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">College Name *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="350">College Name *</label>
           <input type="text" name="educational_qualification" required placeholder="University Name"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
@@ -114,12 +120,12 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Internship Start Date *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="400">Internship Start Date *</label>
           <input type="date" name="start_date" required
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Duration of Internship *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="450">Duration of Internship *</label>
           <select name="duration_months" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
             <option value="1">One Month</option>
             <option value="2">Two Months</option>
@@ -130,7 +136,7 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Field of Interest *</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="500">Field of Interest *</label>
           <select name="internship_area" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
             <option value="Field Work">Field Work (Only for those based in Aligarh)</option>
             <option value="Research Work">Research Work</option>
@@ -143,20 +149,20 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Mention (Any Other)</label>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="550">Mention (Any Other)</label>
           <input type="text" name="other_interest" placeholder="If 'Any Other' selected, please mention"
             class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Residence (City, State) *</label>
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="600">Residence (City, State) *</label>
         <textarea name="permanent_address" required placeholder="e.g. Aligarh, Uttar Pradesh" rows="2"
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV (Upload PDF) *</label>
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase" data-aos="fade-up" data-aos-delay="650">CV (Upload PDF) *</label>
         <input type="file" name="cv" accept=".pdf" required
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary hover:file:bg-primary hover:file:text-white transition-all cursor-pointer">
       </div>
@@ -170,7 +176,7 @@
   <!-- Do's & Dont's Section -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
     <!-- Do's Card -->
-    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6">
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6" data-aos="fade-right">
       <div class="flex items-center gap-3">
         <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center font-bold text-lg">✓</span>
         <h3 class="text-xl font-bold text-neutral-dark font-heading">Recommended Guidelines (Do's)</h3>
@@ -184,7 +190,7 @@
     </div>
 
     <!-- Dont's Card -->
-    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6">
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6" data-aos="fade-left" data-aos-delay="150">
       <div class="flex items-center gap-3">
         <span class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-lg">×</span>
         <h3 class="text-xl font-bold text-neutral-dark font-heading">Behavioral Constraints (Don'ts)</h3>
@@ -200,7 +206,7 @@
   <!-- Execution & Certification Procedures -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
     <!-- Procedure -->
-    <div class="space-y-6">
+    <div class="space-y-6" data-aos="fade-right">
       <h3 class="text-2xl font-bold text-neutral-dark font-heading border-b border-gray-100 pb-3">Execution Procedure</h3>
       <ol class="space-y-4 text-sm text-gray-600 leading-relaxed">
         <li>
@@ -223,7 +229,7 @@
     </div>
 
     <!-- Certification Mockup -->
-    <div class="bg-neutral-light p-8 rounded-3xl border border-gray-200/50 space-y-4 relative font-serif">
+    <div class="bg-neutral-light p-8 rounded-3xl border border-gray-200/50 space-y-4 relative font-serif" data-aos="fade-left" data-aos-delay="150">
       <div class="absolute -top-3 right-6 bg-accent text-neutral-dark font-sans text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">Sample Document</div>
       <h4 class="text-center font-bold text-neutral-dark border-b border-gray-300 pb-4 text-sm tracking-wider uppercase">To Whomsoever It May Concern</h4>
       <p class="text-xs text-gray-500 leading-relaxed pt-2">
@@ -241,10 +247,10 @@
 
   <!-- Promo cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
-    <a href="{% url 'blood_donation' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100">
+    <a href="{% url 'blood_donation' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100" data-aos="fade-right">
       <img src="{% static 'assets/blood-card.jpg' %}" alt="Donate Blood Promo" class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102">
     </a>
-    <a href="{% url 'campus_ambassador' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100">
+    <a href="{% url 'campus_ambassador' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100" data-aos="fade-left" data-aos-delay="150">
       <img src="{% static 'assets/campus-card.jpg' %}" alt="Campus Ambassador Promo" class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102">
     </a>
   </div>

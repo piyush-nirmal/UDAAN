@@ -1,596 +1,1775 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}UDAAN Society - Blood Request{% endblock %}</title>
-    <meta name="description"
-        content="{% block meta_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}">
-    <meta property="og:title" content="{% block og_title %}UDAAN Society{% endblock %}">
-    <meta property="og:description"
-        content="{% block og_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>
+      {% block title %} UDAAN Society - Blood Request {% endblock %}
+    </title>
 
-    <!-- Tailwind CSS (CDN for prototype) -->
+    <meta
+      name="description"
+      content="{% block meta_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}"
+    />
+
+    <meta
+      property="og:title"
+      content="{% block og_title %}UDAAN Society{% endblock %}"
+    />
+
+    <meta
+      property="og:description"
+      content="{% block og_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}"
+    />
+
+    <!-- Django Static -->
+    {% load static %}
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Custom Fonts -->
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Custom Config for Tailwind -->
+    <!-- Tailwind Custom Configuration -->
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        heading: ['Manrope', 'Poppins', 'sans-serif'],
-                        serifTitle: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        primary: {
-                            DEFAULT: '#dc2626',
-                            light: '#fee2e2',
-                            dark: '#991b1b'
-                        },
-                        secondary: {
-                            DEFAULT: '#1565C0',
-                            light: '#E3F2FD',
-                            dark: '#0D47A1'
-                        },
-                        accent: {
-                            DEFAULT: '#FFB300',
-                            light: '#FFF8E1',
-                            dark: '#FF8F00'
-                        },
-                        neutral: {
-                            light: '#FAFAFA',
-                            card: '#FFFFFF',
-                            dark: '#1F2937'
-                        }
-                    },
-                    boxShadow: {
-                        soft: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03)',
-                        premium: '0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 15px 25px -10px rgba(0, 0, 0, 0.04)',
-                        hover: '0 30px 60px -15px rgba(46, 125, 50, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06)'
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Outfit", "sans-serif"],
+              heading: ["Manrope", "Poppins", "sans-serif"],
+              serifTitle: ["Playfair Display", "serif"],
+            },
+
+            colors: {
+              primary: {
+                DEFAULT: "#dc2626",
+                light: "#fee2e2",
+                dark: "#991b1b",
+              },
+
+              secondary: {
+                DEFAULT: "#1565C0",
+                light: "#E3F2FD",
+                dark: "#0D47A1",
+              },
+
+              accent: {
+                DEFAULT: "#FFB300",
+                light: "#FFF8E1",
+                dark: "#FF8F00",
+              },
+
+              neutral: {
+                light: "#FAFAFA",
+                card: "#FFFFFF",
+                dark: "#1F2937",
+              },
+            },
+
+            boxShadow: {
+              soft: "0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03)",
+
+              premium:
+                "0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 15px 25px -10px rgba(0, 0, 0, 0.04)",
+
+              hover:
+                "0 30px 60px -15px rgba(46, 125, 50, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06)",
+            },
+
+            keyframes: {
+              fadeInUp: {
+                "0%": {
+                  opacity: "0",
+                  transform: "translateY(30px)",
+                },
+
+                "100%": {
+                  opacity: "1",
+                  transform: "translateY(0)",
+                },
+              },
+
+              fadeInDown: {
+                "0%": {
+                  opacity: "0",
+                  transform: "translateY(-30px)",
+                },
+
+                "100%": {
+                  opacity: "1",
+                  transform: "translateY(0)",
+                },
+              },
+
+              fadeInLeft: {
+                "0%": {
+                  opacity: "0",
+                  transform: "translateX(-50px)",
+                },
+
+                "100%": {
+                  opacity: "1",
+                  transform: "translateX(0)",
+                },
+              },
+
+              fadeInRight: {
+                "0%": {
+                  opacity: "0",
+                  transform: "translateX(50px)",
+                },
+
+                "100%": {
+                  opacity: "1",
+                  transform: "translateX(0)",
+                },
+              },
+
+              pageFadeIn: {
+                "0%": {
+                  opacity: "0",
+                },
+
+                "100%": {
+                  opacity: "1",
+                },
+              },
+            },
+
+            animation: {
+              fadeInUp: "fadeInUp 0.8s ease-out forwards",
+              fadeInDown: "fadeInDown 0.8s ease-out forwards",
+              fadeInLeft: "fadeInLeft 0.8s ease-out forwards",
+              fadeInRight: "fadeInRight 0.8s ease-out forwards",
+              pageFadeIn: "pageFadeIn 0.8s ease-out forwards",
+            },
+          },
+        },
+      };
     </script>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/design_system.css' %}?v=2">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=5">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
+
+    <!-- Main CSS Files -->
+    <link rel="stylesheet" href="{% static 'css/design_system.css' %}?v=3" />
+
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=6" />
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=6" />
+
+    <!-- Global Custom CSS -->
     <style>
+      /* =====================================================
+         GLOBAL RESET
+      ===================================================== */
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        padding-top: 104px !important;
+        overflow-x: hidden;
+      }
+
+      /* =====================================================
+         NAVBAR
+      ===================================================== */
+
+      .main-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+
+        animation: pageFadeIn 0.8s ease-out both;
+
+        transition:
+          background-color 0.3s ease,
+          box-shadow 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .main-nav.scrolled {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .main-nav .logo-circle {
+        margin: 0;
+      }
+
+      /* =====================================================
+         PAGE LOAD ANIMATION
+      ===================================================== */
+
+      @keyframes pageFadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* =====================================================
+         SCROLL REVEAL ANIMATION
+      ===================================================== */
+
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(60px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .scroll-reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Left Reveal */
+
+      .scroll-reveal-left {
+        opacity: 0;
+        transform: translateX(-70px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .scroll-reveal-left.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Right Reveal */
+
+      .scroll-reveal-right {
+        opacity: 0;
+        transform: translateX(70px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .scroll-reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Zoom Reveal */
+
+      .scroll-reveal-zoom {
+        opacity: 0;
+        transform: scale(0.85);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .scroll-reveal-zoom.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* =====================================================
+         STAGGER ANIMATION
+      ===================================================== */
+
+      .stagger-item {
+        opacity: 0;
+        transform: translateY(30px);
+
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .stagger-item.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stagger-item:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+
+      .stagger-item:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+
+      .stagger-item:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+
+      .stagger-item:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+
+      .stagger-item:nth-child(5) {
+        transition-delay: 0.5s;
+      }
+
+      .stagger-item:nth-child(6) {
+        transition-delay: 0.6s;
+      }
+
+      /* =====================================================
+         AOS CUSTOM ANIMATION
+      ===================================================== */
+
+      [data-aos] {
+        will-change: transform, opacity;
+      }
+
+      [data-aos="fade-left"] {
+        transform: translate3d(-60px, 0, 0);
+      }
+
+      [data-aos="fade-right"] {
+        transform: translate3d(60px, 0, 0);
+      }
+
+      [data-aos="fade-up"] {
+        transform: translate3d(0, 60px, 0);
+      }
+
+      [data-aos="fade-down"] {
+        transform: translate3d(0, -60px, 0);
+      }
+
+      [data-aos="zoom-in"] {
+        transform: scale(0.85);
+      }
+
+      /* =====================================================
+         CARD HOVER ANIMATION
+      ===================================================== */
+
+      .hover-lift {
+        transition:
+          transform 0.4s ease,
+          box-shadow 0.4s ease;
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      }
+
+      /* =====================================================
+         IMAGE HOVER
+      ===================================================== */
+
+      .image-hover {
+        overflow: hidden;
+      }
+
+      .image-hover img {
+        transition: transform 0.6s ease;
+      }
+
+      .image-hover:hover img {
+        transform: scale(1.08);
+      }
+
+      /* =====================================================
+         BUTTON HOVER
+      ===================================================== */
+
+      .smooth-button {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .smooth-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      }
+
+      /* =====================================================
+         FOOTER LINK
+      ===================================================== */
+
+      .footer-link {
+        position: relative;
+        display: inline-block;
+        color: #4b5563;
+
+        transition:
+          color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .footer-link:hover {
+        color: #dc2626;
+        transform: translateX(5px);
+      }
+
+      /* =====================================================
+         SOCIAL ICON
+      ===================================================== */
+
+      .social-icon {
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px) scale(1.05);
+
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      /* =====================================================
+         MOBILE NAVIGATION
+      ===================================================== */
+
+      @media (max-width: 768px) {
         body {
-            padding-top: 104px !important;
+          padding-top: 140px !important;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding-top: 140px !important;
-            }
-
-            .main-nav .nav-menu {
-                top: 140px !important;
-                max-height: calc(100vh - 140px) !important;
-            }
+        .main-nav .nav-menu {
+          top: 140px !important;
+          max-height: calc(100vh - 140px) !important;
+          overflow-y: auto;
         }
 
-        .main-nav .logo-circle {
-            margin: 0;
+        .scroll-reveal {
+          transform: translateY(35px);
         }
+
+        .scroll-reveal-left {
+          transform: translateX(-35px);
+        }
+
+        .scroll-reveal-right {
+          transform: translateX(35px);
+        }
+
+        [data-aos="fade-left"] {
+          transform: translate3d(-35px, 0, 0);
+        }
+
+        [data-aos="fade-right"] {
+          transform: translate3d(35px, 0, 0);
+        }
+
+        [data-aos="fade-up"] {
+          transform: translate3d(0, 35px, 0);
+        }
+
+        [data-aos="fade-down"] {
+          transform: translate3d(0, -35px, 0);
+        }
+
+        [data-aos="zoom-in"] {
+          transform: scale(0.94);
+        }
+      }
+
+      /* =====================================================
+         REDUCED MOTION
+      ===================================================== */
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+
+        [data-aos],
+        .scroll-reveal,
+        .scroll-reveal-left,
+        .scroll-reveal-right,
+        .scroll-reveal-zoom {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+
+      /* =====================================================
+   SUPPORT SECTION
+   PREMIUM SCROLL ANIMATION
+===================================================== */
+
+.support-section {
+  overflow: hidden;
+}
+
+
+/* =====================================================
+   SUPPORT CARD INITIAL STATE
+===================================================== */
+
+.support-card {
+  opacity: 0;
+  transform: translateY(70px) scale(0.96);
+  transition:
+    opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+}
+
+
+/* =====================================================
+   CARD VISIBLE STATE
+===================================================== */
+
+.support-section.show .support-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+
+/* =====================================================
+   CARD HOVER
+===================================================== */
+
+.support-section.show .support-card:hover {
+  transform: translateY(-8px) scale(1.005);
+
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.08),
+    0 10px 20px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =====================================================
+   LABEL ANIMATION
+===================================================== */
+
+.support-label {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  transition-delay: 0.25s;
+}
+
+.support-section.show .support-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =====================================================
+   HEADING ANIMATION
+===================================================== */
+
+.support-title {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 0.35s;
+}
+
+.support-section.show .support-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* =====================================================
+   READ MORE ANIMATION
+===================================================== */
+
+.support-read-more {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease,
+    color 0.3s ease;
+  transition-delay: 0.5s;
+}
+
+.support-section.show .support-read-more {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* READ MORE HOVER */
+
+.support-read-more:hover {
+  color: #991b1b;
+  transform: translateX(5px);
+}
+
+
+/* =====================================================
+   DONATE BUTTON ANIMATION
+===================================================== */
+
+.support-button-wrapper {
+  opacity: 0;
+  transform: translateX(50px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 0.45s;
+}
+
+.support-section.show .support-button-wrapper {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* =====================================================
+   DONATE BUTTON HOVER
+===================================================== */
+
+.support-donate-btn {
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+
+/* Shine effect */
+
+.support-donate-btn::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -120%;
+
+  width: 80%;
+  height: 100%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+
+  transform: skewX(-20deg);
+
+  transition: left 0.7s ease;
+}
+
+
+.support-donate-btn:hover::before {
+  left: 130%;
+}
+
+
+.support-donate-btn:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 12px 25px rgba(21, 101, 192, 0.25);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .support-card {
+    transform: translateY(50px) scale(0.97);
+  }
+
+  .support-section.show .support-card:hover {
+    transform: translateY(-4px) scale(1);
+  }
+
+  .support-button-wrapper {
+    transform: translateY(25px);
+  }
+
+  .support-section.show .support-button-wrapper {
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .support-card,
+  .support-label,
+  .support-title,
+  .support-read-more,
+  .support-button-wrapper {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .support-donate-btn::before {
+    display: none;
+  }
+
+}
     </style>
+
     {% block extra_css %}{% endblock %}
-</head>
+  </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+  <body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
 
-    <!-- Navigation -->
     <nav class="main-nav">
-        <!-- Top Contact & Location Bar -->
-        <div
-            class="bg-[#024b24] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot text-[#ffb300]"></i>
-                <span>Aligarh & Bulandshahr, Uttar Pradesh</span>
-            </div>
-            <div class="flex items-center gap-6">
-                <a href="mailto:mail@udaansociety.org"
-                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
-                    <i class="fa-regular fa-envelope"></i>
-                    <span>mail@udaansociety.org</span>
-                </a>
-                <a href="tel:+919837067681"
-                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>+91 98370 67681</span>
-                </a>
-            </div>
+      <!-- Top Contact Bar -->
+
+      <div
+        class="bg-[#024b24] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full"
+      >
+        <!-- Location -->
+
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-location-dot text-[#ffb300]"></i>
+
+          <span> Aligarh & Bulandshahr, Uttar Pradesh </span>
         </div>
 
+        <!-- Contact -->
 
-        <div class="nav-container">
-            <div class="logo">
-                <a href="{% url 'home' %}" class="flex items-center gap-3 no-underline">
-                    <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
-                    <div class="flex flex-col text-left">
-                        <span class="text-xl sm:text-2xl font-bold text-[#024b24] tracking-tight leading-none">UDAAN
-                            SOCIETY</span>
-                        <span class="text-[10px] sm:text-xs text-gray-500 font-semibold tracking-wide mt-1.5">Empowering
-                            Lives. Building Futures.</span>
-                    </div>
-                </a>
-            </div>
+        <div class="flex items-center gap-6">
+          <a
+            href="mailto:mail@udaansociety.org"
+            class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white"
+          >
+            <i class="fa-regular fa-envelope"></i>
 
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn" aria-label="Toggle navigation">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        Who We Are <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
-                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Misson, Vision & Values</a>
-                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation &
-                            Accolades</a>
-                        <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
-                        <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
-                        <a href="{% url 'contact_us' %}" class="dropdown-item">
-                            Contact Us
-                        </a>
+            <span> mail@udaansociety.org </span>
+          </a>
 
-                        <a href="{% url 'our_team' %}" class="dropdown-item">
-                            Our Team
-                        </a>
+          <a
+            href="tel:+919837067681"
+            class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white"
+          >
+            <i class="fa-solid fa-phone"></i>
 
-                        <a href="{% url 'faq' %}" class="dropdown-item">FAQs</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        Make a Difference <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="{% url 'career_fellowship' %}" class="dropdown-item">
-                            Career and Fellowship
-                        </a>
-
-                        <a href="{% url 'workplace_living' %}" class="dropdown-item">
-                            Workplace Giving
-                        </a>
-
-                        <a href="{% url 'volunteering' %}" class="dropdown-item">
-                            Volunteering
-                        </a>
-
-                        <a href="{% url 'internships' %}" class="dropdown-item">
-                            Internships
-                        </a>
-
-                        <a href="{% url 'campus_ambassador' %}" class="dropdown-item">
-                            Campus Ambassador
-                        </a>
-
-                        <a href="{% url 'jobs' %}" class="dropdown-item">
-                            Jobs at UDAAN Society
-                        </a>
-
-
-
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        Impact <span class="dropdown-arrow">▼</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
-                        <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
-                        <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
-                        <a href="{% url 'our_activities' %}" class="dropdown-item">Our Activities</a>
-                        <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>
-                        <a href="{% url 'news_clippings' %}" class="dropdown-item">News Clippings</a>
-                        <a href="{% url 'resources' %}" class="dropdown-item">Resources</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'blood_donation' %}" class="nav-link">Blood Request</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'campaign_list' %}" class="nav-link">Campaigns</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/donate/"
-                        class="bg-[#024b24] hover:bg-[#013519] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline">
-                        <i class="fa-regular fa-heart"></i>
-                        Donate Now
-                    </a>
-                </li>
-            </ul>
+            <span> +91 98370 67681 </span>
+          </a>
         </div>
+      </div>
+
+      <!-- Main Navigation -->
+
+      <div class="nav-container">
+        <!-- Logo -->
+
+        <div class="logo">
+          <a
+            href="{% url 'home' %}"
+            class="flex items-center gap-3 no-underline"
+          >
+            <img
+              class="logo-circle"
+              src="{% static 'assets/logo.webp' %}"
+              alt="UDAAN Society"
+            />
+
+            <div class="flex flex-col text-left">
+              <span
+                class="text-xl sm:text-2xl font-bold text-[#024b24] tracking-tight leading-none"
+              >
+                UDAAN SOCIETY
+              </span>
+
+              <span
+                class="text-[10px] sm:text-xs text-gray-500 font-semibold tracking-wide mt-1.5"
+              >
+                Empowering Lives. Building Futures.
+              </span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+
+        <button
+          class="mobile-menu-btn"
+          aria-label="Toggle navigation"
+          type="button"
+        >
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <!-- Navigation Menu -->
+
+        <ul class="nav-menu">
+          <!-- Who We Are -->
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              Who We Are
+              <span class="dropdown-arrow">▼</span>
+            </a>
+
+            <div class="dropdown-menu">
+              <a href="{% url 'aboutus' %}" class="dropdown-item"> About </a>
+
+              <a href="{% url 'our_mission_values' %}" class="dropdown-item">
+                Our Mission, Vision & Values
+              </a>
+
+              <a
+                href="{% url 'appreciationandaccolades' %}"
+                class="dropdown-item"
+              >
+                Appreciation & Accolades
+              </a>
+
+              <a href="{% url 'our_partners' %}" class="dropdown-item">
+                Our Partners
+              </a>
+
+              <a href="{% url 'our_policies' %}" class="dropdown-item">
+                Our Policies
+              </a>
+
+              <a href="{% url 'contact_us' %}" class="dropdown-item">
+                Contact Us
+              </a>
+
+              <a href="{% url 'our_team' %}" class="dropdown-item">
+                Our Team
+              </a>
+
+              <a href="{% url 'faq' %}" class="dropdown-item"> FAQs </a>
+            </div>
+          </li>
+
+          <!-- Make a Difference -->
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              Make a Difference
+              <span class="dropdown-arrow">▼</span>
+            </a>
+
+            <div class="dropdown-menu">
+              <a href="{% url 'career_fellowship' %}" class="dropdown-item">
+                Career and Fellowship
+              </a>
+
+              <a href="{% url 'workplace_living' %}" class="dropdown-item">
+                Workplace Giving
+              </a>
+
+              <a href="{% url 'volunteering' %}" class="dropdown-item">
+                Volunteering
+              </a>
+
+              <a href="{% url 'internships' %}" class="dropdown-item">
+                Internships
+              </a>
+
+              <a href="{% url 'campus_ambassador' %}" class="dropdown-item">
+                Campus Ambassador
+              </a>
+
+              <a href="{% url 'jobs' %}" class="dropdown-item">
+                Jobs at UDAAN Society
+              </a>
+            </div>
+          </li>
+
+          <!-- Impact -->
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              Impact
+              <span class="dropdown-arrow">▼</span>
+            </a>
+
+            <div class="dropdown-menu">
+              <a href="{% url 'report_list' %}" class="dropdown-item">
+                Annual Report
+              </a>
+
+              <a href="{% url 'locations' %}" class="dropdown-item">
+                Our Locations
+              </a>
+
+              <a href="{% url 'project_list' %}" class="dropdown-item">
+                Projects
+              </a>
+
+              <a href="{% url 'our_activities' %}" class="dropdown-item">
+                Our Activities
+              </a>
+
+              <a href="{% url 'blogs' %}" class="dropdown-item"> Blogs </a>
+
+              <a href="{% url 'news_clippings' %}" class="dropdown-item">
+                News Clippings
+              </a>
+
+              <a href="{% url 'resources' %}" class="dropdown-item">
+                Resources
+              </a>
+            </div>
+          </li>
+
+          <!-- Blood Request -->
+
+          <li class="nav-item">
+            <a href="{% url 'blood_donation' %}" class="nav-link">
+              Blood Request
+            </a>
+          </li>
+
+          <!-- Campaigns -->
+
+          <li class="nav-item">
+            <a href="{% url 'campaign_list' %}" class="nav-link"> Campaigns </a>
+          </li>
+
+          <!-- Donate -->
+
+          <li class="nav-item">
+            <a
+              href="{% url 'donate' %}"
+              class="bg-[#024b24] hover:bg-[#013519] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline smooth-button"
+            >
+              <i class="fa-regular fa-heart"></i>
+
+              Donate Now
+            </a>
+          </li>
+        </ul>
+      </div>
     </nav>
 
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
-    <!-- Main Content -->
     <main class="flex-grow">
-        <!-- Announcement Marquee -->
-        <div class="bg-transparent text-[#024b24] text-xs sm:text-sm py-2 font-bold tracking-wide overflow-hidden flex items-center">
-            <marquee scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();" class="w-full">
-                📢 Welcome to UDAAN Society! Support our active campaigns and make a difference today. 🌟 Join us in our mission to empower underserved communities! 
-            </marquee>
-        </div>
+      <!-- Announcement -->
 
-        {% block content %}{% endblock %}
+      <div
+        class="bg-transparent text-[#024b24] text-xs sm:text-sm py-2 font-bold tracking-wide overflow-hidden flex items-center"
+      >
+        <marquee
+          scrollamount="6"
+          onmouseover="this.stop()"
+          onmouseout="this.start()"
+          class="w-full"
+        >
+          📢 Welcome to UDAAN Society! Support our active campaigns and make a
+          difference today. 🌟 Join us in our mission to empower underserved
+          communities!
+        </marquee>
+      </div>
+
+      <!-- Child Page Content -->
+
+      {% block content %} {% endblock %}
     </main>
 
-    <!-- Footer -->
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
     <footer class="mt-auto">
+      <!-- Support Section -->
 
-        <!-- Support Section -->
-        <div class="bg-white py-12 border-b border-gray-200 support-section">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div
-                    class="support-card bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
-                    <div class="mb-6 md:mb-0">
-                        <span class="text-red-600 font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A
-                            HAND</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-                            <span class="text-red-600">Support Us</span> And Change The <br class="hidden md:block">
-                            Course Of A Child's Life Today!
-                        </h2>
-                        <button
-                            class="text-red-600 font-medium text-sm mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
-                            data-title="Change a Child's Life"
-                            data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future.">
-                            Read more...
-                        </button>
-                    </div>
-                    <div>
-                        <a href="{% url 'donate' %}"
-                            class="bg-[#E3F2FD] text-[#0D47A1] hover:bg-[#1565C0] hover:text-white font-bold py-3 px-8 rounded-xl flex items-center border border-[#E3F2FD] hover:border-[#1565C0] transition-all shadow-sm hover:shadow-md">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
-                            Donate Now
-                            <span class="text-xs font-normal ml-1 opacity-80 block sm:inline">Secured by Razorpay</span>
-                        </a>
-                    </div>
-                </div>
+      <!-- =====================================================
+     SUPPORT SECTION
+====================================================== -->
+
+<div class="support-section">
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+
+    <div
+      class="support-card bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between"
+    >
+
+      <!-- LEFT CONTENT -->
+      <div class="support-content mb-6 md:mb-0">
+
+        <span
+          class="support-label text-red-600 font-bold tracking-widest text-xs uppercase block mb-2"
+        >
+          GIVE US A HAND
+        </span>
+
+        <h2
+          class="support-title text-3xl md:text-4xl font-extrabold text-gray-900 mb-2"
+        >
+          <span class="text-red-600">Support Us</span>
+
+          And Change The
+
+          <br class="hidden md:block" />
+
+          Course Of A Child's Life Today!
+        </h2>
+
+        <!-- READ MORE -->
+        <button
+          type="button"
+          class="support-read-more text-red-600 font-medium text-sm mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
+          data-title="Change a Child's Life"
+          data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future."
+        >
+          Read more...
+        </button>
+
+      </div>
+
+
+      <!-- DONATE BUTTON -->
+      <div class="support-button-wrapper">
+
+        <a
+          href="{% url 'donate' %}"
+          class="support-donate-btn bg-[#E3F2FD] text-[#0D47A1] hover:bg-[#1565C0] hover:text-white font-bold py-3 px-8 rounded-xl flex items-center border border-[#E3F2FD] hover:border-[#1565C0]"
+        >
+
+          <i class="fa-solid fa-hand-holding-heart mr-2"></i>
+
+          Donate Now
+
+          <span
+            class="text-xs font-normal ml-1 opacity-80 block sm:inline"
+          >
+            Secured by Razorpay
+          </span>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+      <!-- Main Footer Links -->
+
+      <div class="bg-gradient-to-b from-gray-100 to-white py-16">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- Brand -->
+
+            <div class="scroll-reveal-left hover-lift p-2">
+              <div class="flex items-center mb-6">
+                <img
+                  src="{% static 'assets/logo.webp' %}"
+                  alt="UDAAN Society"
+                  class="h-12 w-auto mr-3"
+                />
+
+                <span class="text-xl font-bold text-gray-900">
+                  UDAAN Society
+                </span>
+              </div>
+
+              <p class="text-gray-600 text-sm leading-relaxed">
+                We strive for underserved and neglected communities. Service,
+                Responsibility, Determination, Kindness, and Contribution are
+                our core values.
+              </p>
             </div>
-        </div>
 
+            <!-- Quick Links -->
 
+            <div class="scroll-reveal">
+              <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                Quick Links
 
+                <span class="block w-12 h-1 bg-red-500 mt-2"></span>
+              </h4>
 
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a href="{% url 'aboutus' %}" class="footer-link">
+                    About UDAAN
+                  </a>
+                </li>
 
+                <li>
+                  <a href="{% url 'our_team' %}" class="footer-link">
+                    Our Team
+                  </a>
+                </li>
 
+                <li>
+                  <a href="{% url 'project_list' %}" class="footer-link">
+                    Projects
+                  </a>
+                </li>
 
+                <li>
+                  <a href="{% url 'our_activities' %}" class="footer-link">
+                    Activities
+                  </a>
+                </li>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Main Footer Links (IMPROVED + ANIMATED) -->
-        <div class="bg-gradient-to-b from-gray-100 to-white py-16">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-
-                    <!-- Brand Section -->
-                    <div class="transform transition duration-500 hover:-translate-y-2">
-                        <div class="flex items-center mb-6">
-                            <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" class="h-12 w-auto mr-3">
-                            <span class="text-xl font-bold text-gray-900">UDAAN Society</span>
-                        </div>
-
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            We strive for underserved and neglected communities. Service, Responsibility, Determination,
-                            Kindness, and Contribution are our core values.
-                        </p>
-                    </div>
-
-                    <!-- Quick Links -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.1s; animation-fill-mode: forwards;">
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Quick Links
-                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
-                        </h4>
-
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="{% url 'aboutus' %}" class="footer-link">About UDAAN</a></li>
-                            <li><a href="{% url 'our_team' %}" class="footer-link">Our Team</a></li>
-                            <li><a href="{% url 'project_list' %}" class="footer-link">Projects</a></li>
-                            <li><a href="{% url 'our_activities' %}" class="footer-link">Activities</a></li>
-                            <li><a href="{% url 'contact_us' %}" class="footer-link">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Policies -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.2s; animation-fill-mode: forwards;">
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Policies
-                            <span class="block w-12 h-1 bg-blue-500 mt-2"></span>
-                        </h4>
-
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Privacy Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Terms of Use</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Refund Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Child Protection</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Social + Newsletter -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.3s; animation-fill-mode: forwards;">
-
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Stay Connected
-                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
-                        </h4>
-
-                        <input type="email" placeholder="Enter email"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm mb-3">
-
-                        <button
-                            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all duration-300">
-                            Subscribe
-                        </button>
-
-                        <div class="flex space-x-3 mt-5">
-
-                            <a href="#"
-                                class="social-icon bg-blue-600 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">f</a>
-                            <a href="#"
-                                class="social-icon bg-pink-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">i</a>
-                            <a href="#"
-                                class="social-icon bg-blue-700 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">in</a>
-                            <a href="#"
-                                class="social-icon bg-red-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">yt</a>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                <li>
+                  <a href="{% url 'contact_us' %}" class="footer-link">
+                    Contact
+                  </a>
+                </li>
+              </ul>
             </div>
-        </div>
 
+            <!-- Policies -->
 
+            <div class="scroll-reveal">
+              <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                Policies
 
+                <span class="block w-12 h-1 bg-blue-500 mt-2"></span>
+              </h4>
 
+              <ul class="space-y-3 text-sm">
+                <li>
+                  <a href="{% url 'our_policies' %}" class="footer-link">
+                    Privacy Policy
+                  </a>
+                </li>
 
+                <li>
+                  <a href="{% url 'our_policies' %}" class="footer-link">
+                    Terms of Use
+                  </a>
+                </li>
 
+                <li>
+                  <a href="{% url 'our_policies' %}" class="footer-link">
+                    Refund Policy
+                  </a>
+                </li>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Copyright -->
-        <div class="relative bg-gray-950 py-8 border-t border-gray-800">
-
-            <!-- top glow line -->
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-white to-red-500"></div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-
-                <!-- Left -->
-                <div class="text-gray-400 text-sm mb-4 md:mb-0 text-center md:text-left">
-                    © {% now "Y" %} <span class="text-white font-semibold">UDAAN Society</span>
-                    <br class="md:hidden">
-                    <span class="text-gray-500 text-xs">Made with ❤️ by UDAAN Society Team</span>
-                </div>
-
-                <!-- Right Links -->
-                <div class="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Terms</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Privacy</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Refund</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Disclaimer</a>
-                </div>
+                <li>
+                  <a href="{% url 'our_policies' %}" class="footer-link">
+                    Child Protection
+                  </a>
+                </li>
+              </ul>
             </div>
-        </div>
 
+            <!-- Newsletter -->
+
+            <div class="scroll-reveal-right">
+              <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                Stay Connected
+
+                <span class="block w-12 h-1 bg-red-500 mt-2"></span>
+              </h4>
+
+              <input
+                type="email"
+                placeholder="Enter email"
+                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm mb-3"
+              />
+
+              <button
+                type="button"
+                class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all duration-300 smooth-button"
+              >
+                Subscribe
+              </button>
+
+              <!-- Social Icons -->
+
+              <div class="flex space-x-3 mt-5">
+                <a
+                  href="#"
+                  class="social-icon bg-blue-600 w-[30px] h-[30px] text-white flex items-center justify-center rounded-full"
+                >
+                  <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a
+                  href="#"
+                  class="social-icon bg-pink-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded-full"
+                >
+                  <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a
+                  href="#"
+                  class="social-icon bg-blue-700 w-[30px] h-[30px] text-white flex items-center justify-center rounded-full"
+                >
+                  <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+                <a
+                  href="#"
+                  class="social-icon bg-red-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded-full"
+                >
+                  <i class="fa-brands fa-youtube"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright -->
+
+      <div class="relative bg-gray-950 py-8 border-t border-gray-800">
+        <!-- Gradient Line -->
+
+        <div
+          class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-white to-red-500"
+        ></div>
+
+        <div
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center"
+    >
+
+      <!-- Copyright Text -->
+      <div
+        class="text-gray-400 text-sm mb-4 md:mb-0 text-center md:text-left"
+      >
+
+        © {% now "Y" %}
+
+        <span class="text-white font-semibold">
+          UDAAN Society
+        </span>
+
+        <br class="md:hidden" />
+
+        <span class="text-gray-500 text-xs">
+          Made with ❤️ by UDAAN Society Team
+        </span>
+
+      </div>
+
+
+      <!-- Copyright Links -->
+      <div
+        class="flex flex-wrap justify-center gap-4 text-xs md:text-sm"
+      >
+
+        <a
+          href="{% url 'our_policies' %}"
+          class="text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
+        >
+          Terms
+        </a>
+
+        <a
+          href="{% url 'our_policies' %}"
+          class="text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
+        >
+          Privacy
+        </a>
+
+        <a
+          href="{% url 'our_policies' %}"
+          class="text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
+        >
+          Refund
+        </a>
+
+        <a
+          href="{% url 'our_policies' %}"
+          class="text-gray-400 hover:text-white transition-all duration-300 hover:-translate-y-1"
+        >
+          Disclaimer
+        </a>
+
+      </div>
+
+    </div>
+      </div>
     </footer>
+
+    <!-- =====================================================
+         MAIN JAVASCRIPT
+    ====================================================== -->
 
     <script src="{% static 'js/main.js' %}"></script>
 
-    <!-- AI Chatbot Integration (Microservice Architecture) -->
-    <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}">
+    <!-- =====================================================
+         AI CHATBOT
+    ====================================================== -->
+
+    <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}" />
+
     {% include 'chatbot/widget.html' %}
+
     <script src="{% static 'chatbot/chatbot.js' %}"></script>
-    <!-- Global Workspace FAB Removed -->
-    {% if request.user.is_authenticated %}
-    {% endif %}
-    <!-- Global Read More Modal -->
-    <div id="globalReadMoreModal"
-        class="fixed inset-0 z-[100] hidden items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300">
+
+    <!-- =====================================================
+         GLOBAL READ MORE MODAL
+    ====================================================== -->
+
+    <div
+      id="globalReadMoreModal"
+      class="fixed inset-0 z-[10000] hidden items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300"
+    >
+      <div
+        class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300"
+      >
+        <!-- Modal Header -->
+
         <div
-            class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
-            <!-- Modal Header -->
-            <div class="flex items-center justify-between p-5 border-b border-gray-200">
-                <h3 id="modalTitle" class="text-2xl font-bold text-gray-900"></h3>
-                <button id="closeModalBtn"
-                    class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-            <!-- Modal Body -->
-            <div class="p-6 max-h-[70vh] overflow-y-auto">
-                <img id="modalImage" src="" alt="Modal Image"
-                    class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64">
-                <div id="modalContent" class="text-gray-700 leading-relaxed text-lg"></div>
-            </div>
-            <!-- Modal Footer -->
-            <div class="p-5 border-t border-gray-200 flex justify-end">
-                <button id="closeModalFooterBtn"
-                    class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors">Close</button>
-            </div>
+          class="flex items-center justify-between p-5 border-b border-gray-200"
+        >
+          <h3 id="modalTitle" class="text-2xl font-bold text-gray-900"></h3>
+
+          <button
+            id="closeModalBtn"
+            type="button"
+            class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+          >
+            <i class="fa-solid fa-xmark text-xl"></i>
+          </button>
         </div>
+
+        <!-- Modal Body -->
+
+        <div class="p-6 max-h-[70vh] overflow-y-auto">
+          <img
+            id="modalImage"
+            src=""
+            alt="Modal Image"
+            class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64"
+          />
+
+          <div
+            id="modalContent"
+            class="text-gray-700 leading-relaxed text-lg"
+          ></div>
+        </div>
+
+        <!-- Modal Footer -->
+
+        <div class="p-5 border-t border-gray-200 flex justify-end">
+          <button
+            id="closeModalFooterBtn"
+            type="button"
+            class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </div>
 
+    <!-- =====================================================
+         MODAL JAVASCRIPT
+    ====================================================== -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('globalReadMoreModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            const modalImage = document.getElementById('modalImage');
-            const closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalFooterBtn')];
+      document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("globalReadMoreModal");
 
-            // Function to open modal
-            window.openReadMoreModal = function (title, content, imageUrl = null) {
-                modalTitle.textContent = title || 'Details';
-                modalContent.innerHTML = content || '';
+        const modalTitle = document.getElementById("modalTitle");
 
-                if (imageUrl) {
-                    modalImage.src = imageUrl;
-                    modalImage.classList.remove('hidden');
-                } else {
-                    modalImage.src = '';
-                    modalImage.classList.add('hidden');
-                }
+        const modalContent = document.getElementById("modalContent");
 
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                // Trigger reflow for transition
-                void modal.offsetWidth;
-                modal.classList.remove('opacity-0');
-                modal.querySelector('div').classList.remove('scale-95');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            };
+        const modalImage = document.getElementById("modalImage");
 
-            // Function to close modal
-            const closeModal = () => {
-                modal.classList.add('opacity-0');
-                modal.querySelector('div').classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                    document.body.style.overflow = '';
-                }, 300); // Wait for transition
-            };
+        const closeModalBtn = document.getElementById("closeModalBtn");
 
-            closeBtns.forEach(btn => {
-                if (btn) btn.addEventListener('click', closeModal);
-            });
+        const closeModalFooterBtn = document.getElementById(
+          "closeModalFooterBtn",
+        );
 
-            // Close on outside click
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
+        /*
+            OPEN MODAL
+          */
 
-            // Handle ESC key
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-            });
+        window.openReadMoreModal = function (title, content, imageUrl = null) {
+          modalTitle.textContent = title || "Details";
 
-            // Auto-bind to elements with generic class if they provide data attributes
-            document.querySelectorAll('.open-modal-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Stop propagation so parent link clicks aren't triggered
-                    e.stopPropagation();
-                    const title = btn.getAttribute('data-title');
-                    const content = btn.getAttribute('data-content');
-                    const image = btn.getAttribute('data-image');
-                    window.openReadMoreModal(title, content, image);
-                });
-            });
+          modalContent.textContent = content || "";
+
+          if (imageUrl) {
+            modalImage.src = imageUrl;
+
+            modalImage.classList.remove("hidden");
+          } else {
+            modalImage.src = "";
+
+            modalImage.classList.add("hidden");
+          }
+
+          modal.classList.remove("hidden");
+
+          modal.classList.add("flex");
+
+          requestAnimationFrame(function () {
+            modal.classList.remove("opacity-0");
+
+            modal.querySelector(":scope > div").classList.remove("scale-95");
+          });
+
+          document.body.style.overflow = "hidden";
+        };
+
+        /*
+            CLOSE MODAL
+          */
+
+        function closeModal() {
+          modal.classList.add("opacity-0");
+
+          modal.querySelector(":scope > div").classList.add("scale-95");
+
+          setTimeout(function () {
+            modal.classList.add("hidden");
+
+            modal.classList.remove("flex");
+
+            document.body.style.overflow = "";
+          }, 300);
+        }
+
+        /*
+            CLOSE BUTTONS
+          */
+
+        if (closeModalBtn) {
+          closeModalBtn.addEventListener("click", closeModal);
+        }
+
+        if (closeModalFooterBtn) {
+          closeModalFooterBtn.addEventListener("click", closeModal);
+        }
+
+        /*
+            OUTSIDE CLICK
+          */
+
+        modal.addEventListener("click", function (event) {
+          if (event.target === modal) {
+            closeModal();
+          }
         });
+
+        /*
+            ESC KEY
+          */
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape" && !modal.classList.contains("hidden")) {
+            closeModal();
+          }
+        });
+
+        /*
+            OPEN MODAL BUTTONS
+          */
+
+        document.querySelectorAll(".open-modal-btn").forEach(function (button) {
+          button.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            const title = button.getAttribute("data-title");
+
+            const content = button.getAttribute("data-content");
+
+            const image = button.getAttribute("data-image");
+
+            window.openReadMoreModal(title, content, image);
+          });
+        });
+      });
     </script>
+
+    <!-- Home JS -->
+
     <script src="{% static 'js/home.js' %}"></script>
+
+    <!-- =====================================================
+         AOS JS
+    ====================================================== -->
+
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 120
+      /*
+        INITIALIZE AOS
+      */
+
+      AOS.init({
+        duration: 900,
+
+        once: false,
+
+        offset: 100,
+
+        delay: 0,
+
+        easing: "ease-out-cubic",
+
+        mirror: true,
+
+        anchorPlacement: "top-bottom",
+      });
+
+      /*
+        =====================================================
+        INTERSECTION OBSERVER
+        AUTOMATIC SCROLL REVEAL
+        =====================================================
+      */
+
+      const revealObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            } else {
+              /*
+                    Remove this if you want
+                    animation only once.
+                  */
+
+              entry.target.classList.remove("active");
+            }
+          });
+        },
+
+        {
+          threshold: 0.15,
+
+          rootMargin: "0px 0px -50px 0px",
+        },
+      );
+
+      /*
+        OBSERVE ALL REVEAL ELEMENTS
+      */
+
+      document
+        .querySelectorAll(
+          ".scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-zoom",
+        )
+        .forEach(function (element) {
+          revealObserver.observe(element);
         });
 
-        // Smooth Parallax Scroll Animation for Subpage Heros
-        document.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            document.querySelectorAll('.subpage-hero').forEach(hero => {
-                // Moves the background slower than the text container to create smooth visual depth
-                hero.style.backgroundPositionY = `${scrolled * 0.3}px`;
-            });
+      /*
+        =====================================================
+        STAGGER ANIMATION
+        =====================================================
+      */
+
+      const staggerObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target
+                .querySelectorAll(".stagger-item")
+                .forEach(function (item) {
+                  item.classList.add("active");
+                });
+            }
+          });
+        },
+
+        {
+          threshold: 0.15,
+        },
+      );
+
+      document
+        .querySelectorAll(".stagger-container")
+        .forEach(function (container) {
+          staggerObserver.observe(container);
         });
+
+      /*
+        =====================================================
+        NAVBAR SCROLL EFFECT
+        =====================================================
+      */
+
+      const navbar = document.querySelector(".main-nav");
+
+      let ticking = false;
+
+      function updateNavbar() {
+        if (window.scrollY > 30) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+
+        ticking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        function () {
+          if (!ticking) {
+            window.requestAnimationFrame(updateNavbar);
+
+            ticking = true;
+          }
+        },
+        {
+          passive: true,
+        },
+      );
+
+      /*
+        =====================================================
+        SMOOTH PARALLAX
+        =====================================================
+      */
+
+      const heroElements = document.querySelectorAll(".subpage-hero");
+
+      let parallaxTicking = false;
+
+      function updateParallax() {
+        const scrolled = window.scrollY;
+
+        heroElements.forEach(function (hero) {
+          const speed = 0.3;
+
+          hero.style.backgroundPositionY = `${scrolled * speed}px`;
+        });
+
+        parallaxTicking = false;
+      }
+
+      window.addEventListener(
+        "scroll",
+        function () {
+          if (!parallaxTicking) {
+            window.requestAnimationFrame(updateParallax);
+
+            parallaxTicking = true;
+          }
+        },
+        {
+          passive: true,
+        },
+      );
+
+      /*
+        =====================================================
+        MOBILE MENU
+        =====================================================
+      */
+
+      const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+
+      const navMenu = document.querySelector(".nav-menu");
+
+      if (mobileMenuBtn && navMenu) {
+        mobileMenuBtn.addEventListener("click", function () {
+          navMenu.classList.toggle("active");
+
+          mobileMenuBtn.classList.toggle("active");
+        });
+      }
+
+      /*
+        CLOSE MOBILE MENU
+        WHEN LINK IS CLICKED
+      */
+
+      document.querySelectorAll(".nav-menu a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (window.innerWidth <= 768) {
+            navMenu.classList.remove("active");
+
+            mobileMenuBtn.classList.remove("active");
+          }
+        });
+      });
     </script>
-</body>
 
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const supportSection = document.querySelector(".support-section");
+
+  if (!supportSection) return;
+
+  const observer = new IntersectionObserver(
+    function (entries, observer) {
+
+      entries.forEach(function (entry) {
+
+        if (entry.isIntersecting) {
+
+          supportSection.classList.add("show");
+
+          // Animation only once
+          observer.unobserve(supportSection);
+
+        }
+
+      });
+
+    },
+    {
+      threshold: 0.2,
+      rootMargin: "0px 0px -80px 0px"
+    }
+  );
+
+  observer.observe(supportSection);
+
+});
+</script>
+  </body>
 </html>
