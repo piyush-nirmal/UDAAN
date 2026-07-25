@@ -1,25 +1,212 @@
 {% extends "admin/base.html" %}
+{% load static %}
 
-{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block title %}{{ title }} | UDAAN Administration{% endblock %}
 
 {% block extrahead %}
-<link rel="stylesheet" href="/static/css/admin_theme.css">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin_theme.css' %}?v=12">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+  if (localStorage.getItem('admin_dark_mode') === 'true') {
+    document.documentElement.classList.add('dark-mode');
+  }
+  function toggleDarkMode() {
+    const isDark = document.documentElement.classList.toggle('dark-mode');
+    localStorage.setItem('admin_dark_mode', isDark);
+  }
+  function toggleSidebar() {
+    document.body.classList.toggle('sidebar-collapsed');
+  }
+</script>
 {% endblock %}
 
-{% block branding %}
-<h1 id="site-name">
-    <a href="{% url 'admin:index' %}">
-        UDAAN <span style="font-weight: 300; opacity: 0.8;">Administration</span>
+{% block header %}
+<header id="admin-top-navbar" class="admin-sticky-navbar">
+  
+  <div class="navbar-left">
+    <!-- Sidebar Toggle Button -->
+    <button type="button" class="btn-sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Branding Logo -->
+    <a href="{% url 'admin:index' %}" class="admin-brand-logo">
+      <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society Logo" class="brand-logo-img">
+      <div class="brand-text">
+        <span class="brand-bold">UDAAN</span>
+        <span class="brand-light">Administration</span>
+      </div>
     </a>
-</h1>
+  </div>
+
+  <!-- Global Search Bar -->
+  <div class="navbar-search-container">
+    <span class="search-icon"><i class="fas fa-search"></i></span>
+    <input type="text" id="adminGlobalSearch" placeholder="Search campaigns, users, tasks..." class="navbar-search-input">
+    <span class="search-kbd">⌘K</span>
+  </div>
+
+  <!-- Right Navigation Actions -->
+  <div class="navbar-right">
+    
+    <!-- Quick Create Dropdown -->
+    <div class="quick-create-dropdown relative">
+      <button type="button" class="btn-quick-create" onclick="this.nextElementSibling.classList.toggle('hidden')">
+        <i class="fas fa-plus"></i>
+        <span class="hidden sm:inline">Quick Create</span>
+      </button>
+      <div class="quick-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
+        <a href="{% url 'admin:blood_request_campaign_add' %}" class="quick-menu-item"><i class="fas fa-flag text-emerald-600"></i> New Campaign</a>
+        <a href="{% url 'admin:blood_request_blog_add' %}" class="quick-menu-item"><i class="fas fa-pen-nib text-blue-600"></i> Write Blog</a>
+        <a href="{% url 'admin:blood_request_bloodrequest_add' %}" class="quick-menu-item"><i class="fas fa-tint text-red-600"></i> Blood Request</a>
+        <a href="{% url 'admin:auth_user_add' %}" class="quick-menu-item"><i class="fas fa-user-plus text-purple-600"></i> Add User</a>
+        <a href="{% url 'admin:blood_request_task_add' %}" class="quick-menu-item"><i class="fas fa-tasks text-amber-600"></i> Add Task</a>
+      </div>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button type="button" class="btn-nav-icon" onclick="toggleDarkMode()" title="Toggle Dark/Light Mode">
+      <i class="fas fa-moon dark:hidden"></i>
+      <i class="fas fa-sun hidden dark:inline"></i>
+    </button>
+
+    <!-- Notification Bell -->
+    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="btn-nav-icon relative" title="Notifications">
+      <i class="fas fa-bell"></i>
+      {% if kpi_contact_messages > 0 %}
+      <span class="nav-badge">{{ kpi_contact_messages }}</span>
+      {% endif %}
+    </a>
+
+    <!-- User Profile & Workspace CTA -->
+    {% if request.user.is_authenticated %}
+    <div class="user-profile-widget">
+      <div class="user-avatar-circle">
+        {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+      </div>
+      <div class="user-info text-left hidden sm:block">
+        <span class="user-name">Welcome, <strong>{{ request.user.first_name|default:request.user.username }}</strong></span>
+        <span class="user-role">Administrator</span>
+      </div>
+    </div>
+
+    <a href="{% url 'staff_dashboard' %}" class="btn-go-workspace">
+      &rAarr; Go to Workspace
+    </a>
+    {% endif %}
+
+  </div>
+
+</header>
 {% endblock %}
 
-{% block nav-global %}
-{% if request.user.is_authenticated %}
-<a href="{% url 'staff_dashboard' %}"
-    style="float: right; background-color: #E63946; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 5px; margin-left: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background 0.3s;">
-    &rAarr; Go to Workspace
-</a>
-{% endif %}
+{% block nav-sidebar %}
+<aside id="admin-sidebar" class="admin-sidebar">
+  <nav class="sidebar-nav">
+    
+    <div class="sidebar-section-title">NGO DASHBOARD</div>
+    
+    <a href="{% url 'admin:index' %}" class="sidebar-link active">
+      <i class="fas fa-chart-pie sidebar-icon"></i>
+      <span class="sidebar-text">Dashboard</span>
+    </a>
+
+    <div class="sidebar-section-title">APPLICATIONS & VOLUNTEERS</div>
+    
+    <a href="{% url 'admin:blood_request_volunteerrequest_changelist' %}" class="sidebar-link">
+      <i class="fas fa-hands-helping sidebar-icon"></i>
+      <span class="sidebar-text">Volunteer Requests</span>
+      {% if kpi_volunteer_requests > 0 %}<span class="sidebar-badge pill-amber">{{ kpi_volunteer_requests }}</span>{% endif %}
+    </a>
+
+    <a href="{% url 'admin:blood_request_internshiprequest_changelist' %}" class="sidebar-link">
+      <i class="fas fa-graduation-cap sidebar-icon"></i>
+      <span class="sidebar-text">Internship Requests</span>
+      {% if kpi_internships > 0 %}<span class="sidebar-badge pill-amber">{{ kpi_internships }}</span>{% endif %}
+    </a>
+
+    <a href="{% url 'admin:blood_request_campusambassadorapplication_changelist' %}" class="sidebar-link">
+      <i class="fas fa-award sidebar-icon"></i>
+      <span class="sidebar-text">Campus Ambassadors</span>
+      {% if kpi_campus_applications > 0 %}<span class="sidebar-badge pill-amber">{{ kpi_campus_applications }}</span>{% endif %}
+    </a>
+
+    <div class="sidebar-section-title">CAMPAIGNS & PROJECTS</div>
+    
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}" class="sidebar-link">
+      <i class="fas fa-flag sidebar-icon"></i>
+      <span class="sidebar-text">Campaign Management</span>
+      {% if kpi_pending_campaigns > 0 %}<span class="sidebar-badge pill-red">{{ kpi_pending_campaigns }}</span>{% endif %}
+    </a>
+
+    <a href="{% url 'admin:blood_request_project_changelist' %}" class="sidebar-link">
+      <i class="fas fa-project-diagram sidebar-icon"></i>
+      <span class="sidebar-text">Projects</span>
+    </a>
+
+    <div class="sidebar-section-title">BLOOD MANAGEMENT</div>
+    
+    <a href="{% url 'admin:blood_request_bloodrequest_changelist' %}" class="sidebar-link">
+      <i class="fas fa-tint sidebar-icon"></i>
+      <span class="sidebar-text">Blood Requests</span>
+      {% if kpi_pending_blood > 0 %}<span class="sidebar-badge pill-red">{{ kpi_pending_blood }}</span>{% endif %}
+    </a>
+
+    <a href="{% url 'admin:blood_request_blooddonor_changelist' %}" class="sidebar-link">
+      <i class="fas fa-heartbeat sidebar-icon"></i>
+      <span class="sidebar-text">Blood Donors</span>
+    </a>
+
+    <div class="sidebar-section-title">CONTENT & COMMUNICATIONS</div>
+    
+    <a href="{% url 'admin:blood_request_blog_changelist' %}" class="sidebar-link">
+      <i class="fas fa-newspaper sidebar-icon"></i>
+      <span class="sidebar-text">Blogs & News</span>
+    </a>
+
+    <a href="{% url 'admin:blood_request_activity_changelist' %}" class="sidebar-link">
+      <i class="fas fa-calendar-alt sidebar-icon"></i>
+      <span class="sidebar-text">Activities & Events</span>
+    </a>
+
+    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="sidebar-link">
+      <i class="fas fa-comments sidebar-icon"></i>
+      <span class="sidebar-text">Contact Messages</span>
+      {% if kpi_contact_messages > 0 %}<span class="sidebar-badge pill-amber">{{ kpi_contact_messages }}</span>{% endif %}
+    </a>
+
+    <div class="sidebar-section-title">WORKSPACE & FINANCE</div>
+
+    <a href="{% url 'admin:blood_request_expense_changelist' %}" class="sidebar-link">
+      <i class="fas fa-wallet sidebar-icon"></i>
+      <span class="sidebar-text">Finance & Expenses</span>
+    </a>
+
+    <a href="{% url 'admin:blood_request_report_changelist' %}" class="sidebar-link">
+      <i class="fas fa-file-pdf sidebar-icon"></i>
+      <span class="sidebar-text">Reports & Documents</span>
+    </a>
+
+    <a href="{% url 'admin:blood_request_task_changelist' %}" class="sidebar-link">
+      <i class="fas fa-tasks sidebar-icon"></i>
+      <span class="sidebar-text">Workspace Tasks</span>
+    </a>
+
+    <div class="sidebar-section-title">USERS & SYSTEM</div>
+    
+    <a href="{% url 'admin:auth_user_changelist' %}" class="sidebar-link">
+      <i class="fas fa-users-cog sidebar-icon"></i>
+      <span class="sidebar-text">User Management</span>
+    </a>
+
+    <a href="{% url 'admin:logout' %}" class="sidebar-link text-red-500">
+      <i class="fas fa-sign-out-alt sidebar-icon"></i>
+      <span class="sidebar-text">Logout</span>
+    </a>
+
+  </nav>
+</aside>
 {% endblock %}

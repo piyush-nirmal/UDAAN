@@ -491,10 +491,108 @@ class AppConfigProxy:
         return getattr(self._app_config, name)
 
     def __str__(self):
-        return str(self._app_config)
+        return f"{self.name} - {self.residence} ({self.status})"
 
-    def __repr__(self):
-        return repr(self._app_config)
+
+# ======================================================
+# CUSTOM ADMIN DASHBOARD INDEX WRAPPER
+# ======================================================
+
+from django.db.models import Sum
+original_admin_index = admin.site.index
+
+def custom_admin_index(request, extra_context=None):
+    extra_context = extra_context or {}
+    
+    try:
+        from django.contrib.auth.models import User
+        from .models import (
+            Campaign, BloodRequest, BloodDonor, VolunteerRequest, InternshipRequest,
+            CampusAmbassadorApplication, ContactMessage, NewsletterSubscription,
+            Task, Team, Workspace, Blog, NewsClipping, Activity, Project, Testimonial,
+            Report, PolicyReport, JobPosting, Expense
+        )
+
+        def get_count(model, **kwargs):
+            try:
+                return model.objects.filter(**kwargs).count() if kwargs else model.objects.count()
+            except Exception:
+                return 0
+
+        extra_context['kpi_total_users'] = get_count(User)
+        extra_context['kpi_total_campaigns'] = get_count(Campaign)
+
+        # Safe Campaign Status filter
+        campaign_fields = [f.name for f in Campaign._meta.fields]
+        if 'status' in campaign_fields:
+            extra_context['kpi_pending_campaigns'] = get_count(Campaign, status__in=['submitted', 'under_review', 'pending'])
+            extra_context['kpi_approved_campaigns'] = get_count(Campaign, status__in=['approved', 'published'])
+            extra_context['kpi_rejected_campaigns'] = get_count(Campaign, status='rejected')
+        else:
+            extra_context['kpi_pending_campaigns'] = 0
+            extra_context['kpi_approved_campaigns'] = get_count(Campaign)
+            extra_context['kpi_rejected_campaigns'] = 0
+
+        extra_context['kpi_blood_requests'] = get_count(BloodRequest)
+        extra_context['kpi_pending_blood'] = get_count(BloodRequest, status__iexact='pending')
+        extra_context['kpi_blood_donors'] = get_count(BloodDonor)
+        
+        extra_context['kpi_volunteer_requests'] = get_count(VolunteerRequest, status__iexact='pending') or get_count(VolunteerRequest)
+        extra_context['kpi_internships'] = get_count(InternshipRequest, status__iexact='pending') or get_count(InternshipRequest)
+        extra_context['kpi_campus_applications'] = get_count(CampusAmbassadorApplication, status__iexact='pending') or get_count(CampusAmbassadorApplication)
+
+        try:
+            raised_sum = Campaign.objects.aggregate(total=Sum('raised_amount'))['total'] or 0
+        except Exception:
+            raised_sum = 0
+        extra_context['kpi_total_donations'] = raised_sum
+        extra_context['kpi_donations_this_month'] = raised_sum
+
+        extra_context['kpi_contact_messages'] = get_count(ContactMessage, is_read=False) or get_count(ContactMessage)
+        extra_context['kpi_newsletter_subscribers'] = get_count(NewsletterSubscription)
+        extra_context['kpi_tasks'] = get_count(Task)
+        extra_context['kpi_teams'] = get_count(Team)
+        extra_context['kpi_workspaces'] = get_count(Workspace)
+
+        # Pending Approvals List
+        try:
+            if 'status' in campaign_fields:
+                extra_context['pending_campaigns_list'] = Campaign.objects.filter(status__in=['submitted', 'under_review'])[:5]
+            else:
+                extra_context['pending_campaigns_list'] = Campaign.objects.all()[:5]
+        except Exception:
+            extra_context['pending_campaigns_list'] = []
+
+        try:
+            extra_context['pending_volunteers_list'] = VolunteerRequest.objects.filter(status__iexact='pending')[:5]
+        except Exception:
+            extra_context['pending_volunteers_list'] = []
+
+        try:
+            extra_context['pending_internships_list'] = InternshipRequest.objects.filter(status__iexact='pending')[:5]
+        except Exception:
+            extra_context['pending_internships_list'] = []
+
+        try:
+            extra_context['pending_blood_list'] = BloodRequest.objects.filter(status__iexact='pending')[:5]
+        except Exception:
+            extra_context['pending_blood_list'] = []
+
+        # Recent Activities
+        try: extra_context['recent_blogs_list'] = Blog.objects.order_by('-created_at')[:4]
+        except Exception: pass
+        try: extra_context['recent_news_list'] = NewsClipping.objects.order_by('-id')[:4]
+        except Exception: pass
+        try: extra_context['recent_messages_list'] = ContactMessage.objects.order_by('-created_at')[:4]
+        except Exception: pass
+        try: extra_context['recent_tasks_list'] = Task.objects.order_by('-id')[:4]
+        except Exception: pass
+    except Exception as e:
+        pass
+
+    return original_admin_index(request, extra_context=extra_context)
+
+admin.site.index = custom_admin_index
 
 
 @admin.register(InternshipRequest)
