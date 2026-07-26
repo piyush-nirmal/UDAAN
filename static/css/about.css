@@ -159,19 +159,59 @@ img { display: block; max-width: 100%; }
 .highlight-text { font-style: italic; font-weight: 600; margin-bottom: 10px; color: #333; }
 .values-list li { margin-bottom: 8px; font-size: 13px; }
 
-.btn-know-more {
-    background-color: #dc4838; color: white; padding: 10px 25px;
-    border-radius: 30px; font-size: 12px; font-weight: 700; text-transform: uppercase;
-    margin: 0 auto; width: fit-content;
+.btn-know-more{
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg,#dc4838,#f35b4b);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 40px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
     display: flex;
-    gap: 10px;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+    width: fit-content;
+    margin: 0 auto;
+    transition: all .4s ease;
+    box-shadow: 0 8px 20px rgba(220,72,56,.35);
 }
-.btn-know-more:hover { 
-    background-color: #cf3f31;
-  transform: translateY(-2px);
- }
+
+.btn-know-more i{
+    transition: .4s;
+}
+
+.btn-know-more:hover{
+    transform: translateY(-6px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(220,72,56,.45);
+}
+
+.btn-know-more:hover i{
+    transform: translateX(8px);
+}
+
+.btn-know-more:active{
+    transform: scale(.95);
+}
+
+/* Shine Effect */
+.btn-know-more::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:50%;
+    height:100%;
+    background:rgba(255,255,255,.35);
+    transform:skewX(-25deg);
+    transition:.6s;
+}
+
+.btn-know-more:hover::before{
+    left:130%;
+}
 
 /* --- UPDATED: Stats Section --- */
 .stats-section {
@@ -377,4 +417,34 @@ img { display: block; max-width: 100%; }
     
     .stats-grid { grid-template-columns: 1fr; } /* Stack stats on mobile */
     .stat-card { width: 100%; margin-bottom: 20px; }
+}
+
+
+
+.mvv-card,
+.approach-card,
+.stat-card,
+.partner-item,
+.team-image-wrapper{
+    transition:0.4s ease;
+}
+
+.team-image-wrapper img{
+    transition:0.5s;
+}
+
+.team-image-wrapper:hover img{
+    transform:scale(1.05);
+}
+
+.mvv-card:hover{
+    transform:translateY(-10px);
+}
+
+.stat-card:hover{
+    transform:translateY(-10px);
+}
+
+.partner-item:hover{
+    transform:translateY(-8px);
 }

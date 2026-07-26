@@ -41,11 +41,17 @@ if not SECRET_KEY:
 RATELIMIT_ENABLE = not DEBUG
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+if DEBUG:
+    ALLOWED_HOSTS.append('*')
 
 # Production Security Configurations
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.ngrok-free.app',
+    'https://*.ngrok.io',
+]
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
@@ -164,12 +170,28 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+IS_VERCEL = os.environ.get('VERCEL') == '1'
+
+if IS_VERCEL and not os.environ.get('DATABASE_URL'):
+    # On Vercel, SQLite database file and its parent folder must be writable.
+    # We copy the database to /tmp which is writable in serverless functions.
+    import shutil
+    db_path = '/tmp/udaan.db'
+    src_db = BASE_DIR / 'udaan.db'
+    if src_db.exists():
+        if not os.path.exists(db_path):
+            shutil.copy2(src_db, db_path)
+    default_db_url = f"sqlite:///{db_path}"
+else:
+    default_db_url = f"sqlite:///{BASE_DIR}/udaan.db"
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR}/udaan.db",
+        default=default_db_url,
         conn_max_age=600
     )
 }
+
 
 
 # Password validation

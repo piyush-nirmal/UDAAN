@@ -739,3 +739,39 @@
   margin: auto;
   padding: 0 40px;
 }
+
+
+/* Smooth transition */
+.mission-text,
+.vision-text,
+.values-text,
+.mission-icon,
+.vision-icon,
+.values-icon{
+    transition:.4s ease;
+}
+
+/* Hover Effect */
+.mission-text:hover,
+.vision-text:hover,
+.values-text:hover{
+    transform:translateY(-8px);
+}
+
+.target,
+.eye,
+.diamond-icon{
+    transition:.5s ease;
+}
+
+.mission-icon:hover .target{
+    transform:rotate(12deg) scale(1.08);
+}
+
+.vision-icon:hover .eye{
+    transform:scale(1.1);
+}
+
+.values-icon:hover .diamond-icon{
+    transform:rotate(45deg) scale(1.1);
+}

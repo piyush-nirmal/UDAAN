@@ -160,8 +160,12 @@ class Campaign(models.Model):
     @property
     def percentage_raised(self):
         if self.goal_amount > 0:
-            pct = int((self.raised_amount / self.goal_amount) * 100)
-            return min(pct, 100)
+            pct = (self.raised_amount / self.goal_amount) * 100
+            if 0 < pct < 1:
+                return 1
+            return min(int(pct), 100)
+        elif self.raised_amount > 0:
+            return 100
         return 0
 
     @property
@@ -544,12 +548,17 @@ class CampusAmbassadorApplication(models.Model):
         ("Rejected", "Rejected"),
     ]
     full_name = models.CharField(max_length=200)
+    father_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    college = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    year_of_study = models.CharField(max_length=50)
-    interests = models.TextField(help_text="Why do you want to join as a Campus Ambassador?")
+    dob = models.DateField(blank=True, null=True)
+    institution = models.CharField(max_length=200, blank=True, null=True)
+    cv = models.FileField(upload_to='ambassador_cvs/', blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    technical_skills = models.TextField(blank=True, null=True)
+    general_skills = models.TextField(blank=True, null=True)
+    motivation = models.TextField(help_text="Why do you want to join as a Campus Ambassador?", blank=True, null=True)
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")
     applied_at = models.DateTimeField(auto_now_add=True)
 
@@ -744,13 +753,17 @@ class InternshipRequest(models.Model):
     
     name = models.CharField(max_length=200)
     father_name = models.CharField(max_length=200)
+    dob = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=20, choices=[('Male', 'Male'), ('Female', 'Female'), ('Prefer not to say', 'Prefer not to say')], default='Prefer not to say')
     educational_qualification = models.CharField(max_length=300)
     permanent_address = models.TextField()
     contact_number = models.CharField(max_length=20)
     email = models.EmailField()
     internship_area = models.CharField(max_length=200)
+    other_interest = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateField()
     duration_months = models.IntegerField(default=3)
+    cv = models.FileField(upload_to='intern_cvs/', null=True, blank=True)
     
     mentor_name = models.CharField(max_length=200, blank=True, null=True, help_text="Required for offer letter generation")
     mentor_email = models.EmailField(blank=True, null=True, help_text="Required for offer letter generation")
@@ -760,8 +773,56 @@ class InternshipRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Internship Request"
-        verbose_name_plural = "Internship Requests"
+        verbose_name = "Internship Certificate"
+        verbose_name_plural = "Internship Certificates"
 
     def __str__(self):
         return f"{self.name} - {self.internship_area} ({self.status})"
+
+class VolunteerRequest(models.Model):
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    )
+
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Prefer not to say', 'Prefer not to say'),
+    )
+
+    EDUCATION_CHOICES = (
+        ('High School', 'High School'),
+        ('Undergraduate', 'Undergraduate'),
+        ('Postgraduate', 'Postgraduate'),
+        ('Other', 'Other'),
+    )
+
+    EMPLOYMENT_CHOICES = (
+        ('Salaried', 'Salaried'),
+        ('Self-Employed', 'Self-Employed'),
+        ('Housewife', 'Housewife'),
+        ('Student', 'Student'),
+        ('Retired', 'Retired'),
+        ('Other', 'Other'),
+    )
+
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Prefer not to say')
+    education = models.CharField(max_length=50, choices=EDUCATION_CHOICES)
+    employment = models.CharField(max_length=50, choices=EMPLOYMENT_CHOICES)
+    cv = models.FileField(upload_to='volunteer_cvs/')
+    residence = models.CharField(max_length=200)
+    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Volunteer Request"
+        verbose_name_plural = "Volunteer Requests"
+
+    def __str__(self):
+        return f"{self.name} - {self.residence} ({self.status})"

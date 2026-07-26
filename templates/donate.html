@@ -1,599 +1,383 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Donate to UDAAN Society - Support Underprivileged Communities{% endblock %}
+{% block title %}Donate to UDAAN Society - Secure Online & Bank Donation{% endblock %}
 
-{% block meta_description %}Support UDAAN Society's mission to uplift underserved communities in Uttar Pradesh. Donate online or via bank transfer. Contributions are eligible for 80G tax exemption. Every rupee makes a difference.{% endblock %}
-
-{% block extra_css %}
-<style>
-  /* ===== DONATE PAGE STYLES ===== */
-  .donate-hero {
-    background: linear-gradient(135deg, #E63946 0%, #1D3557 100%);
-    color: #fff;
-    padding: 80px 20px 60px;
-    text-align: center;
-  }
-  .donate-hero h1 {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 16px;
-    letter-spacing: -0.5px;
-  }
-  .donate-hero p {
-    font-size: 1.2rem;
-    opacity: 0.92;
-    max-width: 620px;
-    margin: 0 auto 32px;
-    line-height: 1.7;
-  }
-  .donate-hero-badges {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .badge {
-    background: rgba(255,255,255,0.18);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 30px;
-    padding: 6px 18px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .donate-page-body {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 60px 20px;
-  }
-  /* Mission Section */
-  .donate-mission {
-    background: #F8F9FA;
-    border-left: 5px solid #E63946;
-    border-radius: 12px;
-    padding: 30px 36px;
-    margin-bottom: 50px;
-  }
-  .donate-mission h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1D3557;
-    margin-bottom: 10px;
-  }
-  .donate-mission p {
-    color: #555;
-    line-height: 1.8;
-    font-size: 1rem;
-  }
-  /* Impact Cards */
-  .impact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 56px;
-  }
-  .impact-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 28px 20px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
-    border-top: 4px solid #E63946;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .impact-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 28px rgba(230,57,70,0.15);
-  }
-  .impact-card .icon {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-  }
-  .impact-card .impact-number {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #E63946;
-  }
-  .impact-card .impact-label {
-    font-size: 0.9rem;
-    color: #777;
-    margin-top: 6px;
-  }
-  /* Methods Section */
-  .section-heading {
-    font-size: 1.85rem;
-    font-weight: 800;
-    color: #1D3557;
-    margin-bottom: 8px;
-  }
-  .section-subheading {
-    color: #888;
-    margin-bottom: 32px;
-    font-size: 1rem;
-  }
-  .methods-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-bottom: 56px;
-  }
-  .method-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 2px 18px rgba(0,0,0,0.06);
-    border: 1px solid #eee;
-    position: relative;
-    transition: box-shadow 0.2s;
-  }
-  .method-card:hover {
-    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-  }
-  .method-card .method-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.7rem;
-    margin-bottom: 18px;
-  }
-  .method-card.online .method-icon { background: #FEE2E2; }
-  .method-card.bank .method-icon { background: #DBEAFE; }
-  .method-card.upi .method-icon { background: #D1FAE5; }
-  .method-card h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #1D3557;
-    margin-bottom: 12px;
-  }
-  .method-card p {
-    color: #666;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 0;
-  }
-  /* Bank Details */
-  .bank-details-box {
-    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
-    border: 1px solid #BFDBFE;
-    border-radius: 16px;
-    padding: 36px;
-    margin-bottom: 56px;
-  }
-  .bank-details-box h2 {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #1E40AF;
-    margin-bottom: 6px;
-  }
-  .bank-details-box .subtitle {
-    color: #6B7280;
-    font-size: 0.9rem;
-    margin-bottom: 28px;
-  }
-  .bank-details-table {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media (max-width: 600px) {
-    .bank-details-table { grid-template-columns: 1fr; }
-  }
-  .bank-detail-row {
-    background: #fff;
-    border-radius: 10px;
-    padding: 16px 20px;
-    border: 1px solid #DBEAFE;
-  }
-  .bank-detail-row .label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #9CA3AF;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 4px;
-  }
-  .bank-detail-row .value {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #1E40AF;
-  }
-  .bank-note {
-    margin-top: 20px;
-    background: #FEF3C7;
-    border: 1px solid #FDE68A;
-    border-radius: 10px;
-    padding: 14px 20px;
-    font-size: 0.88rem;
-    color: #92400E;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  /* FAQ */
-  .faq-section-donate {
-    margin-bottom: 56px;
-  }
-  .faq-item-donate {
-    background: #fff;
-    border-radius: 12px;
-    border: 1px solid #E5E7EB;
-    margin-bottom: 12px;
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-  }
-  .faq-item-donate:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  }
-  .faq-question-donate {
-    padding: 20px 24px;
-    font-weight: 600;
-    color: #1D3557;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-  }
-  .faq-question-donate .toggle-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: #F3F4F6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    flex-shrink: 0;
-    transition: transform 0.3s, background 0.2s;
-  }
-  .faq-item-donate.open .toggle-icon {
-    transform: rotate(45deg);
-    background: #E63946;
-    color: #fff;
-  }
-  .faq-answer-donate {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s ease, padding 0.2s;
-    padding: 0 24px;
-    color: #6B7280;
-    font-size: 0.95rem;
-    line-height: 1.75;
-  }
-  .faq-item-donate.open .faq-answer-donate {
-    max-height: 300px;
-    padding: 0 24px 20px;
-  }
-  /* CTA */
-  .donate-cta {
-    background: linear-gradient(135deg, #1D3557 0%, #457B9D 100%);
-    border-radius: 20px;
-    padding: 56px 40px;
-    text-align: center;
-    color: #fff;
-  }
-  .donate-cta h2 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-  .donate-cta p {
-    opacity: 0.87;
-    font-size: 1.05rem;
-    max-width: 520px;
-    margin: 0 auto 28px;
-    line-height: 1.7;
-  }
-  .cta-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .btn-cta-white {
-    background: #fff;
-    color: #1D3557;
-    font-weight: 700;
-    padding: 14px 36px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: opacity 0.2s, transform 0.2s;
-    display: inline-block;
-  }
-  .btn-cta-white:hover {
-    opacity: 0.92;
-    transform: translateY(-2px);
-  }
-  .btn-cta-outline {
-    background: transparent;
-    color: #fff;
-    border: 2px solid rgba(255,255,255,0.7);
-    font-weight: 700;
-    padding: 12px 34px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background 0.2s, border-color 0.2s;
-    display: inline-block;
-  }
-  .btn-cta-outline:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: #fff;
-  }
-  .tax-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 30px;
-    padding: 8px 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-top: 24px;
-  }
-</style>
-{% endblock %}
+{% block meta_description %}Support UDAAN Society's mission to uplift underserved communities. Donate securely online or via direct bank transfer. Contributions are eligible for 80G tax exemption. Every rupee count.{% endblock %}
 
 {% block content %}
 
-<!-- Hero Section -->
-<section class="donate-hero">
-  <h1>Make a Difference Today 💛</h1>
-  <p>
-    Your contribution helps UDAAN Society empower thousands of underprivileged
-    children, women, and communities across Uttar Pradesh. Every rupee creates
-    lasting change.
-  </p>
-  <div class="donate-hero-badges">
-    <span class="badge">🔒 80G Tax Exemption</span>
-    <span class="badge">✅ Registered NGO Since 2004</span>
-    <span class="badge">🌟 Trusted by 50+ Partners</span>
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Secure Checkout</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight">Make a Difference Today</h1>
+    <p class="text-lg text-gray-100 max-w-2xl mx-auto leading-relaxed">
+      Your contribution helps UDAAN Society empower thousands of underprivileged children, women, and rural families across Uttar Pradesh.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3 text-xs sm:text-sm font-semibold text-gray-200">
+      <span class="bg-white/10 border border-white/20 rounded-full px-4 py-2">🔒 80G Tax Deductible</span>
+      <span class="bg-white/10 border border-white/20 rounded-full px-4 py-2">✅ Registered NGO since 2004</span>
+      <span class="bg-white/10 border border-white/20 rounded-full px-4 py-2">🛡️ Secured by RazorPay</span>
+    </div>
   </div>
 </section>
 
-<!-- Main Content -->
-<div class="donate-page-body">
+<!-- Main Container -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+    
+    <!-- Left Column: Interactive Donation Form -->
+    <div class="lg:col-span-7 bg-white shadow-premium rounded-2xl p-8 border border-gray-100/50">
+      <h2 class="text-2xl font-bold text-neutral-dark mb-2 font-heading">Secure Donation Portal</h2>
+      <p class="text-sm text-gray-500 mb-8">Please select an amount and enter details to complete your donation.</p>
 
-  <!-- Mission Statement -->
-  <div class="donate-mission">
-    <h2>Why Your Donation Matters</h2>
-    <p>
-      UDAAN Society is a registered non-profit organization dedicated to restoring dignity,
-      livelihood, equality, and justice for downtrodden communities. Founded in 2004, we work
-      across Aligarh, Banda, Bulandshahr, Firozabad, and Mahoba in Uttar Pradesh. We implement
-      government missions like <strong>Har Ghar Jal</strong>, <strong>Atal Bhujal Yojna</strong>,
-      and run shelter homes, education programs, and health camps for the most vulnerable.
-    </p>
+      <form id="donation-form" class="space-y-8">
+        <!-- Progress Steps -->
+        <div class="flex justify-between items-center relative mb-8">
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-100 -translate-y-1/2 -z-10"></div>
+          <div class="step-indicator active w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm border-4 border-primary-light z-10 transition-all duration-300">1</div>
+          <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm border-4 border-white z-10 transition-all duration-300">2</div>
+          <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm border-4 border-white z-10 transition-all duration-300">3</div>
+        </div>
+
+        <!-- Step 1: Choose Amount & Project -->
+        <div id="step-1" class="space-y-6">
+          <div>
+            <label class="block text-sm font-bold text-neutral-dark uppercase tracking-wider mb-3">1. Select Cause</label>
+            <select id="donation-cause" class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all bg-neutral-light font-medium">
+              <option value="education">Children Education Support</option>
+              <option value="water">Clean Water & Groundwater Recharge</option>
+              <option value="health">Healthcare & Treatment Support</option>
+              <option value="nutrition">Good Food & Supples Distribution</option>
+              <option value="general">General NGO Operations (Urgent needs)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-neutral-dark uppercase tracking-wider mb-3">2. Select Amount (INR)</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+              <button type="button" onclick="selectAmount(500)" class="amount-btn py-3.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:border-primary hover:text-primary transition-all text-sm focus:outline-none bg-white">₹500</button>
+              <button type="button" onclick="selectAmount(1000)" class="amount-btn py-3.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:border-primary hover:text-primary transition-all text-sm focus:outline-none bg-white">₹1,000</button>
+              <button type="button" onclick="selectAmount(2500)" class="amount-btn py-3.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:border-primary hover:text-primary transition-all text-sm focus:outline-none bg-white select-btn-active border-primary text-primary bg-primary-light">₹2,500</button>
+              <button type="button" onclick="selectAmount(5000)" class="amount-btn py-3.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:border-primary hover:text-primary transition-all text-sm focus:outline-none bg-white">₹5,000</button>
+            </div>
+            
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 transform -translate-y-1/2 font-bold text-gray-500">₹</span>
+              <input type="number" id="custom-amount" placeholder="Enter custom amount" value="2500"
+                class="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all"
+                oninput="clearActiveButtons(this.value)" aria-label="Custom donation amount">
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button type="button" onclick="nextStep(2)" class="w-full btn-primary justify-center rounded-lg py-3.5 text-sm font-bold shadow-soft">
+              Continue to Details
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Donor Details -->
+        <div id="step-2" class="space-y-6 hidden">
+          <label class="block text-sm font-bold text-neutral-dark uppercase tracking-wider mb-2">Donor Information</label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
+              <input type="text" id="donor-name" required placeholder="John Doe"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email Address *</label>
+              <input type="email" id="donor-email" required placeholder="john@example.com"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone Number *</label>
+              <input type="tel" id="donor-phone" required placeholder="9876543210"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">PAN Card Number (for tax exemption)</label>
+              <input type="text" id="donor-pan" placeholder="ABCDE1234F" max-length="10"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all uppercase">
+            </div>
+          </div>
+
+          <div class="flex justify-between gap-4 pt-4">
+            <button type="button" onclick="nextStep(1)" class="w-1/3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg py-3 text-sm font-semibold transition-all">
+              Back
+            </button>
+            <button type="button" onclick="nextStep(3)" class="w-2/3 btn-primary justify-center rounded-lg py-3 text-sm font-bold shadow-soft">
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Secure Checkout -->
+        <div id="step-3" class="space-y-6 hidden">
+          <div class="bg-neutral-light rounded-xl p-6 border border-gray-200/50 space-y-3">
+            <h3 class="font-bold text-neutral-dark">Donation Summary</h3>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Selected Cause:</span>
+              <span id="summary-cause" class="font-bold text-neutral-dark uppercase">Children Education</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-500">Donor Name:</span>
+              <span id="summary-name" class="font-bold text-neutral-dark">John Doe</span>
+            </div>
+            <div class="flex justify-between text-sm border-t border-gray-200 pt-3">
+              <span class="text-gray-900 font-bold">Total Donation:</span>
+              <span id="summary-amount" class="text-lg font-extrabold text-primary">₹2,500</span>
+            </div>
+          </div>
+
+          <div class="flex justify-between gap-4 pt-4">
+            <button type="button" onclick="nextStep(2)" class="w-1/3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg py-3 text-sm font-semibold transition-all">
+              Back
+            </button>
+            <button type="button" onclick="simulatePayment(event)" class="w-2/3 btn-accent text-neutral-dark justify-center rounded-lg py-3 text-sm font-bold shadow-soft">
+              🔒 Pay Securely with RazorPay
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <!-- Loading indicator -->
+      <div id="payment-loading" class="hidden flex flex-col items-center justify-center py-12 space-y-4">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p class="text-sm font-bold text-gray-600">Connecting to secure checkout gateway...</p>
+      </div>
+
+      <!-- Payment Success Receipt -->
+      <div id="payment-success" class="hidden text-center py-12 space-y-6 animate-fade-in-up">
+        <div class="w-16 h-16 rounded-full bg-green-100 text-primary flex items-center justify-center text-4xl mx-auto">✓</div>
+        <div>
+          <h3 class="text-2xl font-bold text-neutral-dark mb-2">Thank You for Your Support!</h3>
+          <p class="text-sm text-gray-500 max-w-md mx-auto">Your secure donation has been processed successfully. An official receipt has been sent to your email.</p>
+        </div>
+        <div class="bg-primary-light border border-primary/20 rounded-xl p-6 max-w-sm mx-auto space-y-2 text-left">
+          <p class="text-xs text-gray-500 uppercase font-bold">Donation Receipt</p>
+          <p class="text-sm"><strong>Receipt No:</strong> UDN-{% now "Ymd" %}-MOCK</p>
+          <p class="text-sm"><strong>Donation Amount:</strong> <span id="receipt-amount" class="font-bold text-primary">₹2,500</span></p>
+          <p class="text-xs text-gray-400 mt-2">Certified 80G tax exemption document is attached to the email receipt.</p>
+        </div>
+        <button onclick="resetDonationForm()" class="btn-primary rounded-full px-8 py-3 text-sm font-bold shadow-soft">
+          Make Another Donation
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Bank Transfers, FAQs, Trust Markers -->
+    <div class="lg:col-span-5 space-y-10">
+      
+      <!-- Direct Bank Transfer Details -->
+      <div class="bg-gradient-to-br from-secondary/5 to-secondary/15 rounded-2xl p-8 border border-secondary/10 space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-secondary-dark font-heading">Direct Bank Transfer</h2>
+          <p class="text-sm text-gray-500 mt-1">Direct RTGS / NEFT / IMPS transfers directly to our official NGO account.</p>
+        </div>
+
+        <div class="space-y-3.5">
+          <div class="bg-white rounded-xl p-4 border border-secondary-light">
+            <span class="text-xs font-bold text-gray-400 block uppercase mb-1">Account Name</span>
+            <span class="text-sm font-bold text-secondary-dark">{{ bank_account_name|default:"UDAAN Society" }}</span>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-secondary-light">
+            <span class="text-xs font-bold text-gray-400 block uppercase mb-1">Account Number</span>
+            <span class="text-sm font-bold text-secondary-dark">{{ bank_account_number|default:"33924559132" }}</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-4 border border-secondary-light">
+              <span class="text-xs font-bold text-gray-400 block uppercase mb-1">IFSC Code</span>
+              <span class="text-sm font-bold text-secondary-dark">{{ bank_ifsc_code|default:"SBIN0000602" }}</span>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-secondary-light">
+              <span class="text-xs font-bold text-gray-400 block uppercase mb-1">Bank Name</span>
+              <span class="text-sm font-bold text-secondary-dark">{{ bank_name|default:"State Bank of India" }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-accent-light border border-accent/20 rounded-xl p-4 flex gap-3 text-xs text-accent-dark font-medium leading-relaxed">
+          <span>⚠️</span>
+          <span>Please email your payment reference receipt to <strong>mail@udaansociety.org</strong> with your address to get your 80G tax exemption certificate.</span>
+        </div>
+      </div>
+
+      <!-- Trust Factors -->
+      <div class="space-y-6">
+        <h3 class="text-lg font-bold text-neutral-dark font-heading border-b border-gray-100 pb-3">Why You Can Trust Us</h3>
+        <div class="space-y-4">
+          <div class="flex gap-4">
+            <div class="text-xl">✅</div>
+            <div>
+              <h4 class="text-sm font-bold text-neutral-dark">80G & 12A Certified</h4>
+              <p class="text-xs text-gray-500 mt-1">All donations are eligible for a 50% tax exemption under Indian income tax regulations.</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="text-xl">🛡️</div>
+            <div>
+              <h4 class="text-sm font-bold text-neutral-dark">100% Encrypted Connection</h4>
+              <p class="text-xs text-gray-500 mt-1">We secure all transactions with top industry-standard payment processors.</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="text-xl">📊</div>
+            <div>
+              <h4 class="text-sm font-bold text-neutral-dark">Financial Transparency</h4>
+              <p class="text-xs text-gray-500 mt-1">We publish detailed annual audit statements and project progress reports transparently.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- FAQ Section -->
+      <div class="space-y-6">
+        <h3 class="text-lg font-bold text-neutral-dark font-heading border-b border-gray-100 pb-3">Donation FAQ</h3>
+        <div class="space-y-3">
+          <div class="border border-gray-200/60 rounded-xl overflow-hidden bg-white">
+            <button class="w-full text-left font-bold text-sm text-neutral-dark px-5 py-4 flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+              Is my donation tax-deductible?
+              <span class="text-gray-400 font-light text-lg">+</span>
+            </button>
+            <div class="max-h-0 overflow-hidden transition-all duration-300 px-5 text-xs text-gray-500 leading-relaxed pb-0">
+              Yes, UDAAN Society is registered under Section 80G. You will receive an official tax exemption certificate via email after your donation is completed.
+            </div>
+          </div>
+
+          <div class="border border-gray-200/60 rounded-xl overflow-hidden bg-white">
+            <button class="w-full text-left font-bold text-sm text-neutral-dark px-5 py-4 flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+              How will my donation be used?
+              <span class="text-gray-400 font-light text-lg">+</span>
+            </button>
+            <div class="max-h-0 overflow-hidden transition-all duration-300 px-5 text-xs text-gray-500 leading-relaxed pb-0">
+              Your donation directly funds our project materials, groundwater management supplies, child shelter outreach operations, and community workshops.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Impact Stats -->
-  <h2 class="section-heading">Your Impact in Numbers</h2>
-  <p class="section-subheading">See what your donation has already achieved</p>
-  <div class="impact-grid">
-    <div class="impact-card">
-      <div class="icon">👶</div>
-      <div class="impact-number">9,500+</div>
-      <div class="impact-label">Children Helped</div>
-    </div>
-    <div class="impact-card">
-      <div class="icon">🏘️</div>
-      <div class="impact-number">1,000+</div>
-      <div class="impact-label">Villages Reached</div>
-    </div>
-    <div class="impact-card">
-      <div class="icon">💧</div>
-      <div class="impact-number">50,000+</div>
-      <div class="impact-label">People with Clean Water</div>
-    </div>
-    <div class="impact-card">
-      <div class="icon">🤝</div>
-      <div class="impact-number">50+</div>
-      <div class="impact-label">Partner Organizations</div>
-    </div>
-  </div>
-
-  <!-- Donation Methods -->
-  <h2 class="section-heading">Ways to Donate</h2>
-  <p class="section-subheading">Choose a method that's convenient for you</p>
-  <div class="methods-grid">
-    <div class="method-card online">
-      <div class="method-icon">💳</div>
-      <h3>Online Donation</h3>
-      <p>
-        We are setting up a secure online payment gateway. Soon you'll be able to donate
-        via credit/debit card or net banking. Check back soon, or donate via bank transfer today.
-      </p>
-    </div>
-    <div class="method-card bank">
-      <div class="method-icon">🏦</div>
-      <h3>Bank Transfer (NEFT/RTGS)</h3>
-      <p>
-        Make a direct bank transfer using our account details below. Please email us your
-        transaction reference at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
-        after transfer.
-      </p>
-    </div>
-    {% if upi_id %}
-    <div class="method-card upi">
-      <div class="method-icon">📱</div>
-      <h3>UPI Transfer</h3>
-      <p>
-        Scan our QR code or send directly to UPI ID: <strong>{{ upi_id }}</strong>.
-        Quick, secure, and instant.
-      </p>
-    </div>
-    {% endif %}
-    <div class="method-card" style="border-top-color: #9333EA;">
-      <div class="method-icon" style="background: #F3E8FF;">📞</div>
-      <h3>Contact Us Directly</h3>
-      <p>
-        Call or email us to discuss donation methods, fundraising campaigns, or
-        corporate giving programs.
-        Email: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>
-      </p>
-    </div>
-  </div>
-
-  <!-- Bank Transfer Details -->
-  <div class="bank-details-box">
-    <h2>🏦 Bank Transfer Details</h2>
-    <p class="subtitle">Use these details to transfer funds directly to UDAAN Society</p>
-    <div class="bank-details-table">
-      <div class="bank-detail-row">
-        <div class="label">Account Name</div>
-        <div class="value">{{ bank_account_name }}</div>
-      </div>
-      <div class="bank-detail-row">
-        <div class="label">Account Number</div>
-        <div class="value">{{ bank_account_number }}</div>
-      </div>
-      <div class="bank-detail-row">
-        <div class="label">IFSC Code</div>
-        <div class="value">{{ bank_ifsc_code }}</div>
-      </div>
-      <div class="bank-detail-row">
-        <div class="label">Bank Name</div>
-        <div class="value">{{ bank_name }}</div>
-      </div>
-      <div class="bank-detail-row">
-        <div class="label">Branch</div>
-        <div class="value">{{ bank_branch }}</div>
-      </div>
-      <div class="bank-detail-row">
-        <div class="label">Account Type</div>
-        <div class="value">Current Account</div>
-      </div>
-    </div>
-    <div class="bank-note">
-      <span>⚠️</span>
-      <span>
-        After completing your transfer, please email the transaction reference ID to
-        <strong>{{ contact_email }}</strong> with your name and address to receive your
-        <strong>80G tax exemption certificate</strong>.
-      </span>
-    </div>
-  </div>
-
-  <!-- FAQ Section -->
-  <div class="faq-section-donate">
-    <h2 class="section-heading">Frequently Asked Questions</h2>
-    <p class="section-subheading">Everything you need to know about donating to UDAAN Society</p>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        Is my donation tax-deductible?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        Yes! UDAAN Society is registered under Section 80G of the Income Tax Act. All donations
-        are eligible for tax exemption. You will receive an official receipt and 80G certificate
-        after donating. Please share your PAN number and address when you make the transfer.
-      </div>
-    </div>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        How will my donation be used?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        Your donation funds our programs including clean water access (Jal Jeevan Mission),
-        shelter homes, children's education, health camps, women's empowerment, and
-        community livelihood programs across Uttar Pradesh.
-      </div>
-    </div>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        Can I donate in-kind (goods, materials)?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        Yes, we accept in-kind donations such as food, educational materials, clothing, and
-        medical supplies. Please contact us at {{ contact_email }} to arrange in-kind donations.
-      </div>
-    </div>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        Can my organization make a corporate donation?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        Yes! We welcome CSR partnerships and workplace giving programs. Please visit our
-        <a href="{% url 'workplace_living' %}">Workplace Giving</a> page or contact us directly
-        for corporate donation arrangements and partnership opportunities.
-      </div>
-    </div>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        Will I receive a receipt for my donation?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        Absolutely. After your bank transfer, email us at {{ contact_email }} with your
-        transaction reference. We will send an official donation receipt and your 80G certificate
-        within 3–5 working days.
-      </div>
-    </div>
-
-    <div class="faq-item-donate">
-      <div class="faq-question-donate">
-        What is UDAAN's registration number?
-        <span class="toggle-icon">+</span>
-      </div>
-      <div class="faq-answer-donate">
-        UDAAN Society is registered under the Societies Registration Act 1860 on 13 December 2004.
-        Our head office is located in Aligarh, Uttar Pradesh, India. You can verify our registration
-        at the local Registrar of Societies office in Aligarh.
-      </div>
-    </div>
-
-  </div>
-
-  <!-- CTA Section -->
-  <div class="donate-cta">
-    <h2>Ready to Change a Life?</h2>
-    <p>
-      Every contribution — big or small — helps build a future where no child goes hungry,
-      no family lacks clean water, and no community is left behind.
-    </p>
-    <div class="cta-buttons">
-      <a href="{% url 'contact_us' %}" class="btn-cta-white">Contact Us to Donate</a>
-      <a href="{% url 'volunteering' %}" class="btn-cta-outline">Volunteer Instead</a>
-    </div>
-    <div class="tax-badge">
-      ✅ 80G Certified · Registered NGO · Transparent Utilization
-    </div>
-  </div>
-
 </div>
 
+<!-- Forms & Multi-Step Javascript -->
 <script>
-  // FAQ Toggle
-  document.querySelectorAll('.faq-question-donate').forEach(function(question) {
-    question.addEventListener('click', function() {
-      const item = this.closest('.faq-item-donate');
-      const wasOpen = item.classList.contains('open');
+  let activeStep = 1;
 
-      // Close all
-      document.querySelectorAll('.faq-item-donate').forEach(function(i) {
-        i.classList.remove('open');
-      });
-
-      // Open clicked if it was closed
-      if (!wasOpen) {
-        item.classList.add('open');
+  function selectAmount(val) {
+    document.getElementById('custom-amount').value = val;
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      if (parseInt(btn.textContent.replace(/[^\d]/g, '')) === val) {
+        btn.classList.add('border-primary', 'text-primary', 'bg-primary-light');
+      } else {
+        btn.classList.remove('border-primary', 'text-primary', 'bg-primary-light');
       }
     });
-  });
-</script>
+  }
 
+  function clearActiveButtons(val) {
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+      btn.classList.remove('border-primary', 'text-primary', 'bg-primary-light');
+    });
+  }
+
+  function nextStep(step) {
+    if (step === 2 && activeStep === 1) {
+      const amt = document.getElementById('custom-amount').value;
+      if (!amt || parseInt(amt) <= 0) {
+        alert("Please enter a valid donation amount.");
+        return;
+      }
+    }
+
+    if (step === 3 && activeStep === 2) {
+      const name = document.getElementById('donor-name').value.trim();
+      const email = document.getElementById('donor-email').value.trim();
+      const phone = document.getElementById('donor-phone').value.trim();
+      
+      if (!name || !email || !phone) {
+        alert("Please fill in all required donor details.");
+        return;
+      }
+
+      // Populate summary fields
+      const causeSelect = document.getElementById('donation-cause');
+      document.getElementById('summary-cause').textContent = causeSelect.options[causeSelect.selectedIndex].text;
+      document.getElementById('summary-name').textContent = name;
+      document.getElementById('summary-amount').textContent = "₹" + parseInt(document.getElementById('custom-amount').value).toLocaleString('en-IN');
+    }
+
+    // Toggle active forms
+    document.getElementById(`step-${activeStep}`).classList.add('hidden');
+    document.getElementById(`step-${step}`).classList.remove('hidden');
+
+    // Update indicators
+    const indicators = document.querySelectorAll('.step-indicator');
+    indicators.forEach((ind, i) => {
+      if (i + 1 < step) {
+        ind.className = "step-indicator w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm border-4 border-primary-light z-10 transition-all duration-300";
+        ind.textContent = "✓";
+      } else if (i + 1 === step) {
+        ind.className = "step-indicator active w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm border-4 border-primary-light z-10 transition-all duration-300";
+        ind.textContent = step;
+      } else {
+        ind.className = "step-indicator w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm border-4 border-white z-10 transition-all duration-300";
+        ind.textContent = i + 1;
+      }
+    });
+
+    activeStep = step;
+  }
+
+  function simulatePayment(e) {
+    e.preventDefault();
+    
+    // Hide form
+    document.getElementById('donation-form').classList.add('hidden');
+    // Show spinner
+    document.getElementById('payment-loading').classList.remove('hidden');
+
+    setTimeout(() => {
+      // Hide spinner
+      document.getElementById('payment-loading').classList.add('hidden');
+      
+      // Update receipt values
+      const amt = parseInt(document.getElementById('custom-amount').value).toLocaleString('en-IN');
+      document.getElementById('receipt-amount').textContent = "₹" + amt;
+
+      // Show success screen
+      document.getElementById('payment-success').classList.remove('hidden');
+    }, 2000);
+  }
+
+  function resetDonationForm() {
+    document.getElementById('donation-form').reset();
+    document.getElementById('payment-success').classList.add('hidden');
+    document.getElementById('donation-form').classList.remove('hidden');
+    selectAmount(2500);
+    nextStep(1);
+  }
+
+  function toggleFaq(btn) {
+    const parent = btn.parentElement;
+    const body = btn.nextElementSibling;
+    const icon = btn.querySelector('span');
+
+    if (body.style.maxHeight) {
+      body.style.maxHeight = null;
+      body.style.paddingBottom = "0px";
+      icon.textContent = "+";
+    } else {
+      body.style.maxHeight = body.scrollHeight + "px";
+      body.style.paddingBottom = "16px";
+      icon.textContent = "−";
+    }
+  }
+</script>
 {% endblock %}

@@ -18,7 +18,20 @@ class Retriever:
 
         self.embedder = EmbeddingModel()
 
-    def search(self, query, k=3):
+    def search(self, query, k=8):
+        query = query.lower()
+
+        if "volunteer" in query:
+            query += " volunteering volunteer intern fellow career"
+
+        if "blood" in query:
+            query += " blood donation donor request"
+
+        if "mission" in query:
+            query += " mission vision values"
+
+        if "contact" in query:
+            query += " office phone email address"
 
         vector = self.embedder.encode([query])
 
@@ -39,4 +52,4 @@ class Retriever:
                 "score": float(score)
             })
 
-            return results
+        return results

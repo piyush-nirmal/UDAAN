@@ -11,13 +11,16 @@
     <meta property="og:description"
         content="{% block og_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
 
     <!-- Tailwind CSS (CDN for prototype) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Custom Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
 
     <!-- Custom Config for Tailwind -->
     <script>
@@ -26,22 +29,64 @@
                 extend: {
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
+                        heading: ['Manrope', 'Poppins', 'sans-serif'],
+                        serifTitle: ['Playfair Display', 'serif'],
                     },
                     colors: {
-                        brand: {
-                            red: '#E63946',
-                            dark: '#1D3557',
-                            light: '#F1FAEE',
-                            blue: '#457B9D',
+                        primary: {
+                            DEFAULT: '#dc2626',
+                            light: '#fee2e2',
+                            dark: '#991b1b'
+                        },
+                        secondary: {
+                            DEFAULT: '#1565C0',
+                            light: '#E3F2FD',
+                            dark: '#0D47A1'
+                        },
+                        accent: {
+                            DEFAULT: '#FFB300',
+                            light: '#FFF8E1',
+                            dark: '#FF8F00'
+                        },
+                        neutral: {
+                            light: '#FAFAFA',
+                            card: '#FFFFFF',
+                            dark: '#1F2937'
                         }
+                    },
+                    boxShadow: {
+                        soft: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03)',
+                        premium: '0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 15px 25px -10px rgba(0, 0, 0, 0.04)',
+                        hover: '0 30px 60px -15px rgba(46, 125, 50, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06)'
                     }
                 }
             }
         }
     </script>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=4">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/design_system.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=5">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
+    <style>
+        body {
+            padding-top: 104px !important;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 140px !important;
+            }
+
+            .main-nav .nav-menu {
+                top: 140px !important;
+                max-height: calc(100vh - 140px) !important;
+            }
+        }
+
+        .main-nav .logo-circle {
+            margin: 0;
+        }
+    </style>
     {% block extra_css %}{% endblock %}
 </head>
 
@@ -49,10 +94,38 @@
 
     <!-- Navigation -->
     <nav class="main-nav">
+        <!-- Top Contact & Location Bar -->
+        <div
+            class="bg-[#024b24] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-location-dot text-[#ffb300]"></i>
+                <span>Aligarh & Bulandshahr, Uttar Pradesh</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="mailto:mail@udaansociety.org"
+                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>mail@udaansociety.org</span>
+                </a>
+                <a href="tel:+919837067681"
+                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+91 98370 67681</span>
+                </a>
+            </div>
+        </div>
+
+
         <div class="nav-container">
             <div class="logo">
-                <a href="{% url 'home' %}">
+                <a href="{% url 'home' %}" class="flex items-center gap-3 no-underline">
                     <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
+                    <div class="flex flex-col text-left">
+                        <span class="text-xl sm:text-2xl font-bold text-[#024b24] tracking-tight leading-none">UDAAN
+                            SOCIETY</span>
+                        <span class="text-[10px] sm:text-xs text-gray-500 font-semibold tracking-wide mt-1.5">Empowering
+                            Lives. Building Futures.</span>
+                    </div>
                 </a>
             </div>
 
@@ -69,8 +142,8 @@
                     </a>
                     <div class="dropdown-menu">
                         <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
-                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Mission & Values</a>
-                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation and
+                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Misson, Vision & Values</a>
+                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation &
                             Accolades</a>
                         <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
                         <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
@@ -139,8 +212,11 @@
                     <a href="{% url 'campaign_list' %}" class="nav-link">Campaigns</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/donate/" class="donate-btn">
-                        📱 Donate Now <span>Secured by RazorPay</span></a>
+                    <a href="/donate/"
+                        class="bg-[#024b24] hover:bg-[#013519] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline">
+                        <i class="fa-regular fa-heart"></i>
+                        Donate Now
+                    </a>
                 </li>
             </ul>
         </div>
@@ -149,6 +225,13 @@
 
     <!-- Main Content -->
     <main class="flex-grow">
+        <!-- Announcement Marquee -->
+        <div class="bg-transparent text-[#024b24] text-xs sm:text-sm py-2 font-bold tracking-wide overflow-hidden flex items-center">
+            <marquee scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();" class="w-full">
+                📢 Welcome to UDAAN Society! Support our active campaigns and make a difference today. 🌟 Join us in our mission to empower underserved communities! 
+            </marquee>
+        </div>
+
         {% block content %}{% endblock %}
     </main>
 
@@ -156,19 +239,19 @@
     <footer class="mt-auto">
 
         <!-- Support Section -->
-        <div class="bg-white py-12 border-b border-gray-200">
+        <div class="bg-white py-12 border-b border-gray-200 support-section">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div
-                    class="bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
+                    class="support-card bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
                     <div class="mb-6 md:mb-0">
-                        <span class="text-gray-500 font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A
+                        <span class="text-red-600 font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A
                             HAND</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-                            <span class="text-brand-red">Support Us</span> And Change The <br class="hidden md:block">
+                            <span class="text-red-600">Support Us</span> And Change The <br class="hidden md:block">
                             Course Of A Child's Life Today!
                         </h2>
                         <button
-                            class="text-brand-red font-medium text-sm hover:underline mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
+                            class="text-red-600 font-medium text-sm mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
                             data-title="Change a Child's Life"
                             data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future.">
                             Read more...
@@ -176,7 +259,7 @@
                     </div>
                     <div>
                         <a href="{% url 'donate' %}"
-                            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded flex items-center shadow-lg transition-all">
+                            class="bg-[#E3F2FD] text-[#0D47A1] hover:bg-[#1565C0] hover:text-white font-bold py-3 px-8 rounded-xl flex items-center border border-[#E3F2FD] hover:border-[#1565C0] transition-all shadow-sm hover:shadow-md">
                             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
@@ -190,131 +273,187 @@
             </div>
         </div>
 
-        <!-- Main Footer Links -->
-        <div class="bg-gray-100 py-16">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- Main Footer Links (IMPROVED + ANIMATED) -->
+        <div class="bg-gradient-to-b from-gray-100 to-white py-16">
+            <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
 
-                    <!-- Brand -->
-                    <div>
+                    <!-- Brand Section -->
+                    <div class="transform transition duration-500 hover:-translate-y-2">
                         <div class="flex items-center mb-6">
                             <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" class="h-12 w-auto mr-3">
                             <span class="text-xl font-bold text-gray-900">UDAAN Society</span>
                         </div>
-                        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+
+                        <p class="text-gray-600 text-sm leading-relaxed">
                             We strive for underserved and neglected communities. Service, Responsibility, Determination,
-                            Kindness, and Contribution are our values.
+                            Kindness, and Contribution are our core values.
                         </p>
                     </div>
 
                     <!-- Quick Links -->
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 mb-6">Quick Links</h4>
-                        <ul class="space-y-4 text-sm text-gray-600">
-                            <li><a href="{% url 'aboutus' %}" class="hover:text-brand-red transition-colors">About
-                                    UDAAN</a></li>
-                            <li><a href="{% url 'our_team' %}" class="hover:text-brand-red transition-colors">Our
-                                    Team</a></li>
-                            <li><a href="{% url 'project_list' %}"
-                                    class="hover:text-brand-red transition-colors">Projects</a></li>
-                            <li><a href="{% url 'our_activities' %}" class="hover:text-brand-red transition-colors">Our
-                                    Activities</a></li>
-                            <li><a href="{% url 'contact_us' %}" class="hover:text-brand-red transition-colors">Contact
-                                    Us</a></li>
+                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
+                        style="animation-delay: 0.1s; animation-fill-mode: forwards;">
+                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                            Quick Links
+                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
+                        </h4>
+
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="{% url 'aboutus' %}" class="footer-link">About UDAAN</a></li>
+                            <li><a href="{% url 'our_team' %}" class="footer-link">Our Team</a></li>
+                            <li><a href="{% url 'project_list' %}" class="footer-link">Projects</a></li>
+                            <li><a href="{% url 'our_activities' %}" class="footer-link">Activities</a></li>
+                            <li><a href="{% url 'contact_us' %}" class="footer-link">Contact</a></li>
                         </ul>
                     </div>
 
                     <!-- Policies -->
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 mb-6">Policies</h4>
-                        <ul class="space-y-4 text-sm text-gray-600">
-                            <li><a href="{% url 'our_policies' %}"
-                                    class="hover:text-brand-red transition-colors">Privacy Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="hover:text-brand-red transition-colors">Terms
-                                    of Use</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="hover:text-brand-red transition-colors">Refund
-                                    Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="hover:text-brand-red transition-colors">Child
-                                    Protection Policy</a>
-                            </li>
+                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
+                        style="animation-delay: 0.2s; animation-fill-mode: forwards;">
+                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                            Policies
+                            <span class="block w-12 h-1 bg-blue-500 mt-2"></span>
+                        </h4>
+
+                        <ul class="space-y-3 text-sm">
+                            <li><a href="{% url 'our_policies' %}" class="footer-link">Privacy Policy</a></li>
+                            <li><a href="{% url 'our_policies' %}" class="footer-link">Terms of Use</a></li>
+                            <li><a href="{% url 'our_policies' %}" class="footer-link">Refund Policy</a></li>
+                            <li><a href="{% url 'our_policies' %}" class="footer-link">Child Protection</a></li>
                         </ul>
                     </div>
 
-                    <!-- Updates & Social -->
-                    <div>
-                        <h4 class="text-lg font-bold text-gray-900 mb-6">Get All Updates</h4>
-                        <div class="mb-6">
-                            <input type="email" placeholder="Your Email Address"
-                                class="w-full px-4 py-3 rounded border border-gray-300 focus:outline-none focus:border-brand-red text-sm mb-3">
-                            <button
-                                class="w-full bg-white border border-blue-500 text-blue-500 font-bold py-3 rounded hover:bg-blue-50 transition-colors uppercase text-sm tracking-wider">
-                                Subscribe
-                            </button>
+                    <!-- Social + Newsletter -->
+                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
+                        style="animation-delay: 0.3s; animation-fill-mode: forwards;">
+
+                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
+                            Stay Connected
+                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
+                        </h4>
+
+                        <input type="email" placeholder="Enter email"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm mb-3">
+
+                        <button
+                            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all duration-300">
+                            Subscribe
+                        </button>
+
+                        <div class="flex space-x-3 mt-5">
+
+                            <a href="#"
+                                class="social-icon bg-blue-600 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">f</a>
+                            <a href="#"
+                                class="social-icon bg-pink-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">i</a>
+                            <a href="#"
+                                class="social-icon bg-blue-700 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">in</a>
+                            <a href="#"
+                                class="social-icon bg-red-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">yt</a>
+
                         </div>
 
-                        <h4 class="text-lg font-bold text-gray-900 mb-4">Find us on social</h4>
-                        <div class="flex space-x-3">
-                            <a href="https://www.facebook.com/udaansociety" target="_blank" aria-label="Facebook"
-                                class="h-10 w-10 bg-blue-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                                </svg></a>
-                            <a href="https://www.instagram.com/udaansociety" target="_blank" aria-label="Instagram"
-                                class="h-10 w-10 bg-pink-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                </svg></a>
-                            <a href="https://www.linkedin.com/in/udaansociety" target="_blank" aria-label="LinkedIn"
-                                class="h-10 w-10 bg-blue-700 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                </svg></a>
-                        </div>
-                        <div class="flex space-x-3 mt-3">
-                            <a href="https://www.youtube.com/user/udaansociety" target="_blank" aria-label="YouTube"
-                                class="h-10 w-10 bg-red-600 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                </svg></a>
-                            <a href="https://wa.me/9837067681" target="_blank" aria-label="WhatsApp"
-                                class="h-10 w-10 bg-green-500 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.897.003-6.556 5.338-11.891 11.894-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                                </svg></a>
-                            <a href="https://twitter.com/UDAAN" target="_blank" aria-label="Twitter"
-                                class="h-10 w-10 bg-blue-400 text-white rounded flex items-center justify-center hover:opacity-90 focus:ring-2 focus:ring-brand-red focus:outline-none"><svg
-                                    class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.899 7.821l-2.074 9.773c-.156.696-.583.864-1.18.536l-3.266-2.407-1.576 1.517c-.173.175-.321.321-.656.321l.235-3.326 6.056-5.474c.264-.236-.057-.366-.409-.132l-7.485 4.71-3.227-1.01c-.702-.218-.716-.704.147-1.043l12.608-4.856c.585-.218 1.096.132.827 1.391z" />
-                                </svg></a>
-                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Copyright -->
-        <div class="bg-gray-900 py-6 border-t border-gray-800">
+        <div class="relative bg-gray-950 py-8 border-t border-gray-800">
+
+            <!-- top glow line -->
+            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-white to-red-500"></div>
+
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-                <div class="text-gray-500 text-sm mb-4 md:mb-0">
-                    Copyright © {% now "Y" %} UDAAN Society | Created by <span class="text-brand-red">Udaan Society
-                        Team</span>
+
+                <!-- Left -->
+                <div class="text-gray-400 text-sm mb-4 md:mb-0 text-center md:text-left">
+                    © {% now "Y" %} <span class="text-white font-semibold">UDAAN Society</span>
+                    <br class="md:hidden">
+                    <span class="text-gray-500 text-xs">Made with ❤️ by UDAAN Society Team</span>
                 </div>
-                <div class="flex space-x-6 text-sm">
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition-colors">Terms
-                        and Conditions</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition-colors">Privacy
-                        Policy</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition-colors">Refund
-                        Policy</a>
-                    <a href="{% url 'our_policies' %}"
-                        class="text-gray-400 hover:text-white transition-colors">Disclaimer</a>
+
+                <!-- Right Links -->
+                <div class="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
+                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Terms</a>
+                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Privacy</a>
+                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Refund</a>
+                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Disclaimer</a>
                 </div>
             </div>
         </div>
@@ -322,7 +461,6 @@
     </footer>
 
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/mouseGlow.js' %}"></script>
 
     <!-- AI Chatbot Integration (Microservice Architecture) -->
     <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}">
@@ -431,6 +569,25 @@
                     const image = btn.getAttribute('data-image');
                     window.openReadMoreModal(title, content, image);
                 });
+            });
+        });
+    </script>
+    <script src="{% static 'js/home.js' %}"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 120
+        });
+
+        // Smooth Parallax Scroll Animation for Subpage Heros
+        document.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.subpage-hero').forEach(hero => {
+                // Moves the background slower than the text container to create smooth visual depth
+                hero.style.backgroundPositionY = `${scrolled * 0.3}px`;
             });
         });
     </script>

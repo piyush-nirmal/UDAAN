@@ -63,7 +63,8 @@ class GeminiChatbot:
 
         try:
             # ---------- RAG ----------
-            results = self.retriever.search(message)
+            search_query = f"UDAAN Society {message}"
+            results = self.retriever.search(search_query, k=8)
 
             if not results:
                 return (
@@ -72,6 +73,11 @@ class GeminiChatbot:
                 )
 
             context = "\n\n".join(doc["text"] for doc in results)
+            print("=" * 80)
+            print("CONTEXT SENT TO GEMINI")
+            print(context)
+            print("=" * 80)
+
 
             sources = ", ".join(
                 sorted(set(doc["source"] for doc in results))
@@ -85,31 +91,57 @@ class GeminiChatbot:
                     speaker = "User" if record.role == "user" else "Assistant"
                     conversation += f"{speaker}: {record.content}\n"
 
+            print("\nRetrieved Documents:\n")
+
+            for i, doc in enumerate(results, 1):
+                print("=" * 60)
+                print(f"{i}. {doc.get('title', 'No Title')}")
+                print(doc["text"][:300])
+            
             prompt = f"""
-    You are UDAAN Saathi, the official AI assistant of UDAAN Society.
+            You are UDAAN Saathi, the official AI assistant of UDAAN Society.
 
-    Answer ONLY using the knowledge below.
+            You MUST answer ONLY from the KNOWLEDGE below.
 
-    =========================
-    KNOWLEDGE
-    =========================
+            Instructions:
+            - Read every retrieved knowledge snippet before answering.
+            - Combine information from all relevant snippets.
+            - Do not ignore useful details.
+            - If multiple snippets discuss the same topic, merge them into one complete answer.
+            - Give complete answers instead of one-line summaries.
+            - Do not make up information.
+            - If the answer is missing, say:
+            "I couldn't find that information in the UDAAN knowledge base."
+            =========================
+            KNOWLEDGE
+            =========================
 
-    {context}
+            {context}
 
-    =========================
-    CONVERSATION
-    =========================
+            =========================
+            CONVERSATION
+            =========================
 
-    {conversation}
+            {conversation}
 
-    =========================
-    QUESTION
-    =========================
+            =========================
+            QUESTION
+            =========================
 
-    {message}
-    """
+            {message}
 
-            response = self.model.generate_content(prompt)
+            Provide a helpful, detailed answer.
+            """
+
+            generation_config = {
+                "temperature": 0.2,
+                "max_output_tokens": 700,
+            }
+
+            response = self.model.generate_content(
+                prompt,
+                generation_config=generation_config
+            )
 
             response_text = response.text
 

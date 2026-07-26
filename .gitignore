@@ -16,3 +16,11 @@ ai_chatbot/.env
 ai_chatbot/venv/
 ai_chatbot/chatbot.db
 ai_chatbot/__pycache__/
+
+# Common Ignores
+node_modules/
+.venv/
+.DS_Store
+**/.DS_Store
+db.sqlite3
+staticfiles/

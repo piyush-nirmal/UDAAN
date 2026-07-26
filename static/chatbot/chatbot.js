@@ -11,10 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = chatForm.querySelector('button[type="submit"]');
 
     // API Configuration
-    // If running locally on port 8000 (via start_dev.bat), connect directly to 8001.
+    // If running locally on a custom port, connect directly to the chatbot port (Django port + 1).
     // Otherwise (in production), use the relative Nginx proxy path.
-    const isLocalDev = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port === '8000';
-    const API_URL = isLocalDev ? 'http://127.0.0.1:8001/api/chat' : '/chatbot_api/chat';
+    const isLocalDev = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') && window.location.port;
+    const chatbotPort = isLocalDev ? (parseInt(window.location.port) + 1) : 8001;
+    const API_URL = isLocalDev ? `http://${window.location.hostname}:${chatbotPort}/api/chat` : '/chatbot_api/chat';
     
     // Conversation Memory - get existing session or start null
     let currentSessionId = sessionStorage.getItem('chatbot_session_id') || null;
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
         } catch (error) {
             console.error('Chatbot API Error:', error);
-            addMessage('⚠️ Sorry, I could not connect to the AI server. Please make sure the backend is running on port 8001.', false);
+            addMessage(`⚠️ Sorry, I could not connect to the AI server. Please make sure the backend is running on port ${chatbotPort}.`, false);
         } finally {
             setTyping(false);
             chatInput.focus();

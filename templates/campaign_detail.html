@@ -9,10 +9,10 @@
 <style>
   /* Custom modern design variables & overrides */
   :root {
-    --color-brand-red: #E63946;
-    --color-brand-dark: #1D3557;
-    --color-brand-blue: #457B9D;
-    --color-brand-light: #F1FAEE;
+    --color-primary: #E63946;
+    --color-neutral-dark: #1D3557;
+    --color-secondary: #457B9D;
+    --color-neutral-light: #F1FAEE;
   }
 
   /* Custom subtle animations */
@@ -46,7 +46,7 @@
     transition: color 0.2s ease;
   }
   .breadcrumbs-bar a:hover {
-    color: var(--color-brand-red);
+    color: var(--color-primary);
   }
 
   /* Hero Section Background Styling with Dark Overlay */
@@ -122,9 +122,9 @@
 <!-- Breadcrumbs -->
 <div class="breadcrumbs-bar bg-white py-4 px-6 md:px-12">
   <div class="max-w-7xl mx-auto text-sm text-gray-500 flex items-center gap-2">
-    <a href="{% url 'home' %}" class="text-gray-600 hover:text-brand-red font-medium">Home</a>
+    <a href="{% url 'home' %}" class="text-gray-600 hover:text-primary font-medium">Home</a>
     <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
-    <a href="{% url 'campaign_list' %}" class="text-gray-600 hover:text-brand-red font-medium">Campaigns</a>
+    <a href="{% url 'campaign_list' %}" class="text-gray-600 hover:text-primary font-medium">Campaigns</a>
     <i class="fa-solid fa-chevron-right text-xs text-gray-400"></i>
     <span class="text-gray-800 font-semibold truncate">{{ campaign.title }}</span>
   </div>
@@ -177,7 +177,7 @@
         <!-- Thumbnails Row (Scroller) -->
         <div class="mt-4 flex gap-3 overflow-x-auto pb-1 no-scrollbar scroll-smooth hidden" id="thumbnailsRow">
           {% if campaign.image %}
-            <button class="thumbnail-btn flex-shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden border-2 border-brand-red focus:outline-none transition-all duration-200" 
+            <button class="thumbnail-btn flex-shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden border-2 border-primary focus:outline-none transition-all duration-200" 
                     data-index="0">
               <img src="{{ campaign.image.url }}" alt="Primary Image Thumbnail" class="w-full h-full object-cover" loading="lazy">
             </button>
@@ -209,16 +209,16 @@
         {% endif %}
         
         <span class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full border border-gray-100">
-          <i class="fa-solid fa-folder-open text-brand-blue"></i> General Fundraising
+          <i class="fa-solid fa-folder-open text-secondary"></i> General Fundraising
         </span>
         <span class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-600 rounded-full border border-gray-100">
-          <i class="fa-regular fa-calendar-days text-brand-blue"></i> Posted: {{ campaign.created_at|date:"d M Y" }}
+          <i class="fa-regular fa-calendar-days text-secondary"></i> Posted: {{ campaign.created_at|date:"d M Y" }}
         </span>
       </div>
 
       <!-- About the Campaign Description -->
       <div class="bg-white p-6 md:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-6">
-        <h2 class="text-2xl font-extrabold text-brand-dark flex items-center gap-2">
+        <h2 class="text-2xl font-extrabold text-neutral-dark flex items-center gap-2">
           About the Campaign
         </h2>
         <div class="text-gray-700 leading-relaxed text-base space-y-4">
@@ -229,14 +229,14 @@
       <!-- Campaign Documents Section (Dynamic) -->
       {% if campaign.documents.exists %}
       <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
-        <h3 class="text-xl font-extrabold text-brand-dark flex items-center gap-2">
-          <i class="fa-regular fa-file-lines text-brand-red"></i> Campaign Documents
+        <h3 class="text-xl font-extrabold text-neutral-dark flex items-center gap-2">
+          <i class="fa-regular fa-file-lines text-primary"></i> Campaign Documents
         </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {% for doc in campaign.documents.all %}
             <div class="flex items-center justify-between p-4 border border-gray-100 rounded-2xl bg-gray-50 hover:bg-white hover:border-gray-200 hover:shadow-sm transition-all duration-200">
               <div class="flex items-center gap-3">
-                <div class="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-red-50 text-brand-red rounded-xl border border-red-100">
+                <div class="flex-shrink-0 w-11 h-11 flex items-center justify-center bg-red-50 text-primary rounded-xl border border-red-100">
                   <i class="fa-solid fa-file-pdf text-xl"></i>
                 </div>
                 <div class="min-w-0">
@@ -244,7 +244,7 @@
                   <p class="text-xs text-gray-500 font-semibold uppercase">PDF • {{ doc.file_size|default:"1.2 MB" }}</p>
                 </div>
               </div>
-              <button class="btn-view-doc bg-brand-red hover:bg-brand-red/90 text-white text-sm font-bold px-4 py-2 rounded-xl transition-all-custom focus:ring-2 focus:ring-brand-red/25" 
+              <button class="btn-view-doc bg-primary hover:bg-primary/90 text-white text-sm font-bold px-4 py-2 rounded-xl transition-all-custom focus:ring-2 focus:ring-primary/25" 
                       data-url="{{ doc.file.url }}" data-title="{{ doc.title }}">
                 View
               </button>
@@ -265,7 +265,7 @@
         
         <div class="space-y-2">
           <div class="flex justify-between items-baseline">
-            <span class="text-3xl font-extrabold text-brand-red">₹{{ campaign.raised_amount }}</span>
+            <span class="text-3xl font-extrabold text-primary">₹{{ campaign.raised_amount }}</span>
             <span class="text-sm text-gray-500">raised</span>
           </div>
           <div class="text-sm font-semibold text-gray-500">
@@ -276,10 +276,10 @@
         <!-- Progress Bar Component -->
         <div class="my-6">
           <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden border border-gray-50">
-            <div class="progress-bar-fill h-full bg-brand-red rounded-full" 
+            <div class="progress-bar-fill h-full bg-primary rounded-full" 
                  style="width: {{ campaign.percentage_raised }}%;"></div>
           </div>
-          <div class="flex justify-between text-sm font-bold text-brand-dark mt-2">
+          <div class="flex justify-between text-sm font-bold text-neutral-dark mt-2">
             <span>{{ campaign.percentage_raised }}% Completed</span>
           </div>
         </div>
@@ -292,7 +292,7 @@
             </button>
           {% else %}
             <a href="{% url 'donate' %}" 
-               class="block w-full text-center py-4 bg-brand-red hover:bg-brand-red/90 text-white font-extrabold rounded-2xl text-lg shadow-lg hover:shadow-xl hover:shadow-brand-red/10 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
+               class="block w-full text-center py-4 bg-primary hover:bg-primary/90 text-white font-extrabold rounded-2xl text-lg shadow-lg hover:shadow-xl hover:shadow-primary/10 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
               Donate Now
             </a>
           {% endif %}
@@ -301,11 +301,11 @@
 
       <!-- Campaign Timeline Details Card -->
       <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md space-y-5">
-        <h3 class="text-lg font-bold text-brand-dark border-b border-gray-100 pb-3">Campaign Timeline</h3>
+        <h3 class="text-lg font-bold text-neutral-dark border-b border-gray-100 pb-3">Campaign Timeline</h3>
         
         <div class="space-y-3.5">
           <div class="flex items-center gap-3 text-sm">
-            <div class="w-8 h-8 rounded-full bg-red-50 text-brand-red flex items-center justify-center flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-red-50 text-primary flex items-center justify-center flex-shrink-0">
               <i class="fa-solid fa-calendar-plus text-xs"></i>
             </div>
             <div>
@@ -315,7 +315,7 @@
           </div>
 
           <div class="flex items-center gap-3 text-sm">
-            <div class="w-8 h-8 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-blue-50 text-secondary flex items-center justify-center flex-shrink-0">
               <i class="fa-solid fa-calendar text-xs"></i>
             </div>
             <div>
@@ -327,7 +327,7 @@
           </div>
 
           <div class="flex items-center gap-3 text-sm">
-            <div class="w-8 h-8 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center flex-shrink-0">
+            <div class="w-8 h-8 rounded-full bg-blue-50 text-secondary flex items-center justify-center flex-shrink-0">
               <i class="fa-solid fa-calendar-check text-xs"></i>
             </div>
             <div>
@@ -345,7 +345,7 @@
               </div>
               <div>
                 <p class="text-xs text-gray-400 font-bold uppercase">Days Remaining</p>
-                <p class="font-black text-brand-red text-base">{{ campaign.days_remaining }} days left</p>
+                <p class="font-black text-primary text-base">{{ campaign.days_remaining }} days left</p>
               </div>
             </div>
           {% endif %}
@@ -355,8 +355,8 @@
       <!-- Who Will Benefit Beneficiary Card -->
       {% if campaign.beneficiary_text %}
       <div class="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm transition-all-custom hover:shadow-md space-y-4">
-        <h3 class="text-lg font-bold text-brand-dark border-b border-gray-100 pb-3 flex items-center gap-2">
-          <i class="fa-solid fa-circle-info text-brand-blue"></i> Who Will Benefit?
+        <h3 class="text-lg font-bold text-neutral-dark border-b border-gray-100 pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-secondary"></i> Who Will Benefit?
         </h3>
         <p class="text-sm text-gray-600 leading-relaxed font-medium">
           {{ campaign.beneficiary_text }}
@@ -386,8 +386,8 @@
 {% if related_campaigns %}
 <section class="max-w-7xl mx-auto px-6 md:px-12 py-16 border-t border-gray-100">
   <div class="mb-8">
-    <h2 class="text-2xl font-extrabold text-brand-dark">Related Campaigns</h2>
-    <div class="w-12 h-1 bg-brand-red rounded-full mt-2"></div>
+    <h2 class="text-2xl font-extrabold text-neutral-dark">Related Campaigns</h2>
+    <div class="w-12 h-1 bg-primary rounded-full mt-2"></div>
   </div>
   
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -400,14 +400,14 @@
           {% else %}
             <img src="{% static 'images/pn1.png' %}" alt="Placeholder" class="w-full h-full object-cover">
           {% endif %}
-          <span class="absolute top-4 left-4 bg-brand-dark/80 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
+          <span class="absolute top-4 left-4 bg-neutral-dark/80 text-white text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full backdrop-blur-sm">
             Fundraiser
           </span>
         </div>
         
         <div class="p-5 flex-grow flex flex-col justify-between">
           <div>
-            <h4 class="font-bold text-gray-800 text-base line-clamp-2 leading-snug hover:text-brand-red transition-colors duration-200">
+            <h4 class="font-bold text-gray-800 text-base line-clamp-2 leading-snug hover:text-primary transition-colors duration-200">
               {{ rel.title }}
             </h4>
             
@@ -417,7 +417,7 @@
                 <span>{{ rel.percentage_raised }}%</span>
               </div>
               <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                <div class="h-full bg-brand-red rounded-full" style="width: {{ rel.percentage_raised }}%;"></div>
+                <div class="h-full bg-primary rounded-full" style="width: {{ rel.percentage_raised }}%;"></div>
               </div>
             </div>
           </div>
@@ -438,7 +438,7 @@
   <div class="pdf-modal-container">
     <div class="flex justify-between items-center px-6 py-4.5 border-b border-gray-100 bg-gray-50">
       <div class="flex items-center gap-3">
-        <i class="fa-solid fa-file-pdf text-xl text-brand-red" id="modalHeaderIcon"></i>
+        <i class="fa-solid fa-file-pdf text-xl text-primary" id="modalHeaderIcon"></i>
         <span class="font-extrabold text-gray-800 text-base" id="modalDocTitle">Document Viewer</span>
       </div>
       <button class="text-gray-400 hover:text-gray-600 text-2xl font-bold leading-none p-2 focus:outline-none" 
@@ -492,12 +492,12 @@
         const thumbIndex = parseInt(thumb.dataset.index);
         if (thumbIndex === currentIndex) {
           thumb.classList.remove('border-transparent', 'hover:border-gray-200');
-          thumb.classList.add('border-brand-red');
+          thumb.classList.add('border-primary');
           
           // Smooth scroll thumbnail inside overflow container
           thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         } else {
-          thumb.classList.remove('border-brand-red');
+          thumb.classList.remove('border-primary');
           thumb.classList.add('border-transparent', 'hover:border-gray-200');
         }
       });

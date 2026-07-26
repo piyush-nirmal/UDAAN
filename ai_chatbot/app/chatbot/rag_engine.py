@@ -42,7 +42,7 @@ class RAGEngine:
                 "text": text
             })
 
-    def split_documents(self, chunk_size=700, overlap=100):
+    def split_documents(self, chunk_size=1000, overlap=200):
         """
         Split every document into overlapping chunks.
         """
@@ -62,7 +62,8 @@ class RAGEngine:
                 chunk = text[start:end]
 
                 chunks.append({
-                    "source": doc["source"],
+                    "source": doc.get("source", ""),
+                    "title": doc.get("title", ""),
                     "text": chunk
                 })
 

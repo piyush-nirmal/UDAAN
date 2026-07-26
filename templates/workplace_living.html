@@ -1,449 +1,176 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Workplace Giving & Living | UDAAN Society{% endblock %}
+{% block title %}Workplace Giving & CSR - UDAAN Society{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/workplace_living.css' %}">
-{% endblock %}
+{% block meta_description %}Learn about corporate CSR partnerships and workplace giving with UDAAN Society. Engage employees in volunteering and philanthropy.{% endblock %}
 
 {% block content %}
 
-
-<!-- HERO SECTION -->
-
-<section class="hero">
-
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop"
-             alt="Workplace Giving">
-    </div>
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-        <h1>WORKPLACE GIVING</h1>
-    </div>
-
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">CSR Partnerships</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Workplace Giving</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Strengthen your team and give back to communities through corporate workplace philanthropy and field volunteering.
+    </p>
+  </div>
 </section>
 
-<!-- BREADCRUMB -->
-
-<!-- <section class="breadcrumb-section">
-
-    <div class="breadcrumb-container">
-
-        <a href="{% url 'home' %}">Home</a>
-
-        <span> » </span>
-
-        <p>Workplace Giving</p>
-
-    </div>
-
-</section> -->
-
-
-
-<div class="breadcrumb-section">
-    <div class="breadcrumb-container">
-        <a href="{% url 'home' %}">Home</a>
-        <span class="sep">»</span>
-        <span class="current">Workplace Giving</span>
-    </div>
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">Workplace Giving</span>
+  </div>
 </div>
 
-<!-- EMPLOYEE WORKPLACE SECTION -->
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-24">
+  
+  <!-- Intro Context -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <div class="lg:col-span-7 space-y-6">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs block">Corporate Social Responsibility</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">Employee Workplace Giving with UDAAN</h2>
+      <p class="text-gray-600 leading-relaxed text-sm">
+        Workplace giving initiatives provide a powerful opportunity to support underprivileged communities where your business operates, while strengthening bonds with your team. Corporate employees are encouraged to help through donation matching, structured payroll deductions, and coordinated field volunteering.
+      </p>
+    </div>
+    
+    <div class="lg:col-span-5 bg-gradient-to-br from-primary/5 to-primary/15 rounded-3xl p-8 border border-primary/10 text-center space-y-3">
+      <h3 class="font-bold text-primary-dark">What is Workplace Giving?</h3>
+      <p class="text-xs text-gray-500 leading-relaxed">
+        Workplace giving enables employees to make small, recurring financial or time contributions to registered NGO causes, directly supported or matched by the employer.
+      </p>
+    </div>
+  </div>
 
-<section class="employee-workplace">
-
-    <div class="employee-container">
-
-        <h2>
-            <span class="highlight-red">EMPLOYEE</span>
-            WORKPLACE GIVING WITH UDAAN SOCIETY
-        </h2>
-
-        <p class="employee-description">
-            Workplace giving initiatives are a great opportunity to support the communities where you work while strengthening bonds with your employees. Employees are encouraged to help NGOs and communities by contributing funds, offering their time, and contributing other resources through the Employee Volunteer and Employee Workplace Giving Program. Corporate employees who have consistently taken the initiative to assist underprivileged local communities are needed, both financially and via volunteering.
-        </p>
-
+  <!-- Benefits Section -->
+  <div class="space-y-12">
+    <div class="text-center max-w-2xl mx-auto space-y-3">
+      <h3 class="text-2xl font-bold text-neutral-dark font-heading">Multi-stakeholder Benefits</h3>
+      <p class="text-gray-500 text-sm">A structured workplace philanthropy program provides significant benefits to employers, employees, and NGOs.</p>
     </div>
 
-</section>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Employers -->
+      <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-4 hover:border-primary/20 transition-all duration-300">
+        <div class="text-3xl">🏢</div>
+        <h4 class="text-base font-bold text-neutral-dark">Benefits for Employers</h4>
+        <ul class="text-xs text-gray-500 space-y-2 leading-relaxed">
+          <li>✔ Attracts values-driven top talent.</li>
+          <li>✔ Enhances team engagement and cooperation.</li>
+          <li>✔ Lowers turnover metrics (studies show up to 52% reduction in turnover with purpose-led programs).</li>
+        </ul>
+      </div>
 
-<!-- WORKPLACE INFO CARD -->
+      <!-- Employees -->
+      <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-4 hover:border-secondary/20 transition-all duration-300">
+        <div class="text-3xl">👥</div>
+        <h4 class="text-base font-bold text-neutral-dark">Benefits for Employees</h4>
+        <ul class="text-xs text-gray-500 space-y-2 leading-relaxed">
+          <li>✔ Direct, hassle-free monthly philanthropy.</li>
+          <li>✔ Lowers taxable income under 80G tax exemptions.</li>
+          <li>✔ Aligns professional life with humanitarian efforts.</li>
+        </ul>
+      </div>
 
-<section class="workplace-card-section">
+      <!-- Nonprofits -->
+      <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-4 hover:border-accent/20 transition-all duration-300">
+        <div class="text-3xl">🤝</div>
+        <h4 class="text-base font-bold text-neutral-dark">Benefits for UDAAN</h4>
+        <ul class="text-xs text-gray-500 space-y-2 leading-relaxed">
+          <li>✔ Reliable, steady source of monthly support.</li>
+          <li>✔ Ability to execute long-term water management.</li>
+          <li>✔ Close collaborations with regional companies.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-    <div class="workplace-card">
-
-        <!-- LEFT IMAGE -->
-        <div class="workplace-card-image">
-
-            <img src="{% static 'assets/workplace-giving-mean.jpg.webp' %}"
-                 alt="Workplace Giving">
-
-        </div>
-
-
-        <!-- RIGHT CONTENT -->
-        <div class="workplace-card-content">
-
-            <h3>What does “workplace giving” mean?</h3>
-
-            <p>
-                Giving employees the chance to donate to NGOs is known as workplace
-                giving or workplace philanthropy. Since the individual is the one
-                making the financial contribution to the charity cause, it is also
-                known as employee giving.
-            </p>
-
-            <p>
-                Company-sponsored initiatives enable employees to contribute to
-                causes they care about, and the entire process is made simple.
-            </p>
-
-            <p>
-                Employee-giving initiatives can take many different shapes, such as:
-            </p>
-
-            <ul>
-                <li>Employer-Matching gifts</li>
-                <li>Payroll deductions</li>
-                <li>Volunteer initiatives</li>
-                <li>Campaigns for fundraising</li>
-            </ul>
-
-            <p>
-                <strong>Workplace giving’s advantages:</strong>
-                One simple way for businesses to give back to the community is
-                through workplace giving. Furthermore, it is advantageous to all
-                parties concerned, including the employees, their employers, and
-                nonprofit organizations.
-            </p>
-
-        </div>
-
+  <!-- Registration Form -->
+  <div class="max-w-3xl mx-auto bg-white shadow-premium rounded-3xl p-8 border border-gray-100/50 space-y-6">
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl font-bold text-neutral-dark font-heading">Employee Workplace Giving Registration</h2>
+      <p class="text-sm text-gray-500">Register your organization or submit individual details to start corporate volunteering.</p>
     </div>
 
-</section>
+    <form method="POST" class="space-y-6">
+      {% csrf_token %}
 
-
-
-<!-- BENEFITS FOR EMPLOYERS SECTION -->
-
-<section class="benefits-section">
-
-    <div class="benefits-container">
-
-        <!-- LEFT SIDE -->
-        <div class="benefits-text">
-
-            <h2>Benefits for Employers</h2>
-
-            <p>
-                The goal of employee-given campaign incentives for companies
-                is to create an environment where employees want to work.
-                Implementing workplace giving initiatives:
-            </p>
-
-            <ul>
-                <li>Attracts Top Talent</li>
-                <li>Enhances Employee Engagement</li>
-                <li>Increases Employee Retention</li>
-            </ul>
-
-            <p>
-                Studies reveal that organizations with a purpose program
-                have a 52% reduction in employee turnover. Furthermore,
-                85% of employees concur that participating in the company’s
-                charity contributions boosts their level of trust in their employer.
-            </p>
-
-            <p>
-                One of the greatest ways for companies to demonstrate to
-                their workforce that their company’s values and culture include
-                caring about the world around them is through a corporate social
-                responsibility (CSR) program. After setting CSR objectives,
-                companies might include workplace giving initiatives in addition
-                to other forms of assistance, including pro-bono work, corporate
-                gifts, and volunteer opportunities.
-            </p>
-
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">First Name *</label>
+          <input type="text" name="first_name" required placeholder="John"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
-
-
-        <!-- RIGHT SIDE IMAGE -->
-        <div class="benefits-image-box">
-
-            <img src="{% static 'assets/benefits-for-employers.jpg.webp' %}"
-                 alt="Benefits for Employers">
-
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Last Name *</label>
+          <input type="text" name="last_name" required placeholder="Doe"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
+      </div>
 
-    </div>
-
-</section>
-
-<!-- BENEFITS FOR EMPLOYEES SECTION -->
-
-<section class="benefits-section">
-
-    <div class="benefits-container reverse">
-
-        <!-- LEFT IMAGE -->
-        <div class="benefits-image-box">
-
-            <img src="{% static 'assets/benefits-for-employees.jpg.webp' %}"
-                 alt="Benefits for Employees">
-
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Address</label>
+          <input type="email" name="email" placeholder="john@company.com"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
-
-
-        <!-- RIGHT TEXT -->
-        <div class="benefits-text">
-
-            <h2>Benefits for Employees</h2>
-
-            <p>
-                Campaigns for workplace giving help employees as well.
-                Participating in programs for charitable giving run by employers
-                encourages long-term social engagement.
-            </p>
-
-            <ul>
-                <li>
-                    Can lower taxable income if the donations are made to a nonprofit
-                    organization that is registered.
-                </li>
-
-                <li>
-                    Encourages someone who wants to donate once a month without
-                    any more work on their part.
-                </li>
-
-                <li>
-                    It enables people to combine their professional and humanitarian
-                    aspirations.
-                </li>
-            </ul>
-
-            <p>
-                Individuals can participate in workplace giving programs in a
-                variety of ways. Whichever option the company decides on, these
-                company-wide programs enable employees to have a positive impact
-                on a cause they are passionate about while simultaneously reducing
-                their taxable income.
-            </p>
-
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Contact Number *</label>
+          <input type="tel" name="phone" required placeholder="9876543210"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
+      </div>
 
-    </div>
-
-</section>
-
-<!-- BENEFITS FOR NON-PROFITS SECTION -->
-
-<section class="benefits-section">
-
-    <div class="benefits-container">
-
-        <!-- LEFT TEXT -->
-        <div class="benefits-text">
-
-            <h2>Benefits for Non-profits</h2>
-
-            <p>
-                Programs for workplace giving are undoubtedly fantastic news
-                for nonprofit organizations in a lot of ways. In addition to
-                providing monetary or physical assistance, other advantages include:
-            </p>
-
-            <ul>
-                <li>Dependable and steady source of funding</li>
-                <li>Enduring alliances with regional companies and bigger organizations</li>
-                <li>
-                    The capacity to predict forthcoming funding for future
-                    activities with greater accuracy
-                </li>
-            </ul>
-
-            <p>
-                Due to the fact that many workplace giving programs routinely
-                take money from employees’ paychecks, NGOs are able to receive
-                donations on a monthly or yearly basis without being dependent
-                on special events or one-time fundraising drives.
-                Charity organizations are happy to get this recurring revenue as a bonus.
-                Check our partners – <a href="{% url 'our_partners' %}" class="benefits-link">click here</a>
-            </p>
-
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Company / Organization *</label>
+          <input type="text" name="organization" required placeholder="Company Pvt Ltd"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
-
-
-        <!-- RIGHT IMAGE -->
-        <div class="benefits-image-box">
-
-            <img src="{% static 'assets/benefits-for-non-profits.jpg.webp' %}"
-                 alt="Benefits for Non-profits">
-
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Designation *</label>
+          <input type="text" name="designation" required placeholder="CSR Lead / HR Manager"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
         </div>
+      </div>
 
-    </div>
+      <div>
+        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase font-heading">Working Days Available for Field Volunteering</label>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs mt-2">
+          <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg hover:bg-neutral-light cursor-pointer">
+            <input type="checkbox" name="working_days" value="Saturday" class="rounded text-primary focus:ring-primary h-4 w-4">
+            <span>Saturday</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg hover:bg-neutral-light cursor-pointer">
+            <input type="checkbox" name="working_days" value="Sunday" class="rounded text-primary focus:ring-primary h-4 w-4">
+            <span>Sunday</span>
+          </label>
+          <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg hover:bg-neutral-light cursor-pointer">
+            <input type="checkbox" name="working_days" value="Weekdays" class="rounded text-primary focus:ring-primary h-4 w-4">
+            <span>Weekdays</span>
+          </label>
+        </div>
+      </div>
 
-</section>
+      <div>
+        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Skills or Area of Philanthropic Interest</label>
+        <textarea name="interests" placeholder="e.g. Teaching children, fundraising guidance, groundwater recharge mapping..." rows="3"
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
+      </div>
 
+      <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
+        Submit Registration
+      </button>
 
-<!-- ================= WORKPLACE GIVING FORM ================= -->
+    </form>
+  </div>
 
-<section class="workplace-form-section">
-
-    <!-- Title -->
-    <div class="form-header">
-        <h2>
-            <span>EMPLOYEE</span> WORKPLACE GIVING FORM
-        </h2>
-
-        <p>Join Our Workplace Giving Campaign – Fill the Form Below.</p>
-    </div>
-
-
-    <!-- FORM CARD -->
-    <div class="form-card">
-
-        <form method="post">
-
-            {% csrf_token %}
-
-            <!-- ROW 1 -->
-            <div class="form-row">
-
-                <div class="form-group">
-                    <label>First Name <span>*</span></label>
-                    <input type="text" name="first_name" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Last Name <span>*</span></label>
-                    <input type="text" name="last_name" required>
-                </div>
-
-            </div>
-
-
-            <!-- EMAIL -->
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email">
-            </div>
-
-
-            <!-- CONTACT -->
-            <div class="form-group">
-                <label>Contact No <span>*</span></label>
-                <input type="text" name="phone" required>
-            </div>
-
-
-            <!-- ADDRESS -->
-            <h4 class="form-subtitle">Address</h4>
-
-            <div class="form-row">
-
-                <div class="form-group">
-                    <label>Address Line 1 <span>*</span></label>
-                    <input type="text" name="address1" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Address Line 2</label>
-                    <input type="text" name="address2">
-                </div>
-
-            </div>
-
-
-            <!-- CITY STATE -->
-            <div class="form-row">
-
-                <div class="form-group">
-                    <label>City <span>*</span></label>
-                    <input type="text" name="city" required>
-                </div>
-
-                <div class="form-group">
-                    <label>State <span>*</span></label>
-                    <input type="text" name="state" required>
-                </div>
-
-            </div>
-
-
-            <!-- ZIP -->
-            <div class="form-group">
-                <label>Zip Code <span>*</span></label>
-                <input type="text" name="zip_code" required>
-            </div>
-
-
-            <!-- COMPANY -->
-            <div class="form-group">
-                <label>Name of the Organization/Company? <span>*</span></label>
-                <input type="text" name="organization" required>
-            </div>
-
-
-            <!-- DESIGNATION -->
-            <div class="form-group">
-                <label>Designation <span>*</span></label>
-                <input type="text" name="designation" required>
-            </div>
-
-
-            <!-- WORKING DAYS -->
-            <div class="form-group">
-
-                <label>Working Days</label>
-
-                <div class="checkbox-group">
-
-                    <label><input type="checkbox" name="working_days" value="Sunday"> Sunday</label>
-                    <label><input type="checkbox" name="working_days" value="Saturday"> Saturday</label>
-                    <label><input type="checkbox" name="working_days" value="Monday"> Monday</label>
-                    <label><input type="checkbox" name="working_days" value="Tuesday"> Tuesday</label>
-                    <label><input type="checkbox" name="working_days" value="Wednesday"> Wednesday</label>
-                    <label><input type="checkbox" name="working_days" value="Thursday"> Thursday</label>
-                    <label><input type="checkbox" name="working_days" value="Friday"> Friday</label>
-
-                </div>
-
-            </div>
-
-
-            <!-- INTEREST -->
-            <div class="form-group">
-                <label>Area of Interest / Skills</label>
-                <textarea rows="4" name="interests"></textarea>
-            </div>
-
-
-            <!-- COMMENTS -->
-            <div class="form-group">
-                <label>Comments (optional)</label>
-                <textarea rows="4" name="comments"></textarea>
-            </div>
-
-
-            <!-- BUTTON -->
-            <button type="submit" class="submit-btn">
-                SUBMIT APPLICATION
-            </button>
-
-        </form>
-
-    </div>
-
-</section>
-
+</div>
 
 {% endblock %}

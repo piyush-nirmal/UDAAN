@@ -1,165 +1,129 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Career & Fellowship | UDAAN Society{% endblock %}
+{% block title %}Career & Fellowship - UDAAN Society{% endblock %}
 
-{% block meta_description %}Explore career and fellowship opportunities at UDAAN Society. Join our team of social changemakers working in community development, advocacy, and program management in Aligarh.{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/career_fellowship.css' %}">
-{% endblock %}
+{% block meta_description %}Explore career and fellowship opportunities at UDAAN Society. Join our team of social changemakers working in community development, advocacy, and program management.{% endblock %}
 
 {% block content %}
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="UDAAN Society Careers and Fellowship Opportunities">
-        <div class="hero-overlay"></div>
-    </div>
-    <div class="hero-content">
-        <h1>CAREER & FELLOWSHIP</h1>
-    </div>
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Join Our Team</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Careers & Fellowships</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      UDAAN Society offers a dynamic, stimulating, and value-driven work environment for social changemakers.
+    </p>
+  </div>
 </section>
 
-
-<div class="breadcrumb">
-  <div class="container">
-    <a href="{% url 'home' %}">Home</a>
-    <span class="sep">»</span>
-    <span class="current">Career and fellowship</span>
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">Careers & Fellowships</span>
   </div>
 </div>
 
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-20">
+  
+  <!-- Introduction & Scope -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <!-- Left: Content -->
+    <div class="lg:col-span-7 space-y-6">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs block">Work Culture</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">Join the Movement for Social Change</h2>
+      <p class="text-gray-600 leading-relaxed">
+        UDAAN Society is a leading non-profit organization committed to empowering rural and neglected communities. We believe in providing structured learning environments that inspire both professional growth and personal development.
+      </p>
 
-<!-- APPLY -->
-<section class="apply-section">
-
-    <h2 class="apply-title">APPLY FOR A JOB</h2>
-
-    <div class="apply-banner">
-
-        <!-- Register -->
-        <div class="register-now">
-            REGISTER NOW
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+        <div class="space-y-3">
+          <h3 class="font-bold text-neutral-dark text-base">Meaningful Careers</h3>
+          <ul class="text-xs text-gray-500 space-y-2">
+            <li class="flex items-center gap-2">✔ Community Development</li>
+            <li class="flex items-center gap-2">✔ Advocacy & Social Policy</li>
+            <li class="flex items-center gap-2">✔ Direct Field Program Management</li>
+            <li class="flex items-center gap-2">✔ Research & MIS Documentation</li>
+          </ul>
         </div>
-
-        <!-- Content -->
-        <div class="apply-content">
-
-            <div class="apply-boxes">
-                <div class="blue-box">CAREER AND</div>
-                <div class="blue-box">FELLOWSHIPS</div>
-            </div>
-
-            <div class="apply-text">
-                UDAAN SOCIETY OFFERS A <br>
-                DYNAMIC AND STIMULATING <br>
-                WORK ENVIRONMENT
-            </div>
-
+        <div class="space-y-3">
+          <h3 class="font-bold text-neutral-dark text-base">Key Employee Benefits</h3>
+          <ul class="text-xs text-gray-500 space-y-2">
+            <li class="flex items-center gap-2">✔ Direct Grassroots Social Impact</li>
+            <li class="flex items-center gap-2">✔ Structured Learning Environment</li>
+            <li class="flex items-center gap-2">✔ Diverse, Collaborative Leadership</li>
+            <li class="flex items-center gap-2">✔ Real Career Growth & Credentials</li>
+          </ul>
         </div>
-
-        <!-- Footer -->
-        <div class="apply-footer">
-            www.udaansociety.org
-        </div>
-
+      </div>
     </div>
 
-</section>
-
-
-<!-- INTRO -->
-<section class="career-container">
-
-    <h2>Join the Movement for Social Change in Aligarh</h2>
-
-    <p>
-        UDAAN Society is a leading non-profit organization committed to empowering
-        underprivileged communities and building a better future.
-    </p>
-
-
-    <h3>Meaningful Careers</h3>
-
-    <ul>
-        <li>Community Development</li>
-        <li>Advocacy & Policy</li>
-        <li>Program Management</li>
-        <li>Fundraising</li>
-        <li>Research</li>
-    </ul>
-
-
-    <h3>Benefits</h3>
-
-    <ul>
-        <li>Real Social Impact</li>
-        <li>Career Growth</li>
-        <li>Strong Team</li>
-        <li>Learning Environment</li>
-    </ul>
-
-</section>
-
-<section class="career-container">
-
-    <section class="internship-info">
-
-        <a href="{% url 'internships' %}" class="internship-link">
-            Apply for internship
+    <!-- Right: Visual Badge Card -->
+    <div class="lg:col-span-5 bg-white border border-gray-200/60 p-8 rounded-3xl shadow-premium text-center space-y-6">
+      <div class="w-16 h-16 rounded-2xl bg-primary-light text-primary flex items-center justify-center text-3xl mx-auto">💼</div>
+      <div class="space-y-2">
+        <h3 class="text-xl font-bold text-neutral-dark">Apply For Openings</h3>
+        <p class="text-xs text-gray-500 max-w-xs mx-auto">Browse active full-time job openings or fellowships at UDAAN Society.</p>
+      </div>
+      <div>
+        <a href="{% url 'jobs' %}" class="w-full block btn-primary justify-center rounded-xl py-3 text-sm">
+          Browse Job Openings
         </a>
+      </div>
+    </div>
+  </div>
 
-        <p class="internship-text">
-            We will update all the upcoming jobs accordingly.
+  <!-- Social Media & Notification channels -->
+  <div class="bg-neutral-light rounded-3xl p-8 border border-gray-100 space-y-6">
+    <div class="text-center max-w-2xl mx-auto space-y-3">
+      <h3 class="text-xl font-bold text-neutral-dark font-heading">Stay Updated on Openings</h3>
+      <p class="text-xs text-gray-500">We post urgent recruitment notices and career updates directly to our social and messaging platforms.</p>
+    </div>
+    
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="https://www.facebook.com/udaansociety" target="_blank" rel="noopener" class="bg-white border border-gray-200 hover:border-secondary hover:text-secondary rounded-2xl px-6 py-4 flex items-center gap-3 transition-all text-sm font-bold text-gray-700 shadow-soft">
+        <i class="fab fa-facebook text-xl text-secondary"></i> Follow Facebook Page
+      </a>
+      
+      <a href="https://www.whatsapp.com/channel/0029VaB0X8yId7nIN0lhCI3m" target="_blank" rel="noopener" class="bg-white border border-gray-200 hover:border-green-500 hover:text-green-600 rounded-2xl px-6 py-4 flex items-center gap-3 transition-all text-sm font-bold text-gray-700 shadow-soft">
+        <i class="fab fa-whatsapp text-xl text-green-500"></i> Join WhatsApp Channel
+      </a>
+    </div>
+  </div>
+
+  <!-- Dual Action Pathways -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft flex flex-col justify-between h-64 hover:border-primary/20 transition-all duration-300">
+      <div class="space-y-2">
+        <div class="text-2xl">🎓</div>
+        <h3 class="text-lg font-bold text-neutral-dark">Academic Internships</h3>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Gain recognized experience in social work fields. Designed for university undergraduates and graduates.
         </p>
-
-        <p class="internship-text">
-            You can stay connected via Facebook Page or WhatsApp Channel:
-        </p>
-
-        <p class="internship-keywords">
-            social impact careers, non-profit jobs Aligarh, social work internships
-        </p>
-
-    </section>
-
-</section>
-
-
-<!-- SOCIAL -->
-<section class="career-social">
-
-    <a href="https://www.facebook.com/udaansociety"
-       target="_blank"
-       class="social-btn fb">
-        📘 Follow Facebook Page
-    </a>
-
-    <a href="https://www.whatsapp.com/channel/0029VaB0X8yId7nIN0lhCI3m"
-       target="_blank"
-       class="social-btn wp">
-        💬 Join WhatsApp Channel
-    </a>
-
-</section>
-
-<!-- ACTION -->
-<section class="career-actions">
-
-    <div class="career-card">
-        <h3>Apply for Job</h3>
-        <p>Work on impactful projects</p>
-        <a href="{% url 'jobs' %}" class="career-btn">JOIN NOW</a>
+      </div>
+      <div>
+        <a href="{% url 'internships' %}" class="text-primary hover:text-primary-dark font-bold text-xs inline-flex items-center gap-1">Apply for Internship →</a>
+      </div>
     </div>
 
-    <div class="career-card">
-        <h3>Become a Fellow</h3>
-        <p>Serve communities</p>
-        <a href="{% url 'volunteering' %}" class="career-btn">JOIN NOW</a>
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft flex flex-col justify-between h-64 hover:border-secondary/20 transition-all duration-300">
+      <div class="space-y-2">
+        <div class="text-2xl">🌟</div>
+        <h3 class="text-lg font-bold text-neutral-dark">Volunteerships & Fellowships</h3>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Dedicate time to localized campaigns, groundwater audits, or child protection workshops.
+        </p>
+      </div>
+      <div>
+        <a href="{% url 'volunteering' %}" class="text-secondary hover:text-secondary-dark font-bold text-xs inline-flex items-center gap-1">Become a Fellow →</a>
+      </div>
     </div>
+  </div>
 
-</section>
+</div>
 
 {% endblock %}

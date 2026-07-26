@@ -1,101 +1,250 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}UDAAN Society - FAQs{% endblock %}
+{% block title %}Frequently Asked Questions - UDAAN Society{% endblock %}
 
-{% block meta_description %}Frequently asked questions about UDAAN Society - learn about our mission, registration, focus areas, how to donate, volunteer, and contact us. Get answers about tax exemptions and 80G certification.{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/faq.css' %}">
-{% endblock %}
+{% block meta_description %}Get answers to frequently asked questions about UDAAN Society, including our focus areas, registration, 80G tax exemptions, volunteering, and headquarters in Aligarh.{% endblock %}
 
 {% block content %}
 
-<div class="header">
-    <h1>Frequently Asked Questions</h1>
-    <p>Learn more about UDAAN Society and how you can support our mission.</p>
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Help Desk</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Frequently Asked Questions</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Find quick answers to registration, tax benefits, volunteer guidelines, and operations of UDAAN Society.
+    </p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">FAQs</span>
+  </div>
 </div>
 
-<div class="container">
-
-    <div class="faq-item">
-        <div class="question">What does UDAAN stand for? <span>+</span></div>
-        <div class="answer">
-            UDAAN stands for Unified Development Association for Amelioration of Neglected.
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    <!-- Left Column: FAQ Categories & Contact Info -->
+    <div class="lg:col-span-4 space-y-6">
+      
+      <!-- Quick Info Card -->
+      <div class="bg-white shadow-soft rounded-3xl p-6 border border-gray-100/50 space-y-4">
+        <h3 class="text-base font-bold text-neutral-dark border-b border-gray-100 pb-3">FAQ Navigation</h3>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Use the search box on the right to instantly filter questions by keywords. If you can't find what you need, feel free to contact us.
+        </p>
+        
+        <div class="space-y-3 pt-2 text-xs font-semibold text-gray-600">
+          <div class="flex items-center gap-2.5">
+            <span class="text-primary w-5 text-center">📍</span>
+            <span>Aligarh, Uttar Pradesh, India</span>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="text-primary w-5 text-center">✉</span>
+            <a href="mailto:mail@udaansociety.org" class="hover:underline">mail@udaansociety.org</a>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <span class="text-primary w-5 text-center">📞</span>
+            <span>+91 98370 67681</span>
+          </div>
         </div>
+      </div>
+
+      <!-- Quick Contact Box -->
+      <div class="bg-primary-light border border-primary/10 rounded-3xl p-6 text-center space-y-3">
+        <h4 class="font-bold text-primary-dark text-sm">Still Have Questions?</h4>
+        <p class="text-xs text-gray-600 leading-relaxed">Our support team usually responds to emails within 24 business hours.</p>
+        <a href="{% url 'contact_us' %}" class="btn-primary rounded-full px-6 py-2.5 text-xs inline-flex justify-center w-full">
+          Contact Help Desk
+        </a>
+      </div>
+      
     </div>
 
-    <div class="faq-item">
-        <div class="question">When was UDAAN Society registered? <span>+</span></div>
-        <div class="answer">
-            UDAAN Society was registered under the Societies Registration Act 1860 on 13 December 2004.
+    <!-- Right Column: Search Box & Accordion List -->
+    <div class="lg:col-span-8 space-y-6">
+      
+      <!-- Live Search Box -->
+      <div class="bg-white shadow-soft rounded-2xl p-5 border border-gray-100/50 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div class="relative w-full sm:max-w-md">
+          <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">🔍</span>
+          <input type="text" id="faq-search" placeholder="Search FAQs..."
+            class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-all"
+            onkeyup="filterFaqs(this.value)">
         </div>
+        <div class="flex-shrink-0 text-xs font-bold text-gray-400 uppercase tracking-wider" id="faq-counter">
+          Showing 9 FAQs
+        </div>
+      </div>
+
+      <!-- FAQs List -->
+      <div class="space-y-4" id="faq-list">
+        
+        <!-- FAQ 1 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">What does UDAAN stand for?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            UDAAN stands for <strong>Unified Development Association for Amelioration of Neglected</strong>.
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">When was UDAAN Society registered?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            UDAAN Society was registered under the Societies Registration Act 1860 on <strong>13 December 2004</strong>.
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">Where is the headquarters of UDAAN Society?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            The head office of UDAAN Society is located in <strong>Aligarh, Uttar Pradesh, India</strong>.
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">In which states does UDAAN Society work?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            Currently UDAAN works across several districts in <strong>Uttar Pradesh</strong> including Aligarh, Bulandshahr, Firozabad, Banda, and Mahoba, and has previously executed campaigns in Rajasthan, Chhattisgarh, Madhya Pradesh, and the Delhi NCR region.
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">What are the main focus areas of UDAAN Society?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            The organization focuses on women and children development, clean water and sanitation (Jal Jeevan & Atal Bhujal missions), livelihood support, environment protection, health awareness, and community training programs.
+          </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">How can I contribute to UDAAN Society?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            You can support UDAAN Society by donating through the secure <a href="{% url 'donate' %}" class="text-primary hover:text-primary-dark font-bold underline">Donation page</a>, sending a direct bank transfer, or contributing to specific active campaigns.
+          </div>
+        </div>
+
+        <!-- FAQ 7 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">Do donors get tax exemption?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            Yes! All contributions to UDAAN Society are eligible for a <strong>50% tax exemption under Section 80G</strong> of the Income Tax Act. We issue official tax certificates via email.
+          </div>
+        </div>
+
+        <!-- FAQ 8 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">How can I join or volunteer with UDAAN Society?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            You can apply directly via our online onboarding form on the <a href="{% url 'volunteering' %}" class="text-primary hover:text-primary-dark font-bold underline">Volunteer Onboarding</a> page, or browse specific open job openings on our Careers dashboard.
+          </div>
+        </div>
+
+        <!-- FAQ 9 -->
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+          <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
+            <span class="faq-question">How can I contact UDAAN Society?</span>
+            <span class="faq-icon text-gray-400 font-light text-xl">+</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 px-6 text-sm text-gray-500 leading-relaxed pb-0">
+            You can submit a message on our <a href="{% url 'contact_us' %}" class="text-primary hover:text-primary-dark font-bold underline">Contact Us</a> page, email us directly at <strong>mail@udaansociety.org</strong>, or visit our headquarters in Aligarh.
+          </div>
+        </div>
+
+      </div>
+      
     </div>
 
-    <div class="faq-item">
-        <div class="question">Where is the headquarters of UDAAN Society? <span>+</span></div>
-        <div class="answer">
-            The head office of UDAAN Society is located in Aligarh, Uttar Pradesh, India.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">In which states does UDAAN Society work? <span>+</span></div>
-        <div class="answer">
-            Currently UDAAN works across several districts in Uttar Pradesh including Aligarh, Bulandshahr, Firozabad,
-            Banda and Mahoba, and previously worked in Rajasthan, Chhattisgarh, Madhya Pradesh and NCR region.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">What are the main focus areas of UDAAN Society? <span>+</span></div>
-        <div class="answer">
-            The organization focuses on women and children development, water and sanitation, livelihood, environment
-            protection, health awareness, and community training programs.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">How can I contribute to UDAAN Society? <span>+</span></div>
-        <div class="answer">
-            You can support UDAAN Society by donating through the website donation page or by contributing to their
-            official fundraising campaigns.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">Do donors get tax exemption? <span>+</span></div>
-        <div class="answer">
-            Yes, donations made to UDAAN Society are eligible for 80G tax exemption certificates.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">How can I join or volunteer with UDAAN Society? <span>+</span></div>
-        <div class="answer">
-            You can join as a volunteer, intern, or fellow by applying through the career and fellowship section on the
-            official website.
-        </div>
-    </div>
-
-    <div class="faq-item">
-        <div class="question">How can I contact UDAAN Society? <span>+</span></div>
-        <div class="answer">
-            You can contact the organization through the contact form on the website, email, or the official office
-            located in Aligarh, Uttar Pradesh.
-        </div>
-    </div>
+  </div>
 
 </div>
 
+<!-- Search & Interactive scripts -->
 <script>
-    const faqs = document.querySelectorAll(".faq-item");
+  function toggleFaqCard(btn) {
+    const body = btn.nextElementSibling;
+    const icon = btn.querySelector('.faq-icon');
+    const card = btn.parentElement;
 
-    faqs.forEach(item => {
-        item.querySelector(".question").addEventListener("click", () => {
-            item.classList.toggle("active");
-        });
+    if (body.style.maxHeight) {
+      body.style.maxHeight = null;
+      body.style.paddingBottom = "0px";
+      icon.textContent = "+";
+      card.classList.remove('border-primary/20', 'shadow-premium');
+      card.classList.add('shadow-soft');
+    } else {
+      // Close other open cards first
+      document.querySelectorAll('.faq-answer').forEach(ans => {
+        ans.style.maxHeight = null;
+        ans.style.paddingBottom = "0px";
+        ans.previousElementSibling.querySelector('.faq-icon').textContent = "+";
+        ans.parentElement.classList.remove('border-primary/20', 'shadow-premium');
+        ans.parentElement.classList.add('shadow-soft');
+      });
+
+      body.style.maxHeight = body.scrollHeight + "px";
+      body.style.paddingBottom = "20px";
+      icon.textContent = "−";
+      card.classList.add('border-primary/20', 'shadow-premium');
+      card.classList.remove('shadow-soft');
+    }
+  }
+
+  function filterFaqs(query) {
+    const cleanQuery = query.toLowerCase().trim();
+    const cards = document.querySelectorAll('.faq-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const q = card.querySelector('.faq-question').textContent.toLowerCase();
+      const a = card.querySelector('.faq-answer').textContent.toLowerCase();
+
+      if (q.includes(cleanQuery) || a.includes(cleanQuery)) {
+        card.classList.remove('hidden');
+        visibleCount++;
+      } else {
+        card.classList.add('hidden');
+      }
     });
+
+    document.getElementById('faq-counter').textContent = `Showing ${visibleCount} FAQ${visibleCount !== 1 ? 's' : ''}`;
+  }
 </script>
 
 {% endblock %}

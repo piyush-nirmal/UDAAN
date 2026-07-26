@@ -1,158 +1,159 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Our Mission & Values - UDAAN Society{% endblock %}
+{% block title %}Our Mission, Vision & Values - UDAAN Society{% endblock %}
 
-{% block extra_css %}
-
-<link rel="stylesheet" href="{% static 'css/mission.css' %}">
-{% endblock %}
+{% block meta_description %}Read about UDAAN Society's mission, vision, and core operational values. Learn how we support youth, children, and rural communities across Uttar Pradesh.{% endblock %}
 
 {% block content %}
 
-<!-- ================= HERO ================= -->
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Foundational Pillars</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Our Mission, Vision & Values</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Empowering young people and building a stronger future through equality, justice, peace, and sustainable development.
+    </p>
+  </div>
+</section>
 
-<section class="hero" style="height: 500px;">
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Mission">
-        <div class="hero-overlay"></div>
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">Our Mission, Vision and Values</span>
+  </div>
+</div>
+
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-24">
+  
+  <!-- Intro Text Block -->
+  <div class="max-w-3xl mx-auto text-center space-y-6">
+    <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">Empowering Youth & Restoring Communities</h2>
+    <p class="text-gray-600 leading-relaxed text-lg">
+      UDAAN Society is driven by a clear mission: ensuring all young people and children have access to the support they need, whenever they need it. Whether it’s education support, groundwater recharge awareness, shelter, or professional training, we strive to build a path towards a brighter tomorrow.
+    </p>
+  </div>
+
+  <!-- Detailed Mission & Vision Blocks -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+    <!-- Mission block -->
+    <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100/50 space-y-6 flex flex-col justify-between hover:border-primary/20 transition-all duration-300">
+      <div class="space-y-4">
+        <span class="text-primary font-bold text-xs uppercase tracking-wider block">Empowerment</span>
+        <h3 class="text-2xl font-bold text-neutral-dark font-heading">Our Mission</h3>
+        <p class="text-gray-600 text-sm leading-relaxed italic border-l-4 border-primary pl-4">
+          "To make sure all young people and children get all the support they need, when they need it, no matter what it is."
+        </p>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Our mission is to create an infrastructure of easily accessible services for the underprivileged society, employing active community participation, local labor, and resources resulting in an inclusive, self-sustainable environment.
+        </p>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Whether it is a reassuring child protection conversation on lines, financial help, educational toolkits, or career-oriented mentorship, we strive to meet communities where they are.
+        </p>
+      </div>
+      <div class="text-4xl text-primary/10 select-none text-right font-serif font-black">MISSION</div>
     </div>
-    <div class="hero-content">
-        <h1>OUR MISSION,VISION & VALUES</h1>
+
+    <!-- Vision block -->
+    <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100/50 space-y-6 flex flex-col justify-between hover:border-secondary/20 transition-all duration-300">
+      <div class="space-y-4">
+        <span class="text-secondary font-bold text-xs uppercase tracking-wider block">Sustainability</span>
+        <h3 class="text-2xl font-bold text-neutral-dark font-heading">Our Vision</h3>
+        <p class="text-gray-600 text-sm leading-relaxed italic border-l-4 border-secondary pl-4">
+          "We want to build a world where no child or youth feels alone and gets every possible help they need as soon as possible."
+        </p>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          To improve people's lives using a humanistic approach based on equality, justice, and peace. We bring them into the mainstream of society and guide them toward sustainable development.
+        </p>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Our team envisions a world where every youngster struggling in any way feels empowered to reach out. We aim to scale our presence across every region of Uttar Pradesh to remain fully accessible to all.
+        </p>
+      </div>
+      <div class="text-4xl text-secondary/10 select-none text-right font-serif font-black">VISION</div>
     </div>
-</section>
+  </div>
 
-
-
-<!-- ================= BREADCRUMB ================= -->
-
-<div class="breadcrumb">
-    <div class="container">
-        <a href="{% url 'home' %}">Home</a>
-        <span class="sep">»</span>
-        <span class="current">Our Mission & Values</span>
+  <!-- Core Values section -->
+  <div class="space-y-16">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="text-accent-dark font-bold uppercase tracking-wider text-xs">Core Drivers</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">Values We Live By</h2>
+      <p class="text-gray-500 text-sm">Every project, decision, and community interaction is driven by our six foundational principles.</p>
     </div>
-</div>
 
-<section class="mv-intro">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Value 1 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">🤝</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Service</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            "The best way to find yourself is to lose yourself in the service of others." Dedicated to community-first welfare.
+          </p>
+        </div>
+      </div>
 
-<h1>
-EMPOWERING YOUNG PEOPLE, BUILDING A STRONGER FUTURE –
-<span>OUR MISSION, VISION, AND VALUES</span>
-</h1>
+      <!-- Value 2 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">🛡️</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Responsibility</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            "You cannot escape the responsibility of tomorrow by evading it today." Taking full accountability for our impact.
+          </p>
+        </div>
+      </div>
 
-<p>
-UDAAN Society is driven by a clear mission: ensuring all young people and children have access to the support they need, whenever they need it. Whether it’s financial aid, education, or simply a reassuring conversation, we strive to provide a helping hand and a path towards a brighter tomorrow.
-</p>
+      <!-- Value 3 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">💪</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Determination</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            "A dream doesn't become reality through magic; it takes sweat, determination, and hard work." Persistent operational focus.
+          </p>
+        </div>
+      </div>
 
-<p>
-Our vision is a world where every child and youth feels empowered and supported. We envision a world built on equality, justice, and peace, where everyone has the opportunity to thrive. Our dedicated team embodies these values – service, responsibility, determination, and kindness – as we work to break down barriers and create a more inclusive society.
-</p>
+      <!-- Value 4 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">😊</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Happiness</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            "Love is when the other person's happiness is more important than your own." Bringing smiles to underserved children.
+          </p>
+        </div>
+      </div>
 
-<p>
-Explore our website to learn more about our mission, vision, and the <span class="highlight">impactful</span> programs we offer. Let’s build a brighter future, together.
-</p>
+      <!-- Value 5 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">❤️</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Kindness</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Approaching every field campaign, child protection case, and team interaction with deep empathy and compassion.
+          </p>
+        </div>
+      </div>
 
-</section>
-<section class="mission-section">
-
-<h2 class="mission-title">OUR <span>MISSION</span></h2>
-
-<div class="mission-container">
-
-<div class="mission-text">
-
-<blockquote>
-Our mission is to make sure all young people and children get all the support they need, when they need it, no matter what it is.
-</blockquote>
-
-<p>
-Our Mission is to create an infrastructure of easily accessible services for people, mainly for the underprivileged society, employing labour and materials available in active participation-ready communities, resulting in an inclusive society.
-</p>
-
-<p>
-Whether it is a reassuring conversation, financial help, education, professional training, or simply the assurance that they are not alone, we will make sure that everyone gets support that meets them where they’re at as quickly as possible.
-</p>
-
-</div>
-
-<div class="mission-icon">
-
-<div class="target">
-<div class="circle2"></div>
-<div class="circle3"></div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-<section class="vision-section">
-
-<h2 class="vision-title">OUR <span>VISION</span></h2>
-
-<div class="vision-container">
-
-<div class="vision-icon">
-<div class="eye">
-<div class="pupil"></div>
-</div>
-</div>
-
-<div class="vision-text">
-
-<blockquote>
-We want to build a world where no child or youth feels alone and gets every possible help they need as soon as possible.
-</blockquote>
-
-<p>
-To make people’s life easy by applying the humanistic approach based on equality, justice, peace and bring them on the way of sustainable development by involving them in main stream of society.
-</p>
-
-<p>
-Our entire team wants to see a world where every youngster struggling in any way feels able to reach out and has people who’ll help them with education, jobs, and more. We want to spread out in every region so we’ll be reachable to all.
-</p>
+      <!-- Value 6 -->
+      <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 flex gap-4 hover:-translate-y-1 transition-all duration-300">
+        <div class="text-3xl">📈</div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-neutral-dark text-base">Contribution</h4>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            "It is only in the giving of oneself to others that we truly live." Focusing on sustainable community development.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
-</div>
-
-</section>
-
-<section class="values-section">
-
-<h2 class="values-title">OUR <span>VALUES</span></h2>
-
-<div class="values-container">
-
-<div class="values-text">
-
-<ol class="values-list">
-
-<li>Service: The best way to find yourself is to lose yourself in the service of others.</li>
-
-<li>Responsibility: You can’t escape the responsibility of tomorrow by evading it today.</li>
-
-<li>Determination: A dream doesn’t become reality through magic; it takes sweat, determination and hard work.</li>
-
-<li>Happiness: Love is when the other person’s happiness is more important than your own.</li>
-
-<li>Kindness: Love is when the other person’s happiness is more important than your own.</li>
-
-<li>Contribution: The human contribution is the essential ingredient. It is only in the giving of oneself to others that we truly live.</li>
-
-</ol>
-
-</div>
-
-<div class="values-icon">
-
-<div class="diamond-icon"></div>
-
-</div>
-
-</div>
-
-</section>
 {% endblock %}

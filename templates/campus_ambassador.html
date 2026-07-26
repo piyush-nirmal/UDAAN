@@ -4,227 +4,308 @@
 {% block title %}Campus Ambassador - UDAAN Society{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/campus_ambassador.css' %}">
+<style>
+  body {
+    background-color: #FAFAFA;
+  }
+  
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #E8E8E8;
+    box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.03), 0 2px 8px -2px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    border-color: #0B6B3A;
+    box-shadow: 0 8px 24px -4px rgba(11, 107, 58, 0.08);
+  }
+
+  .ca-list {
+    list-style-type: none;
+    counter-reset: ca-counter;
+  }
+  
+  .ca-list li {
+    position: relative;
+    padding-left: 3rem;
+    margin-bottom: 1rem;
+    color: #4B5563; /* text-gray-600 */
+    font-size: 0.9375rem; /* text-[15px] */
+    line-height: 1.625;
+  }
+  
+  .ca-list li::before {
+    counter-increment: ca-counter;
+    content: counter(ca-counter);
+    position: absolute;
+    left: 0;
+    top: -0.125rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: #EEF8F1;
+    color: #0B6B3A;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop"
-            alt="Campus Ambassador">
-        <div class="hero-overlay"></div>
+<!-- Modern Hero Section -->
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+  <!-- Decorative Leaf SVG (Low Opacity) -->
+  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
+      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <div class="max-w-3xl space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase">
+        <i class="fa-solid fa-graduation-cap"></i> Student Network
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight uppercase" style="font-family: 'Inter', sans-serif;">
+        Campus Ambassador
+      </h1>
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
+        Be the voice of UDAAN Society on your campus and lead social responsibility initiatives.
+      </p>
     </div>
-    <div class="hero-content">
-        <h1>CAMPUS AMBASSADOR</h1>
-    </div>
+  </div>
 </section>
 
-<!-- ================= BREADCRUMB ================= -->
-<div class="breadcrumb">
-    <div class="container">
-        <a href="{% url 'home' %}">Home</a>
-        <span class="sep">»</span>
-        <span class="current">Campus Ambassador</span>
-    </div>
+<!-- Breadcrumb -->
+<div class="bg-transparent py-4">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-gray-700 transition-colors">Home</a>
+    <span>/</span>
+    <span class="text-gray-700">Campus Ambassador</span>
+  </div>
 </div>
 
-<!-- ================= INTRO ================= -->
-<!-- ================= CAMPUS AMBASSADOR PROGRAM ================= -->
-<section class="ca-program">
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 pb-24 space-y-12">
 
-    <div class="container">
-
-        <!-- Main Title -->
-        <h1 class="ca-main-title">
-            CAMPUS <span>AMBASSADOR</span> PROGRAM
-        </h1>
-
-        <!-- Description -->
-        <p class="ca-main-desc">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    
+    <!-- Left Column: Content -->
+    <div class="lg:col-span-8 space-y-10">
+      
+      <!-- Program Info -->
+      <section class="glass-card rounded-3xl p-8 lg:p-10 space-y-8">
+        <div>
+          <h2 class="text-2xl font-extrabold text-gray-900 uppercase tracking-tight mb-4" style="font-family: 'Inter', sans-serif;">Campus Ambassador Program</h2>
+          <p class="text-[15px] text-gray-600 leading-relaxed">
             Campus Ambassadors (CA) act as the connection between a company and the university they are studying in.
             They are the main and direct contact with the company and are the voice of the company on their campus.
-        </p>
-
-        <!-- About Title -->
-        <h2 class="ca-about-title">
-            ABOUT THE <span>PROGRAM</span>
-        </h2>
-
-        <!-- Subtitle -->
-        <p class="ca-subtitle">
-            <em>Selected Campus Ambassadors day-to-day responsibilities include:</em>
-        </p>
-
-        <!-- Numbered List -->
-        <ol class="ca-list">
-
-            <li>To enroll Volunteers</li>
-
-            <li>
-                To conduct social activities within and around the campus,
-                Who Is A Campus Ambassador?
-            </li>
-
-            <li>
-                Campus Ambassadors (CA) act as the connection between a company
-                and the university they are studying in. They are the main and direct
-                contact with the company and are the voice of the company on their campus.
-            </li>
-
-            <li>To create social responsibility scenario.</li>
-
-        </ol>
-
-    </div>
-
-</section>
-
-
-<!-- ================= AMBASSADOR GRID ================= -->
-
-<!-- ================= ELIGIBILITY SECTION ================= -->
-<!-- ================= WHO CAN APPLY ================= -->
-<section class="ca-apply">
-
-    <div class="container">
-
-        <!-- Title -->
-        <h2 class="ca-apply-title">
-            WHO CAN <span>APPLY</span>
-        </h2>
-
-        <!-- Subtitle -->
-        <p class="ca-apply-sub">
-            Only those candidates can apply who:
-        </p>
-
-        <!-- List -->
-        <ol class="ca-apply-list">
-
-            <li>Have relevant skills and interests.</li>
-
-            <li>Could take some time out for social activities.</li>
-
-        </ol>
-
-    </div>
-
-</section>
-
-
-<!-- ================= SELECTION PROCEDURE ================= -->
-<section class="ca-selection">
-
-    <div class="container">
-
-        <!-- Title -->
-        <h2 class="ca-selection-title">
-            SELECTION <span>PROCEDURE</span>
-        </h2>
-
-        <!-- List -->
-        <ol class="ca-selection-list">
-
-            <li>Good Counseling ability.</li>
-
-            <li>Command over Local and English language.</li>
-
-            <li>Report Writing for Coordination among activities.</li>
-
-        </ol>
-
-    </div>
-
-</section>
-
-
-<!-- ================= REWARDS ================= -->
-<section class="ca-rewards">
-
-    <div class="container">
-
-        <!-- Title -->
-        <h2 class="ca-rewards-title">
-            REWARDS AND <span>INCENTIVES</span>
-        </h2>
-
-        <!-- Cards -->
-        <div class="ca-rewards-grid">
-
-            <div class="ca-reward-card active">
-                <div class="ca-reward-icon">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <h4>Certificate</h4>
-            </div>
-
-            <div class="ca-reward-card">
-                <div class="ca-reward-icon">
-                    <i class="fas fa-envelope-open-text"></i>
-                </div>
-                <h4>Recommendation</h4>
-            </div>
-
-            <div class="ca-reward-card">
-                <div class="ca-reward-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h4>Learning</h4>
-            </div>
-
-            <div class="ca-reward-card">
-                <div class="ca-reward-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h4>Exposure</h4>
-            </div>
-
+          </p>
         </div>
 
-        <!-- List -->
-        <ol class="ca-rewards-list">
+        <div class="pt-6 border-t border-[#E8E8E8]">
+          <h3 class="text-lg font-bold text-gray-900 uppercase tracking-tight mb-2" style="font-family: 'Inter', sans-serif;">About The Program</h3>
+          <p class="text-[13px] text-gray-500 font-medium italic mb-6">Selected Campus Ambassadors day-to-day responsibilities include:</p>
+          
+          <ul class="ca-list">
+            <li>To enroll Volunteers</li>
+            <li>To conduct social activities within and around the campus, Who Is A Campus Ambassador?</li>
+            <li>Campus Ambassadors (CA) act as the connection between a company and the university they are studying in. They are the main and direct contact with the company and are the voice of the company on their campus.</li>
+            <li>To create social responsibility scenario.</li>
+          </ul>
+        </div>
+      </section>
 
-            <li>Certificate of completion.</li>
+      <!-- Eligibility & Selection -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Eligibility -->
+        <section class="glass-card rounded-3xl p-8 space-y-6">
+          <div class="w-12 h-12 rounded-full bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-xl mb-2">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 uppercase tracking-tight" style="font-family: 'Inter', sans-serif;">Who Can Apply</h3>
+          <p class="text-[13px] text-gray-500 font-medium italic">Only those candidates can apply who:</p>
+          <ul class="ca-list">
+            <li>Have relevant skills and interests.</li>
+            <li>Could take some time out for social activities.</li>
+          </ul>
+        </section>
 
-            <li>Letter of recommendation.</li>
+        <!-- Selection -->
+        <section class="glass-card rounded-3xl p-8 space-y-6">
+          <div class="w-12 h-12 rounded-full bg-[#EEF8F1] text-[#0B6B3A] flex items-center justify-center text-xl mb-2">
+            <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <h3 class="text-lg font-bold text-gray-900 uppercase tracking-tight" style="font-family: 'Inter', sans-serif;">Selection Procedure</h3>
+          <ul class="ca-list pt-2">
+            <li>Good Counseling ability.</li>
+            <li>Command over Local and English language.</li>
+            <li>Report Writing for Coordination among activities.</li>
+          </ul>
+        </section>
 
-            <li>Learning opportunities.</li>
-
-            <li>
-                The candidate will get exposure to working with social organisation
-                and will get an opportunity to learn more about in society.
-            </li>
-
-        </ol>
+      </div>
 
     </div>
 
-</section>
+    <!-- Right Column: Rewards Sidebar -->
+    <div class="lg:col-span-4 space-y-6">
+      
+      <section class="glass-card rounded-3xl p-8 space-y-6">
+        <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#E8E8E8] pb-3">Rewards & Incentives</h3>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-[#E8E8E8] group hover:border-[#0B6B3A] transition-colors">
+            <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-[#0B6B3A] mb-3 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-gray-900 uppercase">Certificate</h4>
+          </div>
+          
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-[#E8E8E8] group hover:border-[#0B6B3A] transition-colors">
+            <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-[#0B6B3A] mb-3 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-gray-900 uppercase">Recommendation</h4>
+          </div>
 
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-[#E8E8E8] group hover:border-[#0B6B3A] transition-colors">
+            <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-[#0B6B3A] mb-3 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-gray-900 uppercase">Learning</h4>
+          </div>
 
-<!-- ================= APPLY HERE ================= -->
-<section class="apply-section">
+          <div class="bg-gray-50 rounded-xl p-4 text-center border border-[#E8E8E8] group hover:border-[#0B6B3A] transition-colors">
+            <div class="w-10 h-10 mx-auto rounded-full bg-white shadow-sm flex items-center justify-center text-[#0B6B3A] mb-3 group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-gray-900 uppercase">Exposure</h4>
+          </div>
+        </div>
 
-    <h2 class="apply-title">
-        <span>APPLY</span> HERE
-    </h2>
+        <div class="pt-4 border-t border-[#E8E8E8]">
+          <ul class="ca-list" style="padding-left: 0;">
+            <li style="padding-left: 2rem;">Certificate of completion.</li>
+            <li style="padding-left: 2rem;">Letter of recommendation.</li>
+            <li style="padding-left: 2rem;">Learning opportunities.</li>
+            <li style="padding-left: 2rem;">The candidate will get exposure to working with social organisation and will get an opportunity to learn more about in society.</li>
+          </ul>
+        </div>
+      </section>
 
-    <div class="apply-form"
-        style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; text-align: center; max-width: 800px; margin: 0 auto;">
-        <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdLHxXQgqBmtMfRuAWUvgPcf5pOqvdf_w1UZhTZuWo_piAm_Q/viewform?embedded=true"
-            width="100%" height="900" frameborder="0" marginheight="0" marginwidth="0"
-            style="max-width: 640px; border-radius: 8px;">
-            Loading…
-        </iframe>
     </div>
 
-</section>
+  </div>
 
-<!-- ================= CTA ================= -->
+  <!-- Apply Here Section -->
+  <section class="max-w-4xl mx-auto pt-10">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-extrabold text-gray-900 uppercase tracking-tight" style="font-family: 'Inter', sans-serif;">Apply Here</h2>
+      <p class="text-[15px] text-gray-500 mt-2">Fill out the form below to join our Campus Ambassador network.</p>
+    </div>
+    
+    <div class="glass-card rounded-3xl p-6 md:p-10 overflow-hidden bg-white shadow-sm">
+      
+      {% if messages %}
+        {% for message in messages %}
+          <div class="bg-[#EEF8F1] border border-[#0B6B3A] text-[#0B6B3A] px-4 py-3 rounded relative mb-6 font-medium text-sm" role="alert">
+            <span class="block sm:inline">{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
 
+      <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
+            <input type="text" name="full_name" required placeholder="Jane Doe"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email Address *</label>
+            <input type="email" name="email" required placeholder="jane@example.com"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone Number *</label>
+            <input type="tel" name="phone" required placeholder="9876543210"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
+            <input type="date" name="dob" required
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Father's Name *</label>
+            <input type="text" name="father_name" required placeholder="John Doe"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Name of Institution *</label>
+            <input type="text" name="institution" required placeholder="University Name"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Address *</label>
+          <textarea name="address" required placeholder="Your full address..." rows="2"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Technical Skills *</label>
+            <textarea name="technical_skills" required placeholder="e.g. Python, Video Editing, Social Media..." rows="3"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">General Skills *</label>
+            <textarea name="general_skills" required placeholder="e.g. Leadership, Public Speaking..." rows="3"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Why do you want to be a Campus Ambassador? *</label>
+          <textarea name="motivation" required placeholder="Share your motivation..." rows="3"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV / Resume (PDF) *</label>
+          <input type="file" name="cv" accept=".pdf" required
+            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
+        </div>
+
+        <div class="pt-4">
+          <button type="submit" class="w-full bg-[#0B6B3A] hover:bg-[#084e2a] text-white rounded-xl py-3.5 text-sm font-bold uppercase tracking-wide transition-all shadow-md hover:shadow-lg">
+            Submit Application
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</div>
 
 {% endblock %}

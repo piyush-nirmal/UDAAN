@@ -1,0 +1,332 @@
+{% extends "admin/base_site.html" %}
+{% load static i18n %}
+
+{% block title %}Dashboard | UDAAN Administration{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard-container">
+  
+  <!-- Welcome Header -->
+  <div class="admin-welcome-header flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="welcome-title">UDAAN NGO Dashboard</h1>
+      <p class="welcome-subtitle">Overview of campaigns, blood management, applications, impact analytics, and workspace tasks.</p>
+    </div>
+    
+    <div class="header-action-group">
+      <a href="{% url 'admin:blood_request_campaign_add' %}" class="btn-action-primary">
+        <i class="fas fa-plus"></i> New Campaign Proposal
+      </a>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       16 KPI METRICS SUMMARY CARDS GRID
+       ====================================================== -->
+  <div class="kpi-cards-grid">
+    
+    <!-- 1. Total Users -->
+    <a href="{% url 'admin:auth_user_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle blue"><i class="fas fa-users"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_total_users|default:"0" }}</span>
+        <span class="kpi-label">Total Users</span>
+        <span class="kpi-subtext blue">Registered Accounts</span>
+      </div>
+    </a>
+
+    <!-- 2. Total Campaigns -->
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle green"><i class="fas fa-flag"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_total_campaigns|default:"0" }}</span>
+        <span class="kpi-label">Total Campaigns</span>
+        <span class="kpi-subtext green">NGO Initiatives</span>
+      </div>
+    </a>
+
+    <!-- 3. Pending Campaigns -->
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__in=submitted,under_review" class="kpi-card">
+      <div class="kpi-icon-circle orange"><i class="fas fa-hourglass-half"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_pending_campaigns|default:"0" }}</span>
+        <span class="kpi-label">Pending Approval</span>
+        <span class="kpi-subtext orange">Needs Review</span>
+      </div>
+    </a>
+
+    <!-- 4. Approved Campaigns -->
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__in=approved,published" class="kpi-card">
+      <div class="kpi-icon-circle green"><i class="fas fa-check-circle"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_approved_campaigns|default:"0" }}</span>
+        <span class="kpi-label">Approved Campaigns</span>
+        <span class="kpi-subtext green">Active & Published</span>
+      </div>
+    </a>
+
+    <!-- 5. Active Blood Requests -->
+    <a href="{% url 'admin:blood_request_bloodrequest_changelist' %}?status=Pending" class="kpi-card">
+      <div class="kpi-icon-circle red"><i class="fas fa-tint"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_pending_blood|default:"0" }}</span>
+        <span class="kpi-label">Urgent Blood Requests</span>
+        <span class="kpi-subtext red">Urgent Action</span>
+      </div>
+    </a>
+
+    <!-- 6. Blood Donors -->
+    <a href="{% url 'admin:blood_request_blooddonor_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle red"><i class="fas fa-heartbeat"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_blood_donors|default:"0" }}</span>
+        <span class="kpi-label">Blood Donors</span>
+        <span class="kpi-subtext red">Registered Donors</span>
+      </div>
+    </a>
+
+    <!-- 7. Volunteer Requests -->
+    <a href="{% url 'admin:blood_request_volunteerrequest_changelist' %}?status=Pending" class="kpi-card">
+      <div class="kpi-icon-circle purple"><i class="fas fa-hands-helping"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_volunteer_requests|default:"0" }}</span>
+        <span class="kpi-label">Volunteer Requests</span>
+        <span class="kpi-subtext purple">Pending Review</span>
+      </div>
+    </a>
+
+    <!-- 8. Internship Applications -->
+    <a href="{% url 'admin:blood_request_internshiprequest_changelist' %}?status=Pending" class="kpi-card">
+      <div class="kpi-icon-circle blue"><i class="fas fa-graduation-cap"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_internships|default:"0" }}</span>
+        <span class="kpi-label">Internship Apps</span>
+        <span class="kpi-subtext blue">Pending Evaluation</span>
+      </div>
+    </a>
+
+    <!-- 9. Campus Ambassador Applications -->
+    <a href="{% url 'admin:blood_request_campusambassadorapplication_changelist' %}?status=pending" class="kpi-card">
+      <div class="kpi-icon-circle orange"><i class="fas fa-award"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_campus_applications|default:"0" }}</span>
+        <span class="kpi-label">Campus Ambassadors</span>
+        <span class="kpi-subtext orange">Pending Applications</span>
+      </div>
+    </a>
+
+    <!-- 10. Total Raised / Donations -->
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle green"><i class="fas fa-hand-holding-usd"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">₹{{ kpi_total_donations|floatformat:0 }}</span>
+        <span class="kpi-label">Total Raised</span>
+        <span class="kpi-subtext green">Campaign Funding</span>
+      </div>
+    </a>
+
+    <!-- 11. Contact Messages -->
+    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle amber"><i class="fas fa-envelope"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_contact_messages|default:"0" }}</span>
+        <span class="kpi-label">Unread Messages</span>
+        <span class="kpi-subtext amber">Inquiries</span>
+      </div>
+    </a>
+
+    <!-- 12. Workspace Tasks -->
+    <a href="{% url 'admin:blood_request_task_changelist' %}" class="kpi-card">
+      <div class="kpi-icon-circle purple"><i class="fas fa-tasks"></i></div>
+      <div class="kpi-content">
+        <span class="kpi-count">{{ kpi_tasks|default:"0" }}</span>
+        <span class="kpi-label">Workspace Tasks</span>
+        <span class="kpi-subtext purple">Active Subtasks</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ======================================================
+       PENDING APPROVALS QUICK ACTIONS BLOCK
+       ====================================================== -->
+  <div class="pending-approvals-card card-block">
+    
+    <div class="pending-header">
+      <div class="pending-title-group">
+        <span class="pending-icon-circle"><i class="fas fa-clock"></i></span>
+        <h2 class="pending-section-title">Pending Approvals & Verification Queue</h2>
+      </div>
+      <span class="pending-badge-pill">Needs Review</span>
+    </div>
+
+    {% if pending_campaigns_list or pending_volunteers_list or pending_internships_list or pending_blood_list %}
+    <div class="pending-grid-container">
+      
+      <!-- Pending Campaign Proposals -->
+      {% if pending_campaigns_list %}
+      <div class="pending-column-card">
+        <h3 class="pending-col-heading">Campaign Proposals ({{ pending_campaigns_list.count }})</h3>
+        <div class="pending-items-list">
+          {% for c in pending_campaigns_list %}
+          <div class="pending-item-row">
+            <div class="pending-item-info">
+              <strong class="pending-item-title">{{ c.title }}</strong>
+              <span class="pending-item-meta">Target: ₹{{ c.goal_amount|floatformat:0 }} • {{ c.created_at|date:"d M Y" }}</span>
+            </div>
+            <a href="{% url 'admin:blood_request_campaign_change' c.id %}" class="btn-review-pill">Review & Approve ›</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Pending Volunteer & Internship Requests -->
+      {% if pending_volunteers_list or pending_internships_list %}
+      <div class="pending-column-card">
+        <h3 class="pending-col-heading">Volunteer & Internship Applicants</h3>
+        <div class="pending-items-list">
+          {% for v in pending_volunteers_list %}
+          <div class="pending-item-row">
+            <div class="pending-item-info">
+              <strong class="pending-item-title">Volunteer: {{ v.name }}</strong>
+              <span class="pending-item-meta">{{ v.residence|default:"N/A" }} • {{ v.education|default:"N/A" }}</span>
+            </div>
+            <a href="{% url 'admin:blood_request_volunteerrequest_change' v.id %}" class="btn-review-pill">Review ›</a>
+          </div>
+          {% endfor %}
+          {% for i in pending_internships_list %}
+          <div class="pending-item-row">
+            <div class="pending-item-info">
+              <strong class="pending-item-title">Internship: {{ i.name }}</strong>
+              <span class="pending-item-meta">{{ i.internship_area }}</span>
+            </div>
+            <a href="{% url 'admin:blood_request_internshiprequest_change' i.id %}" class="btn-review-pill">Review ›</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+    {% else %}
+    <p class="pending-empty-state">All approval queues are currently clear.</p>
+    {% endif %}
+
+  </div>
+
+  <!-- ======================================================
+       MAIN DASHBOARD TWO-COLUMN LAYOUT
+       ====================================================== -->
+  <div class="admin-dashboard-layout">
+    
+    <!-- LEFT MAIN SECTIONS -->
+    <div class="admin-main-sections space-y-6">
+      
+      <!-- Categorized Admin App Groups -->
+      {% for app in app_list %}
+      <div class="admin-category-block">
+        <div class="category-block-header">
+          <h2>{{ app.name }}</h2>
+        </div>
+        
+        <div class="category-models-container">
+          {% for model in app.models %}
+          <div class="model-row">
+            
+            <div class="model-left">
+              <div class="model-icon-circle {{ model.color_class|default:'blue' }}">
+                <i class="{{ model.icon_class|default:'fas fa-cube' }}"></i>
+              </div>
+              <div class="model-text">
+                <h3 class="model-title"><a href="{{ model.admin_url }}">{{ model.name }}</a></h3>
+                <p class="model-desc">{{ model.subtitle|default:"Manage records, forms, and workflows" }}</p>
+              </div>
+            </div>
+
+            <div class="model-right">
+              {% if model.badge_text %}
+              <span class="status-pill {{ model.badge_class|default:'pill-muted' }}">{{ model.badge_text }}</span>
+              {% endif %}
+
+              {% if model.add_url %}
+              <a href="{{ model.add_url }}" class="btn-manage-link" title="Add record">+ Add</a>
+              {% endif %}
+              
+              <a href="{{ model.admin_url }}" class="btn-manage-link">Manage ›</a>
+            </div>
+
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <!-- RIGHT SIDEBAR WIDGETS COLUMN -->
+    <div class="admin-sidebar-column space-y-6">
+      
+      <!-- Widget 1: Quick Actions Cards Grid -->
+      <div class="sidebar-widget-card space-y-3">
+        <h3 class="widget-heading">Quick Actions</h3>
+        <div class="quick-actions-grid">
+          <a href="{% url 'admin:blood_request_campaign_add' %}" class="quick-btn"><i class="fas fa-flag text-emerald-600"></i> + Campaign</a>
+          <a href="{% url 'admin:blood_request_blog_add' %}" class="quick-btn"><i class="fas fa-pen-nib text-blue-600"></i> + Blog Post</a>
+          <a href="{% url 'admin:blood_request_bloodrequest_add' %}" class="quick-btn"><i class="fas fa-tint text-red-600"></i> + Blood Req</a>
+          <a href="{% url 'admin:auth_user_add' %}" class="quick-btn"><i class="fas fa-user-plus text-purple-600"></i> + Add User</a>
+          <a href="{% url 'admin:blood_request_report_add' %}" class="quick-btn"><i class="fas fa-file-pdf text-amber-600"></i> Upload Report</a>
+          <a href="{% url 'admin:blood_request_task_add' %}" class="quick-btn"><i class="fas fa-tasks text-emerald-600"></i> + Add Task</a>
+        </div>
+      </div>
+
+      <!-- Widget 2: Recent Activity Timeline -->
+      <div class="sidebar-widget-card space-y-4">
+        <h3 class="widget-heading">Recent Activities</h3>
+        
+        <div class="notifications-timeline">
+          
+          {% if recent_blogs_list %}
+          {% for b in recent_blogs_list %}
+          <div class="timeline-item">
+            <div class="timeline-icon blue"><i class="fas fa-newspaper"></i></div>
+            <div>
+              <p class="timeline-text">Blog Published: <strong>{{ b.title }}</strong></p>
+              <span class="timeline-time">{{ b.created_at|timesince }} ago</span>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          {% if recent_news_list %}
+          {% for n in recent_news_list %}
+          <div class="timeline-item">
+            <div class="timeline-icon orange"><i class="fas fa-bullhorn"></i></div>
+            <div>
+              <p class="timeline-text">News Clipping Added: <strong>{{ n.title }}</strong></p>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          {% if recent_messages_list %}
+          {% for m in recent_messages_list %}
+          <div class="timeline-item">
+            <div class="timeline-icon purple"><i class="fas fa-envelope"></i></div>
+            <div>
+              <p class="timeline-text">Message from <strong>{{ m.name }}</strong></p>
+              <span class="timeline-time">{{ m.created_at|timesince }} ago</span>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

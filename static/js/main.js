@@ -214,4 +214,45 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Newsletter AJAX Handler
+    const newsletterForm = document.getElementById('newsletter-form');
+    const newsletterStatus = document.getElementById('newsletter-status');
+
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('newsletter-email');
+            const email = emailInput.value.trim();
+            if (!email) return;
+
+            newsletterStatus.textContent = "Subscribing...";
+            newsletterStatus.className = "text-xs mt-2 text-gray-500 font-medium";
+
+            try {
+                const response = await fetch('/api/newsletter/subscribe/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    newsletterStatus.textContent = result.message || "Successfully subscribed!";
+                    newsletterStatus.className = "text-xs mt-2 text-green-600 font-medium";
+                    emailInput.value = '';
+                } else {
+                    newsletterStatus.textContent = result.error || "Subscription failed. Please try again.";
+                    newsletterStatus.className = "text-xs mt-2 text-red-600 font-medium";
+                }
+            } catch (err) {
+                newsletterStatus.textContent = "Service temporarily unavailable. Try again later.";
+                newsletterStatus.className = "text-xs mt-2 text-red-600 font-medium";
+            }
+        });
+    }
 });
