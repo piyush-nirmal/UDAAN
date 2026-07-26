@@ -17,109 +17,117 @@
     <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
       UDAAN Society runs targeted campaigns to support underprivileged schools, secure groundwater levels, and provide shelters.
     </p>
+
+    <!-- Start a Campaign CTA in Hero -->
+    <div class="pt-3 flex flex-wrap justify-center gap-4">
+      <a href="{% url 'start_campaign_wizard' %}" class="inline-flex items-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-6 py-3 rounded-2xl font-extrabold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 no-underline">
+        <i class="fa-solid fa-plus-circle text-lg"></i> Start a Campaign
+      </a>
+      <a href="/donate/" class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white backdrop-blur-md px-6 py-3 rounded-2xl font-bold text-sm sm:text-base border border-white/30 transition-all no-underline">
+        <i class="fa-regular fa-heart"></i> Donate to Active Causes
+      </a>
+    </div>
   </div>
 </section>
 
 <!-- Breadcrumb -->
 <div class="bg-neutral-light border-b border-gray-100 py-4">
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
-    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
-    <span>»</span>
-    <span class="text-gray-400">Campaigns</span>
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center justify-between flex-wrap gap-2">
+    <div class="flex items-center gap-2">
+      <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+      <span>»</span>
+      <span class="text-gray-400">Campaigns</span>
+    </div>
+
+    <!-- Quick Links -->
+    <a href="{% url 'start_campaign_wizard' %}" class="text-xs font-bold text-[#2563eb] hover:underline flex items-center gap-1">
+      <i class="fa-solid fa-rocket"></i> Start a Campaign →
+    </a>
   </div>
 </div>
 
 <!-- Main Body -->
-<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-16">
+<div class="max-w-7xl mx-auto px-6 py-12 lg:py-16 space-y-12">
   
+  <!-- Banner CTA for Campaigners -->
+  <div class="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#1e3a8a] rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl relative overflow-hidden border border-slate-700/50">
+    <div class="space-y-2 text-left z-10">
+      <span class="bg-sky-500/20 text-sky-300 border border-sky-400/30 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">Raise Funds Today</span>
+      <h3 class="text-2xl sm:text-3xl font-extrabold font-heading text-white">Need Financial Support for Medical or Education?</h3>
+      <p class="text-slate-300 text-xs sm:text-sm max-w-xl leading-relaxed">Create a verified fundraising campaign in less than 5 minutes. Zero platform fees, instant bank transfer setup, and AI story assistance.</p>
+    </div>
+    <a href="{% url 'start_campaign_wizard' %}" class="shrink-0 bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-7 py-3.5 rounded-2xl font-extrabold text-sm sm:text-base shadow-lg transition transform hover:scale-105 no-underline flex items-center gap-2 z-10">
+      <i class="fa-solid fa-plus-circle text-lg"></i> Start Your Campaign
+    </a>
+  </div>
+
   <!-- Section Intro -->
-  <div class="max-w-3xl mx-auto text-center space-y-4">
+  <div class="max-w-3xl mx-auto text-center space-y-3">
     <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">We Are Always Where Support Is Needed</h2>
     <p class="text-gray-600 text-sm leading-relaxed">
       Explore active fundraising campaigns dedicated to education toolkits, direct water audits, and emergency child safety.
     </p>
   </div>
 
-  <!-- Dynamic Stats Counter Row -->
-  <div class="bg-white shadow-soft rounded-3xl p-8 border border-gray-100/50">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-100">
-      <div class="space-y-1">
-        <div class="text-3xl sm:text-4xl font-extrabold text-primary stat-number" data-count="{{ campaigns.count }}">0</div>
-        <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Active Campaigns</div>
-      </div>
-      <div class="space-y-1 pl-4">
-        <div class="text-3xl sm:text-4xl font-extrabold text-secondary stat-number" data-count="2500000">0</div>
-        <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Raised</div>
-      </div>
-      <div class="space-y-1 pl-4">
-        <div class="text-3xl sm:text-4xl font-extrabold text-neutral-dark stat-number" data-count="15000">0</div>
-        <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Lives Impacted</div>
-      </div>
-      <div class="space-y-1 pl-4">
-        <div class="text-3xl sm:text-4xl font-extrabold text-accent-dark stat-number" data-count="5000">0</div>
-        <div class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Donors</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Controls Bar -->
-  <div class="bg-neutral-light rounded-2xl p-6 border border-gray-200/60 flex flex-col md:flex-row gap-4 items-center justify-between">
-    <div class="relative w-full md:max-w-md">
-      <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search active campaigns..." aria-label="Search campaigns"
-        class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-white transition-all">
+  <!-- Filter & Search Controls -->
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-soft">
+    <!-- Category Tabs -->
+    <div class="flex flex-wrap gap-2" id="categoryFilters">
+      <button class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white" data-category="all">All Causes</button>
+      <button class="filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200" data-category="medical">Medical</button>
+      <button class="filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200" data-category="education">Education</button>
+      <button class="filter-btn px-4 py-2 rounded-xl text-xs font-bold transition-all bg-gray-100 text-gray-600 hover:bg-gray-200" data-category="general">General</button>
     </div>
 
-    <div class="flex items-center gap-3 text-xs font-bold text-gray-500 w-full md:w-auto justify-end">
-      <label for="sortSelect">Sort by:</label>
-      <select id="sortSelect" class="bg-white border border-gray-200 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-primary text-xs font-semibold">
-        <option value="newest">Newest First</option>
-        <option value="oldest">Oldest First</option>
-      </select>
+    <!-- Search Input -->
+    <div class="relative w-full md:w-72">
+      <input type="text" id="campaignSearch" placeholder="Search campaigns..." class="w-full pl-10 pr-4 py-2 rounded-xl text-xs bg-gray-50 border border-gray-200 focus:outline-none focus:border-primary transition-all" />
+      <span class="absolute left-3.5 top-2.5 text-gray-400 text-xs">🔍</span>
     </div>
   </div>
 
   <!-- Campaigns Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="campaignsGrid">
     {% for campaign in campaigns %}
-    <!-- Campaign Card -->
-    <article class="card-premium flex flex-col justify-between h-full campaign-card relative group hover:-translate-y-1 transition-transform" data-category="general" data-date="{{ campaign.created_at|date:'Y-m-d' }}"
-      data-goal="{{ campaign.goal_amount|floatformat:0 }}" data-raised="{{ campaign.raised_amount|floatformat:0 }}">
+    <article class="campaign-card group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-soft hover:shadow-premium transition-all duration-300 flex flex-col justify-between cursor-pointer"
+      onclick="window.location.href='{% url 'campaign_detail' campaign.slug %}'"
+      data-category="{{ campaign.category|lower }}">
       
       <div>
-        <div class="relative h-52 overflow-hidden bg-gray-100">
-          <a href="{% url 'campaign_detail' campaign.slug %}" class="block w-full h-full">
-            {% if campaign.image %}
-            <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" loading="lazy" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-            {% else %}
-            <img src="{% static 'images/pn1.png' %}" alt="Placeholder" loading="lazy" class="w-full h-full object-cover transition-transform hover:scale-105 duration-300">
-            {% endif %}
-          </a>
-          <span class="absolute top-4 left-4 bg-accent text-neutral-dark text-[10px] font-extrabold uppercase px-3 py-1.5 rounded-full shadow-sm">General</span>
-          
-          <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 hover:bg-primary hover:text-white text-primary flex items-center justify-center shadow-md transition-all quick-donate z-20"
-            onclick="quickDonate('{{ campaign.title|escapejs }}')" aria-label="Quick donate">
-            <i class="fas fa-heart"></i>
-          </button>
+        <!-- Image & Category Badge -->
+        <div class="relative h-56 overflow-hidden bg-gray-100">
+          {% if campaign.image %}
+          <img src="{{ campaign.image.url }}" alt="{{ campaign.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          {% else %}
+          <img src="{% static 'assets/campaign-fallback.webp' %}" alt="{{ campaign.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          {% endif %}
+          <div class="absolute top-4 left-4 z-20">
+            <span class="bg-accent text-neutral-dark font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">{{ campaign.category }}</span>
+          </div>
+          <!-- Heart Icon -->
+          <div class="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-rose-500 shadow-sm">
+            <i class="fa-solid fa-heart text-xs"></i>
+          </div>
         </div>
 
+        <!-- Content -->
         <div class="p-6 space-y-4">
-          <!-- Progress meters -->
-          <div class="space-y-2">
-            <div class="flex justify-between text-xs font-bold text-gray-500">
-              <span>Raised: {% if campaign.raised_amount > 0 %}₹{{ campaign.raised_amount|floatformat:0 }}{% else %}₹0{% endif %}</span>
-              <span>Goal: ₹{{ campaign.goal_amount|floatformat:0 }}</span>
+          <!-- Progress Info -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-bold text-gray-600">
+              <span>Raised: ₹{{ campaign.current_amount|floatformat:0 }}</span>
+              <span class="text-gray-400">Goal: ₹{{ campaign.goal_amount|floatformat:0 }}</span>
             </div>
-            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div class="h-full bg-primary rounded-full transition-all duration-1000 progress-fill"
-                style="width: {{ campaign.percentage_raised }}%"
+            <!-- Dynamic Progress Bar -->
+            <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-primary to-rose-500 h-full rounded-full transition-all duration-1000 progress-bar-inner"
                 data-progress="{{ campaign.percentage_raised }}">
               </div>
             </div>
           </div>
 
-          <h3 class="text-lg font-bold text-neutral-dark leading-snug card-title">
-            <a href="{% url 'campaign_detail' campaign.slug %}" class="hover:text-primary transition-colors before:absolute before:inset-0 before:z-10">{{ campaign.title }}</a>
+          <h3 class="text-lg font-bold text-neutral-dark leading-snug card-title group-hover:text-primary transition-colors">
+            {{ campaign.title }}
           </h3>
           <p class="text-gray-500 text-xs leading-relaxed line-clamp-3 card-description">{{ campaign.description }}</p>
         </div>
@@ -129,9 +137,9 @@
         <hr class="border-gray-100 mx-6" />
         <div class="p-6 flex items-center justify-between text-xs font-semibold text-gray-400">
           <span>📅 Date: {{ campaign.created_at|date:"d/m/Y" }}</span>
-          <a href="{% url 'donate' %}" class="text-primary hover:text-primary-dark inline-flex items-center gap-1 font-bold relative z-20">
+          <span class="text-primary group-hover:text-primary-dark inline-flex items-center gap-1 font-bold">
             Support Campaign <span class="text-[9px]">→</span>
-          </a>
+          </span>
         </div>
       </div>
 

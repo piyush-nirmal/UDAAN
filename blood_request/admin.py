@@ -10,8 +10,86 @@ from .models import (
     CampusAmbassador, CampusAmbassadorApplication, NewsClipping, ContactMessage,
     Activity, JobPosting, Donation, SubTask, TaskComment, Team, SharedNote,
     Workspace, WorkspaceMember, Expense, TaskAutomationRule, NewsletterSubscription, Task,
-    InternshipRequest, VolunteerRequest
+    InternshipRequest, VolunteerRequest, Beneficiary, MedicalDetail, BankAccount,
+    KYCDocument, CampaignDraft, CampaignSource, CampaignUpdate, CampaignImage, CampaignDocument
 )
+
+class BeneficiaryInline(admin.StackedInline):
+    model = Beneficiary
+    extra = 0
+
+class MedicalDetailInline(admin.StackedInline):
+    model = MedicalDetail
+    extra = 0
+
+class BankAccountInline(admin.StackedInline):
+    model = BankAccount
+    extra = 0
+
+class KYCDocumentInline(admin.StackedInline):
+    model = KYCDocument
+    extra = 0
+
+class CampaignImageInline(admin.TabularInline):
+    model = CampaignImage
+    extra = 1
+    fields = ('image',)
+
+class CampaignDocumentInline(admin.TabularInline):
+    model = CampaignDocument
+    extra = 1
+    fields = ('file',)
+
+@admin.register(Campaign)
+class CampaignAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'status', 'target_vs_raised', 'deadline', 'created_at')
+    list_filter = ('category', 'status', 'created_at')
+    search_fields = ('title', 'description', 'location', 'tags')
+    inlines = [BeneficiaryInline, MedicalDetailInline, BankAccountInline, KYCDocumentInline, CampaignImageInline, CampaignDocumentInline]
+    actions = ['approve_campaigns', 'verify_campaigns', 'reject_campaigns', 'request_docs_campaigns']
+    
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'category', 'short_description', 'description', 'location', 'tags', 'created_by')
+        }),
+        ('Media', {
+            'fields': ('image', 'cover_image', 'video_url')
+        }),
+        ('Fundraising Target', {
+            'fields': ('goal_amount', 'raised_amount', 'currency', 'deadline')
+        }),
+        ('Review & Status', {
+            'fields': ('status', 'admin_feedback', 'confirmation_agreed')
+        }),
+    )
+
+    @admin.action(description="Approve Selected Campaigns")
+    def approve_campaigns(self, request, queryset):
+        queryset.update(status='Approved', admin_feedback="Approved by Admin")
+
+    @admin.action(description="Mark as Under Verification")
+    def verify_campaigns(self, request, queryset):
+        queryset.update(status='Under Verification')
+
+    @admin.action(description="Reject Selected Campaigns")
+    def reject_campaigns(self, request, queryset):
+        queryset.update(status='Rejected')
+
+    @admin.action(description="Request Additional Documents")
+    def request_docs_campaigns(self, request, queryset):
+        queryset.update(status='Need Documents')
+
+    def target_vs_raised(self, obj):
+        return f"{obj.currency} {obj.raised_amount} / {obj.goal_amount}"
+
+@admin.register(CampaignDraft)
+class CampaignDraftAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'category', 'current_step', 'updated_at')
+
+@admin.register(CampaignUpdate)
+class CampaignUpdateAdmin(admin.ModelAdmin):
+    list_display = ('title', 'campaign', 'created_at')
+
 from .utils import generate_internship_offer_letter
 
 # Custom branding for Django Administration
@@ -223,26 +301,7 @@ class CampaignDocumentInline(admin.TabularInline):
     extra = 1
     fields = ('file',)
 
-@admin.register(Campaign)
-class CampaignAdmin(admin.ModelAdmin):
-    list_display = ('title', 'target_vs_raised', 'start_date', 'end_date', 'created_at')
-    inlines = [CampaignImageInline, CampaignDocumentInline]
-    
-    fieldsets = (
-        (None, {
-            'fields': ('title', 'description', 'beneficiary_text', 'image')
-        }),
-        ('Fundraising Target', {
-            'fields': ('goal_amount', 'raised_amount')
-        }),
-        ('Campaign Timeline', {
-            'fields': ('start_date', 'end_date'),
-            'description': 'Define when the campaign starts and ends.'
-        }),
-    )
-    
-    def target_vs_raised(self, obj):
-        return f"{obj.raised_amount} / {obj.goal_amount}"
+
 
 
 @admin.register(CampusAmbassador)

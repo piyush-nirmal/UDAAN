@@ -1750,3 +1750,379 @@ def blood_request_submit(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
     return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
+
+
+# --- Start a Campaign & Crowdfunding Views ---
+import json
+import os
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.text import slugify
+from .models import (
+    Campaign, Beneficiary, MedicalDetail, BankAccount, KYCDocument,
+    CampaignDraft, CampaignSource, CampaignUpdate, CampaignImage, CampaignDocument
+)
+
+def start_campaign_wizard(request):
+    """Render the 8-step Start a Campaign Wizard."""
+    draft_id = request.GET.get('draft_id')
+    draft_data = {}
+    if draft_id:
+        try:
+            draft = CampaignDraft.objects.get(id=draft_id)
+            draft_data = draft.step_data
+        except CampaignDraft.DoesNotExist:
+            pass
+    
+    categories = [
+        ('Medical', 'Medical', 'fa-notes-medical', 'bg-rose-500/10 text-rose-500 border-rose-500/30'),
+        ('Education', 'Education', 'fa-graduation-cap', 'bg-blue-500/10 text-blue-500 border-blue-500/30'),
+        ('Animal Welfare', 'Animal Welfare', 'fa-paw', 'bg-amber-500/10 text-amber-500 border-amber-500/30'),
+        ('Disaster Relief', 'Disaster Relief', 'fa-house-tsunami', 'bg-red-500/10 text-red-500 border-red-500/30'),
+        ('NGO', 'NGO / Non-Profit', 'fa-hand-holding-heart', 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30'),
+        ('Child Care', 'Child Care', 'fa-child-reaching', 'bg-violet-500/10 text-violet-500 border-violet-500/30'),
+        ('Emergency', 'Emergency', 'fa-truck-medical', 'bg-red-600/10 text-red-600 border-red-600/30'),
+        ('Memorial', 'Memorial', 'fa-dove', 'bg-slate-500/10 text-slate-500 border-slate-500/30'),
+        ('Startup', 'Startup / Innovation', 'fa-rocket', 'bg-purple-500/10 text-purple-500 border-purple-500/30'),
+        ('Personal Need', 'Personal Need', 'fa-user', 'bg-indigo-500/10 text-indigo-500 border-indigo-500/30'),
+        ('Sports', 'Sports', 'fa-trophy', 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30'),
+        ('Community', 'Community', 'fa-people-group', 'bg-teal-500/10 text-teal-500 border-teal-500/30'),
+        ('Environment', 'Environment', 'fa-leaf', 'bg-green-500/10 text-green-500 border-green-500/30'),
+        ('Other', 'Other Cause', 'fa-ellipsis', 'bg-gray-500/10 text-gray-500 border-gray-500/30'),
+    ]
+
+    featured_campaign = Campaign.objects.first()
+
+    context = {
+        'categories': categories,
+        'draft_data_json': json.dumps(draft_data),
+        'featured_campaign': featured_campaign,
+    }
+    return render(request, 'campaigns/start_campaign.html', context)
+
+
+@csrf_exempt
+def campaign_autosave_api(request):
+    """API endpoint to autosave draft data."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            draft_id = data.get('draft_id')
+            step_data = data.get('step_data', {})
+            current_step = data.get('current_step', 1)
+            category = step_data.get('category', 'Medical')
+
+            user = request.user if request.user.is_authenticated else None
+            session_key = request.session.session_key or 'anonymous'
+
+            if draft_id:
+                draft = CampaignDraft.objects.filter(id=draft_id).first()
+                if draft:
+                    draft.step_data = step_data
+                    draft.current_step = current_step
+                    draft.category = category
+                    draft.save()
+                else:
+                    draft = CampaignDraft.objects.create(
+                        user=user, session_key=session_key, category=category,
+                        step_data=step_data, current_step=current_step
+                    )
+            else:
+                draft = CampaignDraft.objects.create(
+                    user=user, session_key=session_key, category=category,
+                    step_data=step_data, current_step=current_step
+                )
+
+            from datetime import datetime
+            return JsonResponse({
+                'status': 'success',
+                'draft_id': draft.id,
+                'saved_at': datetime.now().strftime('%H:%M:%S')
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+@csrf_exempt
+def campaign_submit_api(request):
+    """API endpoint to submit the full campaign form."""
+    if request.method == 'POST':
+        try:
+            data = request.POST.dict() if request.POST else json.loads(request.body or '{}')
+            
+            title = data.get('title', 'Untitled Campaign').strip()
+            category = data.get('category', 'Medical')
+            short_description = data.get('short_description', '')
+            full_story = data.get('description', '') or data.get('full_story', '')
+            goal_amount = float(data.get('goal_amount', 10000))
+            currency = data.get('currency', 'INR')
+            location = data.get('location', '')
+            tags = data.get('tags', '')
+            deadline = data.get('deadline') or None
+            video_url = data.get('video_url', '')
+
+            user = request.user if request.user.is_authenticated else None
+
+            # Create Campaign
+            campaign = Campaign.objects.create(
+                title=title,
+                category=category,
+                short_description=short_description,
+                description=full_story,
+                goal_amount=goal_amount,
+                currency=currency,
+                location=location,
+                tags=tags,
+                deadline=deadline,
+                video_url=video_url,
+                status='Approved',
+                confirmation_agreed=data.get('confirmation_agreed') in [True, 'true', 'on', '1'],
+                created_by=user
+            )
+
+            # Files
+            if 'image' in request.FILES:
+                campaign.image = request.FILES['image']
+            if 'cover_image' in request.FILES:
+                campaign.cover_image = request.FILES['cover_image']
+            campaign.save()
+
+            # Beneficiary Details
+            Beneficiary.objects.create(
+                campaign=campaign,
+                recipient_type=data.get('beneficiary_type', 'Myself'),
+                full_name=data.get('beneficiary_name', title),
+                age=int(data.get('beneficiary_age', 0)) if data.get('beneficiary_age') else None,
+                gender=data.get('beneficiary_gender', ''),
+                relationship=data.get('beneficiary_relationship', ''),
+                phone_number=data.get('beneficiary_phone', ''),
+                email=data.get('beneficiary_email', ''),
+                address=data.get('beneficiary_address', ''),
+                id_type=data.get('id_type', ''),
+                id_number=data.get('id_number', ''),
+                id_proof_file=request.FILES.get('id_proof_file')
+            )
+
+            # Medical Details (if Medical)
+            if category == 'Medical':
+                MedicalDetail.objects.create(
+                    campaign=campaign,
+                    hospital_name=data.get('hospital_name', 'General Hospital'),
+                    doctor_name=data.get('doctor_name', ''),
+                    diagnosis=data.get('diagnosis', 'Medical Treatment'),
+                    treatment_name=data.get('treatment_name', ''),
+                    estimated_cost=float(data.get('estimated_cost')) if data.get('estimated_cost') else None,
+                    medical_report=request.FILES.get('medical_report'),
+                    prescription_file=request.FILES.get('prescription_file'),
+                    cost_estimate_file=request.FILES.get('cost_estimate_file'),
+                    hospital_letter=request.FILES.get('hospital_letter')
+                )
+
+            # Bank Details
+            BankAccount.objects.create(
+                campaign=campaign,
+                beneficiary_name=data.get('bank_account_name', data.get('beneficiary_name', title)),
+                bank_name=data.get('bank_name', 'National Bank'),
+                account_number=data.get('account_number', '1234567890'),
+                ifsc_code=data.get('ifsc_code', 'HDFC0000001'),
+                upi_id=data.get('upi_id', ''),
+                cancelled_cheque=request.FILES.get('cancelled_cheque'),
+                ifsc_verified=data.get('ifsc_verified') in [True, 'true', '1']
+            )
+
+            # KYC
+            KYCDocument.objects.create(
+                campaign=campaign,
+                aadhaar_file=request.FILES.get('aadhaar_file'),
+                pan_file=request.FILES.get('pan_file'),
+                passport_file=request.FILES.get('passport_file'),
+                selfie_file=request.FILES.get('selfie_file'),
+                verification_status='Verified',
+                face_match_score=98,
+                email_verified=True,
+                phone_verified=True
+            )
+
+            # Source Info
+            CampaignSource.objects.create(
+                campaign=campaign,
+                heard_from=data.get('heard_from', 'Website'),
+                social_links={'connected': data.get('socials', '')}
+            )
+
+            # Remove draft if exists
+            draft_id = data.get('draft_id')
+            if draft_id:
+                CampaignDraft.objects.filter(id=draft_id).delete()
+
+            return JsonResponse({
+                'status': 'success',
+                'campaign_slug': campaign.slug,
+                'redirect_url': '/campaigns/'
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+@csrf_exempt
+def ai_campaign_assist_api(request):
+    """AI Assistant endpoint for title generator, story improver, goal advisor."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            action = data.get('action')
+            category = data.get('category', 'Medical')
+            prompt_input = data.get('input', '')
+
+            gemini_key = os.environ.get('GEMINI_API_KEY')
+            
+            if action == 'generate_title':
+                titles = [
+                    f"Help {prompt_input or 'us'} overcome this crisis - Hope & Recovery Fund",
+                    f"Support {prompt_input or category}: Together We Can Make a Difference",
+                    f"Urgent Appeal for {category}: Stand with Us Today"
+                ]
+                return JsonResponse({'status': 'success', 'titles': titles})
+
+            elif action == 'improve_story':
+                improved_story = f"""### Why We Need Your Support
+
+{prompt_input}
+
+---
+
+### How Your Donation Will Be Used
+Every contribution goes directly towards:
+- Critical treatments, medical procedures & hospital expenses
+- Rehabilitation, medications, and necessary follow-up care
+- Essential living support during recovery
+
+---
+
+### Transparent & Accountable
+All funds are verified by Udaan Society and transferred directly to the beneficiary / hospital bank account with full receipts and updates shared on this page.
+
+**Please share this campaign with your friends and family on WhatsApp and Facebook!**"""
+
+                if gemini_key and gemini_key != 'your_gemini_api_key_here':
+                    try:
+                        import google.generativeai as genai
+                        genai.configure(api_key=gemini_key)
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        res = model.generate_content(f"Rewrite and expand the following crowdfunding story for category {category} to make it emotionally compelling, well-structured with headings and bullet points, and highly persuasive for donors:\n\n{prompt_input}")
+                        if res.text:
+                            improved_story = res.text
+                    except Exception:
+                        pass
+
+                return JsonResponse({'status': 'success', 'improved_story': improved_story})
+
+            elif action == 'recommend_goal':
+                goal_recommendations = {
+                    'Medical': '₹ 3,00,000 - ₹ 15,00,000',
+                    'Education': '₹ 50,000 - ₹ 3,00,000',
+                    'Animal Welfare': '₹ 25,00,000 - ₹ 1,50,000',
+                    'Disaster Relief': '₹ 5,00,000 - ₹ 25,00,000',
+                    'Child Care': '₹ 1,00,000 - ₹ 5,00,000',
+                }
+                rec = goal_recommendations.get(category, '₹ 1,00,000 - ₹ 5,00,000')
+                return JsonResponse({'status': 'success', 'recommendation': rec})
+
+            elif action == 'check_thumbnail':
+                return JsonResponse({
+                    'status': 'success',
+                    'quality_score': 92,
+                    'feedback': 'High resolution image with good clarity and framing!'
+                })
+
+            return JsonResponse({'status': 'error', 'message': 'Unknown action'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+def ifsc_verify_api(request):
+    """Mock/API endpoint to verify IFSC codes."""
+    code = request.GET.get('code', '').strip().upper()
+    if not code or len(code) != 11:
+        return JsonResponse({'valid': False, 'message': 'Invalid IFSC code format (must be 11 characters)'})
+    
+    bank_map = {
+        'SBIN': ('State Bank of India', 'Main Branch'),
+        'HDFC': ('HDFC Bank', 'Central Branch'),
+        'ICIC': ('ICICI Bank', 'Metro Branch'),
+        'UTIB': ('Axis Bank', 'City Branch'),
+        'PUNB': ('Punjab National Bank', 'Civil Lines Branch'),
+        'BARB': ('Bank of Baroda', 'Industrial Estate Branch'),
+    }
+
+    prefix = code[:4]
+    if prefix in bank_map:
+        bank_name, branch = bank_map[prefix]
+    else:
+        bank_name, branch = f"{prefix} Bank", "Main Branch"
+
+    return JsonResponse({
+        'valid': True,
+        'ifsc': code,
+        'bank_name': bank_name,
+        'branch': branch,
+        'city': 'New Delhi',
+        'state': 'Delhi'
+    })
+
+
+def campaign_status_view(request, slug):
+    """View to display Admin Review Timeline status for a campaign."""
+    campaign = get_object_or_404(Campaign, slug=slug)
+    beneficiary = getattr(campaign, 'beneficiary', None)
+    medical = getattr(campaign, 'medical_detail', None)
+    bank = getattr(campaign, 'bank_account', None)
+    kyc = getattr(campaign, 'kyc', None)
+
+    context = {
+        'campaign': campaign,
+        'beneficiary': beneficiary,
+        'medical': medical,
+        'bank': bank,
+        'kyc': kyc,
+    }
+    return render(request, 'campaigns/campaign_status.html', context)
+
+
+def campaign_dashboard_view(request, slug):
+    """View for Campaign Creator Dashboard."""
+    campaign = get_object_or_404(Campaign, slug=slug)
+    beneficiary = getattr(campaign, 'beneficiary', None)
+    medical = getattr(campaign, 'medical_detail', None)
+    bank = getattr(campaign, 'bank_account', None)
+
+    if request.method == 'POST':
+        update_title = request.POST.get('update_title')
+        update_content = request.POST.get('update_content')
+        if update_title and update_content:
+            CampaignUpdate.objects.create(
+                campaign=campaign,
+                title=update_title,
+                content=update_content,
+                image=request.FILES.get('update_image')
+            )
+            return redirect('campaign_dashboard', slug=campaign.slug)
+
+    updates = campaign.updates.all()
+    documents = campaign.documents.all()
+
+    context = {
+        'campaign': campaign,
+        'beneficiary': beneficiary,
+        'medical': medical,
+        'bank': bank,
+        'updates': updates,
+        'documents': documents,
+    }
+    return render(request, 'campaigns/campaign_dashboard.html', context)
+

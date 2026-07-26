@@ -1,0 +1,511 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Start a Fundraiser - Medical, Education, NGO & Causes | UDAAN{% endblock %}
+
+{% block extra_css %}
+<!-- FontAwesome & Canvas Confetti -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+  /* Soothing Slate & Professional Blue Theme */
+  .glass-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+  }
+
+  .btn-primary-blue {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 4px 14px -2px rgba(37, 99, 235, 0.35);
+  }
+  .btn-primary-blue:hover {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    box-shadow: 0 6px 18px -2px rgba(37, 99, 235, 0.45);
+  }
+
+  .chip-option {
+    transition: all 0.2s ease;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+  .chip-option:hover {
+    border-color: #94a3b8;
+  }
+  .chip-option.active {
+    border-color: #2563eb !important;
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+    font-weight: 700;
+  }
+
+  .cause-card {
+    transition: all 0.25s ease;
+  }
+  .cause-card.active {
+    border-color: #2563eb !important;
+    background-color: #eff6ff !important;
+    box-shadow: 0 0 0 2px #2563eb;
+  }
+
+  .dropzone {
+    border: 2px dashed #cbd5e1;
+    transition: all 0.2s ease;
+    background-color: #f8fafc;
+  }
+  .dropzone:hover {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+  }
+
+  .step-pill {
+    transition: all 0.3s ease;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#f8fafc] py-8 px-4 sm:px-6 lg:px-8 text-slate-800">
+  
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Top Header -->
+    <div class="text-center max-w-2xl mx-auto mb-8 space-y-2">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">Start a Fundraiser in 2 Minutes</h1>
+      <p class="text-slate-500 text-sm">Raise funds for Medical Emergencies, Student Welfare, NGO Projects & Personal Causes.</p>
+    </div>
+
+    <!-- Stepper Progress Header -->
+    <div class="glass-card rounded-2xl p-4 sm:p-5 mb-8">
+      <div class="flex items-center justify-between text-xs font-bold text-slate-600 mb-3">
+        <span id="step-title-text" class="text-blue-700 font-extrabold">Step 1: Choose Cause & Details</span>
+        <span id="step-pct-text" class="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full border border-blue-100">Step 1 of 4 (25%)</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-4 border border-slate-200">
+        <div id="progress-bar-fill" class="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full transition-all duration-500" style="width: 25%;"></div>
+      </div>
+
+      <!-- Steps Labels -->
+      <div class="grid grid-cols-4 gap-2 text-center text-xs">
+        <div id="pill-1" class="step-pill py-2 px-2 rounded-xl font-bold bg-slate-800 text-white shadow-sm">1. Cause & Info</div>
+        <div id="pill-2" class="step-pill py-2 px-2 rounded-xl font-medium text-slate-400">2. Goal & Story</div>
+        <div id="pill-3" class="step-pill py-2 px-2 rounded-xl font-medium text-slate-400">3. Documents & Photo</div>
+        <div id="pill-4" class="step-pill py-2 px-2 rounded-xl font-medium text-slate-400">4. Bank Payout</div>
+      </div>
+    </div>
+
+    <!-- Full Width Campaign Form Container -->
+    <div class="w-full space-y-6">
+        
+        <!-- STEP 1: Choose Cause & Beneficiary Info -->
+        <div id="step-content-1" class="step-content glass-card rounded-3xl p-6 sm:p-8 space-y-6">
+          
+          <div>
+            <label class="block text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">1. Select Fundraiser Cause *</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div onclick="selectCause('Medical', this)" class="cause-card active p-3 rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer text-center space-y-1">
+                <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-notes-medical"></i></div>
+                <span class="block text-xs font-bold text-slate-800">Medical</span>
+              </div>
+              <div onclick="selectCause('Student Welfare', this)" class="cause-card p-3 rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer text-center space-y-1">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-graduation-cap"></i></div>
+                <span class="block text-xs font-bold text-slate-800">Education</span>
+              </div>
+              <div onclick="selectCause('NGO / Charity', this)" class="cause-card p-3 rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer text-center space-y-1">
+                <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <span class="block text-xs font-bold text-slate-800">NGO Project</span>
+              </div>
+              <div onclick="selectCause('Other Cause', this)" class="cause-card p-3 rounded-2xl border border-slate-200 bg-slate-50 cursor-pointer text-center space-y-1">
+                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto text-lg"><i class="fa-solid fa-star"></i></div>
+                <span class="block text-xs font-bold text-slate-800">Other Cause</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="cause-fields-container" class="space-y-4 pt-2 border-t border-slate-100">
+            <!-- Dynamic fields depending on Cause selected -->
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Relationship to Beneficiary / Recipient *</label>
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <button type="button" onclick="selectRelation('My Child', this)" class="chip-option active p-2.5 rounded-xl border text-xs text-center font-semibold">My Child</button>
+                <button type="button" onclick="selectRelation('My Parent', this)" class="chip-option p-2.5 rounded-xl border text-xs text-center font-semibold">My Parent</button>
+                <button type="button" onclick="selectRelation('My Spouse', this)" class="chip-option p-2.5 rounded-xl border text-xs text-center font-semibold">My Spouse</button>
+                <button type="button" onclick="selectRelation('Myself', this)" class="chip-option p-2.5 rounded-xl border text-xs text-center font-semibold">Myself</button>
+                <button type="button" onclick="selectRelation('Relative', this)" class="chip-option p-2.5 rounded-xl border text-xs text-center font-semibold">Relative</button>
+                <button type="button" onclick="selectRelation('Friend / NGO', this)" class="chip-option p-2.5 rounded-xl border text-xs text-center font-semibold">Friend</button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label id="label-ben-name" class="block text-xs font-bold text-slate-700 mb-1">Beneficiary / Patient Name *</label>
+                <input type="text" id="input-patient-name" oninput="updateLivePreview()" placeholder="e.g. Aarav Sharma" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+              <div>
+                <label id="label-age-info" class="block text-xs font-bold text-slate-700 mb-1">Age / Grade</label>
+                <input type="number" id="input-patient-age" placeholder="e.g. 12" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" />
+              </div>
+            </div>
+
+            <div>
+              <label id="label-condition" class="block text-xs font-bold text-slate-700 mb-1">Medical Condition / Purpose *</label>
+              <select id="input-medical-condition" onchange="updateMedicalCondition()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50">
+                <option value="Cancer / Leukemia">Cancer / Leukemia Treatment</option>
+                <option value="Bone Marrow Transplant">Bone Marrow Transplant</option>
+                <option value="Organ Transplant">Organ Transplant (Liver/Kidney)</option>
+                <option value="ICU / Emergency Care">ICU / Emergency Critical Care</option>
+                <option value="Heart Surgery">Open Heart Surgery / Cardiac</option>
+                <option value="School / College Tuition Fee">School / College Tuition Fee Support</option>
+                <option value="Educational Tools & Laptop">Educational Laptop & Books Support</option>
+                <option value="Community Welfare Project">Community Welfare Project</option>
+                <option value="Other Emergency Need">Other Emergency Need</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label id="label-institute" class="block text-xs font-bold text-slate-700 mb-1">Hospital / Institution Name *</label>
+                <input type="text" id="input-hospital-name" oninput="updateLivePreview()" placeholder="e.g. AIIMS Delhi / Delhi University" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">City *</label>
+                <input type="text" id="input-city" oninput="updateLivePreview()" placeholder="e.g. New Delhi / Mumbai" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Goal Amount & Story -->
+        <div id="step-content-2" class="step-content glass-card rounded-3xl p-6 sm:p-8 space-y-6 hidden">
+          <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+            <i class="fa-solid fa-indian-rupee-sign text-blue-600"></i> Target Amount & Campaign Story
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">How much do you need to raise? (₹) *</label>
+              <div class="relative">
+                <span class="absolute left-4 top-2.5 text-base font-bold text-slate-400">₹</span>
+                <input type="number" id="input-goal-amount" oninput="updateLivePreview()" value="250000" placeholder="250000" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-base font-extrabold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Recommended goal range: ₹ 50,000 - ₹ 10,00,000</p>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-bold text-slate-700">Fundraiser Title *</label>
+                <button type="button" onclick="autoGenerateTitle()" class="text-xs font-semibold text-blue-600 hover:underline"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Auto-Generate Title</button>
+              </div>
+              <input type="text" id="input-title" oninput="updateLivePreview()" placeholder="Support Aarav's Medical Treatment" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-bold text-slate-700">Campaign Story & Details *</label>
+                <button type="button" onclick="improveStoryAI()" class="text-xs font-semibold text-blue-600 hover:underline"><i class="fa-solid fa-robot mr-1"></i> Expand Story with AI</button>
+              </div>
+              <textarea id="input-story" rows="5" oninput="updateLivePreview()" placeholder="Explain why funds are needed, how every rupee will be spent, and your family's situation..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Photos & Supporting Documents -->
+        <div id="step-content-3" class="step-content glass-card rounded-3xl p-6 sm:p-8 space-y-6 hidden">
+          <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+            <i class="fa-solid fa-file-invoice text-blue-600"></i> Upload Photo & Supporting Documents
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Campaign Cover Photo *</label>
+              <div class="dropzone p-5 rounded-2xl text-center cursor-pointer" onclick="document.getElementById('input-patient-photo').click()">
+                <input type="file" id="input-patient-photo" accept="image/*" class="hidden" onchange="handlePatientPhotoUpload(event)" />
+                <i class="fa-solid fa-camera-retro text-2xl text-slate-400 mb-2"></i>
+                <p class="text-xs font-bold text-slate-700">Click to upload main campaign image</p>
+                <p class="text-[11px] text-slate-400 mt-1">Clear photos get 3x higher contributions</p>
+                <div id="photo-preview-tag" class="hidden mt-2 text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg inline-block">Photo Uploaded ✓</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
+                <label class="block text-xs font-bold text-slate-700">Supporting Document / Estimate *</label>
+                <input type="file" id="input-prescription" accept="image/*,application/pdf" class="text-xs text-slate-500 w-full" />
+              </div>
+              <div class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
+                <label class="block text-xs font-bold text-slate-700">ID Proof / Admission Letter (Optional)</label>
+                <input type="file" id="input-report" accept="image/*,application/pdf" class="text-xs text-slate-500 w-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Bank Account for Payout -->
+        <div id="step-content-4" class="step-content glass-card rounded-3xl p-6 sm:p-8 space-y-6 hidden">
+          <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
+            <i class="fa-solid fa-building-columns text-blue-600"></i> Bank Account for Payout
+          </h2>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Account Holder Name *</label>
+              <input type="text" id="input-bank-name" placeholder="Name as on Bank Passbook" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Account Number *</label>
+                <input type="password" id="input-bank-acc" placeholder="Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Confirm Account Number *</label>
+                <input type="text" id="input-bank-acc-confirm" placeholder="Re-enter Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-bold text-slate-700">IFSC Code *</label>
+                <span id="ifsc-status" class="hidden text-xs font-bold text-blue-700">✓ Bank Verified</span>
+              </div>
+              <div class="flex gap-2">
+                <input type="text" id="input-ifsc" uppercase placeholder="e.g. HDFC0000001" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-mono uppercase focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                <button type="button" onclick="checkIFSC()" class="px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shrink-0 transition">Verify</button>
+              </div>
+              <p id="ifsc-branch-info" class="text-xs text-slate-500 mt-1"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex items-center justify-between mt-8 pt-4 border-t border-slate-200">
+          <button type="button" id="btn-back" onclick="prevStep()" class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 text-xs font-bold hover:bg-slate-50 disabled:opacity-40" disabled>
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back
+          </button>
+
+          <button type="button" id="btn-next" onclick="nextStep()" class="btn-primary-blue text-white px-7 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2">
+            <span>Next Step</span> <i class="fa-solid fa-arrow-right"></i>
+          </button>
+
+          <button type="button" id="btn-submit" onclick="submitMedicalFundraiser()" class="btn-primary-blue text-white px-8 py-3 rounded-xl text-xs font-extrabold transition hidden flex items-center gap-2 shadow-lg">
+            <i class="fa-solid fa-rocket"></i> Launch Campaign
+          </button>
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  let currentStep = 1;
+  let selectedCause = "Medical";
+  let selectedRelation = "My Child";
+
+  function selectCause(cause, el) {
+    selectedCause = cause;
+    document.querySelectorAll('.cause-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+
+    const badge = document.getElementById('preview-cause-badge');
+    if (badge) badge.innerText = `${cause} Campaign`;
+
+    if (cause === 'Student Welfare') {
+      document.getElementById('label-ben-name').innerText = "Student Full Name *";
+      document.getElementById('label-condition').innerText = "Course / Support Type *";
+      document.getElementById('label-institute').innerText = "School / College Name *";
+    } else if (cause === 'NGO / Charity') {
+      document.getElementById('label-ben-name').innerText = "NGO / Project Leader Name *";
+      document.getElementById('label-condition').innerText = "Project Purpose *";
+      document.getElementById('label-institute').innerText = "Organization Name *";
+    } else {
+      document.getElementById('label-ben-name').innerText = "Beneficiary / Patient Name *";
+      document.getElementById('label-condition').innerText = "Medical Condition / Purpose *";
+      document.getElementById('label-institute').innerText = "Hospital / Institution Name *";
+    }
+
+    autoGenerateTitle();
+  }
+
+  function selectRelation(rel, el) {
+    selectedRelation = rel;
+    document.querySelectorAll('.chip-option').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    autoGenerateTitle();
+  }
+
+  function updateMedicalCondition() {
+    autoGenerateTitle();
+  }
+
+  function autoGenerateTitle() {
+    const name = document.getElementById('input-patient-name').value || "Beneficiary";
+    const cond = document.getElementById('input-medical-condition').value;
+    const title = `Support ${name}'s ${cond} - Urgent Appeal`;
+    document.getElementById('input-title').value = title;
+    updateLivePreview();
+  }
+
+  function updateLivePreview() {
+    const name = document.getElementById('input-patient-name').value || "Aarav Sharma";
+    const hospital = document.getElementById('input-hospital-name').value || "AIIMS Hospital";
+    const city = document.getElementById('input-city').value || "New Delhi";
+    const goal = document.getElementById('input-goal-amount').value || "250000";
+    const title = document.getElementById('input-title').value || `Support ${name}'s Campaign`;
+
+    const pt = document.getElementById('preview-title');
+    if (pt) pt.innerText = title;
+    const ph = document.getElementById('preview-hospital');
+    if (ph) ph.innerHTML = `<i class="fa-solid fa-building text-slate-400 mr-1"></i> ${hospital}, ${city}`;
+    const pc = document.getElementById('preview-city');
+    if (pc) pc.innerText = city;
+    const pg = document.getElementById('preview-goal-text');
+    if (pg) pg.innerText = `Goal: ₹ ${parseInt(goal).toLocaleString('en-IN')}`;
+  }
+
+  function handlePatientPhotoUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById('preview-photo').src = evt.target.result;
+        document.getElementById('photo-preview-tag').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function checkIFSC() {
+    const code = document.getElementById('input-ifsc').value.trim();
+    if (!code) return;
+    fetch(`/api/verify-ifsc/?code=${code}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.valid) {
+          document.getElementById('ifsc-status').classList.remove('hidden');
+          document.getElementById('ifsc-branch-info').innerText = `${data.bank_name} - ${data.branch}`;
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+
+  function improveStoryAI() {
+    const name = document.getElementById('input-patient-name').value || "the beneficiary";
+    const cond = document.getElementById('input-medical-condition').value;
+    const hosp = document.getElementById('input-hospital-name').value || "the institution";
+
+    fetch('/api/campaigns/ai-assist/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'improve_story', category: selectedCause, input: `${name} needs urgent support for ${cond} at ${hosp}.` })
+    })
+    .then(r => r.json())
+    .then(d => {
+      if (d.status === 'success') {
+        document.getElementById('input-story').value = d.improved_story;
+        alert("Story expanded with AI details!");
+      }
+    });
+  }
+
+  function nextStep() {
+    if (currentStep < 4) {
+      currentStep++;
+      renderStep();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 1) {
+      currentStep--;
+      renderStep();
+    }
+  }
+
+  function renderStep() {
+    document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById(`step-content-${currentStep}`).classList.remove('hidden');
+
+    const pct = currentStep * 25;
+    document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+    document.getElementById('step-pct-text').innerText = `Step ${currentStep} of 4 (${pct}%)`;
+
+    const titles = [
+      "Step 1: Choose Cause & Details",
+      "Step 2: Target Amount & Campaign Story",
+      "Step 3: Documents & Photo",
+      "Step 4: Bank Account for Payout"
+    ];
+    document.getElementById('step-title-text').innerText = titles[currentStep - 1];
+
+    for (let i = 1; i <= 4; i++) {
+      const p = document.getElementById(`pill-${i}`);
+      if (i === currentStep) {
+        p.className = "step-pill py-2 px-2 rounded-xl font-bold bg-slate-800 text-white shadow-sm";
+      } else if (i < currentStep) {
+        p.className = "step-pill py-2 px-2 rounded-xl font-semibold text-blue-700 bg-blue-50 border border-blue-100";
+      } else {
+        p.className = "step-pill py-2 px-2 rounded-xl font-medium text-slate-400";
+      }
+    }
+
+    document.getElementById('btn-back').disabled = (currentStep === 1);
+    if (currentStep === 4) {
+      document.getElementById('btn-next').classList.add('hidden');
+      document.getElementById('btn-submit').classList.remove('hidden');
+    } else {
+      document.getElementById('btn-next').classList.remove('hidden');
+      document.getElementById('btn-submit').classList.add('hidden');
+    }
+  }
+
+  function submitMedicalFundraiser() {
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Launching...';
+
+    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+
+    setTimeout(() => {
+      const formData = new FormData();
+      formData.append('title', document.getElementById('input-title').value || "Emergency Appeal");
+      formData.append('category', selectedCause);
+      formData.append('short_description', `Support needed for ${document.getElementById('input-patient-name').value || 'Beneficiary'}`);
+      formData.append('description', document.getElementById('input-story').value || "Campaign story.");
+      formData.append('goal_amount', document.getElementById('input-goal-amount').value || "250000");
+      formData.append('currency', 'INR');
+      formData.append('location', document.getElementById('input-city').value || "New Delhi");
+      formData.append('beneficiary_name', document.getElementById('input-patient-name').value || "Beneficiary");
+      formData.append('hospital_name', document.getElementById('input-hospital-name').value || "Institution");
+      formData.append('account_number', document.getElementById('input-bank-acc').value || "1234567890");
+      formData.append('ifsc_code', document.getElementById('input-ifsc').value || "HDFC0000001");
+      formData.append('confirmation_agreed', 'true');
+
+      const photo = document.getElementById('input-patient-photo').files[0];
+      if (photo) formData.append('image', photo);
+
+      fetch('/api/campaigns/submit/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.status === 'success') {
+          window.location.href = d.redirect_url;
+        } else {
+          alert('Submission error: ' + d.message);
+          btn.disabled = false;
+          btn.innerText = 'Launch Campaign';
+        }
+      });
+    }, 1200);
+  }
+</script>
+{% endblock %}

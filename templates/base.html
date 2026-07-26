@@ -96,19 +96,19 @@
     <nav class="main-nav">
         <!-- Top Contact & Location Bar -->
         <div
-            class="bg-[#024b24] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full">
+            class="bg-[#0f172a] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full border-b border-slate-800">
             <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot text-[#ffb300]"></i>
+                <i class="fa-solid fa-location-dot text-sky-400"></i>
                 <span>Aligarh & Bulandshahr, Uttar Pradesh</span>
             </div>
             <div class="flex items-center gap-6">
                 <a href="mailto:mail@udaansociety.org"
-                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
+                    class="flex items-center gap-2 hover:text-sky-300 transition-colors no-underline text-white">
                     <i class="fa-regular fa-envelope"></i>
                     <span>mail@udaansociety.org</span>
                 </a>
                 <a href="tel:+919837067681"
-                    class="flex items-center gap-2 hover:text-[#ffb300] transition-colors no-underline text-white">
+                    class="flex items-center gap-2 hover:text-sky-300 transition-colors no-underline text-white">
                     <i class="fa-solid fa-phone"></i>
                     <span>+91 98370 67681</span>
                 </a>
@@ -121,7 +121,7 @@
                 <a href="{% url 'home' %}" class="flex items-center gap-3 no-underline">
                     <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
                     <div class="flex flex-col text-left">
-                        <span class="text-xl sm:text-2xl font-bold text-[#024b24] tracking-tight leading-none">UDAAN
+                        <span class="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight leading-none">UDAAN
                             SOCIETY</span>
                         <span class="text-[10px] sm:text-xs text-gray-500 font-semibold tracking-wide mt-1.5">Empowering
                             Lives. Building Futures.</span>
@@ -187,8 +187,6 @@
                             Jobs at UDAAN Society
                         </a>
 
-
-
                     </div>
                 </li>
                 <li class="nav-item">
@@ -212,8 +210,15 @@
                     <a href="{% url 'campaign_list' %}" class="nav-link">Campaigns</a>
                 </li>
                 <li class="nav-item">
+                    <a href="{% url 'start_campaign_wizard' %}"
+                        class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-4 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 flex items-center gap-1.5 shadow-sm hover:shadow no-underline">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        Start a Campaign
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="/donate/"
-                        class="bg-[#024b24] hover:bg-[#013519] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline">
+                        class="bg-[#0f172a] hover:bg-[#1e293b] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline">
                         <i class="fa-regular fa-heart"></i>
                         Donate Now
                     </a>
