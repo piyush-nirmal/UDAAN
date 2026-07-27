@@ -20,10 +20,174 @@
   function toggleSidebar() {
     document.body.classList.toggle('sidebar-collapsed');
   }
+
+  function toggleNotificationDropdown(e) {
+    if (e) e.stopPropagation();
+    const dropdown = document.getElementById('adminNotifDropdown');
+    if (!dropdown) return;
+    const isHidden = dropdown.style.display === 'none' || dropdown.classList.contains('hidden');
+    if (isHidden) {
+      dropdown.style.display = 'block';
+      dropdown.classList.remove('hidden');
+      fetchAdminNotifications();
+    } else {
+      dropdown.style.display = 'none';
+      dropdown.classList.add('hidden');
+    }
+  }
+
+  function toggleQuickCreateMenu(e) {
+    if (e) e.stopPropagation();
+    const menu = document.getElementById('quickCreateMenu');
+    if (!menu) return;
+    const isHidden = menu.style.display === 'none' || menu.classList.contains('hidden');
+    if (isHidden) {
+      menu.style.display = 'block';
+      menu.classList.remove('hidden');
+    } else {
+      menu.style.display = 'none';
+      menu.classList.add('hidden');
+    }
+  }
+
+  document.addEventListener('click', function(e) {
+    const notifWrapper = document.getElementById('notifDropdownWrapper');
+    const notifDropdown = document.getElementById('adminNotifDropdown');
+    if (notifWrapper && notifDropdown && !notifWrapper.contains(e.target)) {
+      notifDropdown.style.display = 'none';
+      notifDropdown.classList.add('hidden');
+    }
+
+    const qcWrapper = document.querySelector('.quick-create-dropdown');
+    const qcMenu = document.getElementById('quickCreateMenu');
+    if (qcWrapper && qcMenu && !qcWrapper.contains(e.target)) {
+      qcMenu.style.display = 'none';
+      qcMenu.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      const searchInput = document.getElementById('adminGlobalSearch');
+      if (searchInput) searchInput.focus();
+    }
+  });
+
+  function fetchAdminNotifications() {
+    const container = document.getElementById('adminNotifListContainer');
+    const badge = document.getElementById('adminNotifBadge');
+    const countPill = document.getElementById('adminNotifHeaderCount');
+
+    fetch("{% url 'notifications_api' %}")
+      .then(res => res.json())
+      .then(data => {
+        const unread = data.unread_count || 0;
+        if (unread > 0) {
+          if (badge) {
+            badge.textContent = unread;
+            badge.style.display = 'inline-block';
+          }
+          if (countPill) countPill.textContent = unread;
+        } else {
+          if (badge) badge.style.display = 'none';
+          if (countPill) countPill.textContent = '0';
+        }
+
+        if (!data.notifications || data.notifications.length === 0) {
+          if (container) {
+            container.innerHTML = `
+              <div style="padding: 28px 16px; text-align: center; color: #64748B; font-size: 13px;">
+                <i class="fas fa-bell-slash" style="font-size: 24px; color: #CBD5E1; display: block; margin-bottom: 8px;"></i>
+                <div style="font-weight: 600;">No notifications right now</div>
+              </div>`;
+          }
+          return;
+        }
+
+        let html = '';
+        data.notifications.forEach(n => {
+          const unreadBg = n.is_read ? '#FFFFFF' : '#F0FDF4';
+          const link = n.link || '#';
+          html += `
+            <a href="${link}" class="notif-item" style="display: block; padding: 12px 16px; border-bottom: 1px solid #F1F5F9; background-color: ${unreadBg}; text-decoration: none; transition: background 0.15s;">
+              <div style="font-size: 12px; font-weight: 600; color: #1E293B; line-height: 1.4; margin-bottom: 4px;">${escapeHtml(n.message)}</div>
+              <div style="font-size: 10px; color: #94A3B8; display: flex; align-items: center; gap: 4px;">
+                <i class="far fa-clock"></i> ${n.created_at}
+              </div>
+            </a>`;
+        });
+        if (container) container.innerHTML = html;
+      })
+      .catch(err => {
+        console.error('Error loading notifications:', err);
+        if (container) {
+          container.innerHTML = `
+            <div style="padding: 24px; text-align: center; color: #EF4444; font-size: 13px;">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div>Unable to load notifications</div>
+            </div>`;
+        }
+      });
+  }
+
+  function markAllNotificationsRead(e) {
+    if (e) e.stopPropagation();
+    fetch("{% url 'mark_notifications_read' %}", {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCsrfToken(),
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === 'ok') {
+        const badge = document.getElementById('adminNotifBadge');
+        const countPill = document.getElementById('adminNotifHeaderCount');
+        if (badge) badge.style.display = 'none';
+        if (countPill) countPill.textContent = '0';
+        fetchAdminNotifications();
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function getCsrfToken() {
+    const cookie = document.cookie.split('; ').find(row => row.startsWith('csrftoken='));
+    return cookie ? cookie.split('=')[1] : '';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('adminGlobalSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase().trim();
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+          const text = link.textContent.toLowerCase();
+          if (!query || text.includes(query)) {
+            link.style.display = 'flex';
+          } else {
+            link.style.display = 'none';
+          }
+        });
+      });
+    }
+
+    {% if request.user.is_authenticated %}
+    fetchAdminNotifications();
+    {% endif %}
+  });
 </script>
 {% endblock %}
 
 {% block header %}
+{% if request.user.is_authenticated %}
 <header id="admin-top-navbar" class="admin-sticky-navbar">
   
   <div class="navbar-left">
@@ -53,17 +217,17 @@
   <div class="navbar-right">
     
     <!-- Quick Create Dropdown -->
-    <div class="quick-create-dropdown relative">
-      <button type="button" class="btn-quick-create" onclick="this.nextElementSibling.classList.toggle('hidden')">
+    <div class="quick-create-dropdown" style="position: relative; display: inline-block;">
+      <button type="button" class="btn-quick-create" onclick="toggleQuickCreateMenu(event)" title="Quick Create New Item">
         <i class="fas fa-plus"></i>
         <span class="hidden sm:inline">Quick Create</span>
       </button>
-      <div class="quick-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50">
-        <a href="{% url 'admin:blood_request_campaign_add' %}" class="quick-menu-item"><i class="fas fa-flag text-emerald-600"></i> New Campaign</a>
-        <a href="{% url 'admin:blood_request_blog_add' %}" class="quick-menu-item"><i class="fas fa-pen-nib text-blue-600"></i> Write Blog</a>
-        <a href="{% url 'admin:blood_request_bloodrequest_add' %}" class="quick-menu-item"><i class="fas fa-tint text-red-600"></i> Blood Request</a>
-        <a href="{% url 'admin:auth_user_add' %}" class="quick-menu-item"><i class="fas fa-user-plus text-purple-600"></i> Add User</a>
-        <a href="{% url 'admin:blood_request_task_add' %}" class="quick-menu-item"><i class="fas fa-tasks text-amber-600"></i> Add Task</a>
+      <div id="quickCreateMenu" class="quick-menu hidden" style="display: none; position: absolute; right: 0; top: calc(100% + 10px); width: 200px; background: #FFFFFF; border-radius: 14px; box-shadow: 0 15px 35px rgba(15, 23, 42, 0.25); border: 1px solid #CBD5E1; padding: 8px 0; z-index: 99999; text-align: left;">
+        <a href="{% url 'admin:blood_request_campaign_add' %}" class="quick-menu-item"><i class="fas fa-flag" style="color: #16A34A;"></i> New Campaign</a>
+        <a href="{% url 'admin:blood_request_blog_add' %}" class="quick-menu-item"><i class="fas fa-pen-nib" style="color: #2563EB;"></i> Write Blog</a>
+        <a href="{% url 'admin:blood_request_bloodrequest_add' %}" class="quick-menu-item"><i class="fas fa-tint" style="color: #DC2626;"></i> Blood Request</a>
+        <a href="{% url 'admin:auth_user_add' %}" class="quick-menu-item"><i class="fas fa-user-plus" style="color: #9333EA;"></i> Add User</a>
+        <a href="{% url 'admin:blood_request_task_add' %}" class="quick-menu-item"><i class="fas fa-tasks" style="color: #D97706;"></i> Add Task</a>
       </div>
     </div>
 
@@ -73,16 +237,42 @@
       <i class="fas fa-sun hidden dark:inline"></i>
     </button>
 
-    <!-- Notification Bell -->
-    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="btn-nav-icon relative" title="Notifications">
-      <i class="fas fa-bell"></i>
-      {% if kpi_contact_messages > 0 %}
-      <span class="nav-badge">{{ kpi_contact_messages }}</span>
-      {% endif %}
-    </a>
+    <!-- Notification Bell Dropdown -->
+    <div class="notification-dropdown-wrapper" id="notifDropdownWrapper" style="position: relative; display: inline-block;">
+      <button type="button" class="btn-nav-icon" id="notifBellBtn" onclick="toggleNotificationDropdown(event)" title="Notifications" style="position: relative;">
+        <i class="fas fa-bell"></i>
+        <span class="nav-badge" id="adminNotifBadge" {% if kpi_contact_messages == 0 %}style="display:none;"{% endif %}>{{ kpi_contact_messages|default:0 }}</span>
+      </button>
+
+      <!-- Floating Popup Dropdown Card -->
+      <div id="adminNotifDropdown" class="notif-dropdown-card hidden" style="display: none; position: absolute; right: 0; top: calc(100% + 12px); width: 340px; max-width: 90vw; background: #FFFFFF; color: #0F172A; border-radius: 14px; box-shadow: 0 15px 35px rgba(15, 23, 42, 0.25), 0 5px 15px rgba(0, 0, 0, 0.1); border: 1px solid #CBD5E1; z-index: 99999; overflow: hidden; text-align: left; font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;">
+        <div class="notif-header" style="padding: 12px 16px; background: #F8FAFC; border-bottom: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between;">
+          <div class="notif-title" style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 13px; color: #0F172A;">
+            <i class="fas fa-bell" style="color: #F59E0B;"></i>
+            <span>Notifications</span>
+            <span class="notif-count-pill" id="adminNotifHeaderCount" style="background: #EF4444; color: #FFFFFF; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 99px;">0</span>
+          </div>
+          <button type="button" class="btn-mark-read" onclick="markAllNotificationsRead(event)" style="background: #EFF6FF; border: 1px solid #BFDBFE; color: #2563EB; font-size: 11px; font-weight: 600; cursor: pointer; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">
+            <i class="fas fa-check-double"></i> Mark all read
+          </button>
+        </div>
+
+        <div class="notif-body" id="adminNotifListContainer" style="max-height: 300px; overflow-y: auto; background: #FFFFFF; color: #0F172A;">
+          <div class="notif-loading" style="padding: 24px; text-align: center; color: #64748B; font-size: 13px;">
+            <i class="fas fa-spinner fa-spin"></i> Loading notifications...
+          </div>
+        </div>
+
+        <div class="notif-footer" style="padding: 10px 16px; background: #F8FAFC; border-top: 1px solid #E2E8F0; text-align: center;">
+          <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="notif-footer-link" style="font-size: 12px; font-weight: 700; color: #15803D; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <span>View All Messages & System Logs</span>
+            <i class="fas fa-chevron-right" style="font-size: 10px;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- User Profile & Workspace CTA -->
-    {% if request.user.is_authenticated %}
     <div class="user-profile-widget">
       <div class="user-avatar-circle">
         {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
@@ -96,14 +286,15 @@
     <a href="{% url 'staff_dashboard' %}" class="btn-go-workspace">
       &rAarr; Go to Workspace
     </a>
-    {% endif %}
 
   </div>
 
 </header>
+{% endif %}
 {% endblock %}
 
 {% block nav-sidebar %}
+{% if request.user.is_authenticated %}
 <aside id="admin-sidebar" class="admin-sidebar">
   <nav class="sidebar-nav">
     
@@ -202,11 +393,15 @@
       <span class="sidebar-text">User Management</span>
     </a>
 
-    <a href="{% url 'admin:logout' %}" class="sidebar-link text-red-500">
-      <i class="fas fa-sign-out-alt sidebar-icon"></i>
-      <span class="sidebar-text">Logout</span>
-    </a>
+    <form action="{% url 'admin:logout' %}" method="post" style="margin: 0; padding: 0;">
+      {% csrf_token %}
+      <button type="submit" class="sidebar-link text-red-500" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center;">
+        <i class="fas fa-sign-out-alt sidebar-icon"></i>
+        <span class="sidebar-text">Logout</span>
+      </button>
+    </form>
 
   </nav>
 </aside>
+{% endif %}
 {% endblock %}

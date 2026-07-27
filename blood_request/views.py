@@ -732,33 +732,51 @@ def export_requests_csv(request):
 
 @login_required
 def notifications_api(request):
-    """Return the logged-in user's notifications as JSON."""
-    from .models import Notification
+    """Return the logged-in user's notifications as JSON, including contact messages for staff."""
+    from .models import Notification, ContactMessage
     base_qs = Notification.objects.filter(user=request.user).order_by('-created_at')
     unread_count = base_qs.filter(is_read=False).count()
-    notifs = base_qs[:30]
-    data = {
+    notifs = list(base_qs[:20])
+
+    items = [
+        {
+            'id': n.id,
+            'message': n.message,
+            'link': n.link or '#',
+            'is_read': n.is_read,
+            'created_at': n.created_at.strftime('%b %d, %Y %H:%M'),
+            'type': 'notification',
+        }
+        for n in notifs
+    ]
+
+    if request.user.is_staff:
+        cm_qs = ContactMessage.objects.filter(is_read=False).order_by('-created_at')[:10]
+        unread_count += cm_qs.count()
+        for cm in cm_qs:
+            items.append({
+                'id': f"cm_{cm.id}",
+                'message': f"New message from {cm.first_name}: {cm.subject}",
+                'link': '/admin/blood_request/contactmessage/',
+                'is_read': False,
+                'created_at': cm.created_at.strftime('%b %d, %Y %H:%M'),
+                'type': 'contact_message',
+            })
+
+    return JsonResponse({
         'unread_count': unread_count,
-        'notifications': [
-            {
-                'id': n.id,
-                'message': n.message,
-                'link': n.link,
-                'is_read': n.is_read,
-                'created_at': n.created_at.strftime('%b %d, %Y %H:%M'),
-            }
-            for n in notifs
-        ],
-    }
-    return JsonResponse(data)
+        'notifications': items,
+    })
 
 
 @login_required
 def mark_notifications_read(request):
     """Mark all notifications for the current user as read."""
     if request.method == 'POST':
-        from .models import Notification
+        from .models import Notification, ContactMessage
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        if request.user.is_staff:
+            ContactMessage.objects.filter(is_read=False).update(is_read=True)
         return JsonResponse({'status': 'ok'})
     return JsonResponse({'error': 'POST required'}, status=405)
 
