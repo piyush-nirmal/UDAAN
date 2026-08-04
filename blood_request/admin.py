@@ -165,6 +165,123 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ('author', 'role', 'is_active', 'created_at')
     list_filter = ('is_active',)
 
+# Custom User Creation Form with Intern/Volunteer Import Option
+from django.contrib.auth.forms import UserCreationForm
+
+class CustomUserCreationForm(UserCreationForm):
+    intern_source = forms.ModelChoiceField(
+        queryset=InternshipRequest.objects.all(),
+        required=False,
+        label="Import from Intern Application",
+        help_text="Optional: Select an Intern to auto-populate details and assign to 'Interns' group."
+    )
+    volunteer_source = forms.ModelChoiceField(
+        queryset=VolunteerRequest.objects.all(),
+        required=False,
+        label="Import from Volunteer Application",
+        help_text="Optional: Select a Volunteer to auto-populate details and assign to 'Volunteers' group."
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        intern = cleaned_data.get('intern_source')
+        volunteer = cleaned_data.get('volunteer_source')
+
+        if intern and volunteer:
+            raise forms.ValidationError("Please select either an Intern or a Volunteer, not both.")
+
+        if intern:
+            if intern.email and not cleaned_data.get('email'):
+                cleaned_data['email'] = intern.email
+            if intern.name:
+                parts = intern.name.split()
+                if not cleaned_data.get('first_name'):
+                    cleaned_data['first_name'] = parts[0]
+                if not cleaned_data.get('last_name') and len(parts) > 1:
+                    cleaned_data['last_name'] = ' '.join(parts[1:])
+                if not cleaned_data.get('username'):
+                    base_username = intern.email.split('@')[0].replace('.', '_').replace('-', '_') if intern.email else 'intern'
+                    username = base_username
+                    c = 1
+                    while User.objects.filter(username=username).exists():
+                        username = f"{base_username}{c}"
+                        c += 1
+                    cleaned_data['username'] = username
+
+        elif volunteer:
+            if volunteer.email and not cleaned_data.get('email'):
+                cleaned_data['email'] = volunteer.email
+            if volunteer.name:
+                parts = volunteer.name.split()
+                if not cleaned_data.get('first_name'):
+                    cleaned_data['first_name'] = parts[0]
+                if not cleaned_data.get('last_name') and len(parts) > 1:
+                    cleaned_data['last_name'] = ' '.join(parts[1:])
+                if not cleaned_data.get('username'):
+                    base_username = volunteer.email.split('@')[0].replace('.', '_').replace('-', '_') if volunteer.email else 'volunteer'
+                    username = base_username
+                    c = 1
+                    while User.objects.filter(username=username).exists():
+                        username = f"{base_username}{c}"
+                        c += 1
+                    cleaned_data['username'] = username
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        intern = self.cleaned_data.get('intern_source')
+        volunteer = self.cleaned_data.get('volunteer_source')
+
+        if intern:
+            if intern.email and not user.email:
+                user.email = intern.email
+            if intern.name:
+                parts = intern.name.split()
+                if not user.first_name:
+                    user.first_name = parts[0]
+                if not user.last_name and len(parts) > 1:
+                    user.last_name = ' '.join(parts[1:])
+            user.is_staff = True
+        elif volunteer:
+            if volunteer.email and not user.email:
+                user.email = volunteer.email
+            if volunteer.name:
+                parts = volunteer.name.split()
+                if not user.first_name:
+                    user.first_name = parts[0]
+                if not user.last_name and len(parts) > 1:
+                    user.last_name = ' '.join(parts[1:])
+            user.is_staff = True
+
+        if commit:
+            user.save()
+            self.save_m2m()
+
+            phone = None
+            if intern and getattr(intern, 'contact_number', None):
+                phone = intern.contact_number
+            elif volunteer and getattr(volunteer, 'phone', None):
+                phone = volunteer.phone
+
+            if phone:
+                profile, _ = StaffProfile.objects.get_or_create(user=user)
+                profile.phone_number = phone
+                profile.save()
+
+            if intern:
+                g, _ = Group.objects.get_or_create(name='Interns')
+                user.groups.add(g)
+            elif volunteer:
+                g, _ = Group.objects.get_or_create(name='Volunteers')
+                user.groups.add(g)
+
+        return user
+
 # Inline admin descriptor for StaffProfile model
 class StaffProfileInline(admin.StackedInline):
     model = StaffProfile
@@ -173,6 +290,18 @@ class StaffProfileInline(admin.StackedInline):
 
 # Custom User Admin
 class UserAdmin(BaseUserAdmin):
+    add_form = CustomUserCreationForm
+    add_fieldsets = (
+        ('Import from Application (Optional)', {
+            'classes': ('wide',),
+            'fields': ('intern_source', 'volunteer_source'),
+            'description': 'Select an Intern or Volunteer to auto-populate email, name, phone, and assign to Interns/Volunteers group.'
+        }),
+        ('Account Credentials', {
+            'classes': ('wide',),
+            'fields': ('username', 'email', 'first_name', 'last_name', 'password1', 'password2'),
+        }),
+    )
     inlines = (StaffProfileInline,)
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'get_phone')
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
@@ -182,9 +311,42 @@ class UserAdmin(BaseUserAdmin):
         return obj.profile.phone_number if hasattr(obj, 'profile') else '-'
     get_phone.short_description = 'Phone Number'
 
+# Custom Group Admin Form with Users selection widget
+from django.contrib.admin.widgets import FilteredSelectMultiple
+
+class GroupAdminForm(forms.ModelForm):
+    users = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        required=False,
+        widget=FilteredSelectMultiple('Users', is_stacked=False),
+        label="Group Members (Users)",
+        help_text="Select users to include in this group."
+    )
+
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['users'].initial = self.instance.user_set.all()
+
+    def save(self, commit=True):
+        group = super().save(commit=commit)
+        if commit:
+            self.save_m2m()
+        return group
+
+    def save_m2m(self):
+        super().save_m2m()
+        if 'users' in self.cleaned_data:
+            self.instance.user_set.set(self.cleaned_data['users'])
+
 # Custom Group Admin
 class GroupAdmin(BaseGroupAdmin):
-    filter_horizontal = ('permissions',)
+    form = GroupAdminForm
+    filter_horizontal = ('users', 'permissions')
     list_display = ('name', 'user_count')
 
     def user_count(self, obj):
@@ -288,18 +450,6 @@ class BlogAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.TextField: {'widget': CKEditor5Widget(config_name='extends')},
     }
-
-from .models import CampaignImage, CampaignDocument
-
-class CampaignImageInline(admin.TabularInline):
-    model = CampaignImage
-    extra = 1
-    fields = ('image',)
-
-class CampaignDocumentInline(admin.TabularInline):
-    model = CampaignDocument
-    extra = 1
-    fields = ('file',)
 
 
 
@@ -550,7 +700,7 @@ class AppConfigProxy:
         return getattr(self._app_config, name)
 
     def __str__(self):
-        return f"{self.name} - {self.residence} ({self.status})"
+        return getattr(self, 'verbose_name', str(self._app_config))
 
 
 # ======================================================
@@ -584,21 +734,21 @@ def custom_admin_index(request, extra_context=None):
         # Safe Campaign Status filter
         campaign_fields = [f.name for f in Campaign._meta.fields]
         if 'status' in campaign_fields:
-            extra_context['kpi_pending_campaigns'] = get_count(Campaign, status__in=['submitted', 'under_review', 'pending'])
-            extra_context['kpi_approved_campaigns'] = get_count(Campaign, status__in=['approved', 'published'])
-            extra_context['kpi_rejected_campaigns'] = get_count(Campaign, status='rejected')
+            extra_context['kpi_pending_campaigns'] = get_count(Campaign, status__in=['Pending Review', 'Under Verification', 'Draft', 'Need Documents', 'pending', 'submitted', 'under_review'])
+            extra_context['kpi_approved_campaigns'] = get_count(Campaign, status__in=['Approved', 'approved', 'published'])
+            extra_context['kpi_rejected_campaigns'] = get_count(Campaign, status__in=['Rejected', 'rejected'])
         else:
             extra_context['kpi_pending_campaigns'] = 0
             extra_context['kpi_approved_campaigns'] = get_count(Campaign)
             extra_context['kpi_rejected_campaigns'] = 0
 
         extra_context['kpi_blood_requests'] = get_count(BloodRequest)
-        extra_context['kpi_pending_blood'] = get_count(BloodRequest, status__iexact='pending')
+        extra_context['kpi_pending_blood'] = get_count(BloodRequest, status__in=['Received', 'Verified', 'Pending', 'pending'])
         extra_context['kpi_blood_donors'] = get_count(BloodDonor)
         
-        extra_context['kpi_volunteer_requests'] = get_count(VolunteerRequest, status__iexact='pending') or get_count(VolunteerRequest)
-        extra_context['kpi_internships'] = get_count(InternshipRequest, status__iexact='pending') or get_count(InternshipRequest)
-        extra_context['kpi_campus_applications'] = get_count(CampusAmbassadorApplication, status__iexact='pending') or get_count(CampusAmbassadorApplication)
+        extra_context['kpi_volunteer_requests'] = get_count(VolunteerRequest, status__iexact='pending')
+        extra_context['kpi_internships'] = get_count(InternshipRequest, status__in=['Pending', 'Under Review', 'pending'])
+        extra_context['kpi_campus_applications'] = get_count(CampusAmbassadorApplication, status__iexact='pending')
 
         try:
             raised_sum = Campaign.objects.aggregate(total=Sum('raised_amount'))['total'] or 0
@@ -607,7 +757,7 @@ def custom_admin_index(request, extra_context=None):
         extra_context['kpi_total_donations'] = raised_sum
         extra_context['kpi_donations_this_month'] = raised_sum
 
-        extra_context['kpi_contact_messages'] = get_count(ContactMessage, is_read=False) or get_count(ContactMessage)
+        extra_context['kpi_contact_messages'] = get_count(ContactMessage, is_read=False)
         extra_context['kpi_newsletter_subscribers'] = get_count(NewsletterSubscription)
         extra_context['kpi_tasks'] = get_count(Task)
         extra_context['kpi_teams'] = get_count(Team)
@@ -616,7 +766,7 @@ def custom_admin_index(request, extra_context=None):
         # Pending Approvals List
         try:
             if 'status' in campaign_fields:
-                extra_context['pending_campaigns_list'] = Campaign.objects.filter(status__in=['submitted', 'under_review'])[:5]
+                extra_context['pending_campaigns_list'] = Campaign.objects.filter(status__in=['Pending Review', 'Under Verification', 'Need Documents', 'Draft', 'submitted', 'under_review'])[:5]
             else:
                 extra_context['pending_campaigns_list'] = Campaign.objects.all()[:5]
         except Exception:
@@ -628,12 +778,12 @@ def custom_admin_index(request, extra_context=None):
             extra_context['pending_volunteers_list'] = []
 
         try:
-            extra_context['pending_internships_list'] = InternshipRequest.objects.filter(status__iexact='pending')[:5]
+            extra_context['pending_internships_list'] = InternshipRequest.objects.filter(status__in=['Pending', 'Under Review', 'pending'])[:5]
         except Exception:
             extra_context['pending_internships_list'] = []
 
         try:
-            extra_context['pending_blood_list'] = BloodRequest.objects.filter(status__iexact='pending')[:5]
+            extra_context['pending_blood_list'] = BloodRequest.objects.filter(status__in=['Received', 'Verified', 'Pending', 'pending'])[:5]
         except Exception:
             extra_context['pending_blood_list'] = []
 
@@ -661,7 +811,7 @@ class InternshipRequestAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'contact_number')
     readonly_fields = ('offer_letter', 'created_at')
 
-    actions = ['approve_requests']
+    actions = ['approve_requests', 'create_user_accounts']
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -680,12 +830,95 @@ class InternshipRequestAdmin(admin.ModelAdmin):
                 count += 1
         self.message_user(request, f"{count} internship request(s) were successfully approved and emails were sent.")
 
+    @admin.action(description='Create User Account & assign to Interns group')
+    def create_user_accounts(self, request, queryset):
+        from django.contrib.auth.models import User, Group
+        from .models import StaffProfile
+        count = 0
+        for intern in queryset:
+            if not intern.email:
+                continue
+            email = intern.email.strip().lower()
+            user = User.objects.filter(email__iexact=email).first()
+            if not user:
+                base_username = email.split('@')[0].replace('.', '_').replace('-', '_')
+                username = base_username
+                c = 1
+                while User.objects.filter(username=username).exists():
+                    username = f"{base_username}{c}"
+                    c += 1
+
+                parts = intern.name.split() if intern.name else ['Intern']
+                first_name = parts[0]
+                last_name = ' '.join(parts[1:]) if len(parts) > 1 else ''
+
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password='Udaan@123',
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_staff=True,
+                    is_active=True
+                )
+            profile, _ = StaffProfile.objects.get_or_create(user=user)
+            if getattr(intern, 'contact_number', None) and not profile.phone_number:
+                profile.phone_number = intern.contact_number
+                profile.save()
+
+            g, _ = Group.objects.get_or_create(name='Interns')
+            user.groups.add(g)
+            count += 1
+        self.message_user(request, f"{count} User account(s) created/synced into 'Interns' group.")
+
 @admin.register(VolunteerRequest)
 class VolunteerRequestAdmin(admin.ModelAdmin):
     list_display = ('name', 'residence', 'education', 'employment', 'status', 'created_at')
     list_filter = ('status', 'education', 'employment')
     search_fields = ('name', 'email', 'phone', 'residence')
     readonly_fields = ('created_at',)
+    actions = ['create_user_accounts']
+
+    @admin.action(description='Create User Account & assign to Volunteers group')
+    def create_user_accounts(self, request, queryset):
+        from django.contrib.auth.models import User, Group
+        from .models import StaffProfile
+        count = 0
+        for vol in queryset:
+            if not vol.email:
+                continue
+            email = vol.email.strip().lower()
+            user = User.objects.filter(email__iexact=email).first()
+            if not user:
+                base_username = email.split('@')[0].replace('.', '_').replace('-', '_')
+                username = base_username
+                c = 1
+                while User.objects.filter(username=username).exists():
+                    username = f"{base_username}{c}"
+                    c += 1
+
+                parts = vol.name.split() if vol.name else ['Volunteer']
+                first_name = parts[0]
+                last_name = ' '.join(parts[1:]) if len(parts) > 1 else ''
+
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password='Udaan@123',
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_staff=True,
+                    is_active=True
+                )
+            profile, _ = StaffProfile.objects.get_or_create(user=user)
+            if getattr(vol, 'phone', None) and not profile.phone_number:
+                profile.phone_number = vol.phone
+                profile.save()
+
+            g, _ = Group.objects.get_or_create(name='Volunteers')
+            user.groups.add(g)
+            count += 1
+        self.message_user(request, f"{count} User account(s) created/synced into 'Volunteers' group.")
 
 @property
 def custom_app_config(self):

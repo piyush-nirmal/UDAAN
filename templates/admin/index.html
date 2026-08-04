@@ -46,7 +46,7 @@
     </a>
 
     <!-- 3. Pending Campaigns -->
-    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__in=submitted,under_review" class="kpi-card">
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__exact=Pending+Review" class="kpi-card">
       <div class="kpi-icon-circle orange"><i class="fas fa-hourglass-half"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_pending_campaigns|default:"0" }}</span>
@@ -56,7 +56,7 @@
     </a>
 
     <!-- 4. Approved Campaigns -->
-    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__in=approved,published" class="kpi-card">
+    <a href="{% url 'admin:blood_request_campaign_changelist' %}?status__exact=Approved" class="kpi-card">
       <div class="kpi-icon-circle green"><i class="fas fa-check-circle"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_approved_campaigns|default:"0" }}</span>
@@ -66,7 +66,7 @@
     </a>
 
     <!-- 5. Active Blood Requests -->
-    <a href="{% url 'admin:blood_request_bloodrequest_changelist' %}?status=Pending" class="kpi-card">
+    <a href="{% url 'admin:blood_request_bloodrequest_changelist' %}?status__exact=Received" class="kpi-card">
       <div class="kpi-icon-circle red"><i class="fas fa-tint"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_pending_blood|default:"0" }}</span>
@@ -86,7 +86,7 @@
     </a>
 
     <!-- 7. Volunteer Requests -->
-    <a href="{% url 'admin:blood_request_volunteerrequest_changelist' %}?status=Pending" class="kpi-card">
+    <a href="{% url 'admin:blood_request_volunteerrequest_changelist' %}?status__exact=Pending" class="kpi-card">
       <div class="kpi-icon-circle purple"><i class="fas fa-hands-helping"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_volunteer_requests|default:"0" }}</span>
@@ -96,7 +96,7 @@
     </a>
 
     <!-- 8. Internship Applications -->
-    <a href="{% url 'admin:blood_request_internshiprequest_changelist' %}?status=Pending" class="kpi-card">
+    <a href="{% url 'admin:blood_request_internshiprequest_changelist' %}?status__exact=Pending" class="kpi-card">
       <div class="kpi-icon-circle blue"><i class="fas fa-graduation-cap"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_internships|default:"0" }}</span>
@@ -106,7 +106,7 @@
     </a>
 
     <!-- 9. Campus Ambassador Applications -->
-    <a href="{% url 'admin:blood_request_campusambassadorapplication_changelist' %}?status=pending" class="kpi-card">
+    <a href="{% url 'admin:blood_request_campusambassadorapplication_changelist' %}?status__exact=pending" class="kpi-card">
       <div class="kpi-icon-circle orange"><i class="fas fa-award"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_campus_applications|default:"0" }}</span>
@@ -126,7 +126,7 @@
     </a>
 
     <!-- 11. Contact Messages -->
-    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}" class="kpi-card">
+    <a href="{% url 'admin:blood_request_contactmessage_changelist' %}?is_read__exact=0" class="kpi-card">
       <div class="kpi-icon-circle amber"><i class="fas fa-envelope"></i></div>
       <div class="kpi-content">
         <span class="kpi-count">{{ kpi_contact_messages|default:"0" }}</span>

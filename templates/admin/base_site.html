@@ -393,6 +393,11 @@
       <span class="sidebar-text">User Management</span>
     </a>
 
+    <a href="{% url 'admin:auth_group_changelist' %}" class="sidebar-link">
+      <i class="fas fa-user-shield sidebar-icon"></i>
+      <span class="sidebar-text">Group Management</span>
+    </a>
+
     <form action="{% url 'admin:logout' %}" method="post" style="margin: 0; padding: 0;">
       {% csrf_token %}
       <button type="submit" class="sidebar-link text-red-500" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer; display: flex; align-items: center;">

@@ -197,3 +197,4 @@ def execute_automation_rules(sender, instance, created, **kwargs):
 
         except Exception as e:
             logger.error(f"Automation > Error executing rule '{rule.name}': {e}")
+
