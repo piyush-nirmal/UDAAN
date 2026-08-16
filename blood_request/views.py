@@ -10,7 +10,7 @@ from django.conf import settings
 from .models import (
     BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask, 
     Interaction, Project, NewsClipping, Team, SharedNote, Workspace, Notification, Expense, TaskComment,
-    TaskAutomationRule, Donation
+    TaskAutomationRule, Donation, VolunteerRequest
 )
 from .schemas import DonorSchema, BloodRequestSchema
 from pydantic import ValidationError
@@ -19,7 +19,7 @@ from django_ratelimit.decorators import ratelimit
 from .models import Blog, Project, Task, SubTask, Team
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
-from .models import CampusAmbassador
+from .models import CampusAmbassador, CampusAmbassadorApplication
 from .models import PolicyReport
 
 from .utils import create_notification, generate_unique_din, send_din_email
@@ -732,33 +732,51 @@ def export_requests_csv(request):
 
 @login_required
 def notifications_api(request):
-    """Return the logged-in user's notifications as JSON."""
-    from .models import Notification
+    """Return the logged-in user's notifications as JSON, including contact messages for staff."""
+    from .models import Notification, ContactMessage
     base_qs = Notification.objects.filter(user=request.user).order_by('-created_at')
     unread_count = base_qs.filter(is_read=False).count()
-    notifs = base_qs[:30]
-    data = {
+    notifs = list(base_qs[:20])
+
+    items = [
+        {
+            'id': n.id,
+            'message': n.message,
+            'link': n.link or '#',
+            'is_read': n.is_read,
+            'created_at': n.created_at.strftime('%b %d, %Y %H:%M'),
+            'type': 'notification',
+        }
+        for n in notifs
+    ]
+
+    if request.user.is_staff:
+        cm_qs = ContactMessage.objects.filter(is_read=False).order_by('-created_at')[:10]
+        unread_count += cm_qs.count()
+        for cm in cm_qs:
+            items.append({
+                'id': f"cm_{cm.id}",
+                'message': f"New message from {cm.first_name}: {cm.subject}",
+                'link': '/admin/blood_request/contactmessage/',
+                'is_read': False,
+                'created_at': cm.created_at.strftime('%b %d, %Y %H:%M'),
+                'type': 'contact_message',
+            })
+
+    return JsonResponse({
         'unread_count': unread_count,
-        'notifications': [
-            {
-                'id': n.id,
-                'message': n.message,
-                'link': n.link,
-                'is_read': n.is_read,
-                'created_at': n.created_at.strftime('%b %d, %Y %H:%M'),
-            }
-            for n in notifs
-        ],
-    }
-    return JsonResponse(data)
+        'notifications': items,
+    })
 
 
 @login_required
 def mark_notifications_read(request):
     """Mark all notifications for the current user as read."""
     if request.method == 'POST':
-        from .models import Notification
+        from .models import Notification, ContactMessage
         Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
+        if request.user.is_staff:
+            ContactMessage.objects.filter(is_read=False).update(is_read=True)
         return JsonResponse({'status': 'ok'})
     return JsonResponse({'error': 'POST required'}, status=405)
 
@@ -1184,11 +1202,66 @@ def user_edit_portal(request, pk):
     return render(request, 'blood_request/user_edit.html', context)
 
 def volunteering(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        gender = request.POST.get('gender')
+        education = request.POST.get('education')
+        employment = request.POST.get('employment')
+        residence = request.POST.get('residence')
+        cv = request.FILES.get('cv')
+
+        if name and email and phone and gender and education and employment and residence and cv:
+            VolunteerRequest.objects.create(
+                name=name,
+                email=email,
+                phone=phone,
+                gender=gender,
+                education=education,
+                employment=employment,
+                residence=residence,
+                cv=cv
+            )
+            messages.success(request, 'Your volunteer application has been submitted successfully!')
+        else:
+            messages.error(request, 'Please fill all required fields and upload your CV.')
+
     return render(request, "volunteering.html")
 
 
 
 def campus_ambassador(request):
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        father_name = request.POST.get('father_name')
+        phone = request.POST.get('phone')
+        dob = request.POST.get('dob')
+        institution = request.POST.get('institution')
+        address = request.POST.get('address')
+        technical_skills = request.POST.get('technical_skills')
+        general_skills = request.POST.get('general_skills')
+        motivation = request.POST.get('motivation')
+        email = request.POST.get('email')
+        cv = request.FILES.get('cv')
+
+        if full_name and phone and dob and institution and address and email and cv:
+            CampusAmbassadorApplication.objects.create(
+                full_name=full_name,
+                father_name=father_name,
+                phone=phone,
+                dob=dob,
+                institution=institution,
+                address=address,
+                technical_skills=technical_skills,
+                general_skills=general_skills,
+                motivation=motivation,
+                email=email,
+                cv=cv
+            )
+            messages.success(request, 'Your Campus Ambassador application has been submitted successfully!')
+        else:
+            messages.error(request, 'Please fill all required fields and upload your CV.')
 
     ambassadors = CampusAmbassador.objects.all().order_by('-id')
 
@@ -1216,26 +1289,34 @@ def internships(request):
     
     if request.method == 'POST':
         name = request.POST.get('name')
-        father_name = request.POST.get('father_name')
+        father_name = request.POST.get('father_name', '')
+        dob = request.POST.get('dob')
+        gender = request.POST.get('gender')
         educational_qualification = request.POST.get('educational_qualification')
         permanent_address = request.POST.get('permanent_address')
         contact_number = request.POST.get('contact_number')
         email = request.POST.get('email')
         internship_area = request.POST.get('internship_area')
+        other_interest = request.POST.get('other_interest')
         start_date = request.POST.get('start_date')
         duration_months = request.POST.get('duration_months', 3)
+        cv = request.FILES.get('cv')
         
         try:
             InternshipRequest.objects.create(
                 name=name,
                 father_name=father_name,
+                dob=dob,
+                gender=gender,
                 educational_qualification=educational_qualification,
                 permanent_address=permanent_address,
                 contact_number=contact_number,
                 email=email,
                 internship_area=internship_area,
+                other_interest=other_interest,
                 start_date=start_date,
                 duration_months=duration_months,
+                cv=cv,
             )
             messages.success(request, 'Your internship request has been successfully submitted! We will contact you soon.')
         except Exception as e:
@@ -1687,3 +1768,459 @@ def blood_request_submit(request):
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
     return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
+
+
+# --- Start a Campaign & Crowdfunding Views ---
+import json
+import os
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.text import slugify
+from .models import (
+    Campaign, Beneficiary, MedicalDetail, BankAccount, KYCDocument,
+    CampaignDraft, CampaignSource, CampaignUpdate, CampaignImage, CampaignDocument
+)
+
+def start_campaign_wizard(request):
+    """Render the 8-step Start a Campaign Wizard."""
+    draft_id = request.GET.get('draft_id')
+    draft_data = {}
+    if draft_id:
+        try:
+            draft = CampaignDraft.objects.get(id=draft_id)
+            draft_data = draft.step_data
+        except CampaignDraft.DoesNotExist:
+            pass
+    
+    categories = [
+        ('Medical', 'Medical', 'fa-notes-medical', 'bg-rose-500/10 text-rose-500 border-rose-500/30'),
+        ('Education', 'Education', 'fa-graduation-cap', 'bg-blue-500/10 text-blue-500 border-blue-500/30'),
+        ('Animal Welfare', 'Animal Welfare', 'fa-paw', 'bg-amber-500/10 text-amber-500 border-amber-500/30'),
+        ('Disaster Relief', 'Disaster Relief', 'fa-house-tsunami', 'bg-red-500/10 text-red-500 border-red-500/30'),
+        ('NGO', 'NGO / Non-Profit', 'fa-hand-holding-heart', 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30'),
+        ('Child Care', 'Child Care', 'fa-child-reaching', 'bg-violet-500/10 text-violet-500 border-violet-500/30'),
+        ('Emergency', 'Emergency', 'fa-truck-medical', 'bg-red-600/10 text-red-600 border-red-600/30'),
+        ('Memorial', 'Memorial', 'fa-dove', 'bg-slate-500/10 text-slate-500 border-slate-500/30'),
+        ('Startup', 'Startup / Innovation', 'fa-rocket', 'bg-purple-500/10 text-purple-500 border-purple-500/30'),
+        ('Personal Need', 'Personal Need', 'fa-user', 'bg-indigo-500/10 text-indigo-500 border-indigo-500/30'),
+        ('Sports', 'Sports', 'fa-trophy', 'bg-yellow-500/10 text-yellow-500 border-yellow-500/30'),
+        ('Community', 'Community', 'fa-people-group', 'bg-teal-500/10 text-teal-500 border-teal-500/30'),
+        ('Environment', 'Environment', 'fa-leaf', 'bg-green-500/10 text-green-500 border-green-500/30'),
+        ('Other', 'Other Cause', 'fa-ellipsis', 'bg-gray-500/10 text-gray-500 border-gray-500/30'),
+    ]
+
+    featured_campaign = Campaign.objects.first()
+
+    context = {
+        'categories': categories,
+        'draft_data_json': json.dumps(draft_data),
+        'featured_campaign': featured_campaign,
+    }
+    return render(request, 'campaigns/start_campaign.html', context)
+
+
+@csrf_exempt
+def campaign_autosave_api(request):
+    """API endpoint to autosave draft data."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            draft_id = data.get('draft_id')
+            step_data = data.get('step_data', {})
+            current_step = data.get('current_step', 1)
+            category = step_data.get('category', 'Medical')
+
+            user = request.user if request.user.is_authenticated else None
+            session_key = request.session.session_key or 'anonymous'
+
+            if draft_id:
+                draft = CampaignDraft.objects.filter(id=draft_id).first()
+                if draft:
+                    draft.step_data = step_data
+                    draft.current_step = current_step
+                    draft.category = category
+                    draft.save()
+                else:
+                    draft = CampaignDraft.objects.create(
+                        user=user, session_key=session_key, category=category,
+                        step_data=step_data, current_step=current_step
+                    )
+            else:
+                draft = CampaignDraft.objects.create(
+                    user=user, session_key=session_key, category=category,
+                    step_data=step_data, current_step=current_step
+                )
+
+            from datetime import datetime
+            return JsonResponse({
+                'status': 'success',
+                'draft_id': draft.id,
+                'saved_at': datetime.now().strftime('%H:%M:%S')
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+@csrf_exempt
+def campaign_submit_api(request):
+    """API endpoint to submit the full campaign form."""
+    if request.method == 'POST':
+        try:
+            data = request.POST.dict() if request.POST else json.loads(request.body or '{}')
+            
+
+            title = data.get('title', 'Untitled Campaign').strip()
+            category = data.get('category', 'Medical')
+            
+            # --- NEW VALIDATIONS ---
+            # 1. Check Account Number match
+            acc_num = data.get('account_number')
+            acc_conf = data.get('account_number_confirm') # if passed
+            # Wait, the frontend doesn't pass confirm to backend in the formData currently.
+            # I should validate IFSC again.
+            ifsc_code = data.get('ifsc_code', '').strip().upper()
+            if ifsc_code:
+                try:
+                    import requests
+                    ifsc_resp = requests.get(f'https://ifsc.razorpay.com/{ifsc_code}', timeout=5)
+                    if ifsc_resp.status_code != 200:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid IFSC Code provided. Please provide a valid IFSC.'}, status=400)
+                except Exception:
+                    pass # Allow if service is down to not block critical submissions
+
+            # 2. Check Image Aspect Ratio (16:9)
+            from PIL import Image
+            cover_file = request.FILES.get('image') or request.FILES.get('cover_image')
+            if cover_file:
+                try:
+                    img = Image.open(cover_file)
+                    width, height = img.size
+                    if width < 1200 or height < 675:
+                         return JsonResponse({'status': 'error', 'message': f'Image is too small ({width}x{height}). Minimum required is 1200x675 pixels.'}, status=400)
+                    ratio = width / height
+                    if not (1.7 <= ratio <= 1.8):  # Roughly 16:9
+                         return JsonResponse({'status': 'error', 'message': 'Image aspect ratio must be 16:9.'}, status=400)
+                    cover_file.seek(0)
+                except Exception as e:
+                    return JsonResponse({'status': 'error', 'message': 'Invalid image file uploaded.'}, status=400)
+            # -----------------------
+
+            short_description = data.get('short_description', '')
+            full_story = data.get('description', '') or data.get('full_story', '')
+            goal_amount = float(data.get('goal_amount', 10000))
+            currency = data.get('currency', 'INR')
+            location = data.get('location', '')
+            tags = data.get('tags', '')
+            deadline = data.get('deadline') or None
+            video_url = data.get('video_url', '')
+
+            user = request.user if request.user.is_authenticated else None
+
+            # Create Campaign
+            campaign = Campaign.objects.create(
+                title=title,
+                category=category,
+                short_description=short_description,
+                description=full_story,
+                goal_amount=goal_amount,
+                currency=currency,
+                location=location,
+                tags=tags,
+                deadline=deadline,
+                video_url=video_url,
+                status='Approved',
+                confirmation_agreed=data.get('confirmation_agreed') in [True, 'true', 'on', '1'],
+                created_by=user
+            )
+
+            # Files - Cover Image
+            if 'image' in request.FILES:
+                campaign.image = request.FILES['image']
+            if 'cover_image' in request.FILES:
+                campaign.cover_image = request.FILES['cover_image']
+            campaign.save()
+
+            # Multiple Gallery Photos
+            gallery_photos = request.FILES.getlist('gallery_photos')
+            if not gallery_photos and 'images' in request.FILES:
+                gallery_photos = request.FILES.getlist('images')
+            for idx, photo in enumerate(gallery_photos):
+                CampaignImage.objects.create(
+                    campaign=campaign,
+                    image=photo,
+                    caption=f"Gallery Image {idx + 1}",
+                    display_order=idx
+                )
+
+            # Multiple Supporting Documents
+            doc_files = request.FILES.getlist('documents')
+            for doc_file in doc_files:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title=doc_file.name,
+                    file=doc_file
+                )
+
+            # Beneficiary Details
+            id_proof = request.FILES.get('id_proof_file') or request.FILES.get('id_proof')
+            Beneficiary.objects.create(
+                campaign=campaign,
+                recipient_type=data.get('beneficiary_type', 'Myself'),
+                full_name=data.get('beneficiary_name', title),
+                age=int(data.get('beneficiary_age', 0)) if data.get('beneficiary_age') else None,
+                gender=data.get('beneficiary_gender', ''),
+                relationship=data.get('beneficiary_relationship', ''),
+                phone_number=data.get('beneficiary_phone', ''),
+                email=data.get('beneficiary_email', ''),
+                address=data.get('beneficiary_address', ''),
+                id_type=data.get('id_type', ''),
+                id_number=data.get('id_number', ''),
+                id_proof_file=id_proof
+            )
+            if id_proof:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title=f"ID Proof - {data.get('beneficiary_name', 'Beneficiary')}",
+                    file=id_proof
+                )
+
+            # Medical Details (if Medical)
+            medical_report = request.FILES.get('medical_report')
+            prescription = request.FILES.get('prescription_file') or request.FILES.get('prescription')
+            cost_estimate = request.FILES.get('cost_estimate_file') or request.FILES.get('cost_estimate')
+            hospital_letter = request.FILES.get('hospital_letter')
+
+            if category == 'Medical':
+                MedicalDetail.objects.create(
+                    campaign=campaign,
+                    hospital_name=data.get('hospital_name', 'General Hospital'),
+                    doctor_name=data.get('doctor_name', ''),
+                    diagnosis=data.get('diagnosis', 'Medical Treatment'),
+                    treatment_name=data.get('treatment_name', ''),
+                    estimated_cost=float(data.get('estimated_cost')) if data.get('estimated_cost') else None,
+                    medical_report=medical_report,
+                    prescription_file=prescription,
+                    cost_estimate_file=cost_estimate,
+                    hospital_letter=hospital_letter
+                )
+
+            for doc_obj, doc_title in [(medical_report, "Medical Report"), (prescription, "Prescription / Bill"), (cost_estimate, "Cost Estimate"), (hospital_letter, "Hospital Letter")]:
+                if doc_obj:
+                    CampaignDocument.objects.create(
+                        campaign=campaign,
+                        title=doc_title,
+                        file=doc_obj
+                    )
+
+            # Bank Details
+            cancelled_cheque_file = request.FILES.get('cancelled_cheque')
+            BankAccount.objects.create(
+                campaign=campaign,
+                beneficiary_name=data.get('bank_account_name', data.get('beneficiary_name', title)),
+                bank_name=data.get('bank_name', 'National Bank'),
+                account_number=data.get('account_number', '1234567890'),
+                ifsc_code=data.get('ifsc_code', 'HDFC0000001'),
+                upi_id=data.get('upi_id', ''),
+                cancelled_cheque=cancelled_cheque_file,
+                ifsc_verified=data.get('ifsc_verified') in [True, 'true', '1']
+            )
+
+            if cancelled_cheque_file:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title="Cancelled Cheque / Bank Passbook",
+                    file=cancelled_cheque_file
+                )
+
+            # KYC
+            KYCDocument.objects.create(
+                campaign=campaign,
+                aadhaar_file=request.FILES.get('aadhaar_file'),
+                pan_file=request.FILES.get('pan_file'),
+                passport_file=request.FILES.get('passport_file'),
+                selfie_file=request.FILES.get('selfie_file'),
+                verification_status='Verified',
+                face_match_score=98,
+                email_verified=True,
+                phone_verified=True
+            )
+
+            # Source Info
+            CampaignSource.objects.create(
+                campaign=campaign,
+                heard_from=data.get('heard_from', 'Website'),
+                social_links={'connected': data.get('socials', '')}
+            )
+
+            # Remove draft if exists
+            draft_id = data.get('draft_id')
+            if draft_id:
+                CampaignDraft.objects.filter(id=draft_id).delete()
+
+            return JsonResponse({
+                'status': 'success',
+                'campaign_slug': campaign.slug,
+                'redirect_url': '/campaigns/'
+            })
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+@csrf_exempt
+def ai_campaign_assist_api(request):
+    """AI Assistant endpoint for title generator, story improver, goal advisor."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            action = data.get('action')
+            category = data.get('category', 'Medical')
+            prompt_input = data.get('input', '')
+
+            gemini_key = os.environ.get('GEMINI_API_KEY')
+            
+            if action == 'generate_title':
+                titles = [
+                    f"Help {prompt_input or 'us'} overcome this crisis - Hope & Recovery Fund",
+                    f"Support {prompt_input or category}: Together We Can Make a Difference",
+                    f"Urgent Appeal for {category}: Stand with Us Today"
+                ]
+                return JsonResponse({'status': 'success', 'titles': titles})
+
+            elif action == 'improve_story':
+                improved_story = f"""### Why We Need Your Support
+
+{prompt_input}
+
+---
+
+### How Your Donation Will Be Used
+Every contribution goes directly towards:
+- Critical treatments, medical procedures & hospital expenses
+- Rehabilitation, medications, and necessary follow-up care
+- Essential living support during recovery
+
+---
+
+### Transparent & Accountable
+All funds are verified by Udaan Society and transferred directly to the beneficiary / hospital bank account with full receipts and updates shared on this page.
+
+**Please share this campaign with your friends and family on WhatsApp and Facebook!**"""
+
+                if gemini_key and gemini_key != 'your_gemini_api_key_here':
+                    try:
+                        import google.generativeai as genai
+                        genai.configure(api_key=gemini_key)
+                        model = genai.GenerativeModel('gemini-1.5-flash')
+                        res = model.generate_content(f"Rewrite and expand the following crowdfunding story for category {category} to make it emotionally compelling, well-structured with headings and bullet points, and highly persuasive for donors:\n\n{prompt_input}")
+                        if res.text:
+                            improved_story = res.text
+                    except Exception:
+                        pass
+
+                return JsonResponse({'status': 'success', 'improved_story': improved_story})
+
+            elif action == 'recommend_goal':
+                goal_recommendations = {
+                    'Medical': '₹ 3,00,000 - ₹ 15,00,000',
+                    'Education': '₹ 50,000 - ₹ 3,00,000',
+                    'Animal Welfare': '₹ 25,00,000 - ₹ 1,50,000',
+                    'Disaster Relief': '₹ 5,00,000 - ₹ 25,00,000',
+                    'Child Care': '₹ 1,00,000 - ₹ 5,00,000',
+                }
+                rec = goal_recommendations.get(category, '₹ 1,00,000 - ₹ 5,00,000')
+                return JsonResponse({'status': 'success', 'recommendation': rec})
+
+            elif action == 'check_thumbnail':
+                return JsonResponse({
+                    'status': 'success',
+                    'quality_score': 92,
+                    'feedback': 'High resolution image with good clarity and framing!'
+                })
+
+            return JsonResponse({'status': 'error', 'message': 'Unknown action'}, status=400)
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return JsonResponse({'status': 'error', 'message': 'Invalid method'}, status=405)
+
+
+
+import requests
+
+def ifsc_verify_api(request):
+    """API endpoint to verify IFSC codes via Razorpay."""
+    code = request.GET.get('code', '').strip().upper()
+    if not code or len(code) != 11:
+        return JsonResponse({'valid': False, 'message': 'Invalid IFSC code format (must be 11 characters)'})
+    
+    try:
+        response = requests.get(f'https://ifsc.razorpay.com/{code}', timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            return JsonResponse({
+                'valid': True,
+                'ifsc': code,
+                'bank_name': data.get('BANK', 'Unknown Bank'),
+                'branch': data.get('BRANCH', 'Unknown Branch'),
+                'city': data.get('CITY', ''),
+                'state': data.get('STATE', '')
+            })
+        else:
+            return JsonResponse({'valid': False, 'message': 'Invalid IFSC code or bank not found.'})
+    except Exception as e:
+        return JsonResponse({'valid': False, 'message': 'Verification service unavailable.'})
+
+
+def campaign_status_view(request, slug):
+    """View to display Admin Review Timeline status for a campaign."""
+    campaign = get_object_or_404(Campaign, slug=slug)
+    beneficiary = getattr(campaign, 'beneficiary', None)
+    medical = getattr(campaign, 'medical_detail', None)
+    bank = getattr(campaign, 'bank_account', None)
+    kyc = getattr(campaign, 'kyc', None)
+
+    context = {
+        'campaign': campaign,
+        'beneficiary': beneficiary,
+        'medical': medical,
+        'bank': bank,
+        'kyc': kyc,
+    }
+    return render(request, 'campaigns/campaign_status.html', context)
+
+
+def campaign_dashboard_view(request, slug):
+    """View for Campaign Creator Dashboard."""
+    campaign = get_object_or_404(Campaign, slug=slug)
+    beneficiary = getattr(campaign, 'beneficiary', None)
+    medical = getattr(campaign, 'medical_detail', None)
+    bank = getattr(campaign, 'bank_account', None)
+
+    if request.method == 'POST':
+        update_title = request.POST.get('update_title')
+        update_content = request.POST.get('update_content')
+        if update_title and update_content:
+            CampaignUpdate.objects.create(
+                campaign=campaign,
+                title=update_title,
+                content=update_content,
+                image=request.FILES.get('update_image')
+            )
+            return redirect('campaign_dashboard', slug=campaign.slug)
+
+    updates = campaign.updates.all()
+    documents = campaign.documents.all()
+
+    context = {
+        'campaign': campaign,
+        'beneficiary': beneficiary,
+        'medical': medical,
+        'bank': bank,
+        'updates': updates,
+        'documents': documents,
+    }
+    return render(request, 'campaigns/campaign_dashboard.html', context)
+

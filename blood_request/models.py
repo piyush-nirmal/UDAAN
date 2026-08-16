@@ -135,21 +135,66 @@ from django.utils.text import slugify
 from datetime import date
 
 class Campaign(models.Model):
+    CATEGORY_CHOICES = [
+        ('Medical', 'Medical'),
+        ('Education', 'Education'),
+        ('Animal Welfare', 'Animal Welfare'),
+        ('Disaster Relief', 'Disaster Relief'),
+        ('NGO', 'NGO'),
+        ('Child Care', 'Child Care'),
+        ('Emergency', 'Emergency'),
+        ('Memorial', 'Memorial'),
+        ('Startup', 'Startup'),
+        ('Personal Need', 'Personal Need'),
+        ('Sports', 'Sports'),
+        ('Community', 'Community'),
+        ('Environment', 'Environment'),
+        ('Other', 'Other'),
+    ]
+
+    STATUS_CHOICES = [
+        ('Draft', 'Draft'),
+        ('Pending Review', 'Pending Review'),
+        ('Under Verification', 'Under Verification'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+        ('Need Documents', 'Need Documents'),
+        ('Suspended', 'Suspended'),
+    ]
+
+    CURRENCY_CHOICES = [
+        ('INR', '₹ INR'),
+        ('USD', '$ USD'),
+        ('EUR', '€ EUR'),
+        ('GBP', '£ GBP'),
+    ]
+
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, unique=True, blank=True, null=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='Medical')
+    short_description = models.CharField(max_length=300, blank=True, null=True)
     description = models.TextField()
     beneficiary_text = models.TextField(blank=True, null=True, help_text="Who will benefit from this campaign?")
     goal_amount = models.DecimalField(max_digits=10, decimal_places=2)
     raised_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default='INR')
     image = models.ImageField(upload_to='campaigns/')
+    cover_image = models.ImageField(upload_to='campaigns/covers/', blank=True, null=True)
+    video_url = models.URLField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
+    location = models.CharField(max_length=150, blank=True, null=True)
+    tags = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True, help_text="Campaign start date")
     end_date = models.DateField(blank=True, null=True, help_text="Campaign end date")
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='Approved')
+    admin_feedback = models.TextField(blank=True, null=True)
+    confirmation_agreed = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_campaigns')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
-            # Ensure uniqueness
             orig_slug = self.slug
             counter = 1
             while Campaign.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
@@ -158,17 +203,34 @@ class Campaign(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def youtube_embed_url(self):
+        if not self.video_url:
+            return None
+        import re
+        pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+        match = re.search(pattern, self.video_url)
+        if match:
+            video_id = match.group(1)
+            return f"https://www.youtube.com/embed/{video_id}"
+        return self.video_url
+
+    @property
     def percentage_raised(self):
         if self.goal_amount > 0:
-            pct = int((self.raised_amount / self.goal_amount) * 100)
-            return min(pct, 100)
+            pct = (self.raised_amount / self.goal_amount) * 100
+            if 0 < pct < 1:
+                return 1
+            return min(int(pct), 100)
+        elif self.raised_amount > 0:
+            return 100
         return 0
 
     @property
     def days_remaining(self):
-        if self.end_date:
+        target_date = self.deadline or self.end_date
+        if target_date:
             today = date.today()
-            delta = self.end_date - today
+            delta = target_date - today
             if delta.days >= 0:
                 return delta.days
         return None
@@ -176,19 +238,17 @@ class Campaign(models.Model):
     @property
     def timeline_status_text(self):
         today = date.today()
-        # If campaign has not started yet
         if self.start_date and self.start_date > today:
             delta = self.start_date - today
             if delta.days == 1:
                 return "Starts tomorrow"
             return f"Starts in {delta.days} days"
         
-        # If it has ended (end_date is in the past, not today)
-        if self.end_date and self.end_date < today:
+        target_date = self.deadline or self.end_date
+        if target_date and target_date < today:
             return "Campaign Completed"
         
-        # If active
-        if self.end_date:
+        if target_date:
             days = self.days_remaining
             if days is not None:
                 if days == 0:
@@ -218,7 +278,7 @@ class CampaignDocument(models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='documents')
     title = models.CharField(max_length=200)
     file = models.FileField(upload_to='campaigns/documents/')
-    file_size = models.CharField(max_length=50, blank=True, null=True, help_text="e.g. 1.2 MB (will auto-calculate if blank)")
+    file_size = models.CharField(max_length=50, blank=True, null=True, help_text="e.g. 1.2 MB")
 
     def save(self, *args, **kwargs):
         if not self.file_size and self.file:
@@ -236,6 +296,110 @@ class CampaignDocument(models.Model):
 
     def __str__(self):
         return f"Document #{self.id}"
+
+class Beneficiary(models.Model):
+    RECIPIENT_CHOICES = [
+        ('Myself', 'Myself'),
+        ('Someone Else', 'Someone Else'),
+        ('Organization', 'Organization'),
+    ]
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE, related_name='beneficiary')
+    recipient_type = models.CharField(max_length=20, choices=RECIPIENT_CHOICES, default='Myself')
+    full_name = models.CharField(max_length=200)
+    age = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=20, blank=True, null=True)
+    relationship = models.CharField(max_length=100, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    id_type = models.CharField(max_length=50, blank=True, null=True)
+    id_number = models.CharField(max_length=100, blank=True, null=True)
+    id_proof_file = models.FileField(upload_to='campaigns/beneficiaries/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Beneficiary: {self.full_name} ({self.recipient_type})"
+
+class MedicalDetail(models.Model):
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE, related_name='medical_detail')
+    hospital_name = models.CharField(max_length=200)
+    doctor_name = models.CharField(max_length=200, blank=True, null=True)
+    diagnosis = models.TextField()
+    treatment_name = models.CharField(max_length=200, blank=True, null=True)
+    estimated_cost = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    treatment_start_date = models.DateField(null=True, blank=True)
+    medical_report = models.FileField(upload_to='campaigns/medical/', blank=True, null=True)
+    prescription_file = models.FileField(upload_to='campaigns/medical/', blank=True, null=True)
+    cost_estimate_file = models.FileField(upload_to='campaigns/medical/', blank=True, null=True)
+    hospital_letter = models.FileField(upload_to='campaigns/medical/', blank=True, null=True)
+
+    def __str__(self):
+        return f"Medical Detail for {self.hospital_name}"
+
+class BankAccount(models.Model):
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE, related_name='bank_account')
+    beneficiary_name = models.CharField(max_length=200)
+    bank_name = models.CharField(max_length=200)
+    account_number = models.CharField(max_length=50)
+    ifsc_code = models.CharField(max_length=20)
+    upi_id = models.CharField(max_length=100, blank=True, null=True)
+    cancelled_cheque = models.FileField(upload_to='campaigns/bank/', blank=True, null=True)
+    ifsc_verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Bank Account: {self.account_number} ({self.bank_name})"
+
+class KYCDocument(models.Model):
+    VERIFICATION_STATUS_CHOICES = [
+        ('Pending', 'Pending Verification'),
+        ('Verified', 'Verified'),
+        ('Rejected', 'Rejected'),
+    ]
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE, related_name='kyc')
+    aadhaar_file = models.FileField(upload_to='campaigns/kyc/', blank=True, null=True)
+    pan_file = models.FileField(upload_to='campaigns/kyc/', blank=True, null=True)
+    passport_file = models.FileField(upload_to='campaigns/kyc/', blank=True, null=True)
+    selfie_file = models.FileField(upload_to='campaigns/kyc/', blank=True, null=True)
+    face_match_score = models.IntegerField(default=95, help_text="Biometric face match percentage")
+    verification_status = models.CharField(max_length=20, choices=VERIFICATION_STATUS_CHOICES, default='Pending')
+    email_verified = models.BooleanField(default=True)
+    phone_verified = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"KYC Document for {self.campaign.title}"
+
+class CampaignDraft(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='campaign_drafts', null=True, blank=True)
+    session_key = models.CharField(max_length=100, blank=True, null=True)
+    category = models.CharField(max_length=50, blank=True, null=True)
+    step_data = models.JSONField(default=dict)
+    current_step = models.IntegerField(default=1)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Draft (Step {self.current_step})"
+
+class CampaignSource(models.Model):
+    campaign = models.OneToOneField(Campaign, on_delete=models.CASCADE, related_name='source_info')
+    heard_from = models.CharField(max_length=100, blank=True, null=True)
+    social_links = models.JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return f"Source for {self.campaign.title}"
+
+class CampaignUpdate(models.Model):
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='updates')
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='campaigns/updates/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Update: {self.title} on {self.campaign.title}"
+
 
 
 class Project(models.Model):
@@ -544,12 +708,17 @@ class CampusAmbassadorApplication(models.Model):
         ("Rejected", "Rejected"),
     ]
     full_name = models.CharField(max_length=200)
+    father_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    college = models.CharField(max_length=200)
-    city = models.CharField(max_length=100)
-    year_of_study = models.CharField(max_length=50)
-    interests = models.TextField(help_text="Why do you want to join as a Campus Ambassador?")
+    dob = models.DateField(blank=True, null=True)
+    institution = models.CharField(max_length=200, blank=True, null=True)
+    cv = models.FileField(upload_to='ambassador_cvs/', blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    technical_skills = models.TextField(blank=True, null=True)
+    general_skills = models.TextField(blank=True, null=True)
+    motivation = models.TextField(help_text="Why do you want to join as a Campus Ambassador?", blank=True, null=True)
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="Pending")
     applied_at = models.DateTimeField(auto_now_add=True)
 
@@ -744,13 +913,17 @@ class InternshipRequest(models.Model):
     
     name = models.CharField(max_length=200)
     father_name = models.CharField(max_length=200)
+    dob = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=20, choices=[('Male', 'Male'), ('Female', 'Female'), ('Prefer not to say', 'Prefer not to say')], default='Prefer not to say')
     educational_qualification = models.CharField(max_length=300)
     permanent_address = models.TextField()
     contact_number = models.CharField(max_length=20)
     email = models.EmailField()
     internship_area = models.CharField(max_length=200)
+    other_interest = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateField()
     duration_months = models.IntegerField(default=3)
+    cv = models.FileField(upload_to='intern_cvs/', null=True, blank=True)
     
     mentor_name = models.CharField(max_length=200, blank=True, null=True, help_text="Required for offer letter generation")
     mentor_email = models.EmailField(blank=True, null=True, help_text="Required for offer letter generation")
@@ -760,8 +933,56 @@ class InternshipRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Internship Request"
-        verbose_name_plural = "Internship Requests"
+        verbose_name = "Internship Certificate"
+        verbose_name_plural = "Internship Certificates"
 
     def __str__(self):
         return f"{self.name} - {self.internship_area} ({self.status})"
+
+class VolunteerRequest(models.Model):
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Rejected', 'Rejected'),
+    )
+
+    GENDER_CHOICES = (
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Prefer not to say', 'Prefer not to say'),
+    )
+
+    EDUCATION_CHOICES = (
+        ('High School', 'High School'),
+        ('Undergraduate', 'Undergraduate'),
+        ('Postgraduate', 'Postgraduate'),
+        ('Other', 'Other'),
+    )
+
+    EMPLOYMENT_CHOICES = (
+        ('Salaried', 'Salaried'),
+        ('Self-Employed', 'Self-Employed'),
+        ('Housewife', 'Housewife'),
+        ('Student', 'Student'),
+        ('Retired', 'Retired'),
+        ('Other', 'Other'),
+    )
+
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Prefer not to say')
+    education = models.CharField(max_length=50, choices=EDUCATION_CHOICES)
+    employment = models.CharField(max_length=50, choices=EMPLOYMENT_CHOICES)
+    cv = models.FileField(upload_to='volunteer_cvs/')
+    residence = models.CharField(max_length=200)
+    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Volunteer Request"
+        verbose_name_plural = "Volunteer Requests"
+
+    def __str__(self):
+        return f"{self.name} - {self.residence} ({self.status})"
