@@ -1,0 +1,584 @@
+/* =============================================================
+   JJM ISA PORTAL — Component Library
+   Jal Jeevan Mission / Har Ghar Jal | SWSM, Uttar Pradesh
+   UDAAN Society — Implementation Support Agency
+   ============================================================= */
+
+/* ─── CSS Custom Properties ──────────────────────────────────── */
+:root {
+  --jjm-primary:   #0A3663;
+  --jjm-secondary: #1E3A8A;
+  --jjm-accent:    #0EA5E9;
+  --jjm-accent-dk: #0284C7;
+  --jjm-bg:        #F8F9FA;
+  --jjm-white:     #FFFFFF;
+  --jjm-border:    #DDE3EC;
+  --jjm-text:      #1A2B3C;
+  --jjm-muted:     #64748B;
+  --jjm-success:   #16A34A;
+  --jjm-divider:   1px solid #DDE3EC;
+  --jjm-radius:    8px;
+  --jjm-shadow:    0 1px 4px rgba(10, 54, 99, 0.08);
+  --jjm-shadow-md: 0 4px 16px rgba(10, 54, 99, 0.12);
+}
+
+/* ─── SECTION HEADER SHARED ─────────────────────────────────── */
+.jjm-section {
+  padding: 72px 40px;
+  background: var(--jjm-bg);
+}
+.jjm-section.white-bg {
+  background: var(--jjm-white);
+}
+
+.jjm-section-label {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--jjm-accent);
+  background: rgba(14, 165, 233, 0.08);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-bottom: 14px;
+}
+
+.jjm-section-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--jjm-primary);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.jjm-section-subtitle {
+  font-size: 15px;
+  color: var(--jjm-muted);
+  max-width: 640px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.jjm-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ─── INSTITUTIONAL BLOCKQUOTE ───────────────────────────────── */
+blockquote.directive {
+  border-left: 4px solid var(--jjm-accent);
+  background: rgba(14, 165, 233, 0.04);
+  margin: 0 0 36px 0;
+  padding: 16px 22px;
+  border-radius: 0 var(--jjm-radius) var(--jjm-radius) 0;
+  font-size: 13.5px;
+  color: var(--jjm-primary);
+  font-style: italic;
+  line-height: 1.75;
+}
+blockquote.directive cite {
+  display: block;
+  margin-top: 8px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--jjm-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ─── SECTION A: DISTRICT AGGREGATOR ────────────────────────── */
+.district-aggregator {
+  padding: 72px 40px;
+  background: var(--jjm-white);
+  border-top: var(--jjm-divider);
+  border-bottom: var(--jjm-divider);
+}
+
+/* Toggle Bar */
+.district-toggle-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--jjm-bg);
+  border: 1px solid var(--jjm-border);
+  border-radius: 40px;
+  padding: 4px;
+  width: fit-content;
+  margin: 0 auto 48px auto;
+}
+
+.district-toggle-btn {
+  padding: 10px 32px;
+  border-radius: 36px;
+  border: none;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--jjm-muted);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.district-toggle-btn.active {
+  background: var(--jjm-primary);
+  color: var(--jjm-white);
+  box-shadow: 0 2px 8px rgba(10, 54, 99, 0.25);
+}
+
+.district-toggle-btn:not(.active):hover {
+  color: var(--jjm-primary);
+  background: rgba(10, 54, 99, 0.06);
+}
+
+/* Stat Grid */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Stat Card */
+.stat-card {
+  background: var(--jjm-white);
+  border: 1px solid var(--jjm-border);
+  border-radius: 12px;
+  padding: 28px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--jjm-shadow);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.stat-card:hover {
+  box-shadow: var(--jjm-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* SVG Radial Ring */
+.ring-wrap {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 16px;
+}
+
+.ring-wrap svg {
+  transform: rotate(-90deg);
+  width: 90px;
+  height: 90px;
+}
+
+.ring-bg {
+  fill: none;
+  stroke: var(--jjm-border);
+  stroke-width: 7;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--jjm-accent);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 251.2;
+  stroke-dashoffset: 251.2;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ring-center-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--jjm-primary);
+  line-height: 1;
+}
+
+/* Stat Number */
+.stat-number {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--jjm-primary);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--jjm-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+/* ─── SECTION B: 4-PHASE ISA WORKFLOW ───────────────────────── */
+.isa-workflow {
+  padding: 72px 40px;
+  background: var(--jjm-bg);
+}
+
+.phase-stepper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.phase-card {
+  background: var(--jjm-white);
+  border: 1px solid var(--jjm-border);
+  border-radius: 12px;
+  padding: 28px 26px;
+  box-shadow: var(--jjm-shadow);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: box-shadow 0.2s ease;
+}
+
+.phase-card:hover {
+  box-shadow: var(--jjm-shadow-md);
+}
+
+.phase-number {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--jjm-primary);
+  color: var(--jjm-white);
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phase-body {
+  flex: 1;
+}
+
+.phase-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--jjm-accent);
+  margin-bottom: 6px;
+}
+
+.phase-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--jjm-primary);
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.phase-activities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.phase-activities li {
+  font-size: 13px;
+  color: var(--jjm-muted);
+  padding: 3px 0;
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.phase-activities li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--jjm-accent);
+  font-weight: 700;
+}
+
+/* ─── SECTION C: DOCUMENT REPOSITORY ────────────────────────── */
+.doc-repository {
+  padding: 72px 40px;
+  background: var(--jjm-white);
+  border-top: var(--jjm-divider);
+}
+
+.doc-table-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  border: 1px solid var(--jjm-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--jjm-shadow);
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.doc-table thead {
+  background: var(--jjm-primary);
+  color: var(--jjm-white);
+}
+
+.doc-table thead th {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.doc-table tbody tr {
+  border-bottom: 1px solid var(--jjm-border);
+  transition: background 0.15s ease;
+}
+
+.doc-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.doc-table tbody tr:hover {
+  background: rgba(14, 165, 233, 0.04);
+}
+
+.doc-table tbody td {
+  padding: 14px 18px;
+  color: var(--jjm-text);
+  vertical-align: middle;
+}
+
+.doc-table tbody td:first-child {
+  font-weight: 600;
+  color: var(--jjm-primary);
+}
+
+.doc-type-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.doc-type-badge.pdf {
+  background: rgba(220, 38, 38, 0.1);
+  color: #DC2626;
+}
+.doc-type-badge.xlsx {
+  background: rgba(22, 163, 74, 0.1);
+  color: #16A34A;
+}
+.doc-type-badge.docx {
+  background: rgba(14, 165, 233, 0.1);
+  color: #0284C7;
+}
+
+.district-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(10, 54, 99, 0.08);
+  color: var(--jjm-primary);
+}
+.district-pill.both {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--jjm-accent-dk);
+}
+
+.doc-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: var(--jjm-accent);
+  color: var(--jjm-white);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.doc-download-btn:hover {
+  background: var(--jjm-accent-dk);
+  transform: translateY(-1px);
+}
+
+.doc-download-btn svg {
+  flex-shrink: 0;
+}
+
+/* ─── BILINGUAL TOGGLE ───────────────────────────────────────── */
+.lang-toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--jjm-border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--jjm-bg);
+}
+
+.lang-btn {
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--jjm-muted);
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.lang-btn.active {
+  background: var(--jjm-primary);
+  color: var(--jjm-white);
+}
+
+.lang-btn:not(.active):hover {
+  background: rgba(10, 54, 99, 0.06);
+  color: var(--jjm-primary);
+}
+
+/* ─── COMPLIANCE BANNER (replaces footer support strip) ──────── */
+.jjm-compliance-banner {
+  background: var(--jjm-primary);
+  color: rgba(255, 255, 255, 0.92);
+  padding: 18px 40px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+.jjm-compliance-banner strong {
+  color: #fff;
+  font-weight: 700;
+}
+
+.jjm-compliance-banner .banner-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.jjm-compliance-banner .banner-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+
+/* ─── RESPONSIVE — MOBILE FIRST (360px+) ────────────────────── */
+@media (max-width: 900px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .phase-stepper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .district-aggregator,
+  .isa-workflow,
+  .doc-repository,
+  .jjm-section {
+    padding: 48px 16px;
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .stat-card {
+    padding: 20px 14px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .ring-wrap {
+    width: 70px;
+    height: 70px;
+  }
+  .ring-wrap svg {
+    width: 70px;
+    height: 70px;
+  }
+
+  .jjm-section-title {
+    font-size: 22px;
+  }
+
+  .doc-table-wrap {
+    overflow-x: auto;
+  }
+
+  .doc-table {
+    min-width: 560px;
+  }
+
+  .district-toggle-btn {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+
+  .jjm-compliance-banner {
+    padding: 14px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .stat-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .phase-card {
+    padding: 18px 16px;
+    gap: 12px;
+  }
+  .phase-number {
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
+  }
+}

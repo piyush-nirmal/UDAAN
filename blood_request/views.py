@@ -9,18 +9,14 @@ from django.contrib import messages
 from django.conf import settings
 from .models import (
     BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask, 
-    Interaction, Project, NewsClipping, Team, SharedNote, Workspace, Notification, Expense, TaskComment,
-    TaskAutomationRule, Donation, VolunteerRequest
+    TaskAutomationRule, Donation, VolunteerRequest, Blog, Project, Team, CampusAmbassador,
+    CampusAmbassadorApplication, PolicyReport, Expense
 )
 from .schemas import DonorSchema, BloodRequestSchema
 from pydantic import ValidationError
 from django_ratelimit.decorators import ratelimit
-# from django.shortcuts import render
-from .models import Blog, Project, Task, SubTask, Team
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
-from .models import CampusAmbassador, CampusAmbassadorApplication
-from .models import PolicyReport
 
 from .utils import create_notification, generate_unique_din, send_din_email
 
@@ -66,7 +62,7 @@ def register_donor(request):
             if donor.email:
                 send_din_email(donor.email, din, record_type='donor')
                 
-            return JsonResponse({'success': True, 'message': 'Registration successful! Your DIN is generated.'})
+            return JsonResponse({'success': True, 'message': f'Registration successful! Your DIN is: {din}'})
 
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
@@ -128,7 +124,7 @@ def blood_request_create(request):
             if req_data.contact_email:
                 send_din_email(req_data.contact_email, din, record_type='request')
                 
-            return JsonResponse({"success": True, "message": "Blood request submitted successfully!"})
+            return JsonResponse({"success": True, "message": f"Blood request submitted successfully! Your DIN is: {din}"})
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
         except Exception as e:
@@ -487,6 +483,7 @@ def campaign_detail(request, slug):
         'related_campaigns': related_campaigns,
     }
     return render(request, 'campaign_detail.html', context)
+
 
 def project_list(request):
     """
@@ -2235,4 +2232,3 @@ def campaign_dashboard_view(request, slug):
         'documents': documents,
     }
     return render(request, 'campaigns/campaign_dashboard.html', context)
-
