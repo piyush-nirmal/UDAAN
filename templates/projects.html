@@ -38,12 +38,145 @@
   .project-image-container img {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* ========================================
+   SCROLL REVEAL ANIMATIONS
+======================================== */
+
+.reveal {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0) scale(1);
+}
+
+
+/* From Left */
+.reveal-left {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-80px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+
+/* From Right */
+.reveal-right {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(80px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+
+/* From Bottom */
+.reveal-bottom {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(70px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-bottom.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+
+/* Scale */
+.reveal-scale {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.85);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+
+/* Stagger Delay */
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+
+/* Project Card Hover */
+.glass-card {
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(11, 107, 58, 0.10);
+}
+
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-bottom,
+  .reveal-scale {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+}
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Modern Hero Section -->
-<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
   <!-- Decorative Leaf SVG (Low Opacity) -->
   <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
     <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,13 +187,13 @@
 
   <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
     <div class="max-w-2xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase reveal-left">
         <i class="fa-solid fa-earth-asia"></i> Field Operations
       </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight" style="font-family: 'Inter', sans-serif;">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight reveal-left" style="font-family: 'Inter', sans-serif;">
         Our Recent Projects
       </h1>
-      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl reveal-left">
         Explore our ongoing and completed initiatives, and discover how UDAAN Society is making a measurable difference in the lives of those we serve.
       </p>
     </div>
@@ -69,7 +202,7 @@
 
 <!-- Breadcrumb -->
 <div class="bg-transparent py-4">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2 reveal-bottom">
     <a href="{% url 'home' %}" class="hover:text-gray-700 transition-colors">Home</a>
     <span>/</span>
     <span class="text-gray-700">Projects</span>
@@ -79,9 +212,9 @@
 <!-- Main Body -->
 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 pb-20">
   
-  <div class="max-w-3xl space-y-3 mb-10">
-    <h2 class="text-2xl font-extrabold text-gray-900" style="font-family: 'Inter', sans-serif;">Transforming Lives Through Impactful Work</h2>
-    <p class="text-gray-500 text-sm leading-relaxed max-w-2xl">
+  <div class="max-w-3xl space-y-3 mb-10 reveal-left">
+   <h2 class="text-2xl font-extrabold text-gray-900 reveal-bottom" style="font-family: 'Inter', sans-serif;">Transforming Lives Through Impactful Work</h2>
+    <p class="text-gray-500 text-sm leading-relaxed max-w-2xl reveal-bottom">
       We operate local support programs, water conservation initiatives, child helpline facilities, and vendor empowerment campaigns financed by corporate CSR contributions and bilateral funding.
     </p>
   </div>
@@ -91,12 +224,12 @@
     {% for project in projects %}
     
     <!-- Project Card -->
-    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group">
+    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group reveal-bottom">
       
       <a href="{% url 'project_detail' project.slug %}" class="block h-full flex flex-col justify-between">
         <div>
           <!-- Image Section -->
-          <div class="h-48 overflow-hidden bg-gray-50 relative project-image-container border-b border-[#E8E8E8]">
+          <div class="h-48 overflow-hidden bg-gray-50 relative project-image-container border-b border-[#E8E8E8] reveal-scale">
             {% if project.image %}
             <img src="{{ project.image.url }}" alt="{{ project.title }}" class="w-full h-full object-cover">
             {% else %}
@@ -107,14 +240,14 @@
           </div>
           
           <!-- Content Section -->
-          <div class="p-6 pb-4 space-y-3">
+          <div class="p-6 pb-4 space-y-3 reveal-bottom">
             <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ project.title }}</h3>
             <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{{ project.description }}</p>
           </div>
         </div>
 
         <!-- Footer Section -->
-        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto">
+        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto reveal-bottom">
           <div class="flex items-center gap-2 text-xs font-medium text-gray-400">
             <i class="fa-regular fa-calendar"></i>
             <span>{{ project.date|date:"F j, Y" }}</span>
@@ -139,5 +272,37 @@
   </div>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const revealElements = document.querySelectorAll(
+    ".reveal, .reveal-left, .reveal-right, .reveal-bottom, .reveal-scale"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // Animation sirf ek baar chalegi
+          observer.unobserve(entry.target);
+        }
+
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    }
+  );
+
+  revealElements.forEach((element) => {
+    observer.observe(element);
+  });
+
+});
+</script>
 
 {% endblock %}

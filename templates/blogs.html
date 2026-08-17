@@ -38,12 +38,135 @@
   .blog-image-container img {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* ========================================
+   SCROLL REVEAL ANIMATIONS
+======================================== */
+
+.reveal {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0) scale(1);
+}
+
+
+/* From Left */
+.reveal-left {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-80px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+
+/* From Right */
+.reveal-right {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(80px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+
+/* From Bottom */
+.reveal-bottom {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(70px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-bottom.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+
+/* Scale */
+.reveal-scale {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.85);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+
+/* Stagger Delay */
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+.reveal-delay-5 {
+  transition-delay: 0.5s;
+}
+
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-left,
+  .reveal-right,
+  .reveal-bottom,
+  .reveal-scale {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+}
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Modern Hero Section -->
-<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
   <!-- Decorative Leaf SVG (Low Opacity) -->
   <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
     <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -54,13 +177,13 @@
 
   <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
     <div class="max-w-3xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase reveal-left">
         <i class="fa-solid fa-book-open"></i> NGO Journal
       </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight" style="font-family: 'Inter', sans-serif;">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight reveal-left" style="font-family: 'Inter', sans-serif;">
         Our Blog
       </h1>
-      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl reveal-left">
         Read stories of impact, project field diaries, and operational updates from our campaigns.
       </p>
     </div>
@@ -69,7 +192,7 @@
 
 <!-- Breadcrumb -->
 <div class="bg-transparent py-4">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2 reveal-bottom">
     <a href="{% url 'home' %}" class="hover:text-gray-700 transition-colors">Home</a>
     <span>/</span>
     <span class="text-gray-700">Blog</span>
@@ -80,8 +203,8 @@
 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 pb-24 space-y-10">
   
   <!-- Search & Filters -->
-  <div class="bg-white shadow-sm rounded-2xl p-4 lg:p-6 border border-[#E8E8E8] flex flex-col lg:flex-row gap-6 items-center justify-between">
-    <div class="relative w-full lg:max-w-md">
+  <div class="bg-white shadow-sm rounded-2xl p-4 lg:p-6 border border-[#E8E8E8] flex flex-col lg:flex-row gap-6 items-center justify-between reveal-scale">
+    <div class="relative w-full lg:max-w-md reveal-left">
       <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
         <i class="fa-solid fa-magnifying-glass"></i>
       </span>
@@ -90,7 +213,7 @@
         onkeyup="filterBlogs(this.value)">
     </div>
     
-    <div class="flex flex-wrap gap-2 text-[13px] font-semibold">
+    <div class="flex flex-wrap gap-2 text-[13px] font-semibold reveal-right">
       <button onclick="filterCategory('all')" class="category-btn px-4 py-2 rounded-full border border-[#0B6B3A] bg-[#EEF8F1] text-[#0B6B3A] transition-colors active-cat">All</button>
       <button onclick="filterCategory('blog')" class="category-btn px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">Blog</button>
       <button onclick="filterCategory('water')" class="category-btn px-4 py-2 rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors">Water</button>
@@ -103,10 +226,10 @@
     {% for blog in blogs %}
     
     <!-- Blog Card -->
-    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card" data-title="{{ blog.title|lower }}" data-desc="{{ blog.description|lower }}">
+    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card reveal-bottom" data-title="{{ blog.title|lower }}" data-desc="{{ blog.description|lower }}">
       <a href="{% url 'blog_detail' blog.id %}" class="block h-full flex flex-col justify-between">
         <div>
-          <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8]">
+          <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8] reveal-scale">
             {% if blog.image %}
             <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
             {% else %}
@@ -116,14 +239,14 @@
             {% endif %}
           </div>
           
-          <div class="p-6 pb-4 space-y-3">
+          <div class="p-6 pb-4 space-y-3 reveal-bottom">
             <span class="text-[#0B6B3A] font-bold text-[11px] uppercase tracking-widest block">Update</span>
             <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ blog.title }}</h3>
             <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{{ blog.description }}</p>
           </div>
         </div>
 
-        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto">
+        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto reveal-bottom">
           <div class="flex items-center gap-2 text-xs font-medium text-gray-400">
             <i class="fa-regular fa-calendar"></i>
             <span>{{ blog.created_at|date:"F d, Y" }}</span>
@@ -136,7 +259,7 @@
     </article>
     
     {% empty %}
-    <div class="col-span-full flex flex-col items-center justify-center py-24 text-center bg-white rounded-2xl border border-[#E8E8E8]">
+    <div class="col-span-full flex flex-col items-center justify-center py-24 text-center bg-white rounded-2xl border border-[#E8E8E8] reveal-scale">
       <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 text-2xl mb-4">
         <i class="fa-regular fa-folder-open"></i>
       </div>
@@ -188,6 +311,40 @@
       });
     }
   }
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const revealElements = document.querySelectorAll(
+    ".reveal, .reveal-left, .reveal-right, .reveal-bottom, .reveal-scale"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+
+          // Animation only once
+          observer.unobserve(entry.target);
+        }
+
+      });
+    },
+    {
+      threshold: 0.15,
+      rootMargin: "0px 0px -50px 0px"
+    }
+  );
+
+  revealElements.forEach((element) => {
+    observer.observe(element);
+  });
+
+});
 </script>
 
 {% endblock %}

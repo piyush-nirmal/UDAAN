@@ -1,13 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}UDAAN Society - Empowering Underserved Communities{% endblock %}
+{% block title %}UDAAN Society - Empowering Communities | Har Ghar Jal & Social Impact{% endblock %}
 
-{% block meta_description %}UDAAN Society is a leading NGO working on the Har Ghar Jal Project, Atal Bhujal Yojna, and community empowerment. Join us in making a difference today.{% endblock %}
+{% block meta_description %}UDAAN Society is a leading NGO and Implementation Support Agency (ISA) for the Jal Jeevan Mission – Har Ghar Jal Project under SWSM, Uttar Pradesh. Serving Aligarh and Bulandshahr with community empowerment, healthcare, and education.{% endblock %}
 
 {% block extra_css %}
-  <!-- Page Specific Style overrides for Home Page if needed -->
-  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=5" />
+  <link rel="stylesheet" href="{% static 'css/home.css' %}?v=10" />
 {% endblock %}
 
 {% block content %}
@@ -130,6 +129,47 @@
 
     </div>
   </div>
+
+  <!-- Jal Jeevan Mission District Coverage Section -->
+  <section class="py-16 bg-gradient-to-b from-gray-50 to-white" id="district-coverage">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+      <div class="text-center max-w-3xl mx-auto mb-10 space-y-3">
+        <span class="text-[#0EA5E9] font-bold uppercase tracking-wider text-xs">Jal Jeevan Mission ISA Status</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-neutral-dark font-heading">District Coverage & FHTC Saturation</h2>
+        <p class="text-gray-500 text-sm">Implementation Support Agency under State Water and Sanitation Mission (SWSM), Uttar Pradesh.</p>
+      </div>
+
+      <!-- District Toggle Bar -->
+      <div class="flex justify-center gap-4 mb-10">
+        <button class="px-6 py-3 rounded-full font-bold text-sm bg-[#0A3663] text-white shadow-md transition-all active" id="btn-aligarh" onclick="switchDistrict('aligarh')" aria-pressed="true">
+          🏙️ &nbsp;Aligarh District
+        </button>
+        <button class="px-6 py-3 rounded-full font-bold text-sm bg-white text-gray-700 border border-gray-200 hover:border-gray-400 shadow-sm transition-all" id="btn-bulandshahr" onclick="switchDistrict('bulandshahr')" aria-pressed="false">
+          🏘️ &nbsp;Bulandshahr District
+        </button>
+      </div>
+
+      <!-- Stat Cards Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6" id="stat-grid">
+        <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 text-center space-y-2">
+          <div class="text-3xl font-extrabold text-[#0A3663] stat-number" id="stat-villages">1,070</div>
+          <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">Villages Covered</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 text-center space-y-2">
+          <div class="text-3xl font-extrabold text-[#0EA5E9] stat-number" id="stat-fhtc">98%</div>
+          <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">Household Tap Connections (FHTC)</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 text-center space-y-2">
+          <div class="text-3xl font-extrabold text-[#16A34A] stat-number" id="stat-taps">4.2L+</div>
+          <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">Functional Taps Installed</div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl shadow-soft border border-gray-100 text-center space-y-2">
+          <div class="text-3xl font-extrabold text-[#6A1B9A] stat-number" id="stat-samiti">100%</div>
+          <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">Paani Samitis Established</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Our Activities Section -->
   <section class="py-16 bg-[#ffffff]">
@@ -277,7 +317,6 @@
       </div>
     </div>
   </section>
-
 
   <!-- Featured Campaigns (Causes) -->
   <section class="py-20 bg-white" id="featured-campaigns">
@@ -488,24 +527,21 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
 
-
       // Scroll-Triggered Donation Popup Logic
       const popup = document.getElementById("scroll-donation-popup");
       const card = document.getElementById("scroll-donation-modal-card");
       const closeBtn = document.getElementById("close-donation-popup");
       
       if (popup && card && closeBtn) {
-        let hasShown = false; // Resets on page reload/refresh for easy testing
+        let hasShown = false;
         
         const checkScroll = () => {
           const targetSection = document.getElementById("featured-campaigns");
           if (targetSection) {
             const rect = targetSection.getBoundingClientRect();
-            // Trigger when the bottom of the section is visible in/scrolled past the viewport
             if (!hasShown && rect.bottom < window.innerHeight) {
               hasShown = true;
               popup.classList.remove("hidden");
-              // Trigger layout reflow to register CSS transitions
               popup.offsetHeight; 
               popup.classList.remove("opacity-0");
               popup.classList.add("opacity-100");
@@ -523,11 +559,10 @@
           card.classList.add("scale-90");
           setTimeout(() => {
             popup.classList.add("hidden");
-          }, 300); // Wait for transition duration (300ms)
+          }, 300);
         };
 
         closeBtn.addEventListener("click", closeModal);
-        // Also close modal when clicking outside the main card
         popup.addEventListener("click", (e) => {
           if (e.target === popup) {
             closeModal();
@@ -537,6 +572,116 @@
         window.addEventListener("scroll", checkScroll);
       }
     });
+
+    // District Switcher Logic
+    const districtData = {
+      aligarh: {
+        villages: '1,070',
+        fhtc: '98%',
+        taps: '4.2L+',
+        samiti: '100%',
+      },
+      bulandshahr: {
+        villages: '1,067',
+        fhtc: '98%',
+        taps: '4.56L+',
+        samiti: '95%',
+      }
+    };
+
+    function switchDistrict(district) {
+      const d = districtData[district];
+      const btnAligarh = document.getElementById('btn-aligarh');
+      const btnBuland = document.getElementById('btn-bulandshahr');
+
+      if (district === 'aligarh') {
+        btnAligarh.className = "px-6 py-3 rounded-full font-bold text-sm bg-[#0A3663] text-white shadow-md transition-all active";
+        btnBuland.className = "px-6 py-3 rounded-full font-bold text-sm bg-white text-gray-700 border border-gray-200 hover:border-gray-400 shadow-sm transition-all";
+      } else {
+        btnBuland.className = "px-6 py-3 rounded-full font-bold text-sm bg-[#0A3663] text-white shadow-md transition-all active";
+        btnAligarh.className = "px-6 py-3 rounded-full font-bold text-sm bg-white text-gray-700 border border-gray-200 hover:border-gray-400 shadow-sm transition-all";
+      }
+
+      ['villages', 'fhtc', 'taps', 'samiti'].forEach(id => {
+        const el = document.getElementById('stat-' + id);
+        if (el) {
+          el.style.opacity = '0';
+          setTimeout(() => {
+            el.textContent = d[id];
+            el.style.opacity = '1';
+          }, 150);
+        }
+      });
+    }
+
+    // Testimonial Modal & Slider Logic
+    let currentTestimonialIndex = 0;
+
+    function moveTestimonial(direction) {
+      const track = document.getElementById('testimonialTrack');
+      if (!track) return;
+      const cards = track.children;
+      if (cards.length === 0) return;
+      const cardWidth = cards[0].offsetWidth + 32;
+      const visibleCount = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
+      const maxIndex = Math.max(0, cards.length - visibleCount);
+      currentTestimonialIndex = Math.min(Math.max(currentTestimonialIndex + direction, 0), maxIndex);
+      track.style.transform = `translateX(-${currentTestimonialIndex * cardWidth}px)`;
+    }
+
+    function openTestimonialModal(author, role, text) {
+      document.getElementById('modal-author').innerText = author;
+      document.getElementById('modal-role').innerText = role;
+      document.getElementById('modal-text').innerText = text;
+      const modal = document.getElementById('testimonial-modal');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+      }, 10);
+    }
+
+    function closeTestimonialModal(event, force) {
+      const modal = document.getElementById('testimonial-modal');
+      if (force || event.target === modal) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+      }
+    }
+
+    // Hero Carousel Slides
+    const heroSlides = [
+      "{% static 'assets/image1.jpeg' %}",
+      "{% static 'assets/image2.jpeg' %}",
+      "{% static 'assets/image3.jpeg' %}",
+      "{% static 'assets/image4.jpeg' %}",
+      "{% static 'assets/image5.webp' %}"
+    ];
+    let currentHeroSlide = 0;
+
+    function goToSlide(index) {
+      currentHeroSlide = index;
+      const img = document.getElementById('hero-slide-image');
+      if (img) {
+        img.style.opacity = '0';
+        setTimeout(() => {
+          img.src = heroSlides[currentHeroSlide];
+          img.style.opacity = '1';
+        }, 150);
+      }
+      document.querySelectorAll('.carousel-dot').forEach((dot, idx) => {
+        if (idx === currentHeroSlide) {
+          dot.className = "w-8 h-2.5 rounded-full bg-[#024b24] cursor-pointer transition-all duration-300 carousel-dot active";
+        } else {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-[#024b24]/60 cursor-pointer transition-all duration-300 carousel-dot";
+        }
+      });
+    }
+
+    setInterval(() => {
+      goToSlide((currentHeroSlide + 1) % heroSlides.length);
+    }, 5000);
   </script>
 
 {% endblock %}

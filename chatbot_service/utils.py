@@ -1,3 +1,4 @@
+from .ai import ask_llm
 from django.db.models import Q
 from blood_request.models import BloodDonor, BloodRequest, Task
 
@@ -39,7 +40,7 @@ def get_task_summary(user):
         my_tasks = Task.objects.filter(assigned_to=user, status__in=['To Do', 'In Progress']).count()
         return f"Hello {user.username}, you have {my_tasks} pending tasks assigned to you."
 
-def generate_response(message, user):
+def generate_response_old(message, user):
     msg = message.lower()
     
     if "donor" in msg or "blood" in msg:
@@ -57,3 +58,6 @@ def generate_response(message, user):
         return "Udaan Society is dedicated to empowering the underprivileged through education, healthcare, and women's empowerment initiatives."
 
     return "I'm Udaan Mitra. I can help you find donors, check tax info, or view tasks (if you are staff). How can I assist?"
+
+def generate_response(message, user):
+    return ask_llm(message)

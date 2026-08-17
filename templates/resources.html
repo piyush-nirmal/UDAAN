@@ -3,145 +3,881 @@
 
 {% block title %}Resources - UDAAN Society{% endblock %}
 
-{% block extra_css %}
-<style>
-  /* Base Overrides for this specific page */
-  body {
-    background-color: #FAFAFA;
-  }
-  
-  .glass-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid #E8E8E8;
-    box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.03), 0 2px 8px -2px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .glass-card:hover {
-    transform: translateY(-2px);
-    border-color: #0B6B3A;
-    box-shadow: 0 8px 24px -4px rgba(11, 107, 58, 0.08);
-  }
-</style>
+{% block meta_description %}
+UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Policy and important governance and compliance documents.
 {% endblock %}
 
 {% block content %}
 
-<!-- Modern Hero Section -->
-<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
-  <!-- Decorative Leaf SVG (Low Opacity) -->
-  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
-    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
-      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+<section class="relative min-h-[460px] flex items-center overflow-hidden bg-white border-b border-gray-100">
+
+  <!-- Animated Decorative Background -->
+  <div class="absolute -right-24 -top-24 w-[420px] h-[420px] rounded-full bg-green-100/40 blur-3xl animate-pulse"></div>
+
+  <div class="absolute -left-32 bottom-[-180px] w-[400px] h-[400px] rounded-full bg-emerald-50 blur-3xl"></div>
+
+  <!-- Decorative Leaf -->
+  <div class="absolute right-0 top-0 opacity-[0.05] pointer-events-none 
+              translate-x-1/4 -translate-y-1/4
+              animate-[floatLeaf_8s_ease-in-out_infinite]">
+
+    <svg
+      width="450"
+      height="450"
+      viewBox="0 0 240 360"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+
+      <path
+        d="M-40,320 C40,280 80,180 60,80
+        C110,130 140,220 120,300
+        C150,230 200,160 260,140
+        C210,200 170,270 120,320"
+        fill="#0B6B3A"
+      />
+
+      <path
+        d="M-80,240 C0,200 40,120 20,40
+        C60,85 90,160 70,230"
+        fill="#0B6B3A"
+      />
+
     </svg>
+
   </div>
 
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-    <div class="max-w-3xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase">
-        <i class="fa-solid fa-file-shield"></i> Governance & Compliance
+
+  <!-- Hero Content -->
+  <div class="max-w-7xl mx-auto w-full px-6 lg:px-8 relative z-10">
+
+    <div
+      class="max-w-3xl space-y-6
+             opacity-0 translate-y-8
+             animate-[heroReveal_0.8s_ease-out_forwards]">
+
+      <!-- Badge -->
+      <div
+        class="inline-flex items-center gap-2
+               px-4 py-2
+               rounded-full
+               bg-[#EEF8F1]
+               text-[#0B6B3A]
+               text-xs
+               font-bold
+               tracking-widest
+               uppercase
+               shadow-sm
+               hover:scale-105
+               transition-transform
+               duration-300">
+
+        <i class="fa-solid fa-file-shield"></i>
+
+        Governance & Compliance
+
       </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight" style="font-family: 'Inter', sans-serif;">
-        Resources
+
+
+      <!-- Heading -->
+      <h1
+        class="text-4xl sm:text-5xl lg:text-6xl
+               font-extrabold
+               text-gray-900
+               tracking-tight
+               leading-tight">
+
+        Organisational
+        <span class="text-[#0B6B3A]">
+          Resources
+        </span>
+
       </h1>
-      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
-        UDAAN Society shares its key organisational resources and statutory compliance documents to promote transparency, ethical governance, and a safe working environment.
+
+
+      <!-- Description -->
+      <p
+        class="text-lg
+               text-gray-500
+               leading-relaxed
+               max-w-2xl">
+
+        UDAAN Society shares its key organisational resources and statutory
+        compliance documents to promote transparency, ethical governance,
+        and a safe working environment.
+
       </p>
+
+
+      <!-- Small Decorative Line -->
+      <div
+        class="flex items-center gap-3 pt-2">
+
+        <span class="w-12 h-1 bg-[#0B6B3A] rounded-full"></span>
+
+        <span class="w-3 h-1 bg-green-200 rounded-full"></span>
+
+        <span class="w-2 h-1 bg-green-100 rounded-full"></span>
+
+      </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- Breadcrumb -->
-<div class="bg-transparent py-4">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 text-xs font-medium text-gray-400 flex items-center gap-2">
-    <a href="{% url 'home' %}" class="hover:text-gray-700 transition-colors">Home</a>
-    <span>/</span>
-    <span class="text-gray-700">Resources</span>
-  </div>
-</div>
 
-<!-- Main Body -->
-<div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 pb-24">
+<!-- =========================================================
+     BREADCRUMB
+========================================================= -->
+<div class="bg-gray-50 border-b border-gray-100">
 
-  <!-- Resources Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    
-    <!-- Policy Card 1 -->
-    <div class="glass-card flex flex-col justify-between p-8 rounded-2xl">
-      <div class="space-y-4 mb-8">
-        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-[#E8E8E8] flex items-center justify-center text-[#0B6B3A] text-xl">
-          <i class="fa-solid fa-bullhorn"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-gray-900 mb-2" style="font-family: 'Inter', sans-serif;">Whistle Blower Policy</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">
-            Enables employees and stakeholders to report unethical conduct, malpractice, or violations in a confidential and protected manner.
-          </p>
-        </div>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row gap-3 mt-auto border-t border-[#E8E8E8] pt-5">
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-[13px] font-bold hover:bg-gray-50 transition-colors text-center">
-          <i class="fa-regular fa-eye mr-2"></i> View
-        </a>
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg bg-[#0B6B3A] text-white text-[13px] font-bold hover:bg-[#084f2a] transition-colors shadow-sm text-center">
-          <i class="fa-solid fa-download mr-2"></i> Download
-        </a>
-      </div>
-    </div>
+  <div
+    class="max-w-7xl mx-auto
+           px-6 lg:px-8
+           py-4
+           text-sm
+           font-medium
+           flex items-center gap-3">
 
-    <!-- Policy Card 2 -->
-    <div class="glass-card flex flex-col justify-between p-8 rounded-2xl">
-      <div class="space-y-4 mb-8">
-        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-[#E8E8E8] flex items-center justify-center text-[#0B6B3A] text-xl">
-          <i class="fa-solid fa-person-chalkboard"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-gray-900 mb-2" style="font-family: 'Inter', sans-serif;">POSH Training (TRG)</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">
-            Awareness and training material under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013.
-          </p>
-        </div>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row gap-3 mt-auto border-t border-[#E8E8E8] pt-5">
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-[13px] font-bold hover:bg-gray-50 transition-colors text-center">
-          <i class="fa-regular fa-eye mr-2"></i> View
-        </a>
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg bg-[#0B6B3A] text-white text-[13px] font-bold hover:bg-[#084f2a] transition-colors shadow-sm text-center">
-          <i class="fa-solid fa-download mr-2"></i> Download
-        </a>
-      </div>
-    </div>
+    <a
+      href="{% url 'home' %}"
+      class="text-gray-400
+             hover:text-[#0B6B3A]
+             transition-colors
+             duration-300">
 
-    <!-- Policy Card 3 -->
-    <div class="glass-card flex flex-col justify-between p-8 rounded-2xl">
-      <div class="space-y-4 mb-8">
-        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-[#E8E8E8] flex items-center justify-center text-[#0B6B3A] text-xl">
-          <i class="fa-solid fa-scale-balanced"></i>
-        </div>
-        <div>
-          <h3 class="text-lg font-bold text-gray-900 mb-2" style="font-family: 'Inter', sans-serif;">POSH Policy</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">
-            Policy outlining prevention, prohibition, and redressal mechanisms for sexual harassment at the workplace as per Indian law.
-          </p>
-        </div>
-      </div>
-      
-      <div class="flex flex-col sm:flex-row gap-3 mt-auto border-t border-[#E8E8E8] pt-5">
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg border border-gray-200 text-gray-700 text-[13px] font-bold hover:bg-gray-50 transition-colors text-center">
-          <i class="fa-regular fa-eye mr-2"></i> View
-        </a>
-        <a href="#" class="flex-1 flex justify-center items-center px-4 py-2.5 rounded-lg bg-[#0B6B3A] text-white text-[13px] font-bold hover:bg-[#084f2a] transition-colors shadow-sm text-center">
-          <i class="fa-solid fa-download mr-2"></i> Download
-        </a>
-      </div>
-    </div>
+      Home
+
+    </a>
+
+    <span class="text-gray-300">
+      /
+    </span>
+
+    <span class="text-[#0B6B3A] font-semibold">
+      Resources
+    </span>
 
   </div>
 
 </div>
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+<section class="bg-[#FAFAFA] py-16 lg:py-24">
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+
+    <!-- Section Heading -->
+    <div
+      class="max-w-3xl mx-auto
+             text-center
+             mb-14
+             opacity-0
+             translate-y-8
+             reveal-element">
+
+      <span
+        class="text-[#0B6B3A]
+               text-xs
+               font-bold
+               uppercase
+               tracking-[0.2em]">
+
+        Important Documents
+
+      </span>
+
+      <h2
+        class="mt-3
+               text-3xl
+               md:text-4xl
+               font-extrabold
+               text-gray-900">
+
+        Governance & Compliance Resources
+
+      </h2>
+
+      <p
+        class="mt-4
+               text-gray-500
+               leading-relaxed">
+
+        Access important policies and training resources that reflect
+        UDAAN Society's commitment to transparency, accountability,
+        ethical governance, and a safe workplace.
+
+      </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESOURCES GRID
+    ====================================================== -->
+    <div
+      class="grid
+             grid-cols-1
+             md:grid-cols-2
+             lg:grid-cols-3
+             gap-8">
+
+
+      <!-- =================================================
+           RESOURCE CARD 1
+      ================================================== -->
+      <article
+        class="resource-card
+               group
+               bg-white
+               rounded-2xl
+               border
+               border-gray-100
+               p-8
+               flex
+               flex-col
+               justify-between
+               shadow-sm
+               opacity-0
+               translate-y-10
+               reveal-element
+               transition-all
+               duration-500
+               hover:-translate-y-3
+               hover:shadow-2xl
+               hover:border-[#0B6B3A]/30">
+
+        <div>
+
+          <!-- Icon -->
+          <div
+            class="w-14 h-14
+                   rounded-2xl
+                   bg-[#EEF8F1]
+                   text-[#0B6B3A]
+                   flex
+                   items-center
+                   justify-center
+                   text-xl
+                   mb-6
+                   transition-all
+                   duration-500
+                   group-hover:scale-110
+                   group-hover:rotate-3
+                   group-hover:bg-[#0B6B3A]
+                   group-hover:text-white">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+          </div>
+
+
+          <!-- Content -->
+          <h3
+            class="text-xl
+                   font-bold
+                   text-gray-900
+                   mb-3
+                   group-hover:text-[#0B6B3A]
+                   transition-colors
+                   duration-300">
+
+            Whistle Blower Policy
+
+          </h3>
+
+          <p
+            class="text-sm
+                   text-gray-500
+                   leading-relaxed">
+
+            Enables employees and stakeholders to report unethical conduct,
+            malpractice, or violations in a confidential and protected manner.
+
+          </p>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div
+          class="flex
+                 flex-col
+                 sm:flex-row
+                 gap-3
+                 mt-8
+                 pt-5
+                 border-t
+                 border-gray-100">
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   border
+                   border-gray-200
+                   text-gray-700
+                   text-sm
+                   font-bold
+                   hover:bg-gray-50
+                   hover:border-[#0B6B3A]
+                   hover:text-[#0B6B3A]
+                   transition-all
+                   duration-300">
+
+            <i class="fa-regular fa-eye"></i>
+
+            View
+
+          </a>
+
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   bg-[#0B6B3A]
+                   text-white
+                   text-sm
+                   font-bold
+                   hover:bg-[#084f2a]
+                   hover:shadow-lg
+                   hover:shadow-green-900/20
+                   transition-all
+                   duration-300">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- =================================================
+           RESOURCE CARD 2
+      ================================================== -->
+      <article
+        class="resource-card
+               group
+               bg-white
+               rounded-2xl
+               border
+               border-gray-100
+               p-8
+               flex
+               flex-col
+               justify-between
+               shadow-sm
+               opacity-0
+               translate-y-10
+               reveal-element
+               transition-all
+               duration-500
+               hover:-translate-y-3
+               hover:shadow-2xl
+               hover:border-[#0B6B3A]/30">
+
+        <div>
+
+          <!-- Icon -->
+          <div
+            class="w-14 h-14
+                   rounded-2xl
+                   bg-[#EEF8F1]
+                   text-[#0B6B3A]
+                   flex
+                   items-center
+                   justify-center
+                   text-xl
+                   mb-6
+                   transition-all
+                   duration-500
+                   group-hover:scale-110
+                   group-hover:rotate-3
+                   group-hover:bg-[#0B6B3A]
+                   group-hover:text-white">
+
+            <i class="fa-solid fa-person-chalkboard"></i>
+
+          </div>
+
+
+          <h3
+            class="text-xl
+                   font-bold
+                   text-gray-900
+                   mb-3
+                   group-hover:text-[#0B6B3A]
+                   transition-colors
+                   duration-300">
+
+            POSH Training (TRG)
+
+          </h3>
+
+
+          <p
+            class="text-sm
+                   text-gray-500
+                   leading-relaxed">
+
+            Awareness and training material under the Sexual Harassment
+            of Women at Workplace (Prevention, Prohibition and Redressal)
+            Act, 2013.
+
+          </p>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div
+          class="flex
+                 flex-col
+                 sm:flex-row
+                 gap-3
+                 mt-8
+                 pt-5
+                 border-t
+                 border-gray-100">
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   border
+                   border-gray-200
+                   text-gray-700
+                   text-sm
+                   font-bold
+                   hover:bg-gray-50
+                   hover:border-[#0B6B3A]
+                   hover:text-[#0B6B3A]
+                   transition-all
+                   duration-300">
+
+            <i class="fa-regular fa-eye"></i>
+
+            View
+
+          </a>
+
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   bg-[#0B6B3A]
+                   text-white
+                   text-sm
+                   font-bold
+                   hover:bg-[#084f2a]
+                   hover:shadow-lg
+                   hover:shadow-green-900/20
+                   transition-all
+                   duration-300">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+      <!-- =================================================
+           RESOURCE CARD 3
+      ================================================== -->
+      <article
+        class="resource-card
+               group
+               bg-white
+               rounded-2xl
+               border
+               border-gray-100
+               p-8
+               flex
+               flex-col
+               justify-between
+               shadow-sm
+               opacity-0
+               translate-y-10
+               reveal-element
+               transition-all
+               duration-500
+               hover:-translate-y-3
+               hover:shadow-2xl
+               hover:border-[#0B6B3A]/30">
+
+        <div>
+
+          <!-- Icon -->
+          <div
+            class="w-14 h-14
+                   rounded-2xl
+                   bg-[#EEF8F1]
+                   text-[#0B6B3A]
+                   flex
+                   items-center
+                   justify-center
+                   text-xl
+                   mb-6
+                   transition-all
+                   duration-500
+                   group-hover:scale-110
+                   group-hover:rotate-3
+                   group-hover:bg-[#0B6B3A]
+                   group-hover:text-white">
+
+            <i class="fa-solid fa-scale-balanced"></i>
+
+          </div>
+
+
+          <h3
+            class="text-xl
+                   font-bold
+                   text-gray-900
+                   mb-3
+                   group-hover:text-[#0B6B3A]
+                   transition-colors
+                   duration-300">
+
+            POSH Policy
+
+          </h3>
+
+
+          <p
+            class="text-sm
+                   text-gray-500
+                   leading-relaxed">
+
+            Policy outlining prevention, prohibition, and redressal
+            mechanisms for sexual harassment at the workplace as per
+            Indian law.
+
+          </p>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div
+          class="flex
+                 flex-col
+                 sm:flex-row
+                 gap-3
+                 mt-8
+                 pt-5
+                 border-t
+                 border-gray-100">
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   border
+                   border-gray-200
+                   text-gray-700
+                   text-sm
+                   font-bold
+                   hover:bg-gray-50
+                   hover:border-[#0B6B3A]
+                   hover:text-[#0B6B3A]
+                   transition-all
+                   duration-300">
+
+            <i class="fa-regular fa-eye"></i>
+
+            View
+
+          </a>
+
+
+          <a
+            href="#"
+            class="flex-1
+                   flex
+                   items-center
+                   justify-center
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   bg-[#0B6B3A]
+                   text-white
+                   text-sm
+                   font-bold
+                   hover:bg-[#084f2a]
+                   hover:shadow-lg
+                   hover:shadow-green-900/20
+                   transition-all
+                   duration-300">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download
+
+          </a>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ANIMATION SCRIPT
+========================================================= -->
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const revealElements = document.querySelectorAll(
+        ".reveal-element"
+    );
+
+    /*
+    ==========================================
+    Intersection Observer
+    ==========================================
+    */
+
+    const observer = new IntersectionObserver(
+
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.remove(
+                        "opacity-0",
+                        "translate-y-10"
+                    );
+
+                    entry.target.classList.add(
+                        "opacity-100",
+                        "translate-y-0"
+                    );
+
+                    observer.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -60px 0px"
+        }
+
+    );
+
+
+    /*
+    ==========================================
+    Stagger Animation
+    ==========================================
+    */
+
+    revealElements.forEach(
+        (element, index) => {
+
+            element.style.transitionDelay =
+                `${index * 120}ms`;
+
+            observer.observe(element);
+
+        }
+    );
+
+
+    /*
+    ==========================================
+    Card Mouse Tilt Effect
+    ==========================================
+    */
+
+    const cards =
+        document.querySelectorAll(
+            ".resource-card"
+        );
+
+
+    cards.forEach((card) => {
+
+        card.addEventListener(
+            "mousemove",
+            (event) => {
+
+                const rect =
+                    card.getBoundingClientRect();
+
+                const x =
+                    event.clientX -
+                    rect.left;
+
+                const y =
+                    event.clientY -
+                    rect.top;
+
+                const centerX =
+                    rect.width / 2;
+
+                const centerY =
+                    rect.height / 2;
+
+                const rotateX =
+                    ((y - centerY) /
+                    centerY) * -2;
+
+                const rotateY =
+                    ((x - centerX) /
+                    centerX) * 2;
+
+                card.style.transform =
+                    `translateY(-10px)
+                     perspective(1000px)
+                     rotateX(${rotateX}deg)
+                     rotateY(${rotateY}deg)`;
+
+            }
+        );
+
+
+        card.addEventListener(
+            "mouseleave",
+            () => {
+
+                card.style.transform =
+                    "";
+
+            }
+        );
+
+    });
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     CUSTOM KEYFRAMES
+========================================================= -->
+<style>
+
+@keyframes heroReveal {
+
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+@keyframes floatLeaf {
+
+    0% {
+        transform:
+            translate(25%, -25%)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translate(25%, -22%)
+            rotate(3deg);
+    }
+
+    100% {
+        transform:
+            translate(25%, -25%)
+            rotate(0deg);
+    }
+
+}
+
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+
+    }
+
+}
+
+</style>
 
 {% endblock %}

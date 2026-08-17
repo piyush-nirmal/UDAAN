@@ -4,39 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}UDAAN Society - Blood Request{% endblock %}</title>
+    <title>{% block title %}UDAAN Society | Jal Jeevan Mission — ISA Portal{% endblock %}</title>
     <meta name="description"
-        content="{% block meta_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}">
-    <meta property="og:title" content="{% block og_title %}UDAAN Society{% endblock %}">
+        content="{% block meta_description %}UDAAN Society is an Implementation Support Agency (ISA) under Jal Jeevan Mission – Har Ghar Jal Project, SWSM Uttar Pradesh for Aligarh & Bulandshahr districts.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}UDAAN Society | JJM ISA Portal{% endblock %}">
     <meta property="og:description"
-        content="{% block og_description %}UDAAN Society works for underserved and neglected communities.{% endblock %}">
+        content="{% block og_description %}UDAAN Society implements Jal Jeevan Mission across Aligarh and Bulandshahr districts under SWSM, Uttar Pradesh.{% endblock %}">
+
+    <!-- Font Awesome Icons & AOS Animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
 
-
-    <!-- Tailwind CSS (CDN for prototype) -->
+    <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Custom Fonts -->
+    <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
         rel="stylesheet">
 
-    <!-- Custom Config for Tailwind -->
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        sans: ['Inter', 'Outfit', 'sans-serif'],
                         heading: ['Manrope', 'Poppins', 'sans-serif'],
                         serifTitle: ['Playfair Display', 'serif'],
                     },
                     colors: {
                         primary: {
-                            DEFAULT: '#dc2626',
-                            light: '#fee2e2',
-                            dark: '#991b1b'
+                            DEFAULT: '#0A3663',
+                            light: '#E3F2FD',
+                            dark: '#072545'
                         },
                         secondary: {
                             DEFAULT: '#1565C0',
@@ -44,20 +45,30 @@
                             dark: '#0D47A1'
                         },
                         accent: {
-                            DEFAULT: '#FFB300',
-                            light: '#FFF8E1',
-                            dark: '#FF8F00'
+                            DEFAULT: '#0EA5E9',
+                            light: '#E0F2FE',
+                            dark: '#0284C7'
                         },
                         neutral: {
                             light: '#FAFAFA',
                             card: '#FFFFFF',
                             dark: '#1F2937'
+                        },
+                        brand: {
+                            primary: '#0A3663',
+                            secondary: '#1E3A8A',
+                            accent: '#0EA5E9',
+                            accentDk: '#0284C7',
+                            bg: '#F8F9FA',
+                            border: '#DDE3EC',
+                            text: '#1A2B3C',
+                            muted: '#64748B',
                         }
                     },
                     boxShadow: {
                         soft: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03)',
                         premium: '0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 15px 25px -10px rgba(0, 0, 0, 0.04)',
-                        hover: '0 30px 60px -15px rgba(46, 125, 50, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06)'
+                        hover: '0 30px 60px -15px rgba(10, 54, 99, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06)'
                     }
                 }
             }
@@ -65,142 +76,101 @@
     </script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/design_system.css' %}?v=2">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=5">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=5">
-    <style>
-        body {
-            padding-top: 104px !important;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding-top: 140px !important;
-            }
-
-            .main-nav .nav-menu {
-                top: 140px !important;
-                max-height: calc(100vh - 140px) !important;
-            }
-        }
-
-        .main-nav .logo-circle {
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=11">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=11">
+    <link rel="stylesheet" href="{% static 'css/jjm-portal.css' %}?v=11">
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="font-sans antialiased" style="margin:0;padding:0;background:#F8F9FA;color:#1A2B3C;">
 
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <!-- Top Contact & Location Bar -->
-        <div
-            class="bg-[#0f172a] text-white py-2 px-6 sm:px-12 flex flex-col md:flex-row justify-between items-center text-xs gap-2 font-heading w-full border-b border-slate-800">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-location-dot text-sky-400"></i>
-                <span>Aligarh & Bulandshahr, Uttar Pradesh</span>
+    <!-- ─── Institutional Top Bar ────────────────────────── -->
+    <div class="jjm-topbar">
+        <div class="jjm-topbar-left">
+            <span>🇮🇳 Government of India Initiative</span>
+            <span class="jjm-topbar-sep"></span>
+            <span><strong>Jal Jeevan Mission — Har Ghar Jal</strong></span>
+            <span class="jjm-topbar-sep"></span>
+            <span>SWSM, Uttar Pradesh | ISA: UDAAN Society</span>
+        </div>
+        <div class="jjm-topbar-right">
+            <div class="flex items-center gap-4 text-xs mr-4 hidden md:flex">
+                <a href="mailto:mail@udaansociety.org" class="text-white hover:text-sky-200 transition-colors no-underline">
+                    <i class="fa-regular fa-envelope mr-1"></i>mail@udaansociety.org
+                </a>
+                <a href="tel:+919837067681" class="text-white hover:text-sky-200 transition-colors no-underline">
+                    <i class="fa-solid fa-phone mr-1"></i>+91 98370 67681
+                </a>
             </div>
-            <div class="flex items-center gap-6">
-                <a href="mailto:mail@udaansociety.org"
-                    class="flex items-center gap-2 hover:text-sky-300 transition-colors no-underline text-white">
-                    <i class="fa-regular fa-envelope"></i>
-                    <span>mail@udaansociety.org</span>
-                </a>
-                <a href="tel:+919837067681"
-                    class="flex items-center gap-2 hover:text-sky-300 transition-colors no-underline text-white">
-                    <i class="fa-solid fa-phone"></i>
-                    <span>+91 98370 67681</span>
-                </a>
+            <div class="lang-toggle-wrap" role="group" aria-label="Language toggle">
+                <button class="lang-btn active" id="langEn" onclick="setLang('en')" aria-pressed="true">EN</button>
+                <button class="lang-btn" id="langHi" onclick="setLang('hi')" aria-pressed="false">हि</button>
             </div>
         </div>
+    </div>
 
-
+    <!-- ─── Main Navigation ──────────────────────────────── -->
+    <nav class="main-nav" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
+            <!-- Left: Brand -->
             <div class="logo">
-                <a href="{% url 'home' %}" class="flex items-center gap-3 no-underline">
+                <a href="{% url 'home' %}" class="nav-brand" aria-label="UDAAN Society Home">
                     <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
-                    <div class="flex flex-col text-left">
-                        <span class="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight leading-none">UDAAN
-                            SOCIETY</span>
-                        <span class="text-[10px] sm:text-xs text-gray-500 font-semibold tracking-wide mt-1.5">Empowering
-                            Lives. Building Futures.</span>
+                    <div class="nav-brand-text">
+                        <span class="nav-brand-name">UDAAN Society</span>
+                        <span class="nav-brand-sub">ISA — Jal Jeevan Mission, UP</span>
                     </div>
                 </a>
             </div>
 
             <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn" aria-label="Toggle navigation">
+            <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </button>
-            <ul class="nav-menu">
+
+            <!-- Center: Nav Links -->
+            <ul class="nav-menu" role="list">
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        Who We Are <span class="dropdown-arrow">▼</span>
+                        Who We Are <span class="dropdown-arrow">▾</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
-                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Misson, Vision & Values</a>
-                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation &
-                            Accolades</a>
+                        <a href="{% url 'aboutus' %}" class="dropdown-item">About UDAAN</a>
+                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Mission &amp; Values</a>
+                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation &amp; Accolades</a>
                         <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
-                        <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
-                        <a href="{% url 'contact_us' %}" class="dropdown-item">
-                            Contact Us
-                        </a>
-
-                        <a href="{% url 'our_team' %}" class="dropdown-item">
-                            Our Team
-                        </a>
-
+                        <a href="{% url 'our_policies' %}" class="dropdown-item">Policies &amp; Compliance</a>
+                        <a href="{% url 'our_team' %}" class="dropdown-item">Our Team</a>
                         <a href="{% url 'faq' %}" class="dropdown-item">FAQs</a>
+                        <a href="{% url 'contact_us' %}" class="dropdown-item">Contact Us</a>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        Make a Difference <span class="dropdown-arrow">▼</span>
+                        JJM Programme <span class="dropdown-arrow">▾</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'career_fellowship' %}" class="dropdown-item">
-                            Career and Fellowship
-                        </a>
-
-                        <a href="{% url 'workplace_living' %}" class="dropdown-item">
-                            Workplace Giving
-                        </a>
-
-                        <a href="{% url 'volunteering' %}" class="dropdown-item">
-                            Volunteering
-                        </a>
-
-                        <a href="{% url 'internships' %}" class="dropdown-item">
-                            Internships
-                        </a>
-
-                        <a href="{% url 'campus_ambassador' %}" class="dropdown-item">
-                            Campus Ambassador
-                        </a>
-
-                        <a href="{% url 'jobs' %}" class="dropdown-item">
-                            Jobs at UDAAN Society
-                        </a>
-
+                        <a href="{% url 'project_list' %}" class="dropdown-item">Projects &amp; Villages</a>
+                        <a href="{% url 'our_activities' %}" class="dropdown-item">Field Activities</a>
+                        <a href="{% url 'report_list' %}" class="dropdown-item">Progress Reports</a>
+                        <a href="{% url 'resources' %}" class="dropdown-item">Document Repository</a>
+                        <a href="{% url 'news_clippings' %}" class="dropdown-item">News &amp; Updates</a>
+                        <a href="{% url 'blogs' %}" class="dropdown-item">Field Blogs</a>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        Impact <span class="dropdown-arrow">▼</span>
+                        Engage <span class="dropdown-arrow">▾</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
-                        <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
-                        <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
-                        <a href="{% url 'our_activities' %}" class="dropdown-item">Our Activities</a>
-                        <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>
-                        <a href="{% url 'news_clippings' %}" class="dropdown-item">News Clippings</a>
-                        <a href="{% url 'resources' %}" class="dropdown-item">Resources</a>
+                        <a href="{% url 'career_fellowship' %}" class="dropdown-item">Career &amp; Fellowship</a>
+                        <a href="{% url 'workplace_living' %}" class="dropdown-item">Workplace Giving</a>
+                        <a href="{% url 'volunteering' %}" class="dropdown-item">Volunteering</a>
+                        <a href="{% url 'internships' %}" class="dropdown-item">Internships</a>
+                        <a href="{% url 'campus_ambassador' %}" class="dropdown-item">Campus Ambassador</a>
+                        <a href="{% url 'jobs' %}" class="dropdown-item">Jobs at UDAAN</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -211,254 +181,201 @@
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'start_campaign_wizard' %}"
-                        class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-4 py-2 rounded-xl font-bold text-xs sm:text-sm transition-all duration-300 flex items-center gap-1.5 shadow-sm hover:shadow no-underline">
+                        class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-3.5 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm no-underline">
                         <i class="fa-solid fa-plus-circle"></i>
-                        Start a Campaign
+                        Start Campaign
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/donate/"
-                        class="bg-[#0f172a] hover:bg-[#1e293b] text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-sm hover:shadow no-underline">
-                        <i class="fa-regular fa-heart"></i>
-                        Donate Now
+                    <a href="{% url 'donate' %}"
+                        class="bg-[#0A3663] hover:bg-[#072545] text-white px-4 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm no-underline">
+                        <i class="fa-solid fa-heart text-red-400"></i>
+                        Donate
                     </a>
                 </li>
             </ul>
+
+            <!-- Right: Dual-Logo Slot -->
+            <div class="nav-right-slot">
+                <div class="dual-logo-slot" aria-label="Government Programme Logos">
+                    <div class="gov-logo-badge">
+                        <span class="gov-logo-icon">💧</span>
+                        <span class="gov-logo-name">Jal Jeevan<br>Mission</span>
+                    </div>
+                    <span class="gov-logo-divider" aria-hidden="true"></span>
+                    <div class="gov-logo-badge">
+                        <span class="gov-logo-icon">🏛️</span>
+                        <span class="gov-logo-name">SWSM</span>
+                        <span class="gov-logo-sub">Uttar Pradesh</span>
+                    </div>
+                </div>
+                <a href="{% url 'contact_us' %}" class="nav-cta-btn" id="nav-contact-btn">Contact ISA</a>
+            </div>
         </div>
     </nav>
 
-
     <!-- Main Content -->
-    <main class="flex-grow">
+    <main class="flex-grow" role="main">
         <!-- Announcement Marquee -->
-        <div class="bg-transparent text-[#024b24] text-xs sm:text-sm py-2 font-bold tracking-wide overflow-hidden flex items-center">
+        <div class="bg-blue-50/80 border-b border-blue-100 text-[#0A3663] text-xs sm:text-sm py-2 px-4 font-semibold tracking-wide overflow-hidden flex items-center">
             <marquee scrollamount="6" onmouseover="this.stop();" onmouseout="this.start();" class="w-full">
-                📢 Welcome to UDAAN Society! Support our active campaigns and make a difference today. 🌟 Join us in our mission to empower underserved communities! 
+                📢 Welcome to UDAAN Society! Implementation Support Agency for Jal Jeevan Mission across Aligarh & Bulandshahr. Support our active community campaigns today! 🌟
             </marquee>
         </div>
 
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="mt-auto">
+    <!-- ─── Footer ─────────────────────────────────────────── -->
+    <footer class="mt-auto" role="contentinfo">
 
         <!-- Support Section -->
         <div class="bg-white py-12 border-b border-gray-200 support-section">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div
-                    class="support-card bg-white border border-gray-200 shadow-sm rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
+                    class="support-card bg-gradient-to-r from-blue-50 via-white to-sky-50 border border-blue-100 shadow-sm rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
                     <div class="mb-6 md:mb-0">
-                        <span class="text-red-600 font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A
-                            HAND</span>
-                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">
-                            <span class="text-red-600">Support Us</span> And Change The <br class="hidden md:block">
-                            Course Of A Child's Life Today!
+                        <span class="text-[#0EA5E9] font-bold tracking-widest text-xs uppercase block mb-2">GIVE US A HAND</span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-[#0A3663] mb-2">
+                            Support Our Mission And Empower <br class="hidden md:block">
+                            Rural Communities Today!
                         </h2>
                         <button
-                            class="text-red-600 font-medium text-sm mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer"
-                            data-title="Change a Child's Life"
-                            data-content="Your support helps construct entirely new paradigms for the children in our core areas. With proper education, mentorship, and life skills, every child can carve out their own future.">
+                            class="text-[#0A3663] font-semibold text-sm mt-2 inline-block open-modal-btn bg-transparent border-none p-0 cursor-pointer hover:underline"
+                            data-title="Change a Community's Future"
+                            data-content="Your support helps build safe drinking water networks, quality child education centers, blood donor mobilization, and street vendor livelihood security across Uttar Pradesh.">
                             Read more...
                         </button>
                     </div>
                     <div>
                         <a href="{% url 'donate' %}"
-                            class="bg-[#E3F2FD] text-[#0D47A1] hover:bg-[#1565C0] hover:text-white font-bold py-3 px-8 rounded-xl flex items-center border border-[#E3F2FD] hover:border-[#1565C0] transition-all shadow-sm hover:shadow-md">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
-                            Donate Now
-                            <span class="text-xs font-normal ml-1 opacity-80 block sm:inline">Secured by Razorpay</span>
+                            class="bg-[#0A3663] hover:bg-[#072545] text-white font-bold py-3.5 px-8 rounded-xl flex items-center transition-all shadow-md hover:shadow-lg no-underline gap-2">
+                            <i class="fa-solid fa-heart text-red-400"></i>
+                            <span>Donate Now</span>
+                            <span class="text-xs font-normal opacity-80 block sm:inline">| Razorpay Secured</span>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Compliance Banner -->
+        <div class="jjm-compliance-banner">
+            <div class="banner-inner">
+                <span>🇮🇳 <strong>Jal Jeevan Mission — Har Ghar Jal</strong></span>
+                <span class="banner-divider" aria-hidden="true"></span>
+                <span>Implemented by <strong>UDAAN Society</strong> as ISA under <strong>SWSM, Uttar Pradesh</strong></span>
+                <span class="banner-divider" aria-hidden="true"></span>
+                <span>Districts: <strong>Aligarh</strong> &amp; <strong>Bulandshahr</strong></span>
+            </div>
+        </div>
 
+        <!-- Main Footer Links -->
+        <div class="bg-white py-14 border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Main Footer Links (IMPROVED + ANIMATED) -->
-        <div class="bg-gradient-to-b from-gray-100 to-white py-16">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-
-                    <!-- Brand Section -->
-                    <div class="transform transition duration-500 hover:-translate-y-2">
-                        <div class="flex items-center mb-6">
-                            <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" class="h-12 w-auto mr-3">
-                            <span class="text-xl font-bold text-gray-900">UDAAN Society</span>
+                    <!-- Brand -->
+                    <div>
+                        <div class="flex items-center mb-5">
+                            <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" class="h-11 w-auto mr-3">
+                            <div>
+                                <span class="block text-base font-bold" style="color:#0A3663;">UDAAN Society</span>
+                                <span class="block text-xs" style="color:#64748B;">Implementation Support Agency</span>
+                            </div>
                         </div>
-
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            We strive for underserved and neglected communities. Service, Responsibility, Determination,
-                            Kindness, and Contribution are our core values.
+                        <p class="text-sm leading-relaxed mb-4" style="color:#64748B;">
+                            Appointed ISA under Jal Jeevan Mission – Har Ghar Jal by SWSM, Uttar Pradesh for
+                            Aligarh &amp; Bulandshahr districts.
                         </p>
+                        <div class="flex items-center gap-2 text-xs" style="color:#0EA5E9; font-weight:600;">
+                            <span>💧</span>
+                            <span>Har Ghar Jal — Every household deserves clean water</span>
+                        </div>
                     </div>
 
                     <!-- Quick Links -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.1s; animation-fill-mode: forwards;">
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Quick Links
-                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
-                        </h4>
-
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="{% url 'aboutus' %}" class="footer-link">About UDAAN</a></li>
-                            <li><a href="{% url 'our_team' %}" class="footer-link">Our Team</a></li>
-                            <li><a href="{% url 'project_list' %}" class="footer-link">Projects</a></li>
-                            <li><a href="{% url 'our_activities' %}" class="footer-link">Activities</a></li>
-                            <li><a href="{% url 'contact_us' %}" class="footer-link">Contact</a></li>
+                    <div>
+                        <h4 class="text-sm font-bold mb-5 uppercase tracking-wider" style="color:#0A3663;">Quick Links</h4>
+                        <ul class="space-y-3 text-sm" style="color:#64748B;">
+                            <li><a href="{% url 'aboutus' %}" class="hover:text-blue-600 transition-colors">About UDAAN</a></li>
+                            <li><a href="{% url 'our_team' %}" class="hover:text-blue-600 transition-colors">Our Team</a></li>
+                            <li><a href="{% url 'project_list' %}" class="hover:text-blue-600 transition-colors">Projects &amp; Villages</a></li>
+                            <li><a href="{% url 'our_activities' %}" class="hover:text-blue-600 transition-colors">Field Activities</a></li>
+                            <li><a href="{% url 'contact_us' %}" class="hover:text-blue-600 transition-colors">Contact Us</a></li>
                         </ul>
                     </div>
 
-                    <!-- Policies -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.2s; animation-fill-mode: forwards;">
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Policies
-                            <span class="block w-12 h-1 bg-blue-500 mt-2"></span>
-                        </h4>
-
-                        <ul class="space-y-3 text-sm">
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Privacy Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Terms of Use</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Refund Policy</a></li>
-                            <li><a href="{% url 'our_policies' %}" class="footer-link">Child Protection</a></li>
+                    <!-- ISA Framework & Policies -->
+                    <div>
+                        <h4 class="text-sm font-bold mb-5 uppercase tracking-wider" style="color:#0A3663;">Policies &amp; ISA</h4>
+                        <ul class="space-y-3 text-sm" style="color:#64748B;">
+                            <li><a href="{% url 'our_policies' %}" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
+                            <li><a href="{% url 'our_policies' %}" class="hover:text-blue-600 transition-colors">Terms of Use</a></li>
+                            <li><a href="{% url 'our_policies' %}" class="hover:text-blue-600 transition-colors">Child Protection Policy</a></li>
+                            <li><a href="{% url 'resources' %}" class="hover:text-blue-600 transition-colors">SWSM Guidelines</a></li>
+                            <li><a href="{% url 'report_list' %}" class="hover:text-blue-600 transition-colors">Progress Reports</a></li>
                         </ul>
                     </div>
 
-                    <!-- Social + Newsletter -->
-                    <div class="opacity-100 translate-y-0 animate-fadeInUp"
-                        style="animation-delay: 0.3s; animation-fill-mode: forwards;">
-
-                        <h4 class="text-lg font-bold text-gray-900 mb-6 relative">
-                            Stay Connected
-                            <span class="block w-12 h-1 bg-red-500 mt-2"></span>
-                        </h4>
-
-                        <input type="email" placeholder="Enter email"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm mb-3">
-
-                        <button
-                            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all duration-300">
-                            Subscribe
-                        </button>
-
-                        <div class="flex space-x-3 mt-5">
-
-                            <a href="#"
-                                class="social-icon bg-blue-600 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">f</a>
-                            <a href="#"
-                                class="social-icon bg-pink-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">i</a>
-                            <a href="#"
-                                class="social-icon bg-blue-700 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">in</a>
-                            <a href="#"
-                                class="social-icon bg-red-500 w-[30px] h-[30px] text-white flex items-center justify-center rounded rounded-full">yt</a>
-
+                    <!-- Social & Newsletter -->
+                    <div>
+                        <h4 class="text-sm font-bold mb-5 uppercase tracking-wider" style="color:#0A3663;">Stay Updated</h4>
+                        <div class="mb-5">
+                            <input type="email" placeholder="Your Email Address"
+                                class="w-full px-3 py-2.5 rounded border text-sm mb-2 focus:outline-none focus:ring-2"
+                                style="border-color:#DDE3EC;">
+                            <button
+                                class="w-full font-bold py-2.5 rounded text-sm transition-colors uppercase tracking-wider"
+                                style="background:#0A3663; color:#fff; border:none; cursor:pointer;"
+                                onmouseover="this.style.background='#0EA5E9'" onmouseout="this.style.background='#0A3663'">
+                                Subscribe
+                            </button>
                         </div>
-
+                        <h5 class="text-xs font-bold mb-3 uppercase tracking-wider" style="color:#0A3663;">Follow Us</h5>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://www.facebook.com/udaansociety" target="_blank" rel="noopener" aria-label="Facebook"
+                                class="h-9 w-9 rounded flex items-center justify-center hover:opacity-80 transition-opacity"
+                                style="background:#1877F2; color:#fff;">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.instagram.com/udaansociety" target="_blank" rel="noopener" aria-label="Instagram"
+                                class="h-9 w-9 rounded flex items-center justify-center hover:opacity-80 transition-opacity"
+                                style="background:#E1306C; color:#fff;">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/udaansociety" target="_blank" rel="noopener" aria-label="LinkedIn"
+                                class="h-9 w-9 rounded flex items-center justify-center hover:opacity-80 transition-opacity"
+                                style="background:#0A66C2; color:#fff;">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://www.youtube.com/user/udaansociety" target="_blank" rel="noopener" aria-label="YouTube"
+                                class="h-9 w-9 rounded flex items-center justify-center hover:opacity-80 transition-opacity"
+                                style="background:#FF0000; color:#fff;">
+                                <i class="fa-brands fa-youtube"></i>
+                            </a>
+                            <a href="https://wa.me/9837067681" target="_blank" rel="noopener" aria-label="WhatsApp"
+                                class="h-9 w-9 rounded flex items-center justify-center hover:opacity-80 transition-opacity"
+                                style="background:#25D366; color:#fff;">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </a>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <!-- Copyright -->
-        <div class="relative bg-gray-950 py-8 border-t border-gray-800">
-
-            <!-- top glow line -->
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-blue-500 via-white to-red-500"></div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-
-                <!-- Left -->
-                <div class="text-gray-400 text-sm mb-4 md:mb-0 text-center md:text-left">
-                    © {% now "Y" %} <span class="text-white font-semibold">UDAAN Society</span>
-                    <br class="md:hidden">
-                    <span class="text-gray-500 text-xs">Made with ❤️ by UDAAN Society Team</span>
+        <div class="py-5 border-t" style="background:#0A3663; border-color:rgba(255,255,255,0.1);">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-3">
+                <div class="text-sm" style="color:rgba(255,255,255,0.7);">
+                    Copyright &copy; {% now "Y" %} UDAAN Society | Jal Jeevan Mission ISA Portal
                 </div>
-
-                <!-- Right Links -->
-                <div class="flex flex-wrap justify-center gap-4 text-xs md:text-sm">
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Terms</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Privacy</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Refund</a>
-                    <a href="{% url 'our_policies' %}" class="text-gray-400 hover:text-white transition">Disclaimer</a>
+                <div class="flex flex-wrap gap-5 text-sm justify-center">
+                    <a href="{% url 'our_policies' %}" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.6);">Terms &amp; Conditions</a>
+                    <a href="{% url 'our_policies' %}" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.6);">Privacy Policy</a>
+                    <a href="{% url 'our_policies' %}" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.6);">Disclaimer</a>
                 </div>
             </div>
         </div>
@@ -467,39 +384,27 @@
 
     <script src="{% static 'js/main.js' %}"></script>
 
-    <!-- AI Chatbot Integration (Microservice Architecture) -->
+    <!-- AI Chatbot Integration -->
     <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}">
     {% include 'chatbot/widget.html' %}
     <script src="{% static 'chatbot/chatbot.js' %}"></script>
-    <!-- Global Workspace FAB Removed -->
-    {% if request.user.is_authenticated %}
-    {% endif %}
+
     <!-- Global Read More Modal -->
     <div id="globalReadMoreModal"
         class="fixed inset-0 z-[100] hidden items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300">
-        <div
-            class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
-            <!-- Modal Header -->
+        <div class="relative w-full max-w-2xl mx-4 bg-white rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
             <div class="flex items-center justify-between p-5 border-b border-gray-200">
-                <h3 id="modalTitle" class="text-2xl font-bold text-gray-900"></h3>
-                <button id="closeModalBtn"
-                    class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
+                <h3 id="modalTitle" class="text-xl font-bold" style="color:#0A3663;"></h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none text-2xl font-bold">
+                    &times;
                 </button>
             </div>
-            <!-- Modal Body -->
             <div class="p-6 max-h-[70vh] overflow-y-auto">
-                <img id="modalImage" src="" alt="Modal Image"
-                    class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64">
-                <div id="modalContent" class="text-gray-700 leading-relaxed text-lg"></div>
+                <img id="modalImage" src="" alt="Modal Image" class="w-full h-auto mb-4 rounded-lg hidden object-cover max-h-64">
+                <div id="modalContent" class="text-gray-700 leading-relaxed text-base"></div>
             </div>
-            <!-- Modal Footer -->
             <div class="p-5 border-t border-gray-200 flex justify-end">
-                <button id="closeModalFooterBtn"
-                    class="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors">Close</button>
+                <button id="closeModalFooterBtn" class="px-6 py-2 rounded-lg font-medium transition-colors text-sm" style="background:#F1F5F9; color:#374151;">Close</button>
             </div>
         </div>
     </div>
@@ -512,29 +417,19 @@
             const modalImage = document.getElementById('modalImage');
             const closeBtns = [document.getElementById('closeModalBtn'), document.getElementById('closeModalFooterBtn')];
 
-            // Function to open modal
-            window.openReadMoreModal = function (title, content, imageUrl = null) {
+            window.openReadMoreModal = function(title, content, imageUrl = null) {
                 modalTitle.textContent = title || 'Details';
                 modalContent.innerHTML = content || '';
-
-                if (imageUrl) {
-                    modalImage.src = imageUrl;
-                    modalImage.classList.remove('hidden');
-                } else {
-                    modalImage.src = '';
-                    modalImage.classList.add('hidden');
-                }
-
+                if (imageUrl) { modalImage.src = imageUrl; modalImage.classList.remove('hidden'); }
+                else { modalImage.src = ''; modalImage.classList.add('hidden'); }
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
-                // Trigger reflow for transition
                 void modal.offsetWidth;
                 modal.classList.remove('opacity-0');
                 modal.querySelector('div').classList.remove('scale-95');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
             };
 
-            // Function to close modal
             const closeModal = () => {
                 modal.classList.add('opacity-0');
                 modal.querySelector('div').classList.add('scale-95');
@@ -542,58 +437,74 @@
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                     document.body.style.overflow = '';
-                }, 300); // Wait for transition
+                }, 300);
             };
 
-            closeBtns.forEach(btn => {
-                if (btn) btn.addEventListener('click', closeModal);
-            });
-
-            // Close on outside click
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            // Handle ESC key
+            closeBtns.forEach(btn => { if (btn) btn.addEventListener('click', closeModal); });
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    closeModal();
-                }
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
             });
-
-            // Auto-bind to elements with generic class if they provide data attributes
             document.querySelectorAll('.open-modal-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Stop propagation so parent link clicks aren't triggered
-                    e.stopPropagation();
-                    const title = btn.getAttribute('data-title');
-                    const content = btn.getAttribute('data-content');
-                    const image = btn.getAttribute('data-image');
-                    window.openReadMoreModal(title, content, image);
+                    e.preventDefault(); e.stopPropagation();
+                    window.openReadMoreModal(btn.getAttribute('data-title'), btn.getAttribute('data-content'), btn.getAttribute('data-image'));
                 });
             });
         });
-    </script>
-    <script src="{% static 'js/home.js' %}"></script>
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
+        // ─── Bilingual Toggle ─────────────────────────────
+        const translations = {
+            en: {
+                topbarMission: 'Jal Jeevan Mission — Har Ghar Jal',
+                topbarISA: 'SWSM, Uttar Pradesh | ISA: UDAAN Society',
+                navBrandName: 'UDAAN Society',
+                navBrandSub: 'ISA — Jal Jeevan Mission, UP',
+                navContact: 'Contact ISA',
+            },
+            hi: {
+                topbarMission: 'जल जीवन मिशन — हर घर जल',
+                topbarISA: 'SWSM, उत्तर प्रदेश | ISA: उड़ान सोसाइटी',
+                navBrandName: 'उड़ान सोसाइटी',
+                navBrandSub: 'ISA — जल जीवन मिशन, UP',
+                navContact: 'ISA से संपर्क करें',
+            }
+        };
+
+        function setLang(lang) {
+            const t = translations[lang];
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langEn').setAttribute('aria-pressed', lang === 'en');
+            document.getElementById('langHi').classList.toggle('active', lang === 'hi');
+            document.getElementById('langHi').setAttribute('aria-pressed', lang === 'hi');
+
+            const missionEl = document.querySelector('.jjm-topbar-left strong');
+            const isaEl = document.querySelector('.jjm-topbar-left span:nth-child(5)');
+            const brandNameEl = document.querySelector('.nav-brand-name');
+            const brandSubEl = document.querySelector('.nav-brand-sub');
+            const contactBtn = document.getElementById('nav-contact-btn');
+
+            if (missionEl) missionEl.textContent = t.topbarMission;
+            if (isaEl) isaEl.textContent = t.topbarISA;
+            if (brandNameEl) brandNameEl.textContent = t.navBrandName;
+            if (brandSubEl) brandSubEl.textContent = t.navBrandSub;
+            if (contactBtn) contactBtn.textContent = t.navContact;
+
+            document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
+            localStorage.setItem('jjm_lang', lang);
+        }
+
+        (function() {
+            const saved = localStorage.getItem('jjm_lang');
+            if (saved && saved !== 'en') setLang(saved);
+        })();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
         AOS.init({
             duration: 1000,
             once: true,
             offset: 120
-        });
-
-        // Smooth Parallax Scroll Animation for Subpage Heros
-        document.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            document.querySelectorAll('.subpage-hero').forEach(hero => {
-                // Moves the background slower than the text container to create smooth visual depth
-                hero.style.backgroundPositionY = `${scrolled * 0.3}px`;
-            });
         });
     </script>
 </body>
