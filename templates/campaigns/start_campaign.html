@@ -7,6 +7,8 @@
 <!-- FontAwesome & Canvas Confetti -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <style>
   /* Soothing Slate & Professional Blue Theme */
@@ -177,6 +179,24 @@
                 <input type="text" id="input-city" oninput="updateLivePreview()" placeholder="e.g. New Delhi / Mumbai" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
               </div>
             </div>
+
+            <!-- Contact Details -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Contact Phone / WhatsApp Number *</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-xs font-bold"><i class="fa-solid fa-phone"></i></span>
+                  <input type="tel" id="input-contact-phone" placeholder="e.g. 9876543210" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Email Address *</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-xs font-bold"><i class="fa-solid fa-envelope"></i></span>
+                  <input type="email" id="input-contact-email" placeholder="e.g. contact@example.com" class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -211,16 +231,27 @@
               </div>
               <textarea id="input-story" rows="5" oninput="updateLivePreview()" placeholder="Explain why funds are needed, how every rupee will be spent, and your family's situation..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50"></textarea>
             </div>
+
+            <!-- YouTube Video URL -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">YouTube Video Link (Optional)</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-2.5 text-rose-600"><i class="fa-brands fa-youtube text-base"></i></span>
+                <input type="url" id="input-video-url" placeholder="https://www.youtube.com/watch?v=..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" />
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Paste a YouTube video URL to showcase a video on your campaign detail page</p>
+            </div>
           </div>
         </div>
 
         <!-- STEP 3: Photos & Supporting Documents -->
         <div id="step-content-3" class="step-content glass-card rounded-3xl p-6 sm:p-8 space-y-6 hidden">
           <h2 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3 flex items-center gap-2">
-            <i class="fa-solid fa-file-invoice text-blue-600"></i> Upload Photo & Supporting Documents
+            <i class="fa-solid fa-images text-blue-600"></i> Upload Photos & Supporting Documents
           </h2>
 
-          <div class="space-y-4">
+          <div class="space-y-5">
+            <!-- Cover Photo -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">Campaign Cover Photo *</label>
               <div class="dropzone p-5 rounded-2xl text-center cursor-pointer" onclick="document.getElementById('input-patient-photo').click()">
@@ -228,17 +259,41 @@
                 <i class="fa-solid fa-camera-retro text-2xl text-slate-400 mb-2"></i>
                 <p class="text-xs font-bold text-slate-700">Click to upload main campaign image</p>
                 <p class="text-[11px] text-slate-400 mt-1">Clear photos get 3x higher contributions</p>
-                <div id="photo-preview-tag" class="hidden mt-2 text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg inline-block">Photo Uploaded ✓</div>
+                <div id="photo-preview-tag" class="hidden mt-2 text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-lg inline-block">Main Cover Uploaded ✓</div>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
-                <label class="block text-xs font-bold text-slate-700">Supporting Document / Estimate *</label>
+            <!-- Additional Gallery Photos (Multiple) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Additional Gallery Photos (Upload Multiple)</label>
+              <div class="dropzone p-4 rounded-2xl text-center cursor-pointer" onclick="document.getElementById('input-gallery-photos').click()">
+                <input type="file" id="input-gallery-photos" accept="image/*" multiple class="hidden" onchange="handleGalleryPhotosUpload(event)" />
+                <i class="fa-solid fa-images text-2xl text-indigo-500 mb-1"></i>
+                <p class="text-xs font-bold text-slate-700">Click to select multiple photos (Patient, Hospital, Reports, etc.)</p>
+                <p class="text-[11px] text-slate-400">Hold Ctrl/Cmd to select multiple images</p>
+              </div>
+              <div id="gallery-preview-container" class="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3 hidden"></div>
+            </div>
+
+            <!-- Supporting Documents (Multiple) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Supporting Documents (Medical Bills, Estimates, ID Proof, Admission Letter)</label>
+              <div class="dropzone p-4 rounded-2xl text-center cursor-pointer" onclick="document.getElementById('input-supporting-docs').click()">
+                <input type="file" id="input-supporting-docs" accept="image/*,application/pdf" multiple class="hidden" onchange="handleDocsUpload(event)" />
+                <i class="fa-solid fa-folder-open text-2xl text-amber-500 mb-1"></i>
+                <p class="text-xs font-bold text-slate-700">Click to select multiple document files (PDF / Images)</p>
+                <p class="text-[11px] text-slate-400">Medical estimates, prescriptions, bills, ID proofs, recommendation letters</p>
+              </div>
+              <div id="docs-preview-container" class="space-y-1.5 mt-3 hidden"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div class="p-3 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
+                <label class="block text-xs font-bold text-slate-700">Specific Cost Estimate / Bill (Optional)</label>
                 <input type="file" id="input-prescription" accept="image/*,application/pdf" class="text-xs text-slate-500 w-full" />
               </div>
-              <div class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
-                <label class="block text-xs font-bold text-slate-700">ID Proof / Admission Letter (Optional)</label>
+              <div class="p-3 rounded-xl border border-dashed border-slate-200 bg-slate-50 space-y-1">
+                <label class="block text-xs font-bold text-slate-700">Specific ID Proof / Admission Letter (Optional)</label>
                 <input type="file" id="input-report" accept="image/*,application/pdf" class="text-xs text-slate-500 w-full" />
               </div>
             </div>
@@ -260,11 +315,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Account Number *</label>
-                <input type="password" id="input-bank-acc" placeholder="Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                <input type="password" id="input-bank-acc" oninput="checkAccountMatch()" placeholder="Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">Confirm Account Number *</label>
-                <input type="text" id="input-bank-acc-confirm" placeholder="Re-enter Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                <input type="password" id="input-bank-acc-confirm" oninput="checkAccountMatch()" placeholder="Re-enter Account Number" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-blue-500 focus:outline-none bg-slate-50/50" required />
+                <p id="acc-match-msg" class="text-[11px] font-bold mt-1 hidden"></p>
               </div>
             </div>
 
@@ -278,6 +334,20 @@
                 <button type="button" onclick="checkIFSC()" class="px-4 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shrink-0 transition">Verify</button>
               </div>
               <p id="ifsc-branch-info" class="text-xs text-slate-500 mt-1"></p>
+            </div>
+
+            <!-- Cancelled Cheque / Bank Passbook Field -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Upload Cancelled Cheque / Bank Passbook *</label>
+              <div class="dropzone p-4 rounded-2xl text-center cursor-pointer" onclick="document.getElementById('input-cancelled-cheque').click()">
+                <input type="file" id="input-cancelled-cheque" accept="image/*,application/pdf" class="hidden" onchange="handleCancelledChequeUpload(event)" />
+                <i class="fa-solid fa-file-invoice-dollar text-2xl text-emerald-500 mb-1"></i>
+                <p class="text-xs font-bold text-slate-700">Click to upload Cancelled Cheque or Bank Passbook</p>
+                <p class="text-[11px] text-slate-400">Used by Udaan Society for bank account verification</p>
+                <div id="cheque-preview-tag" class="hidden mt-2 text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-lg inline-block">
+                  <i class="fa-solid fa-circle-check mr-1"></i> Cancelled Cheque Attached
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -297,6 +367,29 @@
           </button>
         </div>
 
+        <!-- Cropper Modal -->
+        <div id="cropper-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/80 p-4">
+          <div class="bg-white rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+              <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-crop-simple text-blue-600 mr-2"></i> Crop Campaign Cover</h3>
+              <button type="button" onclick="closeCropper()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="p-4 bg-slate-100 flex-grow relative overflow-hidden flex flex-col items-center justify-center" style="min-height: 300px;">
+              <p class="text-xs font-bold text-slate-500 text-center mb-2">Adjust the image so the important subject is inside the frame (16:9 ratio)</p>
+              <div class="w-full max-w-2xl h-[50vh] sm:h-[60vh] bg-slate-200 rounded-xl overflow-hidden border-2 border-slate-300">
+                <img id="cropper-image" src="" alt="Crop Preview" class="max-w-full hidden">
+              </div>
+            </div>
+            <div class="p-4 border-t border-slate-200 bg-white flex justify-between items-center gap-4">
+              <button type="button" onclick="resetCropper()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50"><i class="fa-solid fa-rotate-left mr-1"></i> Reset</button>
+              <div class="flex gap-3">
+                <button type="button" onclick="closeCropper()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50">Cancel</button>
+                <button type="button" onclick="applyCrop()" class="btn-primary-blue text-white px-6 py-2.5 rounded-xl text-xs font-bold transition">Apply Crop</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
     </div>
 
   </div>
@@ -307,27 +400,34 @@
   let currentStep = 1;
   let selectedCause = "Medical";
   let selectedRelation = "My Child";
+  let cropperInstance = null;
+  let finalCroppedBlob = null;
+  let selectedDocs = [];
 
   function selectCause(cause, el) {
     selectedCause = cause;
     document.querySelectorAll('.cause-card').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    if (el) el.classList.add('active');
 
     const badge = document.getElementById('preview-cause-badge');
     if (badge) badge.innerText = `${cause} Campaign`;
 
+    const labelBen = document.getElementById('label-ben-name');
+    const labelCond = document.getElementById('label-condition');
+    const labelInst = document.getElementById('label-institute');
+
     if (cause === 'Student Welfare') {
-      document.getElementById('label-ben-name').innerText = "Student Full Name *";
-      document.getElementById('label-condition').innerText = "Course / Support Type *";
-      document.getElementById('label-institute').innerText = "School / College Name *";
+      if (labelBen) labelBen.innerText = "Student Full Name *";
+      if (labelCond) labelCond.innerText = "Course / Support Type *";
+      if (labelInst) labelInst.innerText = "School / College Name *";
     } else if (cause === 'NGO / Charity') {
-      document.getElementById('label-ben-name').innerText = "NGO / Project Leader Name *";
-      document.getElementById('label-condition').innerText = "Project Purpose *";
-      document.getElementById('label-institute').innerText = "Organization Name *";
+      if (labelBen) labelBen.innerText = "NGO / Project Leader Name *";
+      if (labelCond) labelCond.innerText = "Project Purpose *";
+      if (labelInst) labelInst.innerText = "Organization Name *";
     } else {
-      document.getElementById('label-ben-name').innerText = "Beneficiary / Patient Name *";
-      document.getElementById('label-condition').innerText = "Medical Condition / Purpose *";
-      document.getElementById('label-institute').innerText = "Hospital / Institution Name *";
+      if (labelBen) labelBen.innerText = "Beneficiary / Patient Name *";
+      if (labelCond) labelCond.innerText = "Medical Condition / Purpose *";
+      if (labelInst) labelInst.innerText = "Hospital / Institution Name *";
     }
 
     autoGenerateTitle();
@@ -336,7 +436,7 @@
   function selectRelation(rel, el) {
     selectedRelation = rel;
     document.querySelectorAll('.chip-option').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    if (el) el.classList.add('active');
     autoGenerateTitle();
   }
 
@@ -345,19 +445,29 @@
   }
 
   function autoGenerateTitle() {
-    const name = document.getElementById('input-patient-name').value || "Beneficiary";
-    const cond = document.getElementById('input-medical-condition').value;
-    const title = `Support ${name}'s ${cond} - Urgent Appeal`;
-    document.getElementById('input-title').value = title;
+    const nameEl = document.getElementById('input-patient-name');
+    const condEl = document.getElementById('input-medical-condition');
+    const titleEl = document.getElementById('input-title');
+    if (nameEl && condEl && titleEl) {
+      const name = nameEl.value || "Beneficiary";
+      const cond = condEl.value;
+      titleEl.value = `Support ${name}'s ${cond} - Urgent Appeal`;
+    }
     updateLivePreview();
   }
 
   function updateLivePreview() {
-    const name = document.getElementById('input-patient-name').value || "Aarav Sharma";
-    const hospital = document.getElementById('input-hospital-name').value || "AIIMS Hospital";
-    const city = document.getElementById('input-city').value || "New Delhi";
-    const goal = document.getElementById('input-goal-amount').value || "250000";
-    const title = document.getElementById('input-title').value || `Support ${name}'s Campaign`;
+    const nameEl = document.getElementById('input-patient-name');
+    const hospEl = document.getElementById('input-hospital-name');
+    const cityEl = document.getElementById('input-city');
+    const goalEl = document.getElementById('input-goal-amount');
+    const titleEl = document.getElementById('input-title');
+
+    const name = nameEl ? (nameEl.value || "Aarav Sharma") : "Aarav Sharma";
+    const hospital = hospEl ? (hospEl.value || "AIIMS Hospital") : "AIIMS Hospital";
+    const city = cityEl ? (cityEl.value || "New Delhi") : "New Delhi";
+    const goal = goalEl ? (goalEl.value || "250000") : "250000";
+    const title = titleEl ? (titleEl.value || `Support ${name}'s Campaign`) : `Support ${name}'s Campaign`;
 
     const pt = document.getElementById('preview-title');
     if (pt) pt.innerText = title;
@@ -366,40 +476,16 @@
     const pc = document.getElementById('preview-city');
     if (pc) pc.innerText = city;
     const pg = document.getElementById('preview-goal-text');
-    if (pg) pg.innerText = `Goal: ₹ ${parseInt(goal).toLocaleString('en-IN')}`;
-  }
-
-  function handlePatientPhotoUpload(e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.getElementById('preview-photo').src = evt.target.result;
-        document.getElementById('photo-preview-tag').classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  function checkIFSC() {
-    const code = document.getElementById('input-ifsc').value.trim();
-    if (!code) return;
-    fetch(`/api/verify-ifsc/?code=${code}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.valid) {
-          document.getElementById('ifsc-status').classList.remove('hidden');
-          document.getElementById('ifsc-branch-info').innerText = `${data.bank_name} - ${data.branch}`;
-        } else {
-          alert(data.message);
-        }
-      });
+    if (pg) pg.innerText = `Goal: ₹ ${parseInt(goal || 0).toLocaleString('en-IN')}`;
   }
 
   function improveStoryAI() {
-    const name = document.getElementById('input-patient-name').value || "the beneficiary";
-    const cond = document.getElementById('input-medical-condition').value;
-    const hosp = document.getElementById('input-hospital-name').value || "the institution";
+    const nameEl = document.getElementById('input-patient-name');
+    const condEl = document.getElementById('input-medical-condition');
+    const hospEl = document.getElementById('input-hospital-name');
+    const name = nameEl ? (nameEl.value || "the beneficiary") : "the beneficiary";
+    const cond = condEl ? condEl.value : "Medical Treatment";
+    const hosp = hospEl ? (hospEl.value || "the institution") : "the institution";
 
     fetch('/api/campaigns/ai-assist/', {
       method: 'POST',
@@ -409,7 +495,8 @@
     .then(r => r.json())
     .then(d => {
       if (d.status === 'success') {
-        document.getElementById('input-story').value = d.improved_story;
+        const storyInput = document.getElementById('input-story');
+        if (storyInput) storyInput.value = d.improved_story;
         alert("Story expanded with AI details!");
       }
     });
@@ -431,11 +518,14 @@
 
   function renderStep() {
     document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-    document.getElementById(`step-content-${currentStep}`).classList.remove('hidden');
+    const stepEl = document.getElementById(`step-content-${currentStep}`);
+    if (stepEl) stepEl.classList.remove('hidden');
 
     const pct = currentStep * 25;
-    document.getElementById('progress-bar-fill').style.width = `${pct}%`;
-    document.getElementById('step-pct-text').innerText = `Step ${currentStep} of 4 (${pct}%)`;
+    const progressFill = document.getElementById('progress-bar-fill');
+    if (progressFill) progressFill.style.width = `${pct}%`;
+    const pctText = document.getElementById('step-pct-text');
+    if (pctText) pctText.innerText = `Step ${currentStep} of 4 (${pct}%)`;
 
     const titles = [
       "Step 1: Choose Cause & Details",
@@ -443,53 +533,307 @@
       "Step 3: Documents & Photo",
       "Step 4: Bank Account for Payout"
     ];
-    document.getElementById('step-title-text').innerText = titles[currentStep - 1];
+    const titleText = document.getElementById('step-title-text');
+    if (titleText) titleText.innerText = titles[currentStep - 1];
 
     for (let i = 1; i <= 4; i++) {
       const p = document.getElementById(`pill-${i}`);
-      if (i === currentStep) {
-        p.className = "step-pill py-2 px-2 rounded-xl font-bold bg-slate-800 text-white shadow-sm";
-      } else if (i < currentStep) {
-        p.className = "step-pill py-2 px-2 rounded-xl font-semibold text-blue-700 bg-blue-50 border border-blue-100";
-      } else {
-        p.className = "step-pill py-2 px-2 rounded-xl font-medium text-slate-400";
+      if (p) {
+        if (i === currentStep) {
+          p.className = "step-pill py-2 px-2 rounded-xl font-bold bg-slate-800 text-white shadow-sm";
+        } else if (i < currentStep) {
+          p.className = "step-pill py-2 px-2 rounded-xl font-semibold text-blue-700 bg-blue-50 border border-blue-100";
+        } else {
+          p.className = "step-pill py-2 px-2 rounded-xl font-medium text-slate-400";
+        }
       }
     }
 
-    document.getElementById('btn-back').disabled = (currentStep === 1);
+    const btnBack = document.getElementById('btn-back');
+    if (btnBack) btnBack.disabled = (currentStep === 1);
+
+    const btnNext = document.getElementById('btn-next');
+    const btnSubmit = document.getElementById('btn-submit');
     if (currentStep === 4) {
-      document.getElementById('btn-next').classList.add('hidden');
-      document.getElementById('btn-submit').classList.remove('hidden');
+      if (btnNext) btnNext.classList.add('hidden');
+      if (btnSubmit) btnSubmit.classList.remove('hidden');
     } else {
-      document.getElementById('btn-next').classList.remove('hidden');
-      document.getElementById('btn-submit').classList.add('hidden');
+      if (btnNext) btnNext.classList.remove('hidden');
+      if (btnSubmit) btnSubmit.classList.add('hidden');
     }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleCancelledChequeUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const tag = document.getElementById('cheque-preview-tag');
+      if (tag) tag.classList.remove('hidden');
+    }
+  }
+
+  function checkAccountMatch() {
+    const acc = document.getElementById('input-bank-acc').value;
+    const conf = document.getElementById('input-bank-acc-confirm').value;
+    const msg = document.getElementById('acc-match-msg');
+    const btn = document.getElementById('btn-submit');
+    if (!acc || !conf) {
+      msg.classList.add('hidden');
+      return;
+    }
+    msg.classList.remove('hidden');
+    if (acc === conf) {
+      msg.innerText = "✓ Account numbers match";
+      msg.className = "text-[11px] font-bold mt-1 text-emerald-600";
+      if(btn) btn.disabled = false;
+    } else {
+      msg.innerText = "✗ Account numbers do not match";
+      msg.className = "text-[11px] font-bold mt-1 text-rose-600";
+      if(btn) btn.disabled = true;
+    }
+  }
+
+  function handlePatientPhotoUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const modal = document.getElementById('cropper-modal');
+        const img = document.getElementById('cropper-image');
+        img.src = evt.target.result;
+        img.classList.remove('hidden');
+        modal.classList.remove('hidden');
+        
+        if (cropperInstance) cropperInstance.destroy();
+        cropperInstance = new Cropper(img, {
+          aspectRatio: 16 / 9,
+          viewMode: 1,
+          autoCropArea: 1,
+          responsive: true,
+          guides: true,
+          center: true,
+          highlight: false,
+          background: true,
+          minCropBoxWidth: 300
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function closeCropper() {
+    document.getElementById('cropper-modal').classList.add('hidden');
+    if (cropperInstance) cropperInstance.destroy();
+    document.getElementById('input-patient-photo').value = ""; // reset
+  }
+
+  function resetCropper() {
+    if (cropperInstance) cropperInstance.reset();
+  }
+
+  function applyCrop() {
+    if (cropperInstance) {
+      const canvas = cropperInstance.getCroppedCanvas({
+        minWidth: 1200,
+        minHeight: 675,
+        fillColor: '#fff',
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+      });
+      canvas.toBlob(function(blob) {
+        finalCroppedBlob = blob;
+        
+        // Show preview
+        const url = URL.createObjectURL(blob);
+        let previewImg = document.getElementById('preview-photo');
+        if(!previewImg) {
+            const tag = document.getElementById('photo-preview-tag');
+            if (tag) {
+                tag.innerHTML = `<img src="${url}" class="h-24 object-cover rounded mt-2 border border-blue-200"> <br> <span class="text-blue-700">✓ Cropped Image Selected</span>`;
+                tag.classList.remove('hidden');
+            }
+        } else {
+            previewImg.src = url;
+            const tag = document.getElementById('photo-preview-tag');
+            if (tag) tag.classList.remove('hidden');
+        }
+        
+        closeCropper();
+      }, 'image/jpeg', 0.9);
+    }
+  }
+
+  function handleGalleryPhotosUpload(e) {
+    const files = e.target.files;
+    const container = document.getElementById('gallery-preview-container');
+    if (!container) return;
+    container.innerHTML = '';
+    if (files.length > 0) {
+      container.classList.remove('hidden');
+      Array.from(files).forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const div = document.createElement('div');
+          div.className = "relative rounded-xl overflow-hidden h-16 border border-slate-200 bg-slate-100 shadow-sm";
+          div.innerHTML = `<img src="${evt.target.result}" class="w-full h-full object-contain"><span class="absolute bottom-0 inset-x-0 bg-slate-900/70 text-white text-[9px] text-center font-bold truncate px-1">#${index+1}</span>`;
+          container.appendChild(div);
+        };
+        reader.readAsDataURL(file);
+      });
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+
+  function handleDocsUpload(e) {
+    const files = e.target.files;
+    const container = document.getElementById('docs-preview-container');
+    if (!container) return;
+    
+    const newFiles = Array.from(files);
+    selectedDocs = [...selectedDocs, ...newFiles];
+    renderDocsPreview();
+  }
+
+  function removeDoc(index) {
+    selectedDocs.splice(index, 1);
+    renderDocsPreview();
+  }
+
+  function renderDocsPreview() {
+    const container = document.getElementById('docs-preview-container');
+    container.innerHTML = '';
+    if (selectedDocs.length > 0) {
+      container.classList.remove('hidden');
+      selectedDocs.forEach((file, index) => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-700";
+        item.innerHTML = `<span class="flex items-center gap-2 truncate"><i class="fa-solid fa-file-pdf text-rose-500"></i> ${file.name}</span>
+                          <div class="flex items-center gap-2">
+                             <span class="text-[10px] text-slate-400 bg-white px-2 py-0.5 rounded border">${(file.size/1024).toFixed(0)} KB</span>
+                             <button type="button" onclick="removeDoc(${index})" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-xmark"></i></button>
+                          </div>`;
+        container.appendChild(item);
+      });
+    } else {
+      container.classList.add('hidden');
+    }
+  }
+
+  function checkIFSC() {
+    const ifscInput = document.getElementById('input-ifsc');
+    if (!ifscInput) return;
+    const code = ifscInput.value.trim().toUpperCase();
+    if (!code) return;
+    const btn = document.getElementById('btn-submit');
+    if(btn) btn.disabled = true; // wait for check
+    
+    fetch(`/api/verify-ifsc/?code=${code}`)
+      .then(r => r.json())
+      .then(data => {
+        const status = document.getElementById('ifsc-status');
+        const branch = document.getElementById('ifsc-branch-info');
+        if (data.valid) {
+          if (status) {
+            status.innerText = "✓ IFSC Verified";
+            status.className = "text-xs font-bold text-emerald-600";
+            status.classList.remove('hidden');
+          }
+          if (branch) {
+             branch.innerHTML = `Bank: <b>${data.bank_name}</b><br>Branch: <b>${data.branch}</b><br>City: <b>${data.city}</b>, <b>${data.state}</b>`;
+             branch.className = "text-[11px] text-emerald-700 mt-2 bg-emerald-50 p-2 rounded border border-emerald-100";
+          }
+          if(btn) btn.disabled = false;
+        } else {
+          if (status) {
+             status.innerText = "✗ Invalid IFSC";
+             status.className = "text-xs font-bold text-rose-600";
+             status.classList.remove('hidden');
+          }
+          if (branch) {
+             branch.innerText = data.message || "Could not verify IFSC.";
+             branch.className = "text-[11px] text-rose-600 mt-1";
+          }
+        }
+      })
+      .catch(() => {
+        alert("IFSC verification server error");
+        if(btn) btn.disabled = false;
+      });
   }
 
   function submitMedicalFundraiser() {
     const btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Launching...';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Launching...';
+    }
 
-    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+    }
 
     setTimeout(() => {
       const formData = new FormData();
-      formData.append('title', document.getElementById('input-title').value || "Emergency Appeal");
+      const titleEl = document.getElementById('input-title');
+      const nameEl = document.getElementById('input-patient-name');
+      const storyEl = document.getElementById('input-story');
+      const goalEl = document.getElementById('input-goal-amount');
+      const cityEl = document.getElementById('input-city');
+      const hospEl = document.getElementById('input-hospital-name');
+      const accEl = document.getElementById('input-bank-acc');
+      const ifscEl = document.getElementById('input-ifsc');
+      const videoEl = document.getElementById('input-video-url');
+      const phoneEl = document.getElementById('input-contact-phone');
+      const emailEl = document.getElementById('input-contact-email');
+
+      formData.append('title', titleEl ? titleEl.value || "Emergency Appeal" : "Emergency Appeal");
       formData.append('category', selectedCause);
-      formData.append('short_description', `Support needed for ${document.getElementById('input-patient-name').value || 'Beneficiary'}`);
-      formData.append('description', document.getElementById('input-story').value || "Campaign story.");
-      formData.append('goal_amount', document.getElementById('input-goal-amount').value || "250000");
+      formData.append('short_description', `Support needed for ${nameEl ? nameEl.value || 'Beneficiary' : 'Beneficiary'}`);
+      formData.append('description', storyEl ? storyEl.value || "Campaign story." : "Campaign story.");
+      formData.append('goal_amount', goalEl ? goalEl.value || "250000" : "250000");
       formData.append('currency', 'INR');
-      formData.append('location', document.getElementById('input-city').value || "New Delhi");
-      formData.append('beneficiary_name', document.getElementById('input-patient-name').value || "Beneficiary");
-      formData.append('hospital_name', document.getElementById('input-hospital-name').value || "Institution");
-      formData.append('account_number', document.getElementById('input-bank-acc').value || "1234567890");
-      formData.append('ifsc_code', document.getElementById('input-ifsc').value || "HDFC0000001");
+      formData.append('location', cityEl ? cityEl.value || "New Delhi" : "New Delhi");
+      formData.append('beneficiary_name', nameEl ? nameEl.value || "Beneficiary" : "Beneficiary");
+      formData.append('beneficiary_relationship', selectedRelation);
+      formData.append('beneficiary_phone', phoneEl ? phoneEl.value || "" : "");
+      formData.append('beneficiary_email', emailEl ? emailEl.value || "" : "");
+      formData.append('hospital_name', hospEl ? hospEl.value || "Institution" : "Institution");
+      formData.append('account_number', accEl ? accEl.value || "1234567890" : "1234567890");
+      formData.append('ifsc_code', ifscEl ? ifscEl.value || "HDFC0000001" : "HDFC0000001");
+      formData.append('video_url', videoEl ? videoEl.value || "" : "");
       formData.append('confirmation_agreed', 'true');
 
-      const photo = document.getElementById('input-patient-photo').files[0];
-      if (photo) formData.append('image', photo);
+      // Cover photo
+      const photoEl = document.getElementById('input-patient-photo');
+      if (finalCroppedBlob) formData.append('image', finalCroppedBlob, 'cover.jpg');
+      else if (photoEl && photoEl.files[0]) formData.append('image', photoEl.files[0]);
+
+      // Multiple Gallery Photos
+      const galleryEl = document.getElementById('input-gallery-photos');
+      if (galleryEl && galleryEl.files) {
+        for (let i = 0; i < galleryEl.files.length; i++) {
+          formData.append('gallery_photos', galleryEl.files[i]);
+        }
+      }
+
+      // Multiple Supporting Documents
+      if (selectedDocs.length > 0) {
+        for (let i = 0; i < selectedDocs.length; i++) {
+          formData.append('documents', selectedDocs[i]);
+        }
+      }
+
+      // Specific doc legacy inputs
+      const prescriptionEl = document.getElementById('input-prescription');
+      if (prescriptionEl && prescriptionEl.files[0]) formData.append('prescription_file', prescriptionEl.files[0]);
+      const reportEl = document.getElementById('input-report');
+      if (reportEl && reportEl.files[0]) formData.append('id_proof_file', reportEl.files[0]);
+
+      // Cancelled Cheque
+      const chequeEl = document.getElementById('input-cancelled-cheque');
+      if (chequeEl && chequeEl.files[0]) formData.append('cancelled_cheque', chequeEl.files[0]);
 
       fetch('/api/campaigns/submit/', {
         method: 'POST',
@@ -501,6 +845,15 @@
           window.location.href = d.redirect_url;
         } else {
           alert('Submission error: ' + d.message);
+          if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'Launch Campaign';
+          }
+        }
+      })
+      .catch(err => {
+        alert('Server error: ' + err.message);
+        if (btn) {
           btn.disabled = false;
           btn.innerText = 'Launch Campaign';
         }

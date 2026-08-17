@@ -1872,6 +1872,36 @@ def campaign_submit_api(request):
             
             title = data.get('title', 'Untitled Campaign').strip()
             category = data.get('category', 'Medical')
+            
+            # --- NEW VALIDATIONS ---
+            # 1. Check IFSC validation
+            ifsc_code = data.get('ifsc_code', '').strip().upper()
+            if ifsc_code:
+                try:
+                    import requests
+                    ifsc_resp = requests.get(f'https://ifsc.razorpay.com/{ifsc_code}', timeout=5)
+                    if ifsc_resp.status_code != 200:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid IFSC Code provided. Please provide a valid IFSC.'}, status=400)
+                except Exception:
+                    pass # Allow if service is down to not block critical submissions
+
+            # 2. Check Image Aspect Ratio (16:9)
+            from PIL import Image
+            cover_file = request.FILES.get('image') or request.FILES.get('cover_image')
+            if cover_file:
+                try:
+                    img = Image.open(cover_file)
+                    width, height = img.size
+                    if width < 1200 or height < 675:
+                         return JsonResponse({'status': 'error', 'message': f'Image is too small ({width}x{height}). Minimum required is 1200x675 pixels.'}, status=400)
+                    ratio = width / height
+                    if not (1.7 <= ratio <= 1.8):  # Roughly 16:9
+                         return JsonResponse({'status': 'error', 'message': 'Image aspect ratio must be 16:9.'}, status=400)
+                    cover_file.seek(0)
+                except Exception as e:
+                    return JsonResponse({'status': 'error', 'message': 'Invalid image file uploaded.'}, status=400)
+            # -----------------------
+
             short_description = data.get('short_description', '')
             full_story = data.get('description', '') or data.get('full_story', '')
             goal_amount = float(data.get('goal_amount', 10000))
@@ -1900,14 +1930,36 @@ def campaign_submit_api(request):
                 created_by=user
             )
 
-            # Files
+            # Files - Cover Image
             if 'image' in request.FILES:
                 campaign.image = request.FILES['image']
             if 'cover_image' in request.FILES:
                 campaign.cover_image = request.FILES['cover_image']
             campaign.save()
 
+            # Multiple Gallery Photos
+            gallery_photos = request.FILES.getlist('gallery_photos')
+            if not gallery_photos and 'images' in request.FILES:
+                gallery_photos = request.FILES.getlist('images')
+            for idx, photo in enumerate(gallery_photos):
+                CampaignImage.objects.create(
+                    campaign=campaign,
+                    image=photo,
+                    caption=f"Gallery Image {idx + 1}",
+                    display_order=idx
+                )
+
+            # Multiple Supporting Documents
+            doc_files = request.FILES.getlist('documents')
+            for doc_file in doc_files:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title=doc_file.name,
+                    file=doc_file
+                )
+
             # Beneficiary Details
+            id_proof = request.FILES.get('id_proof_file') or request.FILES.get('id_proof')
             Beneficiary.objects.create(
                 campaign=campaign,
                 recipient_type=data.get('beneficiary_type', 'Myself'),
@@ -1920,10 +1972,21 @@ def campaign_submit_api(request):
                 address=data.get('beneficiary_address', ''),
                 id_type=data.get('id_type', ''),
                 id_number=data.get('id_number', ''),
-                id_proof_file=request.FILES.get('id_proof_file')
+                id_proof_file=id_proof
             )
+            if id_proof:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title=f"ID Proof - {data.get('beneficiary_name', 'Beneficiary')}",
+                    file=id_proof
+                )
 
             # Medical Details (if Medical)
+            medical_report = request.FILES.get('medical_report')
+            prescription = request.FILES.get('prescription_file') or request.FILES.get('prescription')
+            cost_estimate = request.FILES.get('cost_estimate_file') or request.FILES.get('cost_estimate')
+            hospital_letter = request.FILES.get('hospital_letter')
+
             if category == 'Medical':
                 MedicalDetail.objects.create(
                     campaign=campaign,
@@ -1932,13 +1995,22 @@ def campaign_submit_api(request):
                     diagnosis=data.get('diagnosis', 'Medical Treatment'),
                     treatment_name=data.get('treatment_name', ''),
                     estimated_cost=float(data.get('estimated_cost')) if data.get('estimated_cost') else None,
-                    medical_report=request.FILES.get('medical_report'),
-                    prescription_file=request.FILES.get('prescription_file'),
-                    cost_estimate_file=request.FILES.get('cost_estimate_file'),
-                    hospital_letter=request.FILES.get('hospital_letter')
+                    medical_report=medical_report,
+                    prescription_file=prescription,
+                    cost_estimate_file=cost_estimate,
+                    hospital_letter=hospital_letter
                 )
 
+            for doc_obj, doc_title in [(medical_report, "Medical Report"), (prescription, "Prescription / Bill"), (cost_estimate, "Cost Estimate"), (hospital_letter, "Hospital Letter")]:
+                if doc_obj:
+                    CampaignDocument.objects.create(
+                        campaign=campaign,
+                        title=doc_title,
+                        file=doc_obj
+                    )
+
             # Bank Details
+            cancelled_cheque_file = request.FILES.get('cancelled_cheque')
             BankAccount.objects.create(
                 campaign=campaign,
                 beneficiary_name=data.get('bank_account_name', data.get('beneficiary_name', title)),
@@ -1946,9 +2018,16 @@ def campaign_submit_api(request):
                 account_number=data.get('account_number', '1234567890'),
                 ifsc_code=data.get('ifsc_code', 'HDFC0000001'),
                 upi_id=data.get('upi_id', ''),
-                cancelled_cheque=request.FILES.get('cancelled_cheque'),
+                cancelled_cheque=cancelled_cheque_file,
                 ifsc_verified=data.get('ifsc_verified') in [True, 'true', '1']
             )
+
+            if cancelled_cheque_file:
+                CampaignDocument.objects.create(
+                    campaign=campaign,
+                    title="Cancelled Cheque / Bank Passbook",
+                    file=cancelled_cheque_file
+                )
 
             # KYC
             KYCDocument.objects.create(
@@ -2064,34 +2143,47 @@ All funds are verified by Udaan Society and transferred directly to the benefici
 
 
 def ifsc_verify_api(request):
-    """Mock/API endpoint to verify IFSC codes."""
+    """API endpoint to verify IFSC codes via Razorpay with local fallback."""
     code = request.GET.get('code', '').strip().upper()
     if not code or len(code) != 11:
         return JsonResponse({'valid': False, 'message': 'Invalid IFSC code format (must be 11 characters)'})
-    
-    bank_map = {
-        'SBIN': ('State Bank of India', 'Main Branch'),
-        'HDFC': ('HDFC Bank', 'Central Branch'),
-        'ICIC': ('ICICI Bank', 'Metro Branch'),
-        'UTIB': ('Axis Bank', 'City Branch'),
-        'PUNB': ('Punjab National Bank', 'Civil Lines Branch'),
-        'BARB': ('Bank of Baroda', 'Industrial Estate Branch'),
-    }
 
-    prefix = code[:4]
-    if prefix in bank_map:
-        bank_name, branch = bank_map[prefix]
-    else:
-        bank_name, branch = f"{prefix} Bank", "Main Branch"
-
-    return JsonResponse({
-        'valid': True,
-        'ifsc': code,
-        'bank_name': bank_name,
-        'branch': branch,
-        'city': 'New Delhi',
-        'state': 'Delhi'
-    })
+    try:
+        import requests
+        response = requests.get(f'https://ifsc.razorpay.com/{code}', timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            return JsonResponse({
+                'valid': True,
+                'ifsc': code,
+                'bank_name': data.get('BANK', 'Unknown Bank'),
+                'branch': data.get('BRANCH', 'Unknown Branch'),
+                'city': data.get('CITY', ''),
+                'state': data.get('STATE', '')
+            })
+        else:
+            return JsonResponse({'valid': False, 'message': 'Invalid IFSC code or bank not found.'})
+    except Exception:
+        bank_map = {
+            'SBIN': ('State Bank of India', 'Main Branch'),
+            'HDFC': ('HDFC Bank', 'Central Branch'),
+            'ICIC': ('ICICI Bank', 'Metro Branch'),
+            'UTIB': ('Axis Bank', 'City Branch'),
+            'PUNB': ('Punjab National Bank', 'Civil Lines Branch'),
+            'BARB': ('Bank of Baroda', 'Industrial Estate Branch'),
+        }
+        prefix = code[:4]
+        if prefix in bank_map:
+            bank_name, branch = bank_map[prefix]
+            return JsonResponse({
+                'valid': True,
+                'ifsc': code,
+                'bank_name': bank_name,
+                'branch': branch,
+                'city': 'New Delhi',
+                'state': 'Delhi'
+            })
+        return JsonResponse({'valid': False, 'message': 'Verification service unavailable.'})
 
 
 def campaign_status_view(request, slug):
