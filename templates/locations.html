@@ -1,124 +1,1014 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Our Locations - UDAAN Society{% endblock %}
 
-{% block meta_description %}Find UDAAN Society offices and field centers across Uttar Pradesh including Aligarh, Banda, Bulandshahr, Firozabad, and Mahoba. Explore our community outreach locations.{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/locations.css' %}">
+{% block meta_description %}
+Find UDAAN Society offices and field centers across Uttar Pradesh including Aligarh, Banda, Bulandshahr, Firozabad, and Mahoba. Explore our community outreach locations.
 {% endblock %}
 
 {% block content %}
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-    <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=500&fit=crop" alt="Location">
+<!-- =====================================================
+     CUSTOM ANIMATION STYLES
+     Tailwind CSS ke saath inline CSS animations
+====================================================== -->
 
-        <div class="hero-overlay"></div>
+<style>
+    /* ================================
+       Initial Animation States
+    ================================= */
+
+    .location-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+            opacity 0.8s ease,
+            transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .location-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    /* ================================
+       Hero Animation
+    ================================= */
+
+    .hero-image-animate img {
+        animation: heroZoom 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroZoom {
+        from {
+            transform: scale(1);
+        }
+
+        to {
+            transform: scale(1.08);
+        }
+    }
+
+
+    .hero-content-animate {
+        opacity: 0;
+        transform: translateY(35px);
+        transition:
+            opacity 1s ease,
+            transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hero-content-animate.hero-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    /* ================================
+       Hero Label Animation
+    ================================= */
+
+    .hero-label-animation {
+        animation: labelFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes labelFloat {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-4px);
+        }
+    }
+
+
+    /* ================================
+       Title Underline Animation
+    ================================= */
+
+    .title-line-animation {
+        width: 0;
+        transition: width 1s ease 0.4s;
+    }
+
+    .title-line-animation.is-visible {
+        width: 80px;
+    }
+
+
+    /* ================================
+       Location Card
+    ================================= */
+
+    .location-card-animation {
+        opacity: 0;
+        transform: translateY(50px) scale(0.97);
+        transition:
+            opacity 0.7s ease var(--animation-delay),
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--animation-delay);
+    }
+
+    .location-card-animation.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+
+    /* ================================
+       Map Image Hover
+    ================================= */
+
+    .map-wrapper iframe {
+        transition:
+            transform 0.7s ease,
+            filter 0.7s ease;
+    }
+
+    .location-card:hover .map-wrapper iframe {
+        transform: scale(1.04);
+    }
+
+
+    /* ================================
+       Location Icon Animation
+    ================================= */
+
+    .location-icon-animation {
+        transition:
+            transform 0.4s ease,
+            background-color 0.4s ease,
+            color 0.4s ease;
+    }
+
+    .location-card:hover .location-icon-animation {
+        transform: rotate(-8deg) scale(1.1);
+    }
+
+
+    /* ================================
+       Arrow Animation
+    ================================= */
+
+    .location-arrow {
+        transition:
+            transform 0.3s ease,
+            opacity 0.3s ease;
+    }
+
+    .location-card:hover .location-arrow {
+        transform: translateX(5px);
+        opacity: 1;
+    }
+
+
+    /* ================================
+       Floating Decorative Animation
+    ================================= */
+
+    .floating-decoration {
+        animation: floatingDecoration 6s ease-in-out infinite;
+    }
+
+    @keyframes floatingDecoration {
+        0%,
+        100% {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-15px) rotate(3deg);
+        }
+    }
+
+
+    /* ================================
+       Reduced Motion Accessibility
+    ================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+    }
+</style>
+
+
+<!-- =====================================================
+     HERO SECTION
+====================================================== -->
+
+<section
+    class="relative h-[420px] sm:h-[480px] lg:h-[520px] overflow-hidden bg-neutral-dark"
+>
+
+    <!-- Hero Image -->
+    <div class="hero-image-animate absolute inset-0 overflow-hidden">
+
+        <img
+            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=900&fit=crop"
+            alt="UDAAN Society Locations"
+            class="w-full h-full object-cover"
+        >
+
+        <!-- Dark Overlay -->
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/70"
+        ></div>
+
+        <!-- Green Gradient -->
+        <div
+            class="absolute inset-0 bg-gradient-to-r from-primary/30 via-transparent to-black/20"
+        ></div>
+
     </div>
 
-    <div class="hero-content">
-        <h1>OUR LOCATION</h1>
-    </div>
-</section>
 
-<!-- ================= BREADCRUMB ================= -->
-<div class="breadcrumb">
-    <div class="container">
-        <a href="{% url 'home' %}">Home</a>
-        <span class="sep">»</span>
-        <span class="current">Our Location</span>
-    </div>
-</div>
-
-<!-- ================= INTRO ================= -->
-<section class="intro">
-    <div class="container">
-
-        <h2 class="main-title">
-            OUR <span>LOCATION</span>
-        </h2>
-
-        <p class="description">
-            UDAAN Society works tirelessly to uplift communities across Uttar Pradesh.
-            Explore our centers in different districts and join us in building
-            a brighter future for all.
-        </p>
-
-    </div>
-</section>
-
-<!-- ================= LOCATION GRID ================= -->
-
-<section class="locations">
-    <div class="container">
-
-        <div class="location-grid">
-
-            <!-- Aligarh -->
-            <div class="location-card">
-
-                    <iframe
-                    src="https://www.google.com/maps?q=Aligarh,UP&output=embed"
-                    loading="lazy">
-                    </iframe>
-
-                 <h3>Aligarh</h3>
-            </div>
+    <!-- Decorative Circle -->
+    <div
+        class="floating-decoration absolute -right-24 -top-24 w-72 h-72 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm pointer-events-none"
+    ></div>
 
 
-            <!-- Banda -->
-            <div class="location-card">
+    <!-- Hero Content -->
+    <div
+        class="hero-content-animate relative z-10 h-full max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-center text-center"
+    >
 
-                    <iframe
-                    src="https://www.google.com/maps?q=Banda,UP&output=embed"
-                    loading="lazy">
-                    </iframe>
+        <div class="max-w-3xl">
 
-            <h3>Banda</h3>
-            </div>
+            <!-- Label -->
+            <span
+                class="hero-label-animation inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] px-5 py-2.5 rounded-full shadow-lg"
+            >
+                <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
 
-
-            <!-- Bulandshahr -->
-            <div class="location-card">
-
-                <iframe
-                src="https://www.google.com/maps?q=Bulandshahr,UP&output=embed"
-                loading="lazy">
-                </iframe>
-
-          <h3>Bulandshahr</h3>
-    </div>
+                UDAAN Society
+            </span>
 
 
-            <!-- Firozabad -->
-           <div class="location-card">
+            <!-- Heading -->
+            <h1
+                class="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight"
+            >
+                Our
+                <span class="text-accent">
+                    Locations
+                </span>
+            </h1>
 
-                    <iframe
-                    src="https://www.google.com/maps?q=Firozabad,UP&output=embed"
-                    loading="lazy">
-                    </iframe>
 
-               <h3>Firozabad</h3>
-          </div>
+            <!-- Description -->
+            <p
+                class="mt-5 text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl mx-auto"
+            >
+                Connecting communities and creating meaningful impact
+                across Uttar Pradesh.
+            </p>
 
 
-            <!-- Mahoba -->
-            <div class="location-card">
+            <!-- Scroll Indicator -->
+            <div class="mt-8 flex justify-center">
 
-                    <iframe
-                    src="https://www.google.com/maps?q=Mahoba,UP&output=embed"
-                    loading="lazy">
-                    </iframe>
+                <div
+                    class="flex flex-col items-center gap-2 text-white/70"
+                >
 
-                <h3>Mahoba</h3>
+                    <span class="text-xs uppercase tracking-widest">
+                        Explore
+                    </span>
+
+                    <div
+                        class="w-6 h-10 border border-white/40 rounded-full flex justify-center pt-2"
+                    >
+                        <span
+                            class="w-1.5 h-2.5 bg-white rounded-full animate-bounce"
+                        ></span>
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
 
     </div>
+
 </section>
+
+
+<!-- =====================================================
+     BREADCRUMB
+====================================================== -->
+
+<div
+    class="location-reveal location-breadcrumb bg-gray-50 border-b border-gray-200"
+>
+
+    <div
+        class="max-w-7xl mx-auto px-6 lg:px-8 py-4"
+    >
+
+        <div
+            class="flex items-center flex-wrap gap-2 text-sm"
+        >
+
+            <a
+                href="{% url 'home' %}"
+                class="text-gray-500 hover:text-primary transition-colors duration-300 font-medium"
+            >
+                Home
+            </a>
+
+            <span class="text-gray-400">
+                »
+            </span>
+
+            <span
+                class="text-primary font-semibold"
+            >
+                Our Locations
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INTRO SECTION
+====================================================== -->
+
+<section
+    class="relative bg-white py-16 sm:py-20 lg:py-24 overflow-hidden"
+>
+
+    <!-- Background Decoration -->
+    <div
+        class="absolute -left-32 top-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none"
+    ></div>
+
+    <div
+        class="absolute -right-32 bottom-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none"
+    ></div>
+
+
+    <div
+        class="max-w-4xl mx-auto px-6 lg:px-8 relative z-10"
+    >
+
+        <div
+            class="location-reveal intro-content text-center"
+        >
+
+            <!-- Small Label -->
+            <span
+                class="inline-flex items-center gap-2 text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.2em]"
+            >
+
+                <span
+                    class="w-8 h-px bg-primary"
+                ></span>
+
+                Where We Work
+
+                <span
+                    class="w-8 h-px bg-primary"
+                ></span>
+
+            </span>
+
+
+            <!-- Main Title -->
+            <h2
+                class="mt-5 text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"
+            >
+
+                Our
+                <span class="text-primary">
+                    Locations
+                </span>
+
+            </h2>
+
+
+            <!-- Animated Line -->
+            <div
+                class="title-line-animation h-1 bg-primary rounded-full mx-auto mt-5"
+            ></div>
+
+
+            <!-- Description -->
+            <p
+                class="mt-7 text-gray-500 text-base sm:text-lg leading-relaxed max-w-3xl mx-auto"
+            >
+                UDAAN Society works tirelessly to uplift communities across
+                Uttar Pradesh. Explore our centers in different districts
+                and join us in building a brighter future for all.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LOCATIONS SECTION
+====================================================== -->
+
+<section
+    class="bg-gray-50 py-16 sm:py-20 lg:py-24"
+>
+
+    <div
+        class="max-w-7xl mx-auto px-6 lg:px-8"
+    >
+
+        <!-- Section Header -->
+
+        <div
+            class="location-reveal text-center mb-12"
+        >
+
+            <span
+                class="text-primary text-xs font-bold uppercase tracking-[0.2em]"
+            >
+                Our Presence
+            </span>
+
+            <h2
+                class="mt-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900"
+            >
+                Find Us Across
+                <span class="text-primary">
+                    Uttar Pradesh
+                </span>
+            </h2>
+
+        </div>
+
+
+        <!-- Location Grid -->
+
+        <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-8"
+        >
+
+
+            <!-- =================================================
+                 ALIGARH
+            ================================================== -->
+
+            <article
+                class="location-card location-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+                style="--animation-delay: 0ms;"
+            >
+
+                <!-- Map -->
+
+                <div
+                    class="map-wrapper relative h-64 overflow-hidden bg-gray-200"
+                >
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Aligarh,UP&output=embed"
+                        title="UDAAN Society Location - Aligarh"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full border-0"
+                    >
+                    </iframe>
+
+                    <!-- Map Overlay -->
+
+                    <div
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"
+                    ></div>
+
+                </div>
+
+
+                <!-- Card Content -->
+
+                <div
+                    class="location-card-content p-6 flex items-center justify-between"
+                >
+
+                    <div
+                        class="flex items-center gap-4"
+                    >
+
+                        <div
+                            class="location-icon-animation w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-location-dot text-lg"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="text-lg font-bold text-gray-900"
+                            >
+                                Aligarh
+                            </h3>
+
+                            <p
+                                class="text-sm text-gray-500 mt-1"
+                            >
+                                Uttar Pradesh, India
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="location-arrow text-primary opacity-50"
+                    >
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 BANDA
+            ================================================== -->
+
+            <article
+                class="location-card location-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+                style="--animation-delay: 100ms;"
+            >
+
+                <div
+                    class="map-wrapper relative h-64 overflow-hidden bg-gray-200"
+                >
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Banda,UP&output=embed"
+                        title="UDAAN Society Location - Banda"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full border-0"
+                    >
+                    </iframe>
+
+                    <div
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    class="location-card-content p-6 flex items-center justify-between"
+                >
+
+                    <div
+                        class="flex items-center gap-4"
+                    >
+
+                        <div
+                            class="location-icon-animation w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-location-dot text-lg"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="text-lg font-bold text-gray-900"
+                            >
+                                Banda
+                            </h3>
+
+                            <p
+                                class="text-sm text-gray-500 mt-1"
+                            >
+                                Uttar Pradesh, India
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="location-arrow text-primary opacity-50"
+                    >
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 BULANDSHAHR
+            ================================================== -->
+
+            <article
+                class="location-card location-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+                style="--animation-delay: 200ms;"
+            >
+
+                <div
+                    class="map-wrapper relative h-64 overflow-hidden bg-gray-200"
+                >
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Bulandshahr,UP&output=embed"
+                        title="UDAAN Society Location - Bulandshahr"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full border-0"
+                    >
+                    </iframe>
+
+                    <div
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    class="location-card-content p-6 flex items-center justify-between"
+                >
+
+                    <div
+                        class="flex items-center gap-4"
+                    >
+
+                        <div
+                            class="location-icon-animation w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-location-dot text-lg"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="text-lg font-bold text-gray-900"
+                            >
+                                Bulandshahr
+                            </h3>
+
+                            <p
+                                class="text-sm text-gray-500 mt-1"
+                            >
+                                Uttar Pradesh, India
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="location-arrow text-primary opacity-50"
+                    >
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 FIROZABAD
+            ================================================== -->
+
+            <article
+                class="location-card location-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+                style="--animation-delay: 300ms;"
+            >
+
+                <div
+                    class="map-wrapper relative h-64 overflow-hidden bg-gray-200"
+                >
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Firozabad,UP&output=embed"
+                        title="UDAAN Society Location - Firozabad"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full border-0"
+                    >
+                    </iframe>
+
+                    <div
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    class="location-card-content p-6 flex items-center justify-between"
+                >
+
+                    <div
+                        class="flex items-center gap-4"
+                    >
+
+                        <div
+                            class="location-icon-animation w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-location-dot text-lg"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="text-lg font-bold text-gray-900"
+                            >
+                                Firozabad
+                            </h3>
+
+                            <p
+                                class="text-sm text-gray-500 mt-1"
+                            >
+                                Uttar Pradesh, India
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="location-arrow text-primary opacity-50"
+                    >
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 MAHOBA
+            ================================================== -->
+
+            <article
+                class="location-card location-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+                style="--animation-delay: 400ms;"
+            >
+
+                <div
+                    class="map-wrapper relative h-64 overflow-hidden bg-gray-200"
+                >
+
+                    <iframe
+                        src="https://www.google.com/maps?q=Mahoba,UP&output=embed"
+                        title="UDAAN Society Location - Mahoba"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="w-full h-full border-0"
+                    >
+                    </iframe>
+
+                    <div
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"
+                    ></div>
+
+                </div>
+
+
+                <div
+                    class="location-card-content p-6 flex items-center justify-between"
+                >
+
+                    <div
+                        class="flex items-center gap-4"
+                    >
+
+                        <div
+                            class="location-icon-animation w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0"
+                        >
+
+                            <i
+                                class="fa-solid fa-location-dot text-lg"
+                            ></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3
+                                class="text-lg font-bold text-gray-900"
+                            >
+                                Mahoba
+                            </h3>
+
+                            <p
+                                class="text-sm text-gray-500 mt-1"
+                            >
+                                Uttar Pradesh, India
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="location-arrow text-primary opacity-50"
+                    >
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SCROLL ANIMATION JAVASCRIPT
+====================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* ================================================
+       Hero Content Animation
+    ================================================= */
+
+    const heroContent = document.querySelector(
+        ".hero-content-animate"
+    );
+
+    if (heroContent) {
+
+        setTimeout(() => {
+
+            heroContent.classList.add(
+                "hero-visible"
+            );
+
+        }, 150);
+
+    }
+
+
+    /* ================================================
+       Scroll Reveal Animation
+    ================================================= */
+
+    const animatedElements = document.querySelectorAll(
+        ".location-reveal, .location-card-animation"
+    );
+
+
+    const observer = new IntersectionObserver(
+
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add(
+                        "is-visible"
+                    );
+
+                    observer.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -50px 0px"
+        }
+
+    );
+
+
+    animatedElements.forEach((element) => {
+
+        observer.observe(element);
+
+    });
+
+
+    /* ================================================
+       Title Line Animation
+    ================================================= */
+
+    const titleLine = document.querySelector(
+        ".title-line-animation"
+    );
+
+    if (titleLine) {
+
+        const titleObserver =
+            new IntersectionObserver(
+
+                (entries) => {
+
+                    entries.forEach((entry) => {
+
+                        if (entry.isIntersecting) {
+
+                            titleLine.classList.add(
+                                "is-visible"
+                            );
+
+                            titleObserver.unobserve(
+                                titleLine
+                            );
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    threshold: 0.5
+                }
+
+            );
+
+
+        titleObserver.observe(titleLine);
+
+    }
+
+});
+
+</script>
+
 
 {% endblock %}
