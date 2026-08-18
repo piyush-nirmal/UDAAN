@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.getElementById('chatbot-messages');
     const typingIndicator = document.getElementById('chatbot-typing-indicator');
     const submitBtn = chatForm.querySelector('button[type="submit"]');
+    // Keep typing indicator hidden when chatbot first loads
+    typingIndicator.classList.add('hidden');
+    submitBtn.disabled = false;
+    chatInput.disabled = false;
 
     // API Configuration
     // If running locally on a custom port, connect directly to the chatbot port (Django port + 1).
@@ -40,39 +44,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Toggle Chat Window
-    const toggleChat = () => {
-        const isHidden = chatWindow.classList.contains('hidden');
-        if (isHidden) {
-            chatWindow.classList.remove('hidden');
-            chatWindow.classList.add('flex');
-            // Small delay to allow display:flex to apply before animating opacity/transform
-            setTimeout(() => {
-                chatWindow.classList.remove('opacity-0', 'scale-95');
-                chatWindow.classList.add('opacity-100', 'scale-100');
-                chatInput.focus();
-                scrollToBottom();
-            }, 10);
-            
-            // Change icon to 'X'
-            toggleBtn.innerHTML = '<i class="fas fa-times text-2xl"></i>';
-        } else {
-            chatWindow.classList.remove('opacity-100', 'scale-100');
-            chatWindow.classList.add('opacity-0', 'scale-95');
-            
-            // Wait for animation to finish before hiding
-            setTimeout(() => {
-                chatWindow.classList.add('hidden');
-                chatWindow.classList.remove('flex');
-            }, 300);
-            
-            // Change icon back to chat
-            toggleBtn.innerHTML = '<i class="fas fa-comment-dots text-2xl"></i>';
-        }
+    // =========================================
+    // CHATBOT OPEN / CLOSE
+    // =========================================
+
+    const openChatbot = () => {
+        chatWindow.classList.remove('hidden');
+        chatWindow.classList.add('chatbot-open');
+
+        // Make absolutely sure it is visible
+        chatWindow.style.display = 'flex';
+
+        // Change floating button icon
+        toggleBtn.innerHTML =
+            '<i class="fas fa-times"></i>';
+
+        setTimeout(() => {
+            chatInput.focus();
+            scrollToBottom();
+        }, 50);
     };
 
-    toggleBtn.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', toggleChat);
 
+    const closeChatbot = () => {
+
+        // Hide chatbot
+        chatWindow.classList.remove('chatbot-open');
+        chatWindow.classList.add('hidden');
+
+        // Force hide
+        chatWindow.style.display = 'none';
+
+        // Stop typing indicator
+        if (typingIndicator) {
+            typingIndicator.classList.remove('active');
+            typingIndicator.style.display = 'none';
+        }
+
+        // Restore floating button
+        toggleBtn.innerHTML =
+            '<i class="fas fa-hands-helping"></i>';
+    };
+
+
+    // Floating button
+    toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (chatWindow.classList.contains('chatbot-open')) {
+            closeChatbot();
+        } else {
+            openChatbot();
+        }
+    });
+
+
+    // X / Close button
+    closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        closeChatbot();
+    });
+
+    
     // Auto-scroll to bottom
     const scrollToBottom = () => {
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -135,12 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Show/hide typing indicator
     const setTyping = (isTyping) => {
+
         if (isTyping) {
-            typingIndicator.classList.remove('hidden');
+            typingIndicator.classList.add('active');
+            typingIndicator.style.display = 'flex';
             scrollToBottom();
         } else {
-            typingIndicator.classList.add('hidden');
+            typingIndicator.classList.remove('active');
+            typingIndicator.style.display = 'none';
         }
+
         submitBtn.disabled = isTyping;
         chatInput.disabled = isTyping;
     };
@@ -188,6 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('chatbot_session_id', currentSessionId);
             }
             
+            // Hide typing indicator
+            setTyping(false);
+
             // Add AI response to UI
             addMessage(data.response, false);
             
@@ -212,5 +255,18 @@ document.addEventListener('DOMContentLoaded', () => {
             currentSessionId = null;
             sessionStorage.removeItem('chatbot_session_id');
         }
+    });
+    // Quick question buttons
+    document.querySelectorAll('.quick-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const question = button.dataset.question;
+
+            if (!question) return;
+
+            chatInput.value = question;
+            chatInput.style.height = 'auto';
+
+            chatForm.dispatchEvent(new Event('submit'));
+        });
     });
 });
