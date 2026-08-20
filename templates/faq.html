@@ -8,7 +8,7 @@
 {% block content %}
 
 <!-- Hero Banner -->
-<section class="subpage-hero">
+<section class="subpage-hero" data-aos="fade-up">
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Help Desk</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Frequently Asked Questions</h1>
@@ -19,8 +19,8 @@
 </section>
 
 <!-- Breadcrumb -->
-<div class="bg-neutral-light border-b border-gray-100 py-4">
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+<div class="bg-neutral-light border-b border-gray-100 py-4" >
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2" data-aos="fade-down">
     <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
     <span>»</span>
     <span class="text-gray-400">FAQs</span>
@@ -33,10 +33,10 @@
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
     
     <!-- Left Column: FAQ Categories & Contact Info -->
-    <div class="lg:col-span-4 space-y-6">
+    <div class="lg:col-span-4 space-y-6" data-aos="fade-right">
       
       <!-- Quick Info Card -->
-      <div class="bg-white shadow-soft rounded-3xl p-6 border border-gray-100/50 space-y-4">
+      <div class="bg-white shadow-soft rounded-3xl p-6 border border-gray-100/50 space-y-4" data-aos="fade-right" data-aos-delay="100">
         <h3 class="text-base font-bold text-neutral-dark border-b border-gray-100 pb-3">FAQ Navigation</h3>
         <p class="text-xs text-gray-500 leading-relaxed">
           Use the search box on the right to instantly filter questions by keywords. If you can't find what you need, feel free to contact us.
@@ -59,7 +59,7 @@
       </div>
 
       <!-- Quick Contact Box -->
-      <div class="bg-primary-light border border-primary/10 rounded-3xl p-6 text-center space-y-3">
+      <div class="bg-primary-light border border-primary/10 rounded-3xl p-6 text-center space-y-3" data-aos="fade-right" data-aos-delay="200">
         <h4 class="font-bold text-primary-dark text-sm">Still Have Questions?</h4>
         <p class="text-xs text-gray-600 leading-relaxed">Our support team usually responds to emails within 24 business hours.</p>
         <a href="{% url 'contact_us' %}" class="btn-primary rounded-full px-6 py-2.5 text-xs inline-flex justify-center w-full">
@@ -70,10 +70,10 @@
     </div>
 
     <!-- Right Column: Search Box & Accordion List -->
-    <div class="lg:col-span-8 space-y-6">
+    <div class="lg:col-span-8 space-y-6" data-aos="fade-left">
       
       <!-- Live Search Box -->
-      <div class="bg-white shadow-soft rounded-2xl p-5 border border-gray-100/50 flex flex-col sm:flex-row gap-4 items-center justify-between">
+      <div class="bg-white shadow-soft rounded-2xl p-5 border border-gray-100/50 flex flex-col sm:flex-row gap-4 items-center justify-between" data-aos="fade-up" data-aos-delay="100">
         <div class="relative w-full sm:max-w-md">
           <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">🔍</span>
           <input type="text" id="faq-search" placeholder="Search FAQs..."
@@ -89,7 +89,7 @@
       <div class="space-y-4" id="faq-list">
         
         <!-- FAQ 1 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">What does UDAAN stand for?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -100,7 +100,7 @@
         </div>
 
         <!-- FAQ 2 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300" data-aos="fade-up" data-aos-delay="150">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">When was UDAAN Society registered?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -111,7 +111,7 @@
         </div>
 
         <!-- FAQ 3 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300 " data-aos="fade-up" data-aos-delay="200">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">Where is the headquarters of UDAAN Society?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -122,7 +122,7 @@
         </div>
 
         <!-- FAQ 4 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300" data-aos="fade-up" data-aos-delay="250">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">In which states does UDAAN Society work?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -133,7 +133,7 @@
         </div>
 
         <!-- FAQ 5 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">What are the main focus areas of UDAAN Society?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -144,7 +144,7 @@
         </div>
 
         <!-- FAQ 6 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300 " data-aos="fade-up" data-aos-delay="350">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">How can I contribute to UDAAN Society?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -155,7 +155,7 @@
         </div>
 
         <!-- FAQ 7 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300 " data-aos="fade-up" data-aos-delay="400">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">Do donors get tax exemption?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -166,7 +166,7 @@
         </div>
 
         <!-- FAQ 8 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300 " data-aos="fade-up" data-aos-delay="450">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">How can I join or volunteer with UDAAN Society?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>
@@ -177,7 +177,7 @@
         </div>
 
         <!-- FAQ 9 -->
-        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300">
+        <div class="faq-card bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-soft transition-all duration-300" data-aos="fade-up" data-aos-delay="500">
           <button class="w-full text-left font-bold text-sm sm:text-base text-neutral-dark px-6 py-5 flex justify-between items-center focus:outline-none" onclick="toggleFaqCard(this)">
             <span class="faq-question">How can I contact UDAAN Society?</span>
             <span class="faq-icon text-gray-400 font-light text-xl">+</span>

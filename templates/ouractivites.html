@@ -1,286 +1,1184 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block title %}Our Activities - UDAAN Society{% endblock %}
 
-{% block extra_css %}
+{% block meta_description %}
+Explore UDAAN Society's recent grassroots social audits, community campaigns,
+field activities, and events working towards meaningful social impact.
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     CUSTOM ANIMATIONS
+====================================================== -->
+
 <style>
-    .oa-hero {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
 
-    background-image: url('/static/images/events.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    /* ==========================================
+       SCROLL REVEAL
+    =========================================== */
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.oa-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.60);
-}
-
-.oa-hero h1 {
-    position: relative;
-    z-index: 2;
-    color: #fff;
-    font-size: 64px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin: 0;
-}
-
-.breadcrumb {
-    background: #f8f9fa;
-    padding: 15px 0;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.breadcrumb .container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 16px;
-    padding: 0 20px;
-}
-
-.breadcrumb a {
-    color: #6b21a8;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.breadcrumb a:hover {
-    /* text-decoration: underline; */
-}
-
-.sep {
-    /* color: #6b21a8; */
-    font-weight: 500;
-}
-
-.current {
-    color: #6b21a8;
-    font-weight: 500;
-}
-
-    .oa-page-header {
-        text-align: center;
-        padding: 60px 20px 40px;
-        background: white;
+    .oa-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+            opacity 0.8s ease,
+            transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .oa-page-header h2 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        margin-bottom: 15px;
-        color: #222;
+    .oa-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    .oa-page-header p {
-        font-size: 1.2rem;
-        color: #555;
-        max-width: 800px;
-        margin: 0 auto;
+
+    /* ==========================================
+       HERO IMAGE ZOOM
+    =========================================== */
+
+    .oa-hero-image {
+        animation: oaHeroZoom 12s ease-in-out infinite alternate;
     }
 
-    .oa-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
+    @keyframes oaHeroZoom {
+
+        0% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(1.08);
+        }
+
     }
 
-    .oa-activity-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 30px;
-        padding-bottom: 50px;
+
+    /* ==========================================
+       HERO CONTENT
+    =========================================== */
+
+    .oa-hero-content {
+        opacity: 0;
+        transform: translateY(35px);
+        transition:
+            opacity 1s ease,
+            transform 1s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .oa-card {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #f0f0f0;
+    .oa-hero-content.hero-visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    .oa-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+    /* ==========================================
+       ACTIVITY CARD
+    =========================================== */
+
+    .oa-card-animation {
+        opacity: 0;
+        transform: translateY(50px) scale(0.97);
+
+        transition:
+            opacity 0.7s ease var(--animation-delay),
+            transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--animation-delay);
     }
 
-    .oa-card-image {
-        width: 100%;
-        height: 220px;
+    .oa-card-animation.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+
+    /* ==========================================
+       CARD IMAGE HOVER
+    =========================================== */
+
+    .oa-image-wrapper img {
+        transition:
+            transform 0.7s ease,
+            filter 0.7s ease;
+    }
+
+    .oa-card:hover .oa-image-wrapper img {
+        transform: scale(1.08);
+    }
+
+
+    /* ==========================================
+       READ MORE BUTTON
+    =========================================== */
+
+    .oa-read-more {
+        transition:
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .oa-read-more:hover {
+        transform: translateY(-2px);
+    }
+
+
+    /* ==========================================
+       MODAL
+    =========================================== */
+
+    .oa-modal {
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.3s ease,
+            visibility 0.3s ease;
+    }
+
+    .oa-modal.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+
+    .oa-modal-content {
+        transform: scale(0.92) translateY(20px);
+        opacity: 0;
+
+        transition:
+            transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.3s ease;
+    }
+
+    .oa-modal.active .oa-modal-content {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+
+
+    /* ==========================================
+       MODAL IMAGE
+    =========================================== */
+
+    .oa-modal-image {
+        max-height: 380px;
         object-fit: cover;
     }
 
-    .oa-card-placeholder {
-        width: 100%;
-        height: 220px;
-        background-color: #e0e0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #888;
-        font-size: 1.2rem;
+
+    /* ==========================================
+       FLOATING DECORATION
+    =========================================== */
+
+    .oa-floating {
+        animation: oaFloating 6s ease-in-out infinite;
     }
 
-    .oa-card-content {
-        padding: 20px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
+    @keyframes oaFloating {
 
-    .oa-card-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 15px;
-        color: #222;
-        line-height: 1.3;
-    }
-
-    .oa-card-text {
-        font-size: 0.95rem;
-        color: #666;
-        margin-bottom: 25px;
-        flex-grow: 1;
-    }
-
-    .oa-btn-read-more {
-        display: inline-block;
-        background-color: #e74c3c;
-        color: white;
-        padding: 10px 25px;
-        border-radius: 25px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.9rem;
-        align-self: flex-start;
-        margin-bottom: 20px;
-        transition: background 0.3s;
-        text-decoration: none;
-    }
-
-    .oa-btn-read-more:hover {
-        background-color: #c0392b;
-        color: white;
-        text-decoration: none;
-    }
-
-    .oa-card-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid #eee;
-        padding-top: 15px;
-        font-size: 0.9rem;
-        color: #444;
-    }
-
-    .oa-meta-item i {
-        margin-right: 8px;
-        font-size: 0.8rem;
-    }
-
-    .oa-empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: white;
-        border-radius: 8px;
-        grid-column: 1 / -1;
-        color: #666;
-    }
-
-    @media (max-width: 768px) {
-        .oa-hero h1 {
-            font-size: 2.5rem;
-            text-align: center;
-            padding: 0 20px;
+        0%,
+        100% {
+            transform: translateY(0);
         }
+
+        50% {
+            transform: translateY(-15px);
+        }
+
     }
+
+
+    /* ==========================================
+       ACCESSIBILITY
+    =========================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+
+    }
+
 </style>
-{% endblock %}
 
-{% block content %}
-<!-- Hero Banner -->
-<section class="subpage-hero">
-  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
-    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Field Campaigns</span>
-    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase font-heading">Our Activities</h1>
-    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
-      A listing of our recent grassroots social audits, community campaigns, and events.
-    </p>
-  </div>
-</section>
 
-<div class="breadcrumb">
-  <div class="container">
-    <a href="{% url 'home' %}">Home</a>
-    <span class="sep">»</span>
-    <span class="current">Our Activities</span>
-  </div>
-</div>
+<!-- =====================================================
+     HERO SECTION
+====================================================== -->
 
-<section class="oa-page-header">
-    <h2>Brief About Some Of Our Activities</h2>
-    <p>Here is a list of work done by UDAAN Society recently.</p>
-</section>
+<section
+    class="relative h-[420px] sm:h-[480px] lg:h-[520px] overflow-hidden bg-neutral-dark"
+>
 
-<div class="oa-container">
-    <div class="oa-activity-grid">
-        {% for activity in activities %}
-        <article class="oa-card">
-            {% if activity.image %}
-                <img src="{{ activity.image.url }}" alt="{{ activity.title }}" class="oa-card-image">
-            {% else %}
-                <div class="oa-card-placeholder">
-                    <i class="fas fa-image" style="font-size: 3rem;"></i>
-                </div>
-            {% endif %}
-            <div class="oa-card-content">
-                <h3 class="oa-card-title">{{ activity.title }}</h3>
-                <p class="oa-card-text">{{ activity.description|truncatewords:20 }}</p>
-                <button class="oa-btn-read-more open-modal-btn" 
-                        data-title="{{ activity.title|escapejs }}" 
-                        data-content="{{ activity.description|linebreaksbr|escapejs }}"
-                        {% if activity.image %}data-image="{{ activity.image.url }}"{% endif %}>
-                    Read More
-                </button>
-                <div class="oa-card-meta">
-                    <span class="oa-meta-item">
-                        <i class="far fa-calendar-alt"></i> {{ activity.date|date:"F j, Y" }}
-                    </span>
-                    <!--
-                    <span class="oa-meta-item">
-                        <i class="far fa-comment"></i> No Comment
-                    </span>
-                    -->
-                </div>
-            </div>
-        </article>
-        {% empty %}
-        <div class="oa-empty-state">
-            <i class="fas fa-clipboard-list" style="font-size: 3rem; color: #ccc; margin-bottom: 20px;"></i>
-            <h3>No Activities Found</h3>
-            <p>We are constantly engaging with the community. New activities will be posted here soon.</p>
-        </div>
-        {% endfor %}
+    <!-- Hero Background -->
+
+    <div class="absolute inset-0 overflow-hidden">
+
+        <img
+            src="{% static 'images/events.jpg' %}"
+            alt="UDAAN Society Activities"
+            class="oa-hero-image w-full h-full object-cover"
+        >
+
+        <!-- Dark Overlay -->
+
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/50 to-black/75"
+        ></div>
+
+        <!-- Green Overlay -->
+
+        <div
+            class="absolute inset-0 bg-gradient-to-r from-primary/30 via-transparent to-black/20"
+        ></div>
+
     </div>
+
+
+    <!-- Decorative Circle -->
+
+    <div
+        class="oa-floating absolute -right-24 -top-24 w-80 h-80 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm pointer-events-none"
+    ></div>
+
+
+    <!-- Hero Content -->
+
+    <div
+        class="oa-hero-content relative z-10 h-full max-w-5xl mx-auto px-6 flex items-center justify-center text-center"
+    >
+
+        <div>
+
+            <!-- Label -->
+
+            <span
+                class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-[0.2em] px-5 py-2.5 rounded-full shadow-lg"
+            >
+
+                <span
+                    class="w-2 h-2 rounded-full bg-accent animate-pulse"
+                ></span>
+
+                Field Campaigns
+
+            </span>
+
+
+            <!-- Heading -->
+
+            <h1
+                class="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white uppercase tracking-tight leading-tight"
+            >
+                Our
+                <span class="text-accent">
+                    Activities
+                </span>
+            </h1>
+
+
+            <!-- Description -->
+
+            <p
+                class="mt-5 text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed"
+            >
+                A glimpse into our grassroots social audits,
+                community campaigns, field activities, and events.
+            </p>
+
+
+            <!-- Scroll Indicator -->
+
+            <div
+                class="mt-8 flex justify-center"
+            >
+
+                <div
+                    class="flex flex-col items-center gap-2 text-white/70"
+                >
+
+                    <span
+                        class="text-xs uppercase tracking-widest"
+                    >
+                        Explore
+                    </span>
+
+                    <div
+                        class="w-6 h-10 border border-white/40 rounded-full flex justify-center pt-2"
+                    >
+
+                        <span
+                            class="w-1.5 h-2.5 bg-white rounded-full animate-bounce"
+                        ></span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BREADCRUMB
+====================================================== -->
+
+<div
+    class="oa-reveal bg-gray-50 border-b border-gray-200"
+>
+
+    <div
+        class="max-w-7xl mx-auto px-6 lg:px-8 py-4"
+    >
+
+        <div
+            class="flex items-center flex-wrap gap-2 text-sm"
+        >
+
+            <a
+                href="{% url 'home' %}"
+                class="text-gray-500 hover:text-primary transition-colors duration-300 font-medium"
+            >
+                Home
+            </a>
+
+            <span class="text-gray-400">
+                »
+            </span>
+
+            <span
+                class="text-primary font-semibold"
+            >
+                Our Activities
+            </span>
+
+        </div>
+
+    </div>
+
 </div>
+
+
+<!-- =====================================================
+     INTRO SECTION
+====================================================== -->
+
+<section
+    class="relative bg-white py-16 sm:py-20 lg:py-24 overflow-hidden"
+>
+
+    <!-- Decorative Background -->
+
+    <div
+        class="absolute -left-32 top-10 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"
+    ></div>
+
+    <div
+        class="absolute -right-32 bottom-0 w-80 h-80 bg-accent/5 rounded-full blur-3xl pointer-events-none"
+    ></div>
+
+
+    <div
+        class="max-w-4xl mx-auto px-6 relative z-10"
+    >
+
+        <div
+            class="oa-reveal text-center"
+        >
+
+            <!-- Section Label -->
+
+            <span
+                class="inline-flex items-center gap-2 text-primary text-xs sm:text-sm font-bold uppercase tracking-[0.2em]"
+            >
+
+                <span class="w-8 h-px bg-primary"></span>
+
+                Our Work
+
+                <span class="w-8 h-px bg-primary"></span>
+
+            </span>
+
+
+            <!-- Heading -->
+
+            <h2
+                class="mt-5 text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"
+            >
+
+                Brief About Some Of
+                <span class="text-primary">
+                    Our Activities
+                </span>
+
+            </h2>
+
+
+            <!-- Description -->
+
+            <p
+                class="mt-6 text-base sm:text-lg text-gray-500 leading-relaxed max-w-3xl mx-auto"
+            >
+                Here is a glimpse of the recent work carried out by
+                UDAAN Society in collaboration with communities
+                across different regions.
+            </p>
+
+
+            <!-- Line -->
+
+            <div
+                class="w-20 h-1 bg-primary rounded-full mx-auto mt-6"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACTIVITIES SECTION
+====================================================== -->
+
+<section
+    class="bg-gray-50 py-16 sm:py-20 lg:py-24"
+>
+
+    <div
+        class="max-w-7xl mx-auto px-6 lg:px-8"
+    >
+
+        <!-- Section Header -->
+
+        <div
+            class="oa-reveal text-center mb-12"
+        >
+
+            <span
+                class="text-primary text-xs font-bold uppercase tracking-[0.2em]"
+            >
+                Recent Activities
+            </span>
+
+            <h2
+                class="mt-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900"
+            >
+                Making An
+                <span class="text-primary">
+                    Impact
+                </span>
+            </h2>
+
+        </div>
+
+
+        <!-- Activity Grid -->
+
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-8"
+        >
+
+            {% for activity in activities %}
+
+            <!-- =================================================
+                 ACTIVITY CARD
+            ================================================== -->
+
+            <article
+                class="oa-card oa-card-animation group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col"
+                style="--animation-delay: {{ forloop.counter0 }}00ms;"
+            >
+
+                <!-- Image -->
+
+                <div
+                    class="oa-image-wrapper relative h-60 overflow-hidden bg-gray-100"
+                >
+
+                    {% if activity.image %}
+
+                    <img
+                        src="{{ activity.image.url }}"
+                        alt="{{ activity.title }}"
+                        loading="lazy"
+                        class="w-full h-full object-cover"
+                    >
+
+                    {% else %}
+
+                    <div
+                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-gray-400"
+                    >
+
+                        <i
+                            class="fas fa-image text-5xl"
+                        ></i>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- Image Overlay -->
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    ></div>
+
+
+                    <!-- Date Badge -->
+
+                    <div
+                        class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-xl px-3 py-2 shadow-lg"
+                    >
+
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-700"
+                        >
+
+                            <i
+                                class="far fa-calendar-alt text-primary"
+                            ></i>
+
+                            {{ activity.date|date:"M j, Y" }}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Card Content -->
+
+                <div
+                    class="p-6 flex flex-col flex-grow"
+                >
+
+                    <!-- Title -->
+
+                    <h3
+                        class="text-xl font-bold text-gray-900 leading-snug group-hover:text-primary transition-colors duration-300"
+                    >
+                        {{ activity.title }}
+                    </h3>
+
+
+                    <!-- Description -->
+
+                    <p
+                        class="mt-4 text-sm text-gray-500 leading-relaxed flex-grow"
+                    >
+                        {{ activity.description|truncatewords:25 }}
+                    </p>
+
+
+                    <!-- Read More Button -->
+
+                    <button
+                        type="button"
+                        class="oa-read-more open-modal-btn mt-6 inline-flex items-center justify-center gap-2 self-start bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all duration-300"
+                        data-title="{{ activity.title|escapejs }}"
+                        data-content="{{ activity.description|linebreaksbr|escapejs }}"
+                        {% if activity.image %}
+                        data-image="{{ activity.image.url }}"
+                        {% endif %}
+                    >
+
+                        Read More
+
+                        <i
+                            class="fas fa-arrow-right text-xs transition-transform duration-300"
+                        ></i>
+
+                    </button>
+
+
+                    <!-- Meta -->
+
+                    <div
+                        class="mt-6 pt-4 border-t border-gray-100 flex items-center text-xs text-gray-500"
+                    >
+
+                        <i
+                            class="far fa-calendar-alt mr-2 text-primary"
+                        ></i>
+
+                        {{ activity.date|date:"F j, Y" }}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            {% empty %}
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div
+                class="oa-reveal md:col-span-2 lg:col-span-3 bg-white rounded-2xl border border-gray-200 shadow-sm p-12 sm:p-16 text-center"
+            >
+
+                <div
+                    class="w-20 h-20 mx-auto rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400"
+                >
+
+                    <i
+                        class="fas fa-clipboard-list text-3xl"
+                    ></i>
+
+                </div>
+
+
+                <h3
+                    class="mt-6 text-xl sm:text-2xl font-bold text-gray-900"
+                >
+                    No Activities Found
+                </h3>
+
+
+                <p
+                    class="mt-3 text-gray-500 max-w-md mx-auto leading-relaxed"
+                >
+                    We are constantly engaging with the community.
+                    New activities and events will be posted here soon.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ACTIVITY DETAIL MODAL
+====================================================== -->
+
+<div
+    id="activityModal"
+    class="oa-modal fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+    aria-hidden="true"
+>
+
+    <!-- Modal Content -->
+
+    <div
+        class="oa-modal-content relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
+    >
+
+        <!-- Close Button -->
+
+        <button
+            type="button"
+            id="closeActivityModal"
+            class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/90 hover:bg-gray-100 text-gray-700 flex items-center justify-center shadow-md transition-all duration-300 hover:rotate-90"
+            aria-label="Close modal"
+        >
+
+            <i
+                class="fas fa-times"
+            ></i>
+
+        </button>
+
+
+        <!-- Modal Image -->
+
+        <div
+            id="modalImageWrapper"
+            class="hidden h-64 sm:h-80 overflow-hidden bg-gray-100"
+        >
+
+            <img
+                id="modalImage"
+                src=""
+                alt=""
+                class="oa-modal-image w-full h-full"
+            >
+
+        </div>
+
+
+        <!-- Modal Body -->
+
+        <div
+            class="p-7 sm:p-10"
+        >
+
+            <!-- Label -->
+
+            <span
+                class="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-[0.2em]"
+            >
+
+                <span
+                    class="w-6 h-px bg-primary"
+                ></span>
+
+                Activity Details
+
+            </span>
+
+
+            <!-- Title -->
+
+            <h2
+                id="modalTitle"
+                class="mt-4 text-2xl sm:text-3xl font-extrabold text-gray-900 leading-tight"
+            >
+            </h2>
+
+
+            <!-- Divider -->
+
+            <div
+                class="w-16 h-1 bg-primary rounded-full mt-5 mb-6"
+            ></div>
+
+
+            <!-- Content -->
+
+            <div
+                id="modalContent"
+                class="text-gray-600 text-sm sm:text-base leading-8"
+            >
+            </div>
+
+
+            <!-- Close Button -->
+
+            <div
+                class="mt-8 pt-6 border-t border-gray-100 flex justify-end"
+            >
+
+                <button
+                    type="button"
+                    id="closeActivityModalBottom"
+                    class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-bold text-sm transition-all duration-300"
+                >
+
+                    Close
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+    /* ================================================
+       HERO ANIMATION
+    ================================================= */
+
+    const heroContent =
+        document.querySelector(
+            ".oa-hero-content"
+        );
+
+
+    if (heroContent) {
+
+        setTimeout(
+            function () {
+
+                heroContent.classList.add(
+                    "hero-visible"
+                );
+
+            },
+            150
+        );
+
+    }
+
+
+    /* ================================================
+       SCROLL REVEAL
+    ================================================= */
+
+    const revealElements =
+        document.querySelectorAll(
+            ".oa-reveal, .oa-card-animation"
+        );
+
+
+    const observer =
+        new IntersectionObserver(
+
+            function (entries) {
+
+                entries.forEach(
+                    function (entry) {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            entry.target.classList.add(
+                                "is-visible"
+                            );
+
+                            observer.unobserve(
+                                entry.target
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+
+            {
+                threshold: 0.12,
+
+                rootMargin:
+                    "0px 0px -50px 0px"
+            }
+
+        );
+
+
+    revealElements.forEach(
+        function (element) {
+
+            observer.observe(
+                element
+            );
+
+        }
+    );
+
+
+    /* ================================================
+       MODAL ELEMENTS
+    ================================================= */
+
+    const modal =
+        document.getElementById(
+            "activityModal"
+        );
+
+
+    const modalContent =
+        document.querySelector(
+            ".oa-modal-content"
+        );
+
+
+    const modalTitle =
+        document.getElementById(
+            "modalTitle"
+        );
+
+
+    const modalDescription =
+        document.getElementById(
+            "modalContent"
+        );
+
+
+    const modalImageWrapper =
+        document.getElementById(
+            "modalImageWrapper"
+        );
+
+
+    const modalImage =
+        document.getElementById(
+            "modalImage"
+        );
+
+
+    const closeModalButton =
+        document.getElementById(
+            "closeActivityModal"
+        );
+
+
+    const closeBottomButton =
+        document.getElementById(
+            "closeActivityModalBottom"
+        );
+
+
+    const openButtons =
+        document.querySelectorAll(
+            ".open-modal-btn"
+        );
+
+
+    /* ================================================
+       OPEN MODAL
+    ================================================= */
+
+    openButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const title =
+                        button.dataset.title
+                        || "";
+
+
+                    const content =
+                        button.dataset.content
+                        || "";
+
+
+                    const image =
+                        button.dataset.image
+                        || "";
+
+
+                    modalTitle.textContent =
+                        title;
+
+
+                    modalDescription.innerHTML =
+                        content;
+
+
+                    /* Image */
+
+                    if (image) {
+
+                        modalImage.src =
+                            image;
+
+                        modalImage.alt =
+                            title;
+
+                        modalImageWrapper.classList.remove(
+                            "hidden"
+                        );
+
+                    } else {
+
+                        modalImageWrapper.classList.add(
+                            "hidden"
+                        );
+
+                        modalImage.src =
+                            "";
+
+                    }
+
+
+                    /* Show Modal */
+
+                    modal.classList.add(
+                        "active"
+                    );
+
+
+                    modal.setAttribute(
+                        "aria-hidden",
+                        "false"
+                    );
+
+
+                    document.body.style.overflow =
+                        "hidden";
+
+                }
+            );
+
+        }
+    );
+
+
+    /* ================================================
+       CLOSE MODAL FUNCTION
+    ================================================= */
+
+    function closeModal() {
+
+        modal.classList.remove(
+            "active"
+        );
+
+
+        modal.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    /* ================================================
+       CLOSE BUTTONS
+    ================================================= */
+
+    if (closeModalButton) {
+
+        closeModalButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    if (closeBottomButton) {
+
+        closeBottomButton.addEventListener(
+            "click",
+            closeModal
+        );
+
+    }
+
+
+    /* ================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ================================================= */
+
+    modal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === modal
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* ================================================
+       ESC KEY CLOSE
+    ================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                modal.classList.contains(
+                    "active"
+                )
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+    /* ================================================
+       CARD ARROW ANIMATION
+    ================================================= */
+
+    const cards =
+        document.querySelectorAll(
+            ".oa-card"
+        );
+
+
+    cards.forEach(
+        function (card) {
+
+            const button =
+                card.querySelector(
+                    ".oa-read-more"
+                );
+
+
+            const arrow =
+                button?.querySelector(
+                    ".fa-arrow-right"
+                );
+
+
+            if (
+                button &&
+                arrow
+            ) {
+
+                button.addEventListener(
+                    "mouseenter",
+                    function () {
+
+                        arrow.style.transform =
+                            "translateX(4px)";
+
+                    }
+                );
+
+
+                button.addEventListener(
+                    "mouseleave",
+                    function () {
+
+                        arrow.style.transform =
+                            "translateX(0)";
+
+                    }
+                );
+
+            }
+
+        }
+    );
+
+
+});
+
+</script>
+
+
 {% endblock %}

@@ -203,6 +203,18 @@ class Campaign(models.Model):
         super().save(*args, **kwargs)
 
     @property
+    def youtube_embed_url(self):
+        if not self.video_url:
+            return None
+        import re
+        pattern = r'(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})'
+        match = re.search(pattern, self.video_url)
+        if match:
+            video_id = match.group(1)
+            return f"https://www.youtube.com/embed/{video_id}"
+        return self.video_url
+
+    @property
     def percentage_raised(self):
         if self.goal_amount > 0:
             pct = (self.raised_amount / self.goal_amount) * 100
