@@ -76,7 +76,7 @@
     </script>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/design_system.css' %}?v=2">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=11">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}?v=15">
     <link rel="stylesheet" href="{% static 'css/style.css' %}?v=11">
     <link rel="stylesheet" href="{% static 'css/jjm-portal.css' %}?v=11">
     {% block extra_css %}{% endblock %}
@@ -116,10 +116,6 @@
             <div class="logo">
                 <a href="{% url 'home' %}" class="nav-brand" aria-label="UDAAN Society Home">
                     <img class="logo-circle" src="{% static 'assets/logo.webp' %}" alt="UDAAN Society" />
-                    <div class="nav-brand-text">
-                        <span class="nav-brand-name">UDAAN Society</span>
-                        <span class="nav-brand-sub">ISA — Jal Jeevan Mission, UP</span>
-                    </div>
                 </a>
             </div>
 
@@ -132,85 +128,76 @@
 
             <!-- Center: Nav Links -->
             <ul class="nav-menu" role="list">
+                <!-- 1. Who We Are -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        Who We Are <span class="dropdown-arrow">▾</span>
+                        Who We Are <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'aboutus' %}" class="dropdown-item">About UDAAN</a>
-                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Mission &amp; Values</a>
-                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation &amp; Accolades</a>
+                        <a href="{% url 'aboutus' %}" class="dropdown-item">About</a>
+                        <a href="{% url 'our_mission_values' %}" class="dropdown-item">Our Mission &amp; Values</a>
+                        <a href="{% url 'appreciationandaccolades' %}" class="dropdown-item">Appreciation and Accolades</a>
                         <a href="{% url 'our_partners' %}" class="dropdown-item">Our Partners</a>
-                        <a href="{% url 'our_policies' %}" class="dropdown-item">Policies &amp; Compliance</a>
+                        <a href="{% url 'our_policies' %}" class="dropdown-item">Our Policies</a>
+                        <a href="{% url 'contact_us' %}" class="dropdown-item">Contact Us</a>
                         <a href="{% url 'our_team' %}" class="dropdown-item">Our Team</a>
                         <a href="{% url 'faq' %}" class="dropdown-item">FAQs</a>
-                        <a href="{% url 'contact_us' %}" class="dropdown-item">Contact Us</a>
                     </div>
                 </li>
+
+                <!-- 2. Make a Difference -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        JJM Programme <span class="dropdown-arrow">▾</span>
+                        Make a Difference <span class="dropdown-arrow">▼</span>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'project_list' %}" class="dropdown-item">Projects &amp; Villages</a>
-                        <a href="{% url 'our_activities' %}" class="dropdown-item">Field Activities</a>
-                        <a href="{% url 'report_list' %}" class="dropdown-item">Progress Reports</a>
-                        <a href="{% url 'resources' %}" class="dropdown-item">Document Repository</a>
-                        <a href="{% url 'news_clippings' %}" class="dropdown-item">News &amp; Updates</a>
-                        <a href="{% url 'blogs' %}" class="dropdown-item">Field Blogs</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        Engage <span class="dropdown-arrow">▾</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <a href="{% url 'career_fellowship' %}" class="dropdown-item">Career &amp; Fellowship</a>
+                        <a href="{% url 'career_fellowship' %}" class="dropdown-item">Career and Fellowship</a>
                         <a href="{% url 'workplace_living' %}" class="dropdown-item">Workplace Giving</a>
                         <a href="{% url 'volunteering' %}" class="dropdown-item">Volunteering</a>
                         <a href="{% url 'internships' %}" class="dropdown-item">Internships</a>
                         <a href="{% url 'campus_ambassador' %}" class="dropdown-item">Campus Ambassador</a>
-                        <a href="{% url 'jobs' %}" class="dropdown-item">Jobs at UDAAN</a>
+                        <a href="{% url 'jobs' %}" class="dropdown-item">Jobs at UDAAN Society</a>
                     </div>
                 </li>
+
+                <!-- 3. Impact -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        Impact <span class="dropdown-arrow">▼</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'report_list' %}" class="dropdown-item">Annual Report</a>
+                        <a href="{% url 'locations' %}" class="dropdown-item">Our Locations</a>
+                        <a href="{% url 'project_list' %}" class="dropdown-item">Projects</a>
+                        <a href="{% url 'our_activities' %}" class="dropdown-item">Our Activities</a>
+                        <a href="{% url 'blogs' %}" class="dropdown-item">Blogs</a>
+                        <a href="{% url 'news_clippings' %}" class="dropdown-item">News Clippings</a>
+                        <a href="{% url 'resources' %}" class="dropdown-item">Resources</a>
+                    </div>
+                </li>
+
+                <!-- 4. Blood Request -->
                 <li class="nav-item">
                     <a href="{% url 'blood_donation' %}" class="nav-link">Blood Request</a>
                 </li>
+
+                <!-- 5. Campaigns -->
                 <li class="nav-item">
                     <a href="{% url 'campaign_list' %}" class="nav-link">Campaigns</a>
                 </li>
+
+                <!-- 6. Donate Now Button -->
                 <li class="nav-item">
-                    <a href="{% url 'start_campaign_wizard' %}"
-                        class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white px-3.5 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm no-underline">
-                        <i class="fa-solid fa-plus-circle"></i>
-                        Start Campaign
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'donate' %}"
-                        class="bg-[#0A3663] hover:bg-[#072545] text-white px-4 py-1.5 rounded-lg font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm no-underline">
-                        <i class="fa-solid fa-heart text-red-400"></i>
-                        Donate
+                    <a href="{% url 'donate' %}" class="donate-btn-custom bg-[#3B82F6] hover:bg-[#2563EB] text-white px-5 py-2 rounded-lg flex flex-col items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 no-underline leading-tight" style="background: #3B82F6; color: #FFFFFF !important; padding: 7px 20px; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35); min-width: 140px;">
+                        <span class="donate-title text-white font-bold italic text-sm flex items-center gap-1.5" style="color: #FFFFFF; font-weight: 700; font-style: italic; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-credit-card text-xs text-white"></i> Donate Now
+                        </span>
+                        <span class="donate-sub text-[9.5px] italic text-blue-100 font-normal" style="color: rgba(255, 255, 255, 0.9); font-size: 9.5px; font-style: italic; font-weight: 400; margin-top: 1px;">
+                            Secured by RazorPay
+                        </span>
                     </a>
                 </li>
             </ul>
-
-            <!-- Right: Dual-Logo Slot -->
-            <div class="nav-right-slot">
-                <div class="dual-logo-slot" aria-label="Government Programme Logos">
-                    <div class="gov-logo-badge">
-                        <span class="gov-logo-icon">💧</span>
-                        <span class="gov-logo-name">Jal Jeevan<br>Mission</span>
-                    </div>
-                    <span class="gov-logo-divider" aria-hidden="true"></span>
-                    <div class="gov-logo-badge">
-                        <span class="gov-logo-icon">🏛️</span>
-                        <span class="gov-logo-name">SWSM</span>
-                        <span class="gov-logo-sub">Uttar Pradesh</span>
-                    </div>
-                </div>
-                <a href="{% url 'contact_us' %}" class="nav-cta-btn" id="nav-contact-btn">Contact ISA</a>
-            </div>
         </div>
     </nav>
 
@@ -385,9 +372,9 @@
     <script src="{% static 'js/main.js' %}"></script>
 
     <!-- AI Chatbot Integration -->
-    <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}">
+    <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}?v=20">
     {% include 'chatbot/widget.html' %}
-    <script src="{% static 'chatbot/chatbot.js' %}"></script>
+    <script src="{% static 'chatbot/chatbot.js' %}?v=20"></script>
 
     <!-- Global Read More Modal -->
     <div id="globalReadMoreModal"
