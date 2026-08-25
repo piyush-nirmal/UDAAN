@@ -28,7 +28,7 @@ if not exist "venv\Scripts\activate.bat" (
         exit /b 1
     )
     
-    echo [2/4] Installing core dependencies (this may take 1-2 minutes on first run)...
+    echo [2/4] Installing core dependencies ^(this may take 1-2 minutes on first run^)...
     call .\venv\Scripts\activate.bat
     python -m pip install --upgrade pip --quiet
     
@@ -51,7 +51,7 @@ python manage.py migrate --noinput
 
 :: 4. Ensure superuser exists
 echo [4/4] Configuring admin user credentials...
-python manage.py shell -c "from django.contrib.auth.models import User; u=User.objects.filter(username='gyanendra').first(); (u.set_password('Udaan@123'), u.save()) if u else User.objects.create_superuser('gyanendra', 'gyanendra@udaansociety.org', 'Udaan@123')" >nul 2>&1
+python manage.py shell -c "from django.contrib.auth.models import User; u=User.objects.filter(username='gyanendra').first(); ( u.set_password('Udaan@123'), u.save() ) if u else User.objects.create_superuser('gyanendra', 'gyanendra@udaansociety.org', 'Udaan@123')" >nul 2>&1
 
 :: 5. Launch Servers in new terminal windows
 echo.
@@ -59,7 +59,7 @@ echo Launching Django Website (Port 8000)...
 start "Django Web Server (Port 8000)" cmd /k "cd /d ""%~dp0"" && .\venv\Scripts\activate && python manage.py runserver 8000"
 
 if exist "ai_chatbot" (
-    echo Launching AI Chatbot Backend (Port 8001)...
+    echo Launching AI Chatbot Backend ^(Port 8001^)...
     start "AI Chatbot Server (Port 8001)" cmd /k "cd /d ""%~dp0ai_chatbot"" && ..\venv\Scripts\activate && uvicorn app.main:app --reload --port 8001"
 )
 
