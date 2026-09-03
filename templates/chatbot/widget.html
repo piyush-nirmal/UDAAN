@@ -1,75 +1,210 @@
-<!-- Chatbot Widget HTML -->
-<div id="ai-chatbot-container" class="fixed bottom-6 right-6 z-[9999] font-sans text-base">
-    
-    <!-- Floating Chat Button -->
-    <button id="chatbot-toggle-btn" class="w-14 h-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 hover:scale-105 transition-all duration-300">
-        <i class="fas fa-comment-dots text-2xl"></i>
+<!-- UDAAN Saathi Chatbot -->
+<div id="ai-chatbot-container">
+
+    <!-- Floating Button -->
+    <button id="chatbot-toggle-btn"
+            type="button"
+            aria-label="Open UDAAN Saathi"
+            title="Chat with UDAAN Saathi">
+
+        <span class="chatbot-fab-ring"></span>
+
+        <span class="chatbot-fab-icon">
+            <i class="fas fa-hands-helping"></i>
+        </span>
     </button>
 
-    <!-- Chatbot Window -->
-    <div id="chatbot-window" class="hidden absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[550px] max-h-[80vh] bg-white rounded-2xl shadow-2xl border border-gray-200 flex-col overflow-hidden transition-all duration-300 transform origin-bottom-right">
-        
+
+    <!-- Chat Window -->
+    <div id="chatbot-window"
+         class="hidden"
+         role="dialog"
+         aria-label="UDAAN Saathi AI Assistant">
+
         <!-- Header -->
-        <div class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md z-10">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <i class="fas fa-robot text-xl"></i>
+        <div class="chatbot-header">
+
+            <div class="chatbot-header-left">
+
+                <div class="chatbot-logo">
+                    <i class="fas fa-hands-helping"></i>
+
+                    <span class="chatbot-online-dot"></span>
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg leading-none m-0">AI Assistant</h3>
-                    <p class="text-xs text-blue-100 mt-1 mb-0 flex items-center">
-                        <span class="w-2 h-2 bg-green-400 rounded-full mr-1 inline-block"></span> Online
+
+                <div class="chatbot-header-info">
+                    <h3>UDAAN Saathi</h3>
+
+                    <p>
+                        <span class="status-dot"></span>
+                        Online & ready to help
                     </p>
                 </div>
+
             </div>
-            <div class="flex space-x-2">
-                <button id="chatbot-clear-btn" class="text-white hover:text-red-200 transition-colors p-2" title="Clear Chat">
+
+
+            <div class="chatbot-header-actions">
+
+                <button id="chatbot-clear-btn"
+                        type="button"
+                        title="Clear conversation"
+                        aria-label="Clear conversation">
                     <i class="fas fa-trash-alt"></i>
                 </button>
-                <button id="chatbot-close-btn" class="text-white hover:text-gray-200 transition-colors p-2" title="Close Chat">
-                    <i class="fas fa-times text-xl"></i>
+
+                <button id="chatbot-close-btn"
+                        type="button"
+                        title="Close chatbot"
+                        aria-label="Close chatbot">
+                    <i class="fas fa-times"></i>
                 </button>
+
             </div>
+
         </div>
 
-        <!-- Chat Messages Area -->
-        <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+
+        <!-- Welcome / Messages -->
+        <div id="chatbot-messages">
+
             <!-- Welcome Message -->
-            <div class="flex items-start">
-                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs shadow-sm">
-                    <i class="fas fa-robot"></i>
+            <div class="chatbot-welcome">
+
+                <div class="welcome-icon">
+                    <i class="fas fa-hands-helping"></i>
                 </div>
-                <div class="ml-3 bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 max-w-[85%] text-gray-800 text-sm">
-                    Hello! I'm the Udaan Society AI assistant. How can I help you today?
+
+                <div class="welcome-content">
+
+                    <div class="welcome-title">
+                        Namaste! 👋
+                    </div>
+
+                    <div class="welcome-subtitle">
+                        I'm <strong>UDAAN Saathi</strong>
+                    </div>
+
+                    <p>
+                        Your AI assistant for UDAAN Society.
+                        I can help you learn about our work,
+                        volunteering, blood donation, careers,
+                        projects and community initiatives.
+                    </p>
+
                 </div>
+
             </div>
+
+
+            <!-- Quick Questions -->
+            <div class="quick-questions">
+
+                <div class="quick-title">
+                    <i class="fas fa-sparkles"></i>
+                    You can ask me
+                </div>
+
+                <div class="quick-buttons">
+
+                    <button type="button"
+                            class="quick-question"
+                            data-question="What is UDAAN Society?">
+                        <i class="fas fa-building"></i>
+                        What is UDAAN Society?
+                    </button>
+
+                    <button type="button"
+                            class="quick-question"
+                            data-question="How can I volunteer with UDAAN Society?">
+                        <i class="fas fa-hands-helping"></i>
+                        How can I volunteer?
+                    </button>
+
+                    <button type="button"
+                            class="quick-question"
+                            data-question="What is the Har Ghar Jal Project?">
+                        <i class="fas fa-droplet"></i>
+                        Har Ghar Jal Project
+                    </button>
+
+                    <button type="button"
+                            class="quick-question"
+                            data-question="How do I request blood?">
+                        <i class="fas fa-heart-pulse"></i>
+                        Blood donation
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Typing Indicator (Hidden by default) -->
-        <div id="chatbot-typing-indicator" class="hidden p-4 bg-gray-50 flex items-start -mt-4">
-            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs shadow-sm">
+
+        <!-- Typing Indicator -->
+        <div id="chatbot-typing-indicator"
+            class="chatbot-typing-indicator"
+            style="display: none;">
+
+            <div class="chatbot-message-avatar chatbot-ai-avatar">
                 <i class="fas fa-robot"></i>
             </div>
-            <div class="ml-3 bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100">
-                <div class="flex space-x-1 items-center h-4">
-                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
-                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                    <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
-                </div>
+
+            <div class="chatbot-typing-bubble">
+                <span class="typing-text">UDAAN Saathi is typing</span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
             </div>
         </div>
 
-        <!-- Input Area -->
-        <div class="p-3 bg-white border-t border-gray-100 shadow-inner z-10">
-            <form id="chatbot-form" class="flex items-end space-x-2">
-                <textarea id="chatbot-input" rows="1" class="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors text-sm resize-none overflow-hidden max-h-24 bg-gray-50" placeholder="Ask me anything..." required></textarea>
-                <button type="submit" class="bg-blue-600 text-white rounded-xl w-10 h-10 flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 mb-0.5">
-                    <i class="fas fa-paper-plane text-sm"></i>
-                </button>
+
+        <!-- Input -->
+        <div class="chatbot-input-area">
+
+            <form id="chatbot-form">
+
+                <div class="chatbot-input-wrapper">
+
+                    <textarea
+                        id="chatbot-input"
+                        rows="1"
+                        placeholder="Ask UDAAN Saathi..."
+                        autocomplete="off"
+                        required></textarea>
+
+                    <button
+                        type="submit"
+                        aria-label="Send message"
+                        title="Send message">
+
+                        <i class="fas fa-paper-plane"></i>
+
+                    </button>
+
+                </div>
+
             </form>
-            <div class="text-center mt-2">
-                <span class="text-[10px] text-gray-400">Powered by Gemini AI</span>
+
+
+            <div class="chatbot-footer">
+
+                <span>
+                    <i class="fas fa-shield-halved"></i>
+                    UDAAN Society
+                </span>
+
+                <span class="footer-separator">•</span>
+
+                <span>
+                    Powered by AI
+                </span>
+
             </div>
+
         </div>
+
     </div>
+
 </div>
