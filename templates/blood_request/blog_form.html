@@ -3,48 +3,276 @@
 {% block title %}Create Blog Post | UDAAN{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto">
+{{ form.media }}
+<div class="max-w-4xl mx-auto pb-16">
     <div class="flex items-center justify-between mb-8">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">Create Blog Post</h1>
-            <p class="text-gray-500 mt-1">Share updates and stories with the community.</p>
+            <p class="text-gray-500 mt-1">Share updates, stories, and photo galleries with the community.</p>
         </div>
-        <a href="{% url 'manager_dashboard' %}" class="text-gray-500 hover:text-gray-800 transition">
+        <a href="{% url 'manager_dashboard' %}" class="text-gray-500 hover:text-gray-800 transition flex items-center gap-1 text-sm font-medium">
             &larr; Back to Dashboard
         </a>
     </div>
 
+    {% if form.errors %}
+    <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+        <p class="font-bold mb-1">Please correct the following errors:</p>
+        <ul class="list-disc list-inside space-y-1">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="blog-form">
             {% csrf_token %}
 
+            <!-- Title -->
             <div class="mb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Title</label>
+                <label for="{{ form.title.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+                    Title <span class="text-red-500">*</span>
+                </label>
                 {{ form.title }}
             </div>
 
+            <!-- Short Description -->
             <div class="mb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Short Description</label>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+                    Short Description <span class="text-red-500">*</span>
+                </label>
                 {{ form.description }}
+                <p class="text-xs text-gray-400 mt-1">A brief summary displayed on blog cards and search previews.</p>
             </div>
 
-            <div class="mb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Featured Image</label>
-                {{ form.image }}
+            <!-- Multi-Image Upload & Preview Section -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-sm font-bold text-gray-700">
+                        Blog Images & Photo Gallery
+                    </label>
+                    <span id="image-count-badge" class="hidden text-xs font-semibold px-2.5 py-1 bg-green-50 text-green-700 rounded-full border border-green-200">
+                        0 images selected
+                    </span>
+                </div>
+                <p class="text-xs text-gray-500 mb-3">
+                    Upload one or more images. The <strong>first image</strong> will automatically serve as the primary cover/thumbnail, and additional images will create a responsive gallery on the blog detail page.
+                </p>
+
+                <!-- Hidden inputs -->
+                <input type="file" name="images" id="blog-images-input" multiple accept="image/png,image/jpeg,image/webp,image/gif" class="hidden">
+                <div class="hidden">{{ form.image }}</div>
+
+                <!-- Drag and Drop Dropzone -->
+                <div id="dropzone"
+                     class="border-2 border-dashed border-gray-200 hover:border-[#0B6B3A] rounded-2xl p-6 text-center cursor-pointer transition-all bg-gray-50/50 hover:bg-[#EEF8F1]/30 group">
+                    <div class="flex flex-col items-center justify-center space-y-3">
+                        <div class="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-gray-400 group-hover:text-[#0B6B3A] group-hover:scale-110 transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-gray-700 group-hover:text-[#0B6B3A]">Click to select images</span>
+                            <span class="text-sm text-gray-500"> or drag and drop files here</span>
+                        </div>
+                        <p class="text-xs text-gray-400">PNG, JPG, JPEG, WEBP up to 10MB each (Multi-select enabled)</p>
+                    </div>
+                </div>
+
+                <!-- Live Preview Grid -->
+                <div id="preview-container" class="mt-4 hidden space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-gray-400">Selected Images Preview</span>
+                        <button type="button" id="add-more-btn" class="text-xs font-bold text-[#0B6B3A] hover:underline flex items-center gap-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Add More Images
+                        </button>
+                    </div>
+                    <div id="preview-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        <!-- Dynamic thumbnail cards inserted via JavaScript -->
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Content</label>
+            <!-- Content (Rich Text) -->
+            <div class="mb-8">
+                <label for="{{ form.content.id_for_label }}" class="block text-sm font-bold text-gray-700 mb-2">
+                    Content <span class="text-red-500">*</span>
+                </label>
                 {{ form.content }}
             </div>
 
-            <div class="flex justify-end pt-6 border-t border-gray-100">
+            <!-- Form Actions -->
+            <div class="flex items-center justify-between pt-6 border-t border-gray-100">
+                <a href="{% url 'manager_dashboard' %}" class="px-5 py-2.5 rounded-lg border border-gray-200 text-gray-600 font-medium hover:bg-gray-50 transition text-sm">
+                    Cancel
+                </a>
                 <button type="submit"
-                    class="bg-brand-red text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition shadow-sm">
-                    Publish Blog
+                    class="bg-[#0B6B3A] text-white px-8 py-2.5 rounded-lg font-bold hover:bg-[#084f2a] transition shadow-sm flex items-center gap-2 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Publish Blog Post
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.getElementById("blog-images-input");
+    const dropzone = document.getElementById("dropzone");
+    const previewContainer = document.getElementById("preview-container");
+    const previewGrid = document.getElementById("preview-grid");
+    const imageCountBadge = document.getElementById("image-count-badge");
+    const addMoreBtn = document.getElementById("add-more-btn");
+
+    // Internal DataTransfer container to preserve selected files and support incremental adds & deletes
+    const dt = new DataTransfer();
+
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+        else return (bytes / 1048576).toFixed(1) + " MB";
+    }
+
+    function syncInputFiles() {
+        fileInput.files = dt.files;
+        updateUI();
+    }
+
+    function addFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type.startsWith("image/")) {
+                // Check if file is duplicate by name & size
+                let isDuplicate = false;
+                for (let j = 0; j < dt.items.length; j++) {
+                    const existingFile = dt.items[j].getAsFile();
+                    if (existingFile && existingFile.name === file.name && existingFile.size === file.size) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                if (!isDuplicate) {
+                    dt.items.add(file);
+                }
+            }
+        }
+        syncInputFiles();
+    }
+
+    function removeFile(index) {
+        const newDt = new DataTransfer();
+        for (let i = 0; i < dt.files.length; i++) {
+            if (i !== index) {
+                newDt.items.add(dt.files[i]);
+            }
+        }
+        // Replace items
+        dt.items.clear();
+        for (let i = 0; i < newDt.files.length; i++) {
+            dt.items.add(newDt.files[i]);
+        }
+        syncInputFiles();
+    }
+
+    function updateUI() {
+        previewGrid.innerHTML = "";
+        const count = dt.files.length;
+
+        if (count === 0) {
+            previewContainer.classList.add("hidden");
+            imageCountBadge.classList.add("hidden");
+            return;
+        }
+
+        previewContainer.classList.remove("hidden");
+        imageCountBadge.classList.remove("hidden");
+        imageCountBadge.textContent = count === 1 ? "1 image selected" : `${count} images selected`;
+
+        for (let i = 0; i < dt.files.length; i++) {
+            const file = dt.files[i];
+            const url = URL.createObjectURL(file);
+
+            const card = document.createElement("div");
+            card.className = "relative group rounded-xl overflow-hidden bg-white border border-gray-200 shadow-sm transition hover:shadow-md";
+
+            const isCover = i === 0;
+
+            card.innerHTML = `
+                <div class="h-32 w-full bg-gray-100 overflow-hidden relative">
+                    <img src="${url}" alt="${file.name}" class="w-full h-full object-cover">
+                    ${isCover ? `
+                        <span class="absolute top-2 left-2 bg-[#0B6B3A] text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1">
+                            ★ Cover Photo
+                        </span>
+                    ` : `
+                        <span class="absolute top-2 left-2 bg-black/60 backdrop-blur-xs text-white text-[10px] font-medium px-2 py-0.5 rounded-full shadow-sm">
+                            #${i + 1}
+                        </span>
+                    `}
+                    <button type="button" data-index="${i}" class="btn-remove-img absolute top-2 right-2 w-7 h-7 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-md transition opacity-90 hover:opacity-100" title="Remove image">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+                <div class="p-2.5">
+                    <p class="text-xs font-medium text-gray-800 truncate" title="${file.name}">${file.name}</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">${formatFileSize(file.size)}</p>
+                </div>
+            `;
+
+            previewGrid.appendChild(card);
+        }
+
+        // Attach delete events
+        document.querySelectorAll(".btn-remove-img").forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                const index = parseInt(this.getAttribute("data-index"), 10);
+                removeFile(index);
+            });
+        });
+    }
+
+    // Dropzone click
+    dropzone.addEventListener("click", () => fileInput.click());
+    addMoreBtn.addEventListener("click", () => fileInput.click());
+
+    // File input change
+    fileInput.addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+            addFiles(this.files);
+        }
+    });
+
+    // Drag and Drop
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.add("border-[#0B6B3A]", "bg-[#EEF8F1]/40");
+        }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.classList.remove("border-[#0B6B3A]", "bg-[#EEF8F1]/40");
+        }, false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        const dtData = e.dataTransfer;
+        if (dtData && dtData.files && dtData.files.length > 0) {
+            addFiles(dtData.files);
+        }
+    });
+});
+</script>
 {% endblock %}

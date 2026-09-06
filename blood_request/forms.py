@@ -41,8 +41,36 @@ class TaskForm(forms.ModelForm):
             'dependencies': forms.SelectMultiple(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue'}),
         }
 
-from .models import Blog
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput(attrs={
+            'multiple': True,
+            'accept': 'image/*',
+            'class': 'hidden',
+            'id': 'blog-images-input'
+        }))
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
+from .models import Blog, BlogImage
 class BlogForm(forms.ModelForm):
+    images = MultipleFileField(
+        required=False,
+        help_text='Upload one or more images for the blog post.'
+    )
+
     class Meta:
         model = Blog
         fields = ['title', 'content', 'description', 'image']
@@ -52,6 +80,12 @@ class BlogForm(forms.ModelForm):
             'content': CKEditor5Widget(config_name='extends'),
             'image': forms.FileInput(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
+
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:

@@ -8,7 +8,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib import messages
 from django.conf import settings
 from .models import (
-    BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask, 
+    BloodDonor, BloodRequest, ContactMessage, Report, Campaign, Task, StaffProfile, SubTask,
     TaskAutomationRule, Donation, VolunteerRequest, Expense
 )
 from .schemas import DonorSchema, BloodRequestSchema
@@ -39,7 +39,7 @@ def register_donor(request):
             data = json.loads(request.body)
             # 1. Validate with Pydantic
             donor_data = DonorSchema(**data)
-            
+
             # 2. Check logic unique phone (Pydantic doesn't check DB)
             if BloodDonor.objects.filter(phone=donor_data.phone).exists():
                 return JsonResponse({'success': False, 'error': 'Phone number already registered.'}, status=400)
@@ -60,18 +60,18 @@ def register_donor(request):
                 email_notifications=donor_data.email_notifications,
                 available_to_donate=donor_data.available_to_donate
             )
-            
+
             # 4. Send Email
             if donor.email:
                 send_din_email(donor.email, din, record_type='donor')
-                
+
             return JsonResponse({'success': True, 'message': f'Registration successful! Your DIN is: {din}'})
 
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)}, status=500)
-    
+
     return JsonResponse({'success': False, 'error': 'Invalid method'}, status=405)
 
 @login_required
@@ -84,10 +84,10 @@ def search_donors(request):
 
     if blood_group:
         donors = donors.filter(blood_group=blood_group)
-    
+
     if city:
         donors = donors.filter(city__icontains=city)
-    
+
     results = []
     for donor in donors:
         results.append({
@@ -109,7 +109,7 @@ def blood_request_create(request):
         try:
             data = json.loads(request.body)
             req_data = BloodRequestSchema(**data)
-            
+
             din = generate_unique_din()
             blood_request = BloodRequest.objects.create(
                 city=req_data.city,
@@ -123,10 +123,10 @@ def blood_request_create(request):
                 contact_email=req_data.contact_email,
                 din=din,
             )
-            
+
             if req_data.contact_email:
                 send_din_email(req_data.contact_email, din, record_type='request')
-                
+
             return JsonResponse({"success": True, "message": f"Blood request submitted successfully! Your DIN is: {din}"})
         except ValidationError as e:
             return JsonResponse({'success': False, 'error': e.errors()}, status=400)
@@ -145,13 +145,13 @@ def home_view(request):
     from .models import Testimonial, Announcement
     from datetime import date
     testimonials = Testimonial.objects.filter(is_active=True).order_by('-created_at')[:7]
-    
+
     # Fetch Active and Non-expired Announcements for homepage
     announcements = Announcement.objects.filter(
-        Q(is_active=True) & 
+        Q(is_active=True) &
         (Q(expiry_date__isnull=True) | Q(expiry_date__gte=date.today()))
     ).order_by('-priority', '-created_at')[:3]
-    
+
     context = {
         'campaigns': campaigns,
         'projects': projects,
@@ -185,20 +185,20 @@ def staff_dashboard(request):
     Staff Dashboard: Kanban Board View with Bulletin and Task Grouping.
     """
     from .models import Announcement, BloodDonor
-    
+
     # Fetch Active and Non-expired Announcements
     from datetime import date
     announcements = Announcement.objects.filter(
-        Q(is_active=True) & 
+        Q(is_active=True) &
         (Q(expiry_date__isnull=True) | Q(expiry_date__gte=date.today()))
     ).order_by('-priority', '-created_at')
-    
+
     # Impact Stats
     total_donors = BloodDonor.objects.count()
 
     # Fetch tasks assigned to the user OR unassigned tasks
     all_tasks = Task.objects.filter(Q(assigned_to=request.user) | Q(assigned_to__isnull=True)).order_by('due_date')
-    
+
     # Simple Python-side grouping (efficient enough for <100 tasks)
     todo_tasks = [t for t in all_tasks if t.status == 'To Do']
     inprogress_tasks = [t for t in all_tasks if t.status == 'In Progress']
@@ -226,22 +226,22 @@ from django.views.decorators.http import require_POST
 def update_task_status(request, pk):
     from django.utils import timezone
     import json
-    
+
     # Check if this is an AJAX/JSON request
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json'
-    
+
     task = get_object_or_404(Task, pk=pk)
     # Only allow the assigned user or staff to update; also allow if unassigned
     if task.assigned_to and task.assigned_to != request.user and not request.user.is_staff:
         return JsonResponse({'status': 'error', 'message': 'Permission denied'}, status=403)
-    
+
     new_status = None
-    
+
     if is_ajax:
         try:
             data = json.loads(request.body)
             new_status = data.get('status')
-            
+
             # GPS data from AJAX
             lat = data.get('lat')
             lng = data.get('lng')
@@ -295,12 +295,12 @@ def update_task_status(request, pk):
             task.completion_timestamp = timezone.now()
         else:
             task.status = 'To Do'
-        
+
     task.save()
-    
+
     if is_ajax:
         return JsonResponse({'status': 'success', 'new_status': task.status, 'task_id': task.pk})
-    
+
     return redirect('staff_dashboard')
 
 
@@ -315,12 +315,12 @@ def task_detail(request, pk):
 def add_task_comment(request, pk):
     task = get_object_or_404(Task, pk=pk)
     content = request.POST.get('content')
-    
+
     if content and content.strip():
         # Handle @mentions if they exist in the text
         import re
         from .utils import create_notification
-        
+
         # Check permissions (either assigned to the task, or a manager)
         if task.assigned_to == request.user or request.user.groups.filter(name='Managers').exists() or request.user.is_superuser:
             comment = TaskComment.objects.create(
@@ -328,7 +328,7 @@ def add_task_comment(request, pk):
                 author=request.user,
                 content=content.strip()
             )
-            
+
             # Simple @mention parsing with Permission Hardening
             mentions = re.findall(r'@(\w+)', content)
             for username in mentions:
@@ -340,7 +340,7 @@ def add_task_comment(request, pk):
                         is_authorized = True
                     elif task.project and task.project.managers.filter(id=mentioned_user.id).exists():
                         is_authorized = True
-                    
+
                     if is_authorized:
                         create_notification(
                             user=mentioned_user,
@@ -349,11 +349,11 @@ def add_task_comment(request, pk):
                         )
                 except User.DoesNotExist:
                     pass
-            
+
             messages.success(request, "Comment added successfully.")
         else:
             messages.error(request, "You do not have permission to comment on this task.")
-            
+
     return redirect('task_detail', pk=task.pk)
 
 @login_required
@@ -375,7 +375,7 @@ def subtask_add(request, pk):
 def subtask_update(request, sub_pk):
     subtask = get_object_or_404(SubTask, pk=sub_pk)
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.content_type == 'application/json'
-    
+
     if is_ajax:
         import json
         try:
@@ -387,7 +387,7 @@ def subtask_update(request, sub_pk):
                 return JsonResponse({'status': 'success', 'new_status': subtask.status})
         except json.JSONDecodeError:
             return JsonResponse({'status': 'error'}, status=400)
-            
+
     # Fallback
     new_status = request.POST.get('status')
     if new_status in dict(SubTask.STATUS_CHOICES):
@@ -409,24 +409,24 @@ def manager_dashboard(request):
     from django.db.models import Count, Q
     from django.contrib.auth.models import User
     from datetime import date
-    
+
     # 1. Task Overview
     all_tasks = Task.objects.select_related('assigned_to', 'project').all().order_by('-created_at')
-    
+
     # Kanban Buckets
     todo_tasks = all_tasks.filter(status='To Do')
     inprogress_tasks = all_tasks.filter(status='In Progress')
     done_tasks = all_tasks.filter(status='Done')
-    
+
     tasks = all_tasks # Keep for table if needed or backward compat
-    
+
     # 2. Project Progress (Phase 7.1)
     # Calculate % completion for each project
     projects = Project.objects.annotate(
         total_tasks=Count('tasks'),
         completed_tasks=Count('tasks', filter=Q(tasks__status='Done'))
     ).filter(total_tasks__gt=0).prefetch_related('managers') # Only show projects with tasks
-    
+
     # Attach percentage manually (Django annotations for division can be complex database-dependent)
     for p in projects:
         if p.total_tasks > 0:
@@ -503,7 +503,7 @@ def project_detail(request, slug):
     return render(request, 'project_detail.html', {'project': project})
 
 def blogs_page(request):
-    blogs = Blog.objects.all().order_by('-created_at')
+    blogs = Blog.objects.all().prefetch_related('images').order_by('-created_at')
     return render(request, 'blogs.html', {'blogs': blogs})
 
 
@@ -517,13 +517,14 @@ def report_list(request):
     return render(request, 'annual_reports.html', {'reports': reports})
 
 def blog_detail(request, id):
-    blog = get_object_or_404(Blog, id=id)
-    recent_blogs = Blog.objects.exclude(id=id).order_by('-created_at')[:4]
+    blog = get_object_or_404(Blog.objects.prefetch_related('images'), id=id)
+    recent_blogs = Blog.objects.exclude(id=id).prefetch_related('images').order_by('-created_at')[:4]
 
     return render(request, 'blog_detail.html', {
         'blog': blog,
         'recent_blogs': recent_blogs
     })
+
 
 
 
@@ -535,16 +536,16 @@ from .models import Interaction
 
 @login_required
 def donor_detail(request, pk):
-    
+
     donor = get_object_or_404(BloodDonor, pk=pk)
-    
+
     # Handle New Interaction Log
     if request.method == 'POST':
         interaction_type = request.POST.get('interaction_type')
         outcome = request.POST.get('outcome')
         notes = request.POST.get('notes')
         followup_date = request.POST.get('next_followup_date') or None
-        
+
         # Create Interaction linked to this Donor
         Interaction.objects.create(
             staff=request.user,
@@ -556,11 +557,11 @@ def donor_detail(request, pk):
             next_followup_date=followup_date
         )
         return redirect('donor_detail', pk=pk)
-    
+
     # Fetch Interaction History
     ct = ContentType.objects.get_for_model(BloodDonor)
     interactions = Interaction.objects.filter(
-        content_type=ct, 
+        content_type=ct,
         object_id=donor.id
     )
 
@@ -573,7 +574,7 @@ def donor_detail(request, pk):
             'date': i.created_at,
             'obj': i,
         })
-    
+
     for d in donations:
         timeline.append({
             'type': 'donation',
@@ -651,7 +652,7 @@ def appointment_create(request):
         start = request.POST.get('start_time')
         end = request.POST.get('end_time')
         description = request.POST.get('description')
-        
+
         if title and start and end:
             Appointment.objects.create(
                 title=title,
@@ -662,7 +663,7 @@ def appointment_create(request):
                 status='Scheduled'
             )
             return redirect('appointment_list')
-    
+
     return render(request, 'appointment_form.html')
 
 
@@ -830,7 +831,7 @@ def portal_timeline(request):
 def calendar_events_api(request):
     """API for FullCalendar"""
     events = []
-    
+
     # Tasks
     tasks = Task.objects.filter(assigned_to=request.user)
     for task in tasks:
@@ -841,7 +842,7 @@ def calendar_events_api(request):
                 'color': '#EF4444' if task.priority == 'Critical' else '#3B82F6',
                 'url': f"/admin/portal/task/{task.id}/"
             })
-            
+
     # Appointments
     appointments = Appointment.objects.filter(staff=request.user)
     for appt in appointments:
@@ -877,12 +878,12 @@ def team_create(request):
     workspace = None
     if workspace_id:
         workspace = get_object_or_404(Workspace, id=workspace_id)
-        
+
     if request.method == 'POST':
         name = request.POST.get('name')
         description = request.POST.get('description')
         member_ids = request.POST.getlist('members')
-        
+
         if name:
             team = Team.objects.create(name=name, description=description, created_by=request.user, workspace=workspace)
             if member_ids:
@@ -892,14 +893,14 @@ def team_create(request):
             if workspace:
                 return redirect('workspace_detail', slug=workspace.slug)
             return redirect('team_list')
-    
+
     from django.contrib.auth.models import User
     # Filter users based on workspace if applicable
     if workspace:
         users = workspace.members.all()
     else:
         users = User.objects.filter(is_active=True).exclude(is_superuser=True)
-        
+
     return render(request, 'blood_request/team_form.html', {'users': users, 'workspace': workspace})
 
 @login_required
@@ -910,11 +911,11 @@ def team_detail(request, pk):
          from django.contrib import messages
          messages.error(request, "Access Denied")
          return redirect('staff_dashboard')
-         
+
     # Kanban Data for Team
     team_members = team.members.all()
     all_team_tasks = Task.objects.filter(assigned_to__in=team_members).order_by('-updated_at')
-    
+
     todo_tasks = all_team_tasks.filter(status='To Do')
     inprogress_tasks = all_team_tasks.filter(status='In Progress')
     done_tasks = all_team_tasks.filter(status='Done')
@@ -953,7 +954,7 @@ def shared_note_create(request):
         if parent_id and parent_id.isdigit():
             initial_data['parent_note'] = parent_id
         form = SharedNoteForm(initial=initial_data)
-    
+
     return render(request, 'blood_request/shared_note_form.html', {'form': form})
 
 @login_required
@@ -964,11 +965,11 @@ def shared_note_list(request):
     """
     # Notes owned by user OR shared with user OR shared with user's teams
     shared_notes = SharedNote.objects.filter(
-        Q(owner=request.user) | 
+        Q(owner=request.user) |
         Q(shared_with_users=request.user) |
         Q(shared_with_teams__members=request.user)
     ).distinct().order_by('-created_at')
-    
+
     return render(request, 'blood_request/shared_note_list.html', {'shared_notes': shared_notes})
 
 
@@ -990,45 +991,68 @@ def task_create(request):
             return redirect('manager_dashboard')
     else:
         form = TaskForm()
-        
+
     return render(request, 'blood_request/task_form.html', {'form': form})
 
 @login_required
 @permission_required('blood_request.add_blog', raise_exception=True)
 def blog_create(request):
     """
-    Create a Blog (Manager only).
+    Create a Blog (Manager only) with multi-image support.
     """
     from .forms import BlogForm
+    from .models import BlogImage
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
-            blog = form.save()
+            blog = form.save(commit=False)
+
+            uploaded_images = request.FILES.getlist('images')
+            single_image = request.FILES.get('image')
+
+            # If no single image specified, but gallery images were uploaded, set the first as cover
+            if not blog.image and uploaded_images:
+                blog.image = uploaded_images[0]
+
+            blog.save()
+            form.save_m2m()
+
+            # Save BlogImage records for all uploaded files
+            order = 0
+            if single_image and single_image not in uploaded_images:
+                BlogImage.objects.create(blog=blog, image=single_image, order=order)
+                order += 1
+
+            for img_file in uploaded_images:
+                BlogImage.objects.create(blog=blog, image=img_file, order=order)
+                order += 1
+
             messages.success(request, "Blog post created successfully!")
             return redirect('manager_dashboard')
     else:
         form = BlogForm()
-        
+
     return render(request, 'blood_request/blog_form.html', {'form': form})
+
 
 @login_required
 def shared_note_detail(request, pk):
     note = get_object_or_404(SharedNote, pk=pk)
     # Check permission (Owner, Shared User, or Shared Team Member)
     has_access = (
-        request.user == note.owner or 
+        request.user == note.owner or
         request.user in note.shared_with_users.all() or
         note.shared_with_teams.filter(members=request.user).exists() or
         is_manager(request.user)
     )
-    
+
     if not has_access:
         from django.contrib import messages
         messages.error(request, "You do not have permission to view this note.")
         return redirect('staff_dashboard')
-        
+
     can_edit = request.user == note.owner or is_manager(request.user)
-    
+
     if request.method == 'POST' and can_edit:
         form = SharedNoteForm(request.POST, request.FILES, instance=note)
         if form.is_valid():
@@ -1058,7 +1082,7 @@ def shared_note_detail(request, pk):
 def team_add_member(request, pk):
     team = get_object_or_404(Team, pk=pk)
     from django.contrib.auth.models import User
-    
+
     if request.method == 'POST':
         member_ids = request.POST.getlist('members')
         if member_ids:
@@ -1067,7 +1091,7 @@ def team_add_member(request, pk):
             from django.contrib import messages
             messages.success(request, f"{users_to_add.count()} members added to {team.name}")
         return redirect('team_detail', pk=pk)
-    
+
     # Show users NOT in the team
     available_users = User.objects.filter(is_active=True).exclude(id__in=team.members.values_list('id', flat=True)).exclude(is_superuser=True)
     return render(request, 'blood_request/team_add_member.html', {
@@ -1081,31 +1105,31 @@ def team_remove_member(request, team_pk, user_pk):
     team = get_object_or_404(Team, pk=team_pk)
     from django.contrib.auth.models import User
     user_to_remove = get_object_or_404(User, pk=user_pk)
-    
+
     if user_to_remove in team.members.all():
         team.members.remove(user_to_remove)
         from django.contrib import messages
         messages.success(request, f"{user_to_remove.username} removed from {team.name}")
-    
+
     return redirect('team_detail', pk=team_pk)
 
 
 @login_required
 def shared_note_delete(request, pk):
     note = get_object_or_404(SharedNote, pk=pk)
-    
+
     # Only owner or manager can delete
     if not (request.user == note.owner or is_manager(request.user)):
         from django.contrib import messages
         messages.error(request, "Only the owner or a manager can delete this note.")
         return redirect('shared_note_detail', pk=pk)
-        
+
     if request.method == 'POST':
         note.delete()
         from django.contrib import messages
         messages.success(request, "Wiki page deleted successfully.")
         return redirect('shared_note_list')
-        
+
     return render(request, 'blood_request/shared_note_confirm_delete.html', {'note': note})
 
 # --- Phase 18: Portal User Management ---
@@ -1126,7 +1150,7 @@ def user_add(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         role = request.POST.get('role') # Manager or Staff
-        
+
         if username and password:
             try:
                 from django.contrib.auth.password_validation import validate_password
@@ -1143,15 +1167,15 @@ def user_add(request):
                     user.groups.add(g)
                     user.is_staff = True # Managers are staff
                     user.save()
-                
+
                 # Create Profile
                 StaffProfile.objects.create(user=user)
-                
+
                 messages.success(request, f"User {username} created!")
                 return redirect('user_list')
             except Exception as e:
                 messages.error(request, str(e))
-                
+
     return render(request, 'blood_request/user_form.html')
 
 @login_required
@@ -1164,12 +1188,12 @@ def user_edit_portal(request, pk):
         user_obj.first_name = request.POST.get('first_name')
         user_obj.last_name = request.POST.get('last_name')
         user_obj.email = request.POST.get('email')
-        
+
         # Only allow superusers to modify access and roles
         if request.user.is_superuser:
             user_obj.is_staff = request.POST.get('is_staff') == 'on'
             user_obj.is_superuser = request.POST.get('is_superuser') == 'on'
-            
+
             # Handle group assignments
             group_ids = request.POST.getlist('groups')
             user_obj.groups.clear()
@@ -1181,20 +1205,20 @@ def user_edit_portal(request, pk):
                     pass
 
         user_obj.save()
-        
+
         # Phone
         phone = request.POST.get('phone')
         profile, created = StaffProfile.objects.get_or_create(user=user_obj)
         profile.phone_number = phone
         profile.save()
-        
+
         messages.success(request, f"User {user_obj.username} updated!")
         return redirect('user_list')
 
     context = {
         'target_user': user_obj,
     }
-    
+
     # Pass available groups if current user is superuser
     if request.user.is_superuser:
         context['all_groups'] = Group.objects.all()
@@ -1286,7 +1310,7 @@ def news_clippings(request):
 def internships(request):
     from django.contrib import messages
     from .models import InternshipRequest
-    
+
     if request.method == 'POST':
         name = request.POST.get('name')
         father_name = request.POST.get('father_name', '')
@@ -1301,7 +1325,7 @@ def internships(request):
         start_date = request.POST.get('start_date')
         duration_months = request.POST.get('duration_months', 3)
         cv = request.FILES.get('cv')
-        
+
         try:
             InternshipRequest.objects.create(
                 name=name,
@@ -1321,7 +1345,7 @@ def internships(request):
             messages.success(request, 'Your internship request has been successfully submitted! We will contact you soon.')
         except Exception as e:
             messages.error(request, 'There was an error submitting your request. Please check your inputs.')
-            
+
     return render(request, 'internships.html')
 
 def our_mission_values(request):
@@ -1359,7 +1383,7 @@ class TaskListView(ListView):
     model = Task
     template_name = 'blood_request/portal_list.html'
     context_object_name = 'items'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Manage Tasks'
@@ -1398,7 +1422,7 @@ class SubTaskListView(ListView):
     model = SubTask
     template_name = 'blood_request/portal_list.html'
     context_object_name = 'items'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Manage SubTasks'
@@ -1450,7 +1474,7 @@ class ExpenseListView(ListView):
     model = Expense
     template_name = 'blood_request/portal_list.html'
     context_object_name = 'items'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Manage Expenses'
@@ -1500,7 +1524,7 @@ def contact_us(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('message')
-        
+
         if first_name and email and message:
             ContactMessage.objects.create(
                 first_name=first_name,
@@ -1512,7 +1536,7 @@ def contact_us(request):
             return redirect('contact_us')
         else:
             messages.error(request, "Please fill out all required fields.")
-            
+
     return render(request, "contact_us.html")
 
 def faq(request):
@@ -1592,32 +1616,32 @@ def send_digest_portal(request):
     from django.core.mail import send_mail
     from django.template.loader import render_to_string
     from datetime import date
-    
+
     preview_users = []
-    
+
     if request.method == 'POST':
         staff_users = User.objects.filter(is_active=True, is_staff=True)
         emails_sent = 0
-        
+
         for user in staff_users:
             if not user.email:
                 continue
-                
+
             tasks = Task.objects.filter(
                 assigned_to=user,
                 status__in=['To Do', 'In Progress']
             ).order_by('due_date', '-priority')
-            
+
             if not tasks.exists():
                 continue
-            
+
             html_message = render_to_string(
                 'blood_request/emails/daily_digest.html',
                 {'user': user, 'tasks': tasks, 'today': date.today()}
             )
-            
+
             plain_message = f"Hello {user.first_name or user.username}, you have {tasks.count()} pending tasks."
-            
+
             try:
                 send_mail(
                     subject=f"UDAAN Tasks Daily Digest - {date.today().strftime('%b %d, %Y')}",
@@ -1630,10 +1654,10 @@ def send_digest_portal(request):
                 emails_sent += 1
             except Exception as e:
                 messages.warning(request, f"Failed to send to {user.username}: {str(e)}")
-        
+
         messages.success(request, f"Daily digest sent to {emails_sent} staff member(s)!")
         return redirect('send_digest_portal')
-    
+
     # GET: Show preview of who will receive
     staff_users = User.objects.filter(is_active=True, is_staff=True)
     for user in staff_users:
@@ -1644,7 +1668,7 @@ def send_digest_portal(request):
                 'task_count': tasks.count(),
                 'email': user.email,
             })
-    
+
     return render(request, 'blood_request/portal_send_digest.html', {
         'preview_users': preview_users,
         'page_title': 'Send Daily Digest',
@@ -1658,36 +1682,36 @@ def export_tasks_pdf(request):
     from io import BytesIO
     from django.template.loader import render_to_string
     from datetime import date
-    
+
     tasks = Task.objects.all().order_by('status', '-priority', 'due_date')
-    
-    # We'll use HTML-to-PDF approach with weasyprint if available, 
+
+    # We'll use HTML-to-PDF approach with weasyprint if available,
     # otherwise fall back to CSV
     try:
         from weasyprint import HTML
-        
+
         html_string = render_to_string('blood_request/exports/tasks_pdf.html', {
             'tasks': tasks,
             'today': date.today(),
             'generated_by': request.user,
         })
-        
+
         pdf_file = BytesIO()
         HTML(string=html_string).write_pdf(pdf_file)
         pdf_file.seek(0)
-        
+
         response = HttpResponse(pdf_file.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="UDAAN_Tasks_Report_{date.today()}.pdf"'
         return response
-        
+
     except ImportError:
         # Fallback: Generate a clean CSV if weasyprint is not installed
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = f'attachment; filename="UDAAN_Tasks_Report_{date.today()}.csv"'
-        
+
         writer = csv.writer(response)
         writer.writerow(['Title', 'Status', 'Priority', 'Assigned To', 'Project', 'Due Date', 'Created At'])
-        
+
         for task in tasks:
             writer.writerow([
                 task.title,
@@ -1698,20 +1722,20 @@ def export_tasks_pdf(request):
                 task.due_date if task.due_date else '-',
                 task.created_at.strftime('%Y-%m-%d'),
             ])
-        
+
         return response
-    
+
 
 def blood_donation(request):
     """Blood Donation page with live data from the database."""
     # Live blood requests (non-closed)
     live_requests = BloodRequest.objects.exclude(status='Closed').order_by('-created_at')[:10]
-    
+
     # Impact stats
     total_donors = BloodDonor.objects.count()
     total_donations = Donation.objects.count()
     total_requests = BloodRequest.objects.count()
-    
+
     context = {
         'live_requests': live_requests,
         'total_donors': total_donors,
@@ -1729,11 +1753,11 @@ def newsletter_subscribe(request):
             email = data.get('email', '').strip()
             if not email:
                 return JsonResponse({'success': False, 'error': 'Email is required.'}, status=400)
-            
+
             from .models import NewsletterSubscription
             if NewsletterSubscription.objects.filter(email=email).exists():
                 return JsonResponse({'success': False, 'error': 'This email is already subscribed.'}, status=400)
-            
+
             NewsletterSubscription.objects.create(email=email)
             return JsonResponse({'success': True, 'message': 'Successfully subscribed!'})
         except Exception as e:
@@ -1746,7 +1770,7 @@ def blood_request_submit(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            
+
             required_fields = ['blood_group', 'contact_person', 'contact_phone', 'city']
             for field in required_fields:
                 if not data.get(field):
@@ -1792,7 +1816,7 @@ def start_campaign_wizard(request):
             draft_data = draft.step_data
         except CampaignDraft.DoesNotExist:
             pass
-    
+
     categories = [
         ('Medical', 'Medical', 'fa-notes-medical', 'bg-rose-500/10 text-rose-500 border-rose-500/30'),
         ('Education', 'Education', 'fa-graduation-cap', 'bg-blue-500/10 text-blue-500 border-blue-500/30'),
@@ -1869,10 +1893,10 @@ def campaign_submit_api(request):
     if request.method == 'POST':
         try:
             data = request.POST.dict() if request.POST else json.loads(request.body or '{}')
-            
+
             title = data.get('title', 'Untitled Campaign').strip()
             category = data.get('category', 'Medical')
-            
+
             # --- NEW VALIDATIONS ---
             # 1. Check IFSC validation
             ifsc_code = data.get('ifsc_code', '').strip().upper()
@@ -2076,7 +2100,7 @@ def ai_campaign_assist_api(request):
             prompt_input = data.get('input', '')
 
             gemini_key = os.environ.get('GEMINI_API_KEY')
-            
+
             if action == 'generate_title':
                 titles = [
                     f"Help {prompt_input or 'us'} overcome this crisis - Hope & Recovery Fund",

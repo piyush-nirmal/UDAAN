@@ -9,7 +9,7 @@
   body {
     background-color: #FAFAFA;
   }
-  
+
   .glass-card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -20,7 +20,7 @@
   .prose p {
     margin-bottom: 1.25em;
   }
-  
+
   .prose ul {
     list-style-type: disc;
     padding-left: 1.5em;
@@ -29,6 +29,20 @@
 
   .prose li {
     margin-bottom: 0.5em;
+  }
+
+  .gallery-thumb.active {
+    border-color: #0B6B3A;
+    box-shadow: 0 0 0 2px rgba(11, 107, 58, 0.4);
+    opacity: 1;
+  }
+
+  .gallery-thumb:not(.active) {
+    opacity: 0.7;
+  }
+
+  .gallery-thumb:hover {
+    opacity: 1;
   }
 </style>
 {% endblock %}
@@ -55,6 +69,9 @@
       </h1>
       <div class="flex items-center gap-4 text-xs font-semibold text-gray-500 pt-2">
         <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar"></i> {{ blog.created_at|date:"F d, Y" }}</span>
+        {% if blog.images.count > 1 %}
+        <span class="flex items-center gap-1.5 text-[#0B6B3A]"><i class="fa-solid fa-camera"></i> {{ blog.images.count }} Photos in Gallery</span>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -74,16 +91,77 @@
 <!-- Main Body -->
 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-10 lg:py-16 pb-24">
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-    
-    <!-- Left Column: Blog Post Content -->
+
+    <!-- Left Column: Blog Post Content & Image Gallery -->
     <article class="lg:col-span-8 glass-card rounded-3xl p-8 lg:p-10 space-y-8">
 
-      {% if blog.image %}
-      <div class="rounded-2xl overflow-hidden bg-gray-50 border border-[#E8E8E8] max-h-[500px]">
-        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
-      </div>
+      <!-- Multi-Image Gallery or Single Image Display -->
+      {% if blog.images.all %}
+        {% if blog.images.count > 1 %}
+          <!-- Interactive Multi-Image Gallery -->
+          <div class="space-y-3">
+            <!-- Main Hero Viewport -->
+            <div class="relative rounded-2xl overflow-hidden bg-gray-900 border border-[#E8E8E8] aspect-[16/10] max-h-[520px] group shadow-inner">
+              <img id="main-gallery-img"
+                   src="{{ blog.images.first.image.url }}"
+                   alt="{{ blog.title }}"
+                   class="w-full h-full object-contain md:object-cover transition-all duration-300 cursor-pointer"
+                   onclick="openLightbox(currentGalleryIndex)">
+
+              <!-- Image Counter Badge -->
+              <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+                <i class="fa-regular fa-images"></i>
+                <span id="gallery-counter">1 of {{ blog.images.count }}</span>
+              </div>
+
+              <!-- Click to Enlarge Overlay Indicator -->
+              <button type="button" onclick="openLightbox(currentGalleryIndex)" class="absolute bottom-4 right-4 bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 opacity-0 group-hover:opacity-100">
+                <i class="fa-solid fa-expand"></i> Fullscreen
+              </button>
+
+              <!-- Left / Right Nav Arrows -->
+              <button type="button" onclick="prevGalleryImage()" aria-label="Previous image" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition opacity-0 group-hover:opacity-100">
+                <i class="fa-solid fa-chevron-left text-sm"></i>
+              </button>
+              <button type="button" onclick="nextGalleryImage()" aria-label="Next image" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition opacity-0 group-hover:opacity-100">
+                <i class="fa-solid fa-chevron-right text-sm"></i>
+              </button>
+            </div>
+
+            <!-- Thumbnail Selector Strip -->
+            <div class="flex items-center gap-3 overflow-x-auto pb-2 pt-1 scrollbar-thin">
+              {% for img_obj in blog.images.all %}
+              <button type="button"
+                      onclick="selectGalleryImage({{ forloop.counter0 }})"
+                      class="gallery-thumb flex-shrink-0 w-20 h-14 md:w-24 md:h-16 rounded-xl overflow-hidden border-2 border-transparent transition-all cursor-pointer bg-gray-100 {% if forloop.first %}active{% endif %}"
+                      data-index="{{ forloop.counter0 }}"
+                      data-src="{{ img_obj.image.url }}"
+                      data-caption="{{ img_obj.caption|default:blog.title }}">
+                <img src="{{ img_obj.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
+              </button>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <!-- Exactly 1 Gallery Image -->
+          <div class="rounded-2xl overflow-hidden bg-gray-50 border border-[#E8E8E8] max-h-[500px] cursor-pointer group relative" onclick="openLightbox(0)">
+            <img src="{{ blog.images.first.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-101">
+            <div class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition flex items-center gap-1">
+              <i class="fa-solid fa-expand"></i> View
+            </div>
+          </div>
+        {% endif %}
+      {% elif blog.image %}
+        <!-- Legacy Single Image Support (for older blogs) -->
+        <div class="rounded-2xl overflow-hidden bg-gray-50 border border-[#E8E8E8] max-h-[500px] cursor-pointer group relative" onclick="openSingleLightbox('{{ blog.image.url }}')">
+          <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-101">
+          <div class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition flex items-center gap-1">
+            <i class="fa-solid fa-expand"></i> View
+          </div>
+        </div>
       {% endif %}
 
+      <!-- Post Content Body -->
       <div class="prose max-w-none text-gray-600 leading-relaxed text-[15px] pt-4">
         {% if blog.content %}
           {{ blog.content|safe }}
@@ -98,7 +176,7 @@
 
     <!-- Right Column: Sidebar -->
     <aside class="lg:col-span-4 space-y-6">
-      
+
       <!-- Brand Sidebar Widget -->
       <div class="bg-[#EEF8F1] rounded-2xl p-6 border border-[#0B6B3A]/10 text-center space-y-4">
         <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Society Logo" class="h-16 w-auto mx-auto rounded-full shadow-sm bg-white p-1">
@@ -111,12 +189,18 @@
       {% if campaigns %}
       <div class="glass-card rounded-2xl p-6 space-y-5">
         <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#E8E8E8] pb-3">Support Campaigns</h3>
-        
+
         <div class="space-y-4">
           {% for c in campaigns %}
           <div class="flex gap-4 items-center group">
             <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-[#E8E8E8]">
+              {% if c.image %}
               <img src="{{ c.image.url }}" alt="{{ c.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+              {% else %}
+              <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-lg">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+              </div>
+              {% endif %}
             </div>
             <div class="space-y-1">
               <h4 class="text-[13px] font-bold text-gray-900 line-clamp-1 leading-snug" style="font-family: 'Inter', sans-serif;">{{ c.title }}</h4>
@@ -132,12 +216,20 @@
       {% if recent_blogs %}
       <div class="glass-card rounded-2xl p-6 space-y-5">
         <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest border-b border-[#E8E8E8] pb-3">Recent Blog Posts</h3>
-        
+
         <div class="space-y-4">
           {% for b in recent_blogs %}
           <div class="flex gap-4 items-center group">
             <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-50 flex-shrink-0 border border-[#E8E8E8]">
+              {% if b.image %}
               <img src="{{ b.image.url }}" alt="{{ b.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+              {% elif b.images.first %}
+              <img src="{{ b.images.first.image.url }}" alt="{{ b.title }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+              {% else %}
+              <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-lg">
+                <i class="fa-solid fa-newspaper"></i>
+              </div>
+              {% endif %}
             </div>
             <div class="space-y-1">
               <a href="{% url 'blog_detail' b.id %}" class="text-[13px] font-bold text-gray-900 hover:text-[#0B6B3A] transition-colors line-clamp-2 leading-snug" style="font-family: 'Inter', sans-serif;">{{ b.title }}</a>
@@ -164,12 +256,146 @@
   </div>
 </div>
 
+<!-- Fullscreen Lightbox Modal -->
+<div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/90 hidden flex flex-col items-center justify-center p-4 backdrop-blur-sm">
+  <button type="button" onclick="closeLightbox()" aria-label="Close Fullscreen" class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
+    <i class="fa-solid fa-xmark text-lg"></i>
+  </button>
+
+  <div class="relative max-w-5xl max-h-[85vh] flex items-center justify-center">
+    <img id="lightbox-img" src="" alt="Fullscreen view" class="max-w-full max-h-[80vh] rounded-xl object-contain shadow-2xl">
+
+    <button type="button" id="lightbox-prev" onclick="prevLightboxImage()" aria-label="Previous" class="absolute -left-14 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white hidden md:flex items-center justify-center transition">
+      <i class="fa-solid fa-chevron-left text-lg"></i>
+    </button>
+    <button type="button" id="lightbox-next" onclick="nextLightboxImage()" aria-label="Next" class="absolute -right-14 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white hidden md:flex items-center justify-center transition">
+      <i class="fa-solid fa-chevron-right text-lg"></i>
+    </button>
+  </div>
+
+  <div class="mt-4 text-center">
+    <span id="lightbox-counter" class="text-white/80 text-xs font-semibold bg-white/10 px-3 py-1 rounded-full"></span>
+  </div>
+</div>
+
 <script>
+  // Array of gallery image URLs
+  const galleryImages = [
+    {% if blog.images.all %}
+      {% for img in blog.images.all %}
+        "{{ img.image.url }}"{% if not forloop.last %},{% endif %}
+      {% endfor %}
+    {% elif blog.image %}
+      "{{ blog.image.url }}"
+    {% endif %}
+  ];
+
+  let currentGalleryIndex = 0;
+
+  function selectGalleryImage(index) {
+    if (index < 0 || index >= galleryImages.length) return;
+    currentGalleryIndex = index;
+    const mainImg = document.getElementById("main-gallery-img");
+    const counter = document.getElementById("gallery-counter");
+    if (mainImg) {
+      mainImg.src = galleryImages[index];
+    }
+    if (counter) {
+      counter.textContent = `${index + 1} of ${galleryImages.length}`;
+    }
+
+    // Update thumbnail active states
+    document.querySelectorAll(".gallery-thumb").forEach(thumb => {
+      const tIdx = parseInt(thumb.getAttribute("data-index"), 10);
+      if (tIdx === index) {
+        thumb.classList.add("active");
+        thumb.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      } else {
+        thumb.classList.remove("active");
+      }
+    });
+  }
+
+  function nextGalleryImage() {
+    let nextIdx = (currentGalleryIndex + 1) % galleryImages.length;
+    selectGalleryImage(nextIdx);
+  }
+
+  function prevGalleryImage() {
+    let prevIdx = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    selectGalleryImage(prevIdx);
+  }
+
+  // Lightbox functionality
+  function openLightbox(index) {
+    if (galleryImages.length === 0) return;
+    currentGalleryIndex = index;
+    const modal = document.getElementById("lightbox-modal");
+    const img = document.getElementById("lightbox-img");
+    const counter = document.getElementById("lightbox-counter");
+    const prevBtn = document.getElementById("lightbox-prev");
+    const nextBtn = document.getElementById("lightbox-next");
+
+    img.src = galleryImages[index];
+    counter.textContent = `${index + 1} of ${galleryImages.length}`;
+
+    if (galleryImages.length > 1) {
+      prevBtn.classList.remove("hidden");
+      nextBtn.classList.remove("hidden");
+      prevBtn.classList.add("flex");
+      nextBtn.classList.add("flex");
+    } else {
+      prevBtn.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+    }
+
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function openSingleLightbox(url) {
+    const modal = document.getElementById("lightbox-modal");
+    const img = document.getElementById("lightbox-img");
+    const counter = document.getElementById("lightbox-counter");
+    img.src = url;
+    counter.textContent = "1 of 1";
+    document.getElementById("lightbox-prev").classList.add("hidden");
+    document.getElementById("lightbox-next").classList.add("hidden");
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById("lightbox-modal");
+    modal.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  }
+
+  function nextLightboxImage() {
+    let nextIdx = (currentGalleryIndex + 1) % galleryImages.length;
+    openLightbox(nextIdx);
+  }
+
+  function prevLightboxImage() {
+    let prevIdx = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    openLightbox(prevIdx);
+  }
+
+  // Keyboard navigation for Lightbox
+  document.addEventListener("keydown", function(e) {
+    const modal = document.getElementById("lightbox-modal");
+    if (!modal || modal.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeLightbox();
+    else if (e.key === "ArrowRight") nextLightboxImage();
+    else if (e.key === "ArrowLeft") prevLightboxImage();
+  });
+
+  // Social share
   function shareSocial(platform) {
     const url = encodeURIComponent(window.location.href);
     const title = encodeURIComponent("{{ blog.title|escapejs }}");
     let shareUrl = "";
-    
+
     switch (platform) {
       case "facebook":
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
@@ -184,7 +410,7 @@
         shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`;
         break;
     }
-    
+
     if (shareUrl) {
       window.open(shareUrl, "_blank", "width=600,height=400");
     }

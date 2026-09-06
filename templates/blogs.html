@@ -232,10 +232,17 @@
           <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8] reveal-scale">
             {% if blog.image %}
             <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
+            {% elif blog.images.first %}
+            <img src="{{ blog.images.first.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
             {% else %}
             <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-4xl opacity-50">
               <i class="fa-solid fa-newspaper"></i>
             </div>
+            {% endif %}
+            {% if blog.images.count > 1 %}
+            <span class="absolute bottom-2 right-2 bg-black/65 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+              <i class="fa-solid fa-images text-[9px]"></i> {{ blog.images.count }} Photos
+            </span>
             {% endif %}
           </div>
           
