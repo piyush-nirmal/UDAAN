@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Campaign Verification Status - UDAAN{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8 text-slate-800 dark:text-slate-100">
+  <div class="max-w-4xl mx-auto space-y-8">
+
+    <!-- Header & Status Pill -->
+    <div class="glass-card rounded-2xl p-6 sm:p-8 text-center space-y-4 shadow-sm">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+        <i class="fa-solid fa-clock-rotate-left"></i> Current Status: {{ campaign.status }}
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">{{ campaign.title }}</h1>
+      <p class="text-sm text-slate-500 max-w-xl mx-auto">Your campaign application has been successfully logged. Our verification team is cross-checking medical documents and bank details.</p>
+
+      <div class="pt-2 flex justify-center gap-4">
+        <a href="{% url 'campaign_dashboard' slug=campaign.slug %}" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition">
+          <i class="fa-solid fa-gauge mr-1.5"></i> Open Creator Dashboard
+        </a>
+        <a href="{% url 'campaign_detail' slug=campaign.slug %}" class="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-bold hover:bg-slate-50 transition">
+          <i class="fa-solid fa-eye mr-1.5"></i> View Public Page
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive Progress Timeline -->
+    <div class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm">
+      <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Verification Progress Timeline</h2>
+
+      <div class="relative border-l-2 border-slate-200 dark:border-slate-700 ml-4 space-y-8">
+        
+        <!-- Stage 1: Submitted -->
+        <div class="relative pl-6">
+          <span class="absolute -left-3 top-0.5 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Campaign Application Submitted</h3>
+          <p class="text-xs text-slate-500">Submitted on {{ campaign.created_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+
+        <!-- Stage 2: Under Review -->
+        <div class="relative pl-6">
+          <span class="absolute -left-3 top-0.5 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs animate-pulse"><i class="fa-solid fa-spinner fa-spin"></i></span>
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">Admin & Medical Document Review</h3>
+          <p class="text-xs text-slate-500">Verifying hospital letters, estimated costs, and beneficiary identity.</p>
+        </div>
+
+        <!-- Stage 3: Bank & KYC -->
+        <div class="relative pl-6">
+          <span class="absolute -left-3 top-0.5 w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-xs">3</span>
+          <h3 class="text-sm font-bold text-slate-400">Bank Account & IFSC Audit</h3>
+          <p class="text-xs text-slate-400">Automated IFSC and name matching verification.</p>
+        </div>
+
+        <!-- Stage 4: Live & Accepting Donations -->
+        <div class="relative pl-6">
+          <span class="absolute -left-3 top-0.5 w-6 h-6 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-500 flex items-center justify-center text-xs">4</span>
+          <h3 class="text-sm font-bold text-slate-400">Public Launch & Donation Acceptance</h3>
+          <p class="text-xs text-slate-400">Campaign goes live on Udaan portal and WhatsApp sharing.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

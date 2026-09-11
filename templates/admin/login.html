@@ -1,0 +1,322 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %}Log in | UDAAN Administration{% endblock %}
+
+{% block bodyclass %}{{ block.super }} login-page-custom{% endblock %}
+
+{% block header %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block usertools %}{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block content %}
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="brand-badge">
+        <img src="{% static 'assets/logo.webp' %}" alt="UDAAN Logo" class="login-logo">
+      </div>
+      <h1 class="login-title">UDAAN Administration</h1>
+      <p class="login-subtitle">Sign in to access your administrative control panel</p>
+    </div>
+
+    {% if form.errors and not form.non_field_errors %}
+      <div class="login-alert error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{% blocktranslate count counter=form.errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}</span>
+      </div>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <div class="login-alert error">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>{{ error }}</span>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+      <div class="login-alert info">
+        <i class="fas fa-info-circle"></i>
+        <span>{% blocktranslate trimmed with username=user.get_username %}You are logged in as {{ username }}, but you are not authorized to access this page.{% endblocktranslate %}</span>
+      </div>
+    {% endif %}
+
+    <form action="{{ app_path }}" method="post" id="login-form" class="login-form">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="id_username" class="form-label"><i class="fas fa-user icon"></i> Username</label>
+        <input type="text" name="username" autofocus maxlength="254" required id="id_username" class="form-control" placeholder="Enter your username" value="{{ form.username.value|default:'' }}">
+        {% if form.username.errors %}
+          <div class="field-error">{{ form.username.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_password" class="form-label"><i class="fas fa-lock icon"></i> Password</label>
+        <input type="password" name="password" required id="id_password" class="form-control" placeholder="Enter your password">
+        {% if form.password.errors %}
+          <div class="field-error">{{ form.password.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <div class="form-actions">
+        <button type="submit" class="btn-login">
+          <span>Sign In to Dashboard</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </form>
+
+    <div class="login-footer">
+      <a href="{% url 'home' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Return to UDAAN Public Site
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Modern Full-Viewport Layout for Admin Login */
+body.login-page-custom, body.login {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif !important;
+}
+
+#container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#content, #content-main {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none !important;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  padding: 40px 36px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #E63946 0%, #15803D 50%, #2563EB 100%);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.brand-badge {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px auto;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #F1F5F9;
+}
+
+.login-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.login-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  font-size: 13px;
+  color: #64748B;
+  margin: 0;
+  font-weight: 500;
+}
+
+.login-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.login-alert.error {
+  background-color: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+
+.login-alert.info {
+  background-color: #EFF6FF;
+  color: #2563EB;
+  border: 1px solid #BFDBFE;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-label .icon {
+  color: #64748B;
+  font-size: 12px;
+}
+
+.form-control {
+  width: 100%;
+  height: 46px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1.5px solid #CBD5E1;
+  font-size: 14px;
+  color: #0F172A;
+  background-color: #F8FAFC;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  border-color: #15803D;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.12);
+}
+
+.field-error {
+  font-size: 12px;
+  color: #DC2626;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.btn-login {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  background: #15803D;
+  color: #FFFFFF;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(21, 128, 61, 0.25);
+  margin-top: 6px;
+}
+
+.btn-login:hover {
+  background: #166534;
+  box-shadow: 0 6px 16px rgba(21, 128, 61, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+.login-footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #F1F5F9;
+  text-align: center;
+}
+
+.back-link {
+  color: #64748B;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #0F172A;
+}
+
+/* Hide standard Django admin default elements on login page */
+#header, #user-tools, .breadcrumbs, .sidebar, #nav-sidebar {
+  display: none !important;
+}
+</style>
+{% endblock %}

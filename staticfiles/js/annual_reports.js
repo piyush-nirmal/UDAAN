@@ -4,114 +4,115 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 /* ================= STATE ================= */
 let pdfDoc = null;
-let currentPage = 1;
 let totalPages = 0;
-let scale = 1.3;
+let scale = 1;
 let currentFile = "";
 
 /* ================= DOM READY ================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.getElementById("pdfCanvas");
-  const ctx = canvas.getContext("2d");
-
-  const pageInput = document.getElementById("pageInput");
+  const pagesContainer = document.getElementById("pdfPagesContainer");
   const totalPagesEl = document.getElementById("totalPages");
   const zoomLevel = document.getElementById("zoomLevel");
+  const activeTitleEl = document.getElementById("activeReportTitle");
 
   const loadingEl = document.getElementById("pdfLoading");
   const errorEl = document.getElementById("pdfError");
+  const retryBtn = document.getElementById("retryBtn");
+
+  const zoomInBtn = document.getElementById("zoomIn");
+  const zoomOutBtn = document.getElementById("zoomOut");
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
 
   /* ================= YEAR TABS ================= */
   document.querySelectorAll(".year-tab").forEach(tab => {
     tab.addEventListener("click", () => {
-      document.querySelectorAll(".year-tab").forEach(t =>
-        t.classList.remove("active")
-      );
-      tab.classList.add("active");
+      if (activeTitleEl) {
+        activeTitleEl.textContent = `FY ${tab.dataset.year} Audited Report`;
+      }
 
-      currentPage = 1;
-      scale = 1.3;
-
+      scale = 1;
       loadPDF(tab.dataset.file);
     });
   });
 
-  /* ================= TOOLBAR ================= */
-  document.getElementById("prevBtn").onclick = () => {
-    if (currentPage > 1) {
-      currentPage--;
-      pageInput.value = currentPage;
-      renderPage(currentPage);
+  /* ================= ZOOM ================= */
+  if (zoomInBtn) {
+    zoomInBtn.onclick = () => {
+      scale = Math.min(scale + 0.2, 3);
+      applyZoom();
+    };
+  }
+
+  if (zoomOutBtn) {
+    zoomOutBtn.onclick = () => {
+      scale = Math.max(scale - 0.2, 0.6);
+      applyZoom();
+    };
+  }
+
+  function applyZoom() {
+    if (pagesContainer) {
+      pagesContainer.style.transform = `scale(${scale})`;
     }
-  };
-
-  document.getElementById("nextBtn").onclick = () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      pageInput.value = currentPage;
-      renderPage(currentPage);
+    if (zoomLevel) {
+      zoomLevel.textContent = Math.round(scale * 100) + "%";
     }
-  };
+  }
 
-  pageInput.onchange = () => {
-    const page = parseInt(pageInput.value);
-    if (page >= 1 && page <= totalPages) {
-      currentPage = page;
-      renderPage(currentPage);
-    }
-  };
+  /* ================= FULLSCREEN ================= */
+  if (fullscreenBtn) {
+    fullscreenBtn.onclick = () => {
+      const viewer = document.getElementById("reportViewer");
+      if (!document.fullscreenElement) {
+        viewer.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    };
+  }
 
-  document.getElementById("zoomIn").onclick = () => {
-    scale += 0.2;
-    renderPage(currentPage);
-  };
-
-  document.getElementById("zoomOut").onclick = () => {
-    if (scale > 0.6) {
-      scale -= 0.2;
-      renderPage(currentPage);
-    }
-  };
-
-  document.getElementById("downloadBtn").onclick = () => {
-    if (!currentFile) return;
-    const a = document.createElement("a");
-    a.href = currentFile;
-    a.download = currentFile.split("/").pop();
-    a.click();
-  };
-
-  document.getElementById("fullscreenBtn").onclick = () => {
-    const viewer = document.getElementById("reportViewer");
-    if (!document.fullscreenElement) {
-      viewer.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  };
+  /* ================= RETRY ================= */
+  if (retryBtn) {
+    retryBtn.onclick = () => {
+      if (currentFile) {
+        loadPDF(currentFile);
+      }
+    };
+  }
 
   /* ================= LOAD FIRST PDF ================= */
-  const firstTab = document.querySelector(".year-tab.active");
+  const firstTab = document.querySelector(".year-tab.active") ||
+                    document.querySelector(".year-tab");
   if (firstTab) {
     loadPDF(firstTab.dataset.file);
+  } else {
+    showLoading(false);
   }
 
   /* ================= FUNCTIONS ================= */
 
   async function loadPDF(file) {
+    if (!file) {
+      showError();
+      showLoading(false);
+      return;
+    }
+
     currentFile = file;
+    scale = 1;
+
     showLoading(true);
     hideError();
+    clearPages();
 
     try {
       pdfDoc = await pdfjsLib.getDocument(file).promise;
       totalPages = pdfDoc.numPages;
 
-      totalPagesEl.textContent = totalPages;
-      pageInput.value = 1;
-      pageInput.max = totalPages;
+      if (totalPagesEl) totalPagesEl.textContent = totalPages;
 
-      renderPage(currentPage);
+      await renderAllPages();
+      applyZoom();
     } catch (err) {
       console.error("PDF load error:", err);
       showError();
@@ -120,32 +121,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function renderPage(pageNum) {
-    if (!pdfDoc) return;
+  async function renderAllPages() {
+    if (!pdfDoc || !pagesContainer) return;
 
-    const page = await pdfDoc.getPage(pageNum);
-    const viewport = page.getViewport({ scale });
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      const page = await pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: 1.3 });
 
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-    await page.render({
-      canvasContext: ctx,
-      viewport
-    }).promise;
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      canvas.className = "rounded-lg bg-white";
 
-    zoomLevel.textContent = Math.round(scale * 100) + "%";
+      pagesContainer.appendChild(canvas);
+
+      await page.render({
+        canvasContext: ctx,
+        viewport
+      }).promise;
+    }
+  }
+
+  function clearPages() {
+    if (pagesContainer) {
+      pagesContainer.innerHTML = "";
+    }
   }
 
   function showLoading(show) {
-    loadingEl.style.display = show ? "flex" : "none";
+    if (!loadingEl) return;
+    loadingEl.classList.toggle("loading-hidden", !show);
   }
 
   function showError() {
-    errorEl.style.display = "flex";
+    if (errorEl) errorEl.classList.remove("hidden");
   }
 
   function hideError() {
-    errorEl.style.display = "none";
+    if (errorEl) errorEl.classList.add("hidden");
   }
 });

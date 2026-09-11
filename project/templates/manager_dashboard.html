@@ -1,0 +1,436 @@
+{% extends 'portal_layout.html' %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto">
+    <!-- Notion-style Page Header -->
+    <div class="flex items-center space-x-4 mb-4 mt-8">
+        <h1 class="text-[40px] font-bold text-[#37352f] tracking-tight leading-tight">
+            Admin Overview
+        </h1>
+    </div>
+    <div class="flex items-center justify-between text-[15px] text-[#505050] mb-8 border-b border-[#ededed] pb-4">
+        <span>Organization-wide task overview and resource management.</span>
+        <div class="flex items-center space-x-3">
+            <span class="text-[13px] text-[#91918e] bg-[#f7f7f5] px-3 py-1 rounded-md border border-[#e5e5e5]">
+                {{ request.user.username }} · Manager
+            </span>
+            <div class="relative group">
+                <button
+                    class="bg-[#37352f] text-white px-4 py-1.5 rounded-md text-[13px] font-medium hover:bg-[#2f2d29] flex items-center transition-colors">
+                    <svg class="w-3.5 h-3.5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Export
+                </button>
+                <div
+                    class="absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-1 z-50 hidden group-hover:block border border-[#e5e5e5]">
+                    <a href="{% url 'export_donors_csv' %}"
+                        class="block px-4 py-2 text-[13px] text-[#37352f] hover:bg-[#f7f7f5] transition-colors">Export
+                        Donors</a>
+                    <a href="{% url 'export_requests_csv' %}"
+                        class="block px-4 py-2 text-[13px] text-[#37352f] hover:bg-[#f7f7f5] transition-colors">Export
+                        Requests</a>
+                    <a href="{% url 'export_tasks_pdf' %}"
+                        class="block px-4 py-2 text-[13px] text-[#37352f] hover:bg-[#f7f7f5] transition-colors">Export
+                        Tasks (PDF)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row: Notion flat style -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-[#f7f7f5] p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#efefed] transition-colors">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 rounded-md bg-[#e3e2e080] flex items-center justify-center mr-3">
+                    <svg class="w-4 h-4 text-[#505050]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
+                </div>
+                <span class="text-[13px] font-medium text-[#91918e]">Total Tasks</span>
+            </div>
+            <p class="text-[28px] font-bold text-[#37352f]">{{ stats.total|default:"0" }}</p>
+        </div>
+
+        <div class="bg-[#f7f7f5] p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#efefed] transition-colors">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 rounded-md bg-[#ffe2dd80] flex items-center justify-center mr-3">
+                    <svg class="w-4 h-4 text-[#e03e3e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                </div>
+                <span class="text-[13px] font-medium text-[#91918e]">High Priority</span>
+            </div>
+            <p class="text-[28px] font-bold text-[#37352f]">{{ stats.high_priority|default:"0" }}</p>
+        </div>
+
+        <div class="bg-[#f7f7f5] p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#efefed] transition-colors">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 rounded-md bg-[#fdecc880] flex items-center justify-center mr-3">
+                    <svg class="w-4 h-4 text-[#dfab01]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <span class="text-[13px] font-medium text-[#91918e]">Pending</span>
+            </div>
+            <p class="text-[28px] font-bold text-[#37352f]">{{ stats.pending|default:"0" }}</p>
+        </div>
+
+        <a href="{% url 'appointment_list' %}"
+            class="bg-[#f7f7f5] p-5 rounded-lg border border-[#e5e5e5] hover:bg-[#efefed] transition-colors group">
+            <div class="flex items-center mb-3">
+                <div class="w-8 h-8 rounded-md bg-[#d3e5ef80] flex items-center justify-center mr-3">
+                    <svg class="w-4 h-4 text-[#2f7ab7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                </div>
+                <span class="text-[13px] font-medium text-[#91918e]">Schedule</span>
+            </div>
+            <div
+                class="flex items-center text-[14px] font-medium text-[#37352f] group-hover:text-[#2f7ab7] transition-colors">
+                <span>Appointments →</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Overdue Alert -->
+    {% if overdue_tasks %}
+    <div class="bg-[#fbe4e460] border border-[#e9a7a0] p-4 mb-8 rounded-lg">
+        <div class="flex items-start">
+            <div class="flex-shrink-0 mt-0.5">
+                <svg class="h-4 w-4 text-[#e03e3e]" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-[13px] font-semibold text-[#e03e3e]">{{ overdue_tasks.count }} Overdue Task{{
+                    overdue_tasks.count|pluralize }}</h3>
+                <div class="mt-2 space-y-1">
+                    {% for task in overdue_tasks %}
+                    <p class="text-[13px] text-[#6b3a3a]">
+                        <a href="{% url 'task_detail' task.pk %}" class="font-medium underline hover:no-underline">{{
+                            task.title }}</a>
+                        <span class="text-[#91918e]">·
+                            {% if task.assigned_to %}{{ task.assigned_to.username }}{% else %}Unassigned{% endif %}
+                            · Due {{ task.due_date|date:"M d" }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Two-Column: Quick Links + Database Management -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+        <!-- Knowledge & Communication -->
+        <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+                <h3 class="text-[14px] font-semibold text-[#37352f]">Knowledge & Communication</h3>
+                <div class="flex space-x-3">
+                    {% if perms.blood_request.add_sharednote %}
+                    <a href="{% url 'shared_note_create' %}"
+                        class="text-[12px] font-medium text-[#2f7ab7] hover:text-[#1e5a8a] transition-colors">+ Note</a>
+                    {% endif %}
+                    {% if perms.blood_request.add_blog %}
+                    <a href="{% url 'blog_create' %}"
+                        class="text-[12px] font-medium text-[#2f7ab7] hover:text-[#1e5a8a] transition-colors">+ Blog</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="divide-y divide-[#f1f1f0]">
+                <a href="{% url 'shared_note_list' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#d3e5ef] text-[#2f7ab7] flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">Shared Notes</h4>
+                            <p class="text-[12px] text-[#91918e]">Team announcements & docs</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+
+                <a href="{% url 'team_list' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#dbeddb] text-[#0f7b0f] flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">Manage Teams</h4>
+                            <p class="text-[12px] text-[#91918e]">View & edit team structures</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+
+                <a href="{% url 'user_list' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#f5e0e9] text-[#b02768] flex items-center justify-center mr-3">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">User Management</h4>
+                            <p class="text-[12px] text-[#91918e]">Staff accounts & roles</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Workflow & Automation Tools -->
+        <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+                <h3 class="text-[14px] font-semibold text-[#37352f]">Workflow & Automation</h3>
+            </div>
+            <div class="divide-y divide-[#f1f1f0]">
+                <a href="{% url 'automation_rule_list' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#ffe8cc] text-[#e67e22] flex items-center justify-center mr-3">
+                            ⚡
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">Automation Rules</h4>
+                            <p class="text-[12px] text-[#91918e]">Auto-actions on task events</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+
+                <a href="{% url 'send_digest_portal' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#d3e5ef] text-[#2f7ab7] flex items-center justify-center mr-3">
+                            📧
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">Send Daily Digest</h4>
+                            <p class="text-[12px] text-[#91918e]">Email task summary to staff</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+
+                <a href="{% url 'export_tasks_pdf' %}"
+                    class="flex items-center justify-between px-5 py-3.5 hover:bg-[#f7f7f5] transition-colors group">
+                    <div class="flex items-center">
+                        <div
+                            class="w-8 h-8 rounded-md bg-[#dbeddb] text-[#0f7b0f] flex items-center justify-center mr-3">
+                            📄
+                        </div>
+                        <div>
+                            <h4 class="text-[14px] font-medium text-[#37352f]">Export Tasks (PDF)</h4>
+                            <p class="text-[12px] text-[#91918e]">Download task report</p>
+                        </div>
+                    </div>
+                    <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+                <h3 class="text-[14px] font-semibold text-[#37352f]">Database</h3>
+                <span class="text-[11px] font-medium bg-[#e3e2e0] text-[#91918e] px-2 py-0.5 rounded">Admin</span>
+            </div>
+            <div class="grid grid-cols-2 gap-px bg-[#f1f1f0]">
+                <a href="{% url 'task_list_portal' %}"
+                    class="flex flex-col p-4 bg-white hover:bg-[#f7f7f5] transition-colors">
+                    <i class="fa-solid fa-list-check text-[#91918e] mb-2 text-sm"></i>
+                    <span class="text-[13px] font-medium text-[#37352f]">Tasks</span>
+                    <span class="text-[12px] text-[#91918e] mt-0.5">Add or change</span>
+                </a>
+                <a href="{% url 'subtask_list_portal' %}"
+                    class="flex flex-col p-4 bg-white hover:bg-[#f7f7f5] transition-colors">
+                    <i class="fa-solid fa-diagram-project text-[#91918e] mb-2 text-sm"></i>
+                    <span class="text-[13px] font-medium text-[#37352f]">Sub Tasks</span>
+                    <span class="text-[12px] text-[#91918e] mt-0.5">Add or change</span>
+                </a>
+                <a href="{% url 'team_list' %}" class="flex flex-col p-4 bg-white hover:bg-[#f7f7f5] transition-colors">
+                    <i class="fa-solid fa-users-viewfinder text-[#91918e] mb-2 text-sm"></i>
+                    <span class="text-[13px] font-medium text-[#37352f]">Teams</span>
+                    <span class="text-[12px] text-[#91918e] mt-0.5">Add or change</span>
+                </a>
+                <a href="{% url 'shared_note_list' %}"
+                    class="flex flex-col p-4 bg-white hover:bg-[#f7f7f5] transition-colors">
+                    <i class="fa-solid fa-book-open text-[#91918e] mb-2 text-sm"></i>
+                    <span class="text-[13px] font-medium text-[#37352f]">Shared Notes</span>
+                    <span class="text-[12px] text-[#91918e] mt-0.5">Add or change</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Quick Navigation -->
+    {% if teams %}
+    <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden mb-8">
+        <div class="flex items-center justify-between px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+            <h3 class="text-[14px] font-semibold text-[#37352f] flex items-center">
+                <svg class="w-4 h-4 mr-2 text-[#91918e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                Team Boards
+            </h3>
+            <a href="{% url 'team_list' %}" class="text-[11px] font-medium text-[#91918e] hover:text-[#37352f] transition-colors">View All →</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-px bg-[#f1f1f0]">
+            {% for team in teams %}
+            <a href="{% url 'team_detail' team.pk %}"
+               class="flex items-center p-4 bg-white hover:bg-[#f7f7f5] transition-colors group">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3 flex-shrink-0"
+                     style="background: hsl({{ forloop.counter0|add:0 }}{% widthratio forloop.counter0 1 40 %}, 65%, 55%);">
+                    {{ team.name|slice:":1"|upper }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <span class="text-[13px] font-medium text-[#37352f] block truncate group-hover:text-brand-red transition-colors">{{ team.name }}</span>
+                    <span class="text-[11px] text-[#91918e]">{{ team.members.count }} member{{ team.members.count|pluralize:"s" }}</span>
+                </div>
+                <svg class="w-4 h-4 text-[#d1d1cf] group-hover:text-[#91918e] transition-colors flex-shrink-0 ml-2" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Project Progress + Team Workload -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+        <!-- Project Progress -->
+        <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden">
+            <div class="px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+                <h3 class="text-[14px] font-semibold text-[#37352f]">Project Progress</h3>
+            </div>
+            <div class="p-5 space-y-5">
+                {% for p in projects %}
+                <div>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[13px] font-medium text-[#37352f]">{{ p.title }}</span>
+                        <span class="text-[12px] font-semibold text-[#91918e]">{{ p.progress }}%</span>
+                    </div>
+                    <div class="w-full bg-[#e3e2e0] rounded-full h-1.5">
+                        <div class="h-1.5 rounded-full transition-all duration-500
+                            {% if p.progress >= 75 %}bg-[#0f7b0f]{% elif p.progress >= 40 %}bg-[#2f7ab7]{% else %}bg-[#91918e]{% endif %}"
+                            style="width: {{ p.progress }}%"></div>
+                    </div>
+                    <p class="text-[11px] text-[#b4b4b2] mt-1 text-right">
+                        {{ p.completed_tasks }}/{{ p.total_tasks }} done
+                    </p>
+                </div>
+                {% empty %}
+                <p class="text-[13px] text-[#91918e] italic text-center py-4">No active projects with tasks.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Team Workload -->
+        <div class="bg-white rounded-lg border border-[#e5e5e5] overflow-hidden">
+            <div class="px-5 py-3 bg-[#f7f7f5] border-b border-[#e5e5e5]">
+                <h3 class="text-[14px] font-semibold text-[#37352f]">Team Workload</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-[13px] text-left">
+                    <thead class="text-[11px] text-[#91918e] uppercase bg-[#fafafa] border-b border-[#f1f1f0]">
+                        <tr>
+                            <th class="px-5 py-2.5 font-semibold">Member</th>
+                            <th class="px-5 py-2.5 font-semibold text-center">Active</th>
+                            <th class="px-5 py-2.5 font-semibold text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#f1f1f0]">
+                        {% for staff in staff_load %}
+                        <tr class="hover:bg-[#f7f7f5] transition-colors">
+                            <td class="px-5 py-3 font-medium text-[#37352f]">
+                                <div class="flex items-center">
+                                    <div
+                                        class="w-6 h-6 rounded-full bg-[#e3e2e0] text-[#505050] flex items-center justify-center text-[10px] font-bold mr-2">
+                                        {{ staff.username|slice:":1"|upper }}
+                                    </div>
+                                    {{ staff.username }}
+                                </div>
+                            </td>
+                            <td class="px-5 py-3 text-center font-semibold text-[#37352f]">{{ staff.active_task_count }}
+                            </td>
+                            <td class="px-5 py-3 text-center">
+                                {% if staff.active_task_count == 0 %}
+                                <span
+                                    class="bg-[#dbeddb] text-[#0f7b0f] text-[11px] px-2 py-0.5 rounded font-medium">Available</span>
+                                {% elif staff.active_task_count < 3 %} <span
+                                    class="bg-[#d3e5ef] text-[#2f7ab7] text-[11px] px-2 py-0.5 rounded font-medium">
+                                    Optimal</span>
+                                    {% elif staff.active_task_count < 6 %} <span
+                                        class="bg-[#fdecc8] text-[#dfab01] text-[11px] px-2 py-0.5 rounded font-medium">
+                                        Busy</span>
+                                        {% else %}
+                                        <span
+                                            class="bg-[#ffe2dd] text-[#e03e3e] text-[11px] px-2 py-0.5 rounded font-medium">Overloaded</span>
+                                        {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center py-6 text-[13px] text-[#91918e]">No staff members found.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

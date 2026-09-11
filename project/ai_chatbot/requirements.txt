@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+google-generativeai
+langchain
+langchain-google-genai
+pydantic
+pydantic-settings
+python-dotenv
+SQLAlchemy
+jinja2
+python-multipart

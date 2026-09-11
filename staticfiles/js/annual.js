@@ -4,22 +4,20 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 /* ================= STATE ================= */
 let pdfDoc = null;
-let currentPage = 1;
-let totalPages = 0;
-let scale = 1.3;
 let currentFile = "";
+let baseScale = 1.3;
+let currentZoom = 1.0;
 
 /* ================= DOM READY ================= */
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.getElementById("pdfCanvas");
-  const ctx = canvas.getContext("2d");
-
-  const pageInput = document.getElementById("pageInput");
+  const container = document.getElementById("pdfPagesContainer");
   const totalPagesEl = document.getElementById("totalPages");
   const zoomLevel = document.getElementById("zoomLevel");
 
   const loadingEl = document.getElementById("pdfLoading");
   const errorEl = document.getElementById("pdfError");
+  const retryBtn = document.getElementById("retryBtn");
+  const activeTitle = document.getElementById("activeReportTitle");
 
   /* ================= YEAR TABS ================= */
   document.querySelectorAll(".year-tab").forEach(tab => {
@@ -28,67 +26,58 @@ document.addEventListener("DOMContentLoaded", () => {
         t.classList.remove("active")
       );
       tab.classList.add("active");
+      
+      const year = tab.dataset.year;
+      if(activeTitle) activeTitle.textContent = `FY ${year} Audited Report`;
 
-      currentPage = 1;
-      scale = 1.3;
+      // Reset zoom
+      currentZoom = 1.0;
+      updateZoomTransform();
 
       loadPDF(tab.dataset.file);
     });
   });
 
   /* ================= TOOLBAR ================= */
-  document.getElementById("prevBtn").onclick = () => {
-    if (currentPage > 1) {
-      currentPage--;
-      pageInput.value = currentPage;
-      renderPage(currentPage);
-    }
-  };
+  const zoomInBtn = document.getElementById("zoomIn");
+  if(zoomInBtn) {
+    zoomInBtn.onclick = () => {
+      if(currentZoom < 2.5) {
+        currentZoom += 0.2;
+        updateZoomTransform();
+      }
+    };
+  }
 
-  document.getElementById("nextBtn").onclick = () => {
-    if (currentPage < totalPages) {
-      currentPage++;
-      pageInput.value = currentPage;
-      renderPage(currentPage);
-    }
-  };
+  const zoomOutBtn = document.getElementById("zoomOut");
+  if(zoomOutBtn) {
+    zoomOutBtn.onclick = () => {
+      if (currentZoom > 0.6) {
+        currentZoom -= 0.2;
+        updateZoomTransform();
+      }
+    };
+  }
 
-  pageInput.onchange = () => {
-    const page = parseInt(pageInput.value);
-    if (page >= 1 && page <= totalPages) {
-      currentPage = page;
-      renderPage(currentPage);
-    }
-  };
-
-  document.getElementById("zoomIn").onclick = () => {
-    scale += 0.2;
-    renderPage(currentPage);
-  };
-
-  document.getElementById("zoomOut").onclick = () => {
-    if (scale > 0.6) {
-      scale -= 0.2;
-      renderPage(currentPage);
-    }
-  };
-
-  document.getElementById("downloadBtn").onclick = () => {
-    if (!currentFile) return;
-    const a = document.createElement("a");
-    a.href = currentFile;
-    a.download = currentFile.split("/").pop();
-    a.click();
-  };
-
-  document.getElementById("fullscreenBtn").onclick = () => {
-    const viewer = document.getElementById("reportViewer");
-    if (!document.fullscreenElement) {
-      viewer.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  };
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+  if(fullscreenBtn) {
+    fullscreenBtn.onclick = () => {
+      const viewer = document.getElementById("reportViewer");
+      if (!document.fullscreenElement) {
+        viewer.requestFullscreen().catch(err => {
+          console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    };
+  }
+  
+  if(retryBtn) {
+    retryBtn.onclick = () => {
+      if(currentFile) loadPDF(currentFile);
+    };
+  }
 
   /* ================= LOAD FIRST PDF ================= */
   const firstTab = document.querySelector(".year-tab.active");
@@ -98,20 +87,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ================= FUNCTIONS ================= */
 
+  function updateZoomTransform() {
+    container.style.transform = `scale(${currentZoom})`;
+    if(zoomLevel) {
+      zoomLevel.textContent = Math.round(currentZoom * 100) + "%";
+    }
+  }
+
   async function loadPDF(file) {
     currentFile = file;
     showLoading(true);
     hideError();
+    
+    // Clear existing pages
+    container.innerHTML = "";
+    container.style.transform = `scale(1)`;
+    if(zoomLevel) zoomLevel.textContent = "100%";
 
     try {
       pdfDoc = await pdfjsLib.getDocument(file).promise;
-      totalPages = pdfDoc.numPages;
+      const numPages = pdfDoc.numPages;
+      if(totalPagesEl) totalPagesEl.textContent = numPages;
 
-      totalPagesEl.textContent = totalPages;
-      pageInput.value = 1;
-      pageInput.max = totalPages;
-
-      renderPage(currentPage);
+      // Create canvas for each page immediately so scrollbar appears
+      for (let i = 1; i <= numPages; i++) {
+        const pageWrapper = document.createElement("div");
+        pageWrapper.className = "bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] rounded-sm overflow-hidden flex items-center justify-center";
+        pageWrapper.style.minHeight = "800px"; // Placeholder height
+        pageWrapper.style.width = "auto";
+        
+        const canvas = document.createElement("canvas");
+        canvas.style.display = "block";
+        pageWrapper.appendChild(canvas);
+        container.appendChild(pageWrapper);
+        
+        // Render asynchronously
+        renderSinglePage(i, canvas, pageWrapper);
+      }
+      
     } catch (err) {
       console.error("PDF load error:", err);
       showError();
@@ -120,32 +133,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function renderPage(pageNum) {
-    if (!pdfDoc) return;
+  async function renderSinglePage(pageNum, canvas, wrapper) {
+    try {
+      const page = await pdfDoc.getPage(pageNum);
+      const viewport = page.getViewport({ scale: baseScale });
+      
+      // High DPI (Retina) support for crystal clear rendering
+      const outputScale = window.devicePixelRatio || 1;
+      
+      canvas.width = Math.floor(viewport.width * outputScale);
+      canvas.height = Math.floor(viewport.height * outputScale);
+      canvas.style.width = Math.floor(viewport.width) + "px";
+      canvas.style.height = Math.floor(viewport.height) + "px";
+      
+      // Remove placeholder height now that we know the aspect ratio
+      wrapper.style.minHeight = "auto";
 
-    const page = await pdfDoc.getPage(pageNum);
-    const viewport = page.getViewport({ scale });
+      const transform = outputScale !== 1
+        ? [outputScale, 0, 0, outputScale, 0, 0]
+        : null;
 
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
+      const renderContext = {
+        canvasContext: canvas.getContext("2d"),
+        transform: transform,
+        viewport: viewport
+      };
 
-    await page.render({
-      canvasContext: ctx,
-      viewport
-    }).promise;
-
-    zoomLevel.textContent = Math.round(scale * 100) + "%";
+      await page.render(renderContext).promise;
+    } catch (err) {
+      console.error(`Error rendering page ${pageNum}:`, err);
+    }
   }
 
   function showLoading(show) {
-    loadingEl.style.display = show ? "flex" : "none";
+    if(show) {
+      loadingEl.classList.remove("hidden");
+    } else {
+      loadingEl.classList.add("hidden");
+    }
   }
 
   function showError() {
-    errorEl.style.display = "flex";
+    errorEl.classList.remove("hidden");
   }
 
   function hideError() {
-    errorEl.style.display = "none";
+    errorEl.classList.add("hidden");
   }
 });

@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Creator Dashboard - {{ campaign.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4 sm:px-6 lg:px-8 text-slate-800 dark:text-slate-100">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+          Campaigner Dashboard
+        </span>
+        <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white mt-1">{{ campaign.title }}</h1>
+        <p class="text-xs text-slate-500">Category: {{ campaign.category }} | Created {{ campaign.created_at|date:"M j, Y" }}</p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="{% url 'campaign_detail' slug=campaign.slug %}" class="px-4 py-2 text-xs font-bold rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50">
+          <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Public Page
+        </a>
+        <button onclick="navigator.clipboard.writeText(window.location.origin + '{% url 'campaign_detail' slug=campaign.slug %}'); alert('Campaign link copied to clipboard!');" class="px-4 py-2 text-xs font-bold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md">
+          <i class="fa-solid fa-share-nodes mr-1"></i> Share Campaign
+        </button>
+      </div>
+    </div>
+
+    <!-- Overview Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <div class="glass-card rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        <p class="text-xs font-semibold text-slate-500 mb-1">Total Funds Raised</p>
+        <h2 class="text-2xl font-black text-emerald-600 dark:text-emerald-400">₹ {{ campaign.raised_amount }}</h2>
+        <p class="text-[11px] text-slate-400 mt-1">Goal: ₹ {{ campaign.goal_amount }}</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        <p class="text-xs font-semibold text-slate-500 mb-1">Progress Percentage</p>
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white">{{ campaign.percentage_raised }}%</h2>
+        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-2 overflow-hidden">
+          <div class="bg-emerald-500 h-full rounded-full" style="width: {{ campaign.percentage_raised }}%;"></div>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        <p class="text-xs font-semibold text-slate-500 mb-1">Days Remaining</p>
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white">{{ campaign.days_remaining|default:"Active" }}</h2>
+        <p class="text-[11px] text-slate-400 mt-1">Status: {{ campaign.status }}</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+        <p class="text-xs font-semibold text-slate-500 mb-1">Total Supporters</p>
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white">14</h2>
+        <p class="text-[11px] text-slate-400 mt-1">Direct Bank Transfers Verified</p>
+      </div>
+
+    </div>
+
+    <!-- Main Content & Post Updates -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Post Campaign Updates -->
+      <div class="lg:col-span-8 space-y-6">
+        <div class="glass-card rounded-2xl p-6 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4"><i class="fa-solid fa-pen-to-square text-emerald-600 mr-2"></i> Post an Update for Donors</h3>
+          
+          <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div>
+              <input type="text" name="update_title" placeholder="Update Title (e.g. Surgery Successful, Thank you everyone!)" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" required />
+            </div>
+            <div>
+              <textarea name="update_content" rows="4" placeholder="Write update details here..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" required></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+              <input type="file" name="update_image" accept="image/*" class="text-xs text-slate-500" />
+              <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">
+                Publish Update
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Recent Updates Feed -->
+        <div class="glass-card rounded-2xl p-6 shadow-sm">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Past Campaign Updates</h3>
+          
+          {% if updates %}
+            <div class="space-y-4">
+              {% for u in updates %}
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-1">
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ u.title }}</h4>
+                  <span class="text-[11px] text-slate-400">{{ u.created_at|date:"M j, Y" }}</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300">{{ u.content }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-xs text-slate-500 italic">No updates published yet. Post an update above to keep donors informed!</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Column: Fund Withdrawal & Bank Account -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white mb-3"><i class="fa-solid fa-piggy-bank text-emerald-600 mr-2"></i> Withdraw Funds</h3>
+          <p class="text-xs text-slate-500 mb-4">Transfer available funds directly to your verified bank account.</p>
+
+          <div class="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 mb-4 space-y-1">
+            <p class="text-[11px] text-slate-500">Available Balance</p>
+            <h4 class="text-xl font-extrabold text-emerald-700 dark:text-emerald-300">₹ {{ campaign.raised_amount }}</h4>
+          </div>
+
+          <button onclick="alert('Withdrawal request initiated! Funds will be credited within 24-48 hours.');" class="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white text-xs font-bold transition shadow-sm">
+            Request Payout
+          </button>
+        </div>
+
+        <!-- Bank Account Card -->
+        <div class="glass-card rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-2"><i class="fa-solid fa-building-columns text-slate-500 mr-1"></i> Linked Bank Account</h3>
+          {% if bank %}
+            <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+              <p><strong>Holder:</strong> {{ bank.beneficiary_name }}</p>
+              <p><strong>Bank:</strong> {{ bank.bank_name }}</p>
+              <p><strong>IFSC:</strong> {{ bank.ifsc_code }}</p>
+              <p class="text-[11px] text-emerald-600 font-bold mt-1"><i class="fa-solid fa-circle-check"></i> Account Verified</p>
+            </div>
+          {% else %}
+            <p class="text-xs text-slate-500">Bank account details pending submission.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,413 @@
+{% extends "portal_layout.html" %}
+
+{% block title %}Create Wiki Page | UDAAN{% endblock %}
+
+{% block extra_head %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-8 px-4 sm:px-0">
+    <form method="post" id="note-form">
+        {% csrf_token %}
+        <div class="hidden">
+            {{ form.parent_note }}
+        </div>
+
+        <div class="flex items-center justify-between mb-12">
+            <a href="{% url 'staff_dashboard' %}"
+                class="text-sm font-medium text-gray-500 hover:text-gray-800 transition">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard
+            </a>
+
+            <div class="flex items-center space-x-3 relative">
+                <!-- Sharing Toggle -->
+                <button type="button" onclick="toggleShareDropdown()" id="shareBtn"
+                    class="flex items-center text-sm font-medium px-3 py-1.5 rounded-md border border-gray-200 hover:bg-gray-50 transition text-gray-600 select-none bg-white">
+                    <i class="fa-solid fa-share-nodes mr-2 text-gray-400"></i> Share Page
+                </button>
+
+                <!-- Dropdown for share -->
+                <div id="shareDropdown"
+                    class="hidden absolute top-9 right-24 w-80 bg-white rounded-lg shadow-xl border border-gray-100 z-50 p-4 select-none">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Share with Teams</h4>
+                    <div
+                        class="max-h-40 overflow-y-auto mb-4 custom-scrollbar bg-gray-50 rounded-md p-1 border border-gray-100">
+                        {{ form.shared_with_teams }}
+                    </div>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Share with Individuals
+                    </h4>
+                    <div
+                        class="max-h-40 overflow-y-auto custom-scrollbar bg-gray-50 rounded-md p-1 border border-gray-100">
+                        {{ form.shared_with_users }}
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="bg-gray-900 text-white text-sm font-medium px-4 py-1.5 rounded-md hover:bg-gray-800 transition shadow-sm">
+                    Publish
+                </button>
+            </div>
+        </div>
+
+        <!-- Notion-like Title Input -->
+        <div class="mb-6">
+            {{ form.title }}
+        </div>
+
+        <!-- Notion-like Editor -->
+        <div class="prose max-w-none w-full border-none pb-20">
+            {{ form.content }}
+        </div>
+    </form>
+</div>
+
+<!-- Notion Slash Menu UI -->
+<div id="slashMenu"
+    class="hidden absolute z-50 w-72 bg-white rounded-lg shadow-xl border border-gray-100 flex flex-col pt-2 pb-2 text-sm select-none"
+    style="max-height: 350px; overflow-y: auto;">
+    <div class="px-3 pb-2 pt-1 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50 mb-1">
+        Basic Blocks
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="paragraph">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 uppercase font-serif text-gray-500 font-bold">
+            T
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Text</div>
+            <div class="text-[11px] text-gray-400">Just start writing with plain text.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="heading1">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 uppercase font-serif text-gray-500 font-bold text-lg">
+            H1
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Heading 1</div>
+            <div class="text-[11px] text-gray-400">Big section heading.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="heading2">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 uppercase font-serif text-gray-500 font-bold text-base">
+            H2
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Heading 2</div>
+            <div class="text-[11px] text-gray-400">Medium section heading.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="heading3">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 uppercase font-serif text-gray-500 font-bold text-sm">
+            H3
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Heading 3</div>
+            <div class="text-[11px] text-gray-400">Small section heading.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="bulletedList">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 text-gray-500">
+            <i class="fa-solid fa-list-ul"></i>
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Bulleted List</div>
+            <div class="text-[11px] text-gray-400">Create a simple bulleted list.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="numberedList">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 text-gray-500">
+            <i class="fa-solid fa-list-ol"></i>
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Numbered List</div>
+            <div class="text-[11px] text-gray-400">Create a list with numbering.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="blockQuote">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 text-gray-500">
+            <i class="fa-solid fa-quote-right"></i>
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Quote</div>
+            <div class="text-[11px] text-gray-400">Capture a quote.</div>
+        </div>
+    </div>
+
+    <div class="slash-item flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer text-gray-700 transition"
+        data-command="insertTable">
+        <div
+            class="w-8 h-8 rounded border border-gray-200 bg-white flex items-center justify-center mr-3 shrink-0 text-gray-500">
+            <i class="fa-solid fa-table"></i>
+        </div>
+        <div>
+            <div class="font-medium text-gray-900">Table</div>
+            <div class="text-[11px] text-gray-400">Add simple tabular content.</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Format Django title field manually to look like Notion Title */
+    input[name="title"] {
+        width: 100%;
+        font-size: 2.75rem;
+        line-height: 1.2;
+        font-weight: 800;
+        border: none;
+        padding: 0;
+        background: transparent;
+        color: #111827;
+        letter-spacing: -0.02em;
+    }
+
+    input[name="title"]:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: transparent !important;
+        --tw-ring-color: transparent !important;
+    }
+
+    input[name="title"]::placeholder {
+        color: #d1d5db;
+    }
+
+    /* Target CKEditor to look borderless */
+    .django-ckeditor-widget {
+        width: 100% !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: transparent !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable {
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        min-height: 75vh;
+        font-size: 1.05rem;
+        color: #374151;
+        line-height: 1.6;
+    }
+
+    .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin-bottom: 8px;
+    }
+
+    /* Scrollbars for dropdown */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e5e7eb;
+        border-radius: 4px;
+    }
+</style>
+
+<script>
+    function toggleShareDropdown() {
+        const dropdown = document.getElementById('shareDropdown');
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', function (event) {
+        const dropdown = document.getElementById('shareDropdown');
+        const btn = document.getElementById('shareBtn');
+        if (!dropdown.contains(event.target) && !btn.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+        box.classList.add('mr-3', 'h-4', 'w-4', 'text-gray-900', 'focus:ring-gray-900', 'border-gray-300', 'rounded');
+        box.parentElement.classList.add('flex', 'items-center', 'py-1', 'px-2', 'hover:bg-white', 'rounded', 'text-sm', 'text-gray-700', 'cursor-pointer');
+    });
+
+    // Slash Command Logic for CKEditor 5
+    let theEditor = null;
+    const slashMenu = document.getElementById('slashMenu');
+    let slashMenuOpen = false;
+    let slashQuery = '';
+
+    // Polling to find the CKEditor instance initialized by django_ckeditor_5
+    const findEditorInterval = setInterval(() => {
+        let editableElement = document.querySelector('.ck-editor__editable');
+        if (editableElement && editableElement.ckeditorInstance) {
+            theEditor = editableElement.ckeditorInstance;
+            setupSlashMenu();
+            clearInterval(findEditorInterval);
+        } else if (window.editors && window.editors.id_content) {
+            theEditor = window.editors.id_content;
+            setupSlashMenu();
+            clearInterval(findEditorInterval);
+        }
+    }, 500);
+
+    function getCursorCoords() {
+        const domSelection = window.getSelection();
+        if (domSelection.rangeCount === 0) return null;
+        const domRange = domSelection.getRangeAt(0);
+        let rects = domRange.getClientRects();
+        if (rects.length > 0) {
+            return rects[0];
+        }
+        // Fallback for empty blocks
+        let node = domRange.startContainer;
+        if (node.nodeType === Node.TEXT_NODE) {
+            node = node.parentNode;
+        }
+        return node.getBoundingClientRect();
+    }
+
+    function setupSlashMenu() {
+        const viewDocument = theEditor.editing.view.document;
+
+        viewDocument.on('keydown', (evt, data) => {
+            const keyCode = data.keyCode;
+            const domEvent = data.domEvent;
+
+            // Using domEvent.key simplifies checks
+            const key = domEvent.key;
+
+            if (key === '/') {
+                slashMenuOpen = true;
+                slashQuery = '';
+                filterMenu();
+
+                // Need a tiny delay to let the DOM update so we can get correct cursor coords
+                setTimeout(() => {
+                    const rect = getCursorCoords();
+                    if (rect) {
+                        slashMenu.style.left = `${rect.left}px`;
+                        slashMenu.style.top = `${rect.bottom + window.scrollY + 5}px`;
+                        slashMenu.classList.remove('hidden');
+                    }
+                }, 10);
+                return;
+            }
+
+            if (slashMenuOpen) {
+                if (key === 'Escape' || key === 'Enter') {
+                    slashMenu.classList.add('hidden');
+                    slashMenuOpen = false;
+                    slashQuery = '';
+                    return; // Let Enter do its normal thing if needed, or we could intercept to select item
+                }
+
+                if (key === 'Backspace') {
+                    if (slashQuery.length > 0) {
+                        slashQuery = slashQuery.slice(0, -1);
+                        filterMenu();
+                    } else {
+                        // Deleted the slash
+                        slashMenu.classList.add('hidden');
+                        slashMenuOpen = false;
+                    }
+                } else if (key.length === 1 && /[a-zA-Z0-9]/.test(key)) {
+                    slashQuery += key.toLowerCase();
+                    filterMenu();
+                } else if (key === ' ') {
+                    // Space usually aborts command typing
+                    slashMenu.classList.add('hidden');
+                    slashMenuOpen = false;
+                    slashQuery = '';
+                }
+            }
+        });
+
+        // Hide when clicking elsewhere
+        document.addEventListener('click', (e) => {
+            if (!slashMenu.contains(e.target) && slashMenuOpen) {
+                slashMenu.classList.add('hidden');
+                slashMenuOpen = false;
+                slashQuery = '';
+            }
+        });
+
+        // Handle Slash Command Clicks
+        document.querySelectorAll('.slash-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const cmd = item.getAttribute('data-command');
+                slashMenu.classList.add('hidden');
+                slashMenuOpen = false;
+
+                // Delete the typed '/query'
+                theEditor.model.change(writer => {
+                    const selection = theEditor.model.document.selection;
+                    const position = selection.getFirstPosition();
+
+                    // Delete backwards len+1 times (length of query + 1 for slash)
+                    for (let i = 0; i < slashQuery.length + 1; i++) {
+                        theEditor.execute('delete');
+                    }
+                });
+
+                // Execute appropriate format command
+                if (cmd.startsWith('heading')) {
+                    const level = cmd.replace('heading', '');
+                    theEditor.execute('heading', { value: 'heading' + level });
+                } else if (cmd === 'paragraph') {
+                    theEditor.execute('paragraph');
+                } else if (cmd === 'bulletedList') {
+                    theEditor.execute('bulletedList');
+                } else if (cmd === 'numberedList') {
+                    theEditor.execute('numberedList');
+                } else if (cmd === 'blockQuote') {
+                    theEditor.execute('blockQuote');
+                } else if (cmd === 'insertTable') {
+                    theEditor.execute('insertTable', { rows: 3, columns: 3 });
+                }
+
+                theEditor.editing.view.focus();
+                slashQuery = '';
+            });
+        });
+    }
+
+    function filterMenu() {
+        let hasVisible = false;
+        document.querySelectorAll('.slash-item').forEach(item => {
+            const text = item.innerText.toLowerCase();
+            const cmd = item.getAttribute('data-command').toLowerCase();
+            if (text.includes(slashQuery) || cmd.includes(slashQuery)) {
+                item.style.display = 'flex';
+                hasVisible = true;
+            } else {
+                item.style.display = 'none';
+            }
+        });
+
+        if (!hasVisible && slashMenuOpen) {
+            slashMenu.classList.add('hidden');
+            slashMenuOpen = false;
+        }
+    }
+</script>
+{% endblock %}

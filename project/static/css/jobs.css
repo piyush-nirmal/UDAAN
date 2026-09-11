@@ -1,0 +1,219 @@
+/* Main Container */
+.jobs-page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+/* Heading */
+.jobs-page h1 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+/* Image */
+.jobs-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 30px;
+}
+
+/* Job Title */
+.jobs-page h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Paragraphs */
+.jobs-page p {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Responsibility Section
+========================= */
+
+.job-responsibility-section {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 25px 20px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+/* Heading */
+.job-responsibility-section h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Bullet Force */
+.job-responsibility-list {
+  list-style-type: disc !important;
+  list-style-position: outside;
+  padding-left: 25px !important;
+  margin: 0;
+}
+
+.job-responsibility-list li {
+  margin-bottom: 12px;
+  line-height: 1.7;
+  font-size: 15px;
+  color: #222;
+  display: list-item !important;
+}
+
+
+/* ===========================
+   Desired / Apply Section
+=========================== */
+
+.job-profile-section,
+.job-duration-section,
+.job-apply-section {
+  max-width: 1100px;
+  margin: 35px auto;
+  padding: 0 20px;
+}
+
+/* Headings */
+.job-profile-section h3,
+.job-duration-section h3,
+.job-apply-section h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* Bullet List */
+.job-profile-list {
+  list-style-type: disc !important;
+  padding-left: 25px !important;
+  margin-bottom: 25px;
+}
+
+.job-profile-list li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+  font-size: 15px;
+  color: #333;
+  display: list-item !important;
+}
+
+/* Paragraphs */
+.job-duration-section p,
+.job-apply-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Strong Text */
+.job-apply-section strong {
+  font-weight: 600;
+  color: #000;
+}
+
+/* Final Line */
+.job-final-text {
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+/* ======================
+   Top Page Banner
+====================== */
+
+.page-banner {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.page-banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-banner-content h1 {
+  font-size: 38px;
+  font-weight: 500;
+  color: #000;
+  margin: 0;
+}
+
+
+/* ===== Original Website Matching Style ===== */
+
+/* Main Job Title */
+.jobs-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+/* Intro Line */
+.jobs-page > p:first-of-type {
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Highlight UDAAN */
+.jobs-page strong {
+  color: #9c1c2f; /* Dark Red */
+  font-weight: 700;
+}
+
+/* Paragraph Spacing */
+.jobs-page p {
+  margin-bottom: 22px;
+  line-height: 1.8;
+}
+
+/* Normal UL */
+.jobs-page ul {
+  margin: 15px 0 20px 25px;
+}
+
+/* Bullets Better */
+.jobs-page ul li {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+/* Section Headings */
+.jobs-page h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+/* Location Bold */
+.jobs-page p strong {
+  color: #000;
+}

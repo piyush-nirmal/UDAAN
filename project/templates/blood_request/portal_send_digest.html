@@ -1,0 +1,81 @@
+{% extends 'portal_layout.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">📧 Send Daily Digest</h1>
+            <p class="text-sm text-gray-500 mt-1">Preview and send the daily task summary email to all staff members
+                with pending tasks.</p>
+        </div>
+    </div>
+
+    <!-- Preview Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+            <h3 class="font-bold text-gray-700 text-sm uppercase tracking-wider">Recipients Preview</h3>
+        </div>
+
+        {% if preview_users %}
+        <table class="w-full text-sm text-left">
+            <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b">
+                <tr>
+                    <th class="px-6 py-3">Staff Member</th>
+                    <th class="px-6 py-3 text-center">Pending Tasks</th>
+                    <th class="px-6 py-3">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in preview_users %}
+                <tr class="border-b border-gray-50 hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-xs mr-3">
+                                {{ item.user.username|slice:":2"|upper }}
+                            </div>
+                            <span class="font-medium text-gray-800">{{
+                                item.user.get_full_name|default:item.user.username }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600">{{ item.task_count
+                            }} task{{ item.task_count|pluralize }}</span>
+                    </td>
+                    <td class="px-6 py-4 text-gray-500">{{ item.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="flex items-center justify-between">
+                    <p class="text-sm text-gray-500">
+                        <strong>{{ preview_users|length }}</strong> staff member{{ preview_users|length|pluralize }}
+                        will receive the digest.
+                    </p>
+                    <button type="submit"
+                        class="bg-brand-red text-white px-8 py-2.5 rounded-lg font-bold text-sm hover:bg-red-700 transition shadow-md flex items-center"
+                        onclick="return confirm('Send digest emails to all listed staff members?')">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        Send Digest Now
+                    </button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="p-12 text-center text-gray-400">
+            <div class="text-4xl mb-3">🎉</div>
+            <p class="font-medium">No staff members have pending tasks right now!</p>
+            <p class="text-sm mt-1">Everyone is up to date. No digest will be sent.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

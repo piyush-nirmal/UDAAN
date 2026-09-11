@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen font-sans">
+
+    <!-- Hero Section -->
+    <div class="relative w-full h-64 md:h-[400px] overflow-hidden mb-8">
+        <!-- Background Image -->
+        <div class="absolute inset-0 bg-cover bg-center"
+            style="background-image: url('{% static 'img/hero_bg.png' %}');"></div>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+        <!-- Text Content -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 z-10">
+            <h1 class="text-5xl md:text-6xl font-extrabold uppercase tracking-wider mb-2 drop-shadow-lg">BLOOD REQUEST
+            </h1>
+            <p class="text-lg md:text-xl font-medium tracking-wide drop-shadow-md">Post or find blood request in you
+                city</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Tabs and Admin -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0">
+            <div class="flex space-x-4">
+                <button onclick="switchView('donor')" id="tab-donor"
+                    class="px-8 py-2 rounded-full font-bold text-sm transition-all duration-300 bg-brand-red text-white shadow-lg border-2 border-brand-red">
+                    Donate
+                </button>
+                <button onclick="switchView('recipient')" id="tab-recipient"
+                    class="px-8 py-2 rounded-full font-bold text-sm transition-all duration-300 bg-white text-gray-500 border-2 border-gray-200 hover:border-brand-red hover:text-brand-red">
+                    Record Blood Requests
+                </button>
+            </div>
+
+            <a href="/admin/" target="_blank"
+                class="flex items-center text-gray-500 hover:text-brand-red font-bold text-sm uppercase tracking-wider transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                Admin Panel
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+            <!-- LEFT COLUMN: Form -->
+            <div class="lg:col-span-4">
+                <!-- DONOR FORM -->
+                <div id="view-donor"
+                    class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-red"></div>
+                    <h2 class="text-xl font-bold text-brand-red mb-6 uppercase border-b pb-2">User Registration</h2>
+
+                    <form id="donor-form" onsubmit="handleDonorSubmit(event)" class="space-y-4">
+                        {% csrf_token %}
+                        <!-- Name -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Name *</label>
+                            <input type="text" name="name" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Enter Name">
+                        </div>
+
+                        <!-- Blood Group -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Blood Group *</label>
+                            <select name="blood_group" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors bg-white">
+                                <option value="" disabled selected>Select Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Whatsapp No *</label>
+                            <input type="tel" name="phone" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Mobile Number">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email (Optional)</label>
+                            <input type="email" name="email"
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Email Address">
+                        </div>
+
+                        <!-- Location -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">City *</label>
+                            <input type="text" name="city" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="City">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">State *</label>
+                                <input type="text" name="state" required
+                                    class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                    placeholder="State">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">PIN *</label>
+                                <input type="text" name="pin_code" required
+                                    class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                    placeholder="Code">
+                            </div>
+                        </div>
+
+                        <!-- Consent -->
+                        <div class="flex items-start mt-4">
+                            <div class="flex items-center h-5">
+                                <input id="consent" name="consent_given" type="checkbox" required
+                                    class="focus:ring-brand-red h-4 w-4 text-brand-red border-gray-300 rounded">
+                            </div>
+                            <div class="ml-3 text-xs">
+                                <label for="consent" class="font-medium text-gray-700">I authorise this website to
+                                    display my name and telephone number so that the needy could contact me.</label>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full mt-6 bg-brand-red text-white py-3 rounded font-bold shadow-md hover:bg-red-700 transition-colors uppercase tracking-wider text-sm">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+
+                <!-- RECIPIENT FORM (Initially Hidden) -->
+                <div id="view-recipient"
+                    class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-brand-red"></div>
+                    <h2 class="text-xl font-bold text-brand-red mb-6 uppercase border-b pb-2">Blood Request</h2>
+
+                    <form id="recipient-form" onsubmit="handleRecipientSubmit(event)" class="space-y-4">
+                        {% csrf_token %}
+                        <!-- City -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">City *</label>
+                            <input type="text" name="city" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Select City">
+                        </div>
+
+                        <!-- Pincode -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Pincode *</label>
+                            <input type="text" name="pin_code" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Select Pincode">
+                        </div>
+
+                        <!-- Blood Group -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Blood Group *</label>
+                            <select name="blood_group" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors bg-white">
+                                <option value="" disabled selected>Select</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+
+                        <!-- Blood Unit/Bags -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Blood Unit/Bags
+                                *</label>
+                            <input type="number" name="units" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Units">
+                        </div>
+
+                        <!-- Address Line 1 -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Address Line 1</label>
+                            <input type="text" name="address_line_1"
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Address Line 1">
+                        </div>
+
+                        <!-- Address Line 2 -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Address Line 2 *</label>
+                            <input type="text" name="address_line_2" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Address Line 2">
+                        </div>
+
+                        <!-- Contact Person -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Person *</label>
+                            <input type="text" name="contact_person" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Contact Person">
+                        </div>
+
+                        <!-- Contact Phone -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contact Person Phone
+                                *</label>
+                            <input type="tel" name="contact_phone" required
+                                class="w-full px-4 py-2 rounded border border-gray-300 text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red outline-none transition-colors"
+                                placeholder="Contact Phone">
+                        </div>
+
+                        <!-- File Input (Non-functional in JSON for now) -->
+                        <div>
+                            <label class="block text-xs font-bold text-brand-red uppercase mb-1">Blood Request Form
+                                *</label>
+                            <div class="flex items-center space-x-2">
+                                <span
+                                    class="text-xs font-bold text-brand-red uppercase cursor-pointer hover:underline">UPLOAD</span>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full mt-6 bg-brand-red text-white py-3 rounded font-bold shadow-md hover:bg-red-700 transition-colors uppercase tracking-wider text-sm">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Available Donors -->
+            <div class="lg:col-span-8">
+                <div class="mb-4 flex items-center justify-between">
+                    <h2 class="text-2xl font-bold text-gray-800 uppercase">Available Blood Donors</h2>
+                    <a href="#" class="text-brand-red font-bold text-sm hover:underline">View All</a>
+                </div>
+
+                <!-- Search Box for Table -->
+                <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex space-x-4">
+                    <select id="search-group"
+                        class="border border-gray-300 rounded px-3 py-2 text-sm outline-none focus:border-brand-red">
+                        <option value="">All Groups</option>
+                        <option value="A+">A+</option>
+                        <option value="B+">B+</option>
+                        <option value="O+">O+</option>
+                        <option value="AB+">AB+</option>
+                        <option value="A-">A-</option>
+                        <option value="B-">B-</option>
+                        <option value="O-">O-</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                    <input type="text" id="search-city" placeholder="Search City..."
+                        class="border border-gray-300 rounded px-3 py-2 text-sm flex-1 outline-none focus:border-brand-red">
+                    <button onclick="searchDonors()"
+                        class="bg-brand-dark text-white px-6 py-2 rounded text-sm font-bold">Search</button>
+                </div>
+
+                <!-- Table View -->
+                <div class="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Blood Group</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    City</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Contact</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="results-grid" class="bg-white divide-y divide-gray-200">
+                            <!-- Initial Mock Data for Display -->
+                            <tr class="text-gray-500 text-sm text-center">
+                                <td colspan="5" class="py-10">Use search to find donors</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Banner Section -->
+                <div
+                    class="mt-12 grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+                    <div class="p-8 flex flex-col justify-center">
+                        <span class="text-brand-red font-bold uppercase tracking-widest text-xs mb-2">UDAAN
+                            Society</span>
+                        <h3 class="text-3xl font-extrabold text-gray-900 leading-tight mb-4">
+                            Support Us <span class="text-gray-500">And Change The Course Of A Child's Life Today!</span>
+                        </h3>
+                        <a href="#" class="text-brand-red font-bold hover:underline mt-4 inline-flex items-center">
+                            Join Us
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="bg-brand-red p-8 flex items-center justify-center text-white text-center">
+                        <div>
+                            <h4 class="text-2xl font-bold mb-2">DONATE OR RECEIVE BLOOD</h4>
+                            <p class="text-sm opacity-90">A platform to help connect blood donors with those in need.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Modal -->
+    <div id="notification-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" style="backdrop-filter: blur(2px);">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeModal()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div id="modal-icon"
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Success</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500" id="modal-message"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" onclick="closeModal()"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-red text-base font-medium text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Internship Offer Letter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #000;
+            margin: 40px;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #b30000;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #b30000;
+            margin: 0;
+            font-size: 28px;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+        h2 {
+            text-align: center;
+            text-decoration: underline;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .content {
+            text-align: justify;
+        }
+        .signature {
+            margin-top: 50px;
+        }
+        .signature-block {
+            margin-top: 20px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 11px;
+            border-top: 2px solid #b30000;
+            padding-top: 10px;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        ol {
+            text-align: left;
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div class="header">
+        <h1>UDAAN Society</h1>
+        <p>Regd. No. : 2243-13/12/04</p>
+        <p>Regd. Office : 8/140, Raghuvirpuri, Masoodabad, Aligarh - 202 001 (U.P.) INDIA</p>
+        <p>E-mail: udaansociety@gmail.com, Website : www.udaansociety.org</p>
+    </div>
+
+    <h2>Internship Offer Letter</h2>
+
+    <div class="content">
+        <p>Dear {{ intern.name }},</p>
+        <p>We are pleased to offer you an Internship with <strong>UDAAN Society</strong>. It gives us great pleasure to welcome you to our organization.</p>
+        <p>At UDAAN Society, we strongly believe that our people are our greatest strength, and we take pride in engaging with individuals who demonstrate commitment, potential, and excellence. We are confident that your association with us will be mutually enriching and that you will contribute meaningfully to the organization’s objectives while gaining valuable learning and professional experience.</p>
+        <p>Your appointment will be governed by the terms and conditions outlined in <strong>Annexure A</strong>, enclosed with this offer.</p>
+        <p>We look forward to you joining UDAAN Society and wish you a rewarding, insightful, and fulfilling internship journey. Should you require any further information or clarification, please feel free to contact us.</p>
+        <p>Kindly sign and return the duplicate copy of this offer letter as a token of your acceptance.</p>
+        <p>Congratulations!</p>
+        <p><strong>Thanking You</strong><br>
+        <strong>With regards,</strong></p>
+        
+        <div class="signature">
+            <p>{% now "jS F, Y" %}</p>
+            <div class="signature-block">
+                <p><strong>Gyanendra Mishra</strong><br>
+                President</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Unified Development Association for the Amelioration of Neglected (UDAAN)<br>
+        (An Organization Striving for Under-served and Neglected Communities)
+    </div>
+
+    <!-- Page 2: Annexure A -->
+    <div class="page-break"></div>
+
+    <div class="header">
+        <h1>UDAAN Society</h1>
+        <p>Regd. No. : 2243-13/12/04</p>
+        <p>Regd. Office : 8/140, Raghuvirpuri, Masoodabad, Aligarh - 202 001 (U.P.) INDIA</p>
+        <p>E-mail: udaansociety@gmail.com, Website : www.udaansociety.org</p>
+    </div>
+
+    <div class="content">
+        <p><strong>Annexure A</strong></p>
+        <p>You shall be governed by the following terms and condition of service during your internship with UDAAN SOCIETY, and those may be amended from time to time.</p>
+        
+        <ol>
+            <li>You are being hired as a <strong>{{ intern.internship_area }} Intern</strong>. {% if intern.mentor_name %}{{ intern.mentor_name }} (email: {{ intern.mentor_email }}) would be your Reporting Manager and Mentor during the internship.{% endif %}</li>
+            
+            <li>Your date of joining is <strong>{{ intern.start_date|date:"jS F, Y" }}</strong> and the duration of the internship would be for <strong>{{ intern.duration_months }} months</strong>. During this time, you are expected to devote your time and efforts to UDAAN SOCIETY work. You are also required to let your mentor know about forthcoming events (if there are any) in advance so that your work can be planned accordingly.</li>
+            
+            <li>You will be working from the office of the organization during the internship. There will be catch ups scheduled with your mentor to discuss work progress and overall internship experience at regular intervals.</li>
+            
+            <li>All the work that you will produce at or in relation to UDAAN SOCIETY will be the intellectual property of UDAAN SOCIETY. You are not allowed to store, copy, sell, share, and distribute it to a third party under any circumstances. Similarly, you are expected to refrain from talking about your work in public domains (both online such as blogging, social networking site and offline among your friends, college etc.) without prior discussion and approval with your mentor.</li>
+            
+            <li>We take data privacy and security very seriously and to maintain confidentiality of any students, customers, clients, and companies’ data and contact details that you may get access to during your internship will be your responsibility. UDAAN SOCIETY operates on zero tolerance principle with regard to any breach of data security guidelines. At the completion of the internship, you are expected to hand over all UDAAN SOCIETY work/data stored on your Personal Computer to your mentor and delete the same from your machine.</li>
+            
+            <li>During the appointment period you shall not engage yourselves directly or indirectly or in any capacity in any other organization (other than your college). In the event of breach of this condition, this appointment is liable to be terminated forthwith by the UDAAN Society. In addition, you shall be liable to pay liquidated damages to the UDAAN Society of an extent estimated by the UDAAN Society.</li>
+            
+            <li>Under normal circumstances either the UDAAN Society or you may terminate this association by providing a notice of 15 days without assigning any reason. However, the UDAAN Society may terminate this agreement forthwith under situations of in-disciplinary behaviors.</li>
+            
+            <li>You are expected to conduct yourself with utmost professionalism in dealing with your mentor, team members, colleagues, clients and customers and treat everyone with due respect.</li>
+            
+            <li>At UDAAN SOCIETY, we love people who like to go beyond the normal call of the duty and can think out of the box. Surprise us with your passion, intelligence, creativity and hard work – and expect appreciation & rewards to follow.</li>
+            
+            <li>Expect constant and continuous objective feedback from your mentor and other team members and we encourage you to ask for and provide feedback at every possible opportunity. It’s your right to receive and give feedback – this is the ONLY way we all can continuously push ourselves to do better.</li>
+            
+            <li>Have fun at what you do and do the right thing – both the principles are core of what UDAAN SOCIETY stands for and we expect you to imbibe them in your day-to-day actions and continuously challenge us if we are falling short of expectations on either of them.</li>
+            
+            <li>You will not be provided any stipend during your internship.</li>
+        </ol>
+
+        <p>I have negotiated, agreed, read and understood all the terms and conditions of this Internship letter as well as Annexure hereto and affix my signature in complete acceptance of the terms of the letter.</p>
+
+        <table style="width: 100%; margin-top: 40px;">
+            <tr>
+                <td>Date: {% now "jS F, Y" %}</td>
+                <td>Signature: ______________________</td>
+            </tr>
+            <tr>
+                <td style="padding-top: 20px;">Place: Aligarh</td>
+                <td style="padding-top: 20px;">Name: {{ intern.name }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        Unified Development Association for the Amelioration of Neglected (UDAAN)<br>
+        (An Organization Striving for Under-served and Neglected Communities)
+    </div>
+
+</body>
+</html>
