@@ -20,7 +20,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from .models import CampusAmbassador, CampusAmbassadorApplication
 from .models import PolicyReport
-
+from django.core.mail import send_mail
 from .utils import create_notification, generate_unique_din, send_din_email
 
 @ensure_csrf_cookie
@@ -1500,19 +1500,54 @@ def contact_us(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('message')
-        
+
         if first_name and email and message:
+
+            # Save message to database
             ContactMessage.objects.create(
                 first_name=first_name,
                 email=email,
                 subject=subject,
                 message=message
             )
-            messages.success(request, "Your message has been sent successfully!")
+
+            # Send email notification to UDAAN
+            try:
+                send_mail(
+                    subject=f"Contact Us: {subject or 'General Query'}",
+                    message=(
+                        f"New message received from UDAAN Contact Us form.\n\n"
+                        f"Name: {first_name}\n"
+                        f"Email: {email}\n"
+                        f"Subject: {subject or 'General Query'}\n\n"
+                        f"Message:\n{message}"
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=['mail@udaansociety.org'],
+                    fail_silently=False,
+                )
+
+                messages.success(
+                    request,
+                    "Your message has been sent successfully!"
+                )
+
+            except Exception as e:
+                print(f"Contact email error: {e}")
+
+                messages.warning(
+                    request,
+                    "Your message was saved successfully, but the email notification could not be sent."
+                )
+
             return redirect('contact_us')
+
         else:
-            messages.error(request, "Please fill out all required fields.")
-            
+            messages.error(
+                request,
+                "Please fill out all required fields."
+            )
+
     return render(request, "contact_us.html")
 
 def faq(request):
