@@ -28,7 +28,7 @@ class StaticViewSitemap(Sitemap):
 
             # Make a Difference / Get Involved
             'career_fellowship',
-            'workplace_living',
+            'workplace_giving',
             'volunteering',
             'internships',
             'campus_ambassador',

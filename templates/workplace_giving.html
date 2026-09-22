@@ -8,7 +8,7 @@
 {% block content %}
 
 <!-- Hero Banner -->
-<section class="subpage-hero" data-aos="fade-up">
+<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/workplace_giving_hero.jpg' %}');" data-aos="fade-up">
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">CSR Partnerships</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Workplace Giving</h1>
@@ -118,6 +118,16 @@
 
     <form method="POST" class="space-y-6">
       {% csrf_token %}
+
+      {% if messages %}
+      <div class="space-y-2">
+        {% for message in messages %}
+        <div class="p-4 rounded-xl text-xs font-bold {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-600{% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>

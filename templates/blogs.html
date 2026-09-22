@@ -166,28 +166,14 @@
 
 {% block content %}
 <!-- Modern Hero Section -->
-<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
-  <!-- Decorative Leaf SVG (Low Opacity) -->
-  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
-    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
-      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
-    </svg>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-    <div class="max-w-3xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase reveal-left">
-        <i class="fa-solid fa-book-open"></i> NGO Journal
-      </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight reveal-left" style="font-family: 'Inter', sans-serif;">
-        Our Blog
-      </h1>
-      <p class="text-lg text-gray-500 leading-relaxed max-w-xl reveal-left">
-        Read stories of impact, project field diaries, and operational updates from our campaigns.
-      </p>
+<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/blogs_hero.jpg' %}');" data-aos="fade-up">
+    <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wide uppercase mb-4">
+            <i class="fa-solid fa-book-open"></i> NGO Journal
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 text-white" style="font-family: 'Inter', sans-serif;">Our Blog</h1>
+        <p class="text-lg md:text-xl leading-relaxed text-gray-200">Read stories of impact, project field diaries, and operational updates from our campaigns.</p>
     </div>
-  </div>
 </section>
 
 <!-- Breadcrumb -->
