@@ -21,7 +21,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from .models import CampusAmbassador, CampusAmbassadorApplication
 from .models import PolicyReport
-
+from django.core.mail import send_mail
 from .utils import create_notification, generate_unique_din, send_din_email
 
 @ensure_csrf_cookie
@@ -512,7 +512,42 @@ def project_detail(request, slug):
     return render(request, 'project_detail.html', {'project': project})
 
 def blogs_page(request):
-    blogs = Blog.objects.all().order_by('-created_at')
+    """
+    Public Blogs page.
+
+    An old data migration created one Blog row per image file under
+    media/blogs/ -- including Django's auto-renamed duplicate copies of the
+    same image (e.g. "photo.jpg" and "photo_XY4qqIz.jpg"), which a later
+    migration failed to catch because it only matched on exact title text,
+    and the random suffix makes every duplicate's title different. That left
+    the same blog post showing multiple times.
+
+    We de-duplicate here by the image file's actual content (hash), keeping
+    the oldest entry per unique image, so re-uploaded duplicates never show
+    twice regardless of what their auto-generated title looks like.
+    """
+    import hashlib
+
+    def _image_hash(blog):
+        if not blog.image:
+            return None
+        try:
+            with blog.image.open('rb') as f:
+                return hashlib.md5(f.read()).hexdigest()
+        except Exception:
+            return None
+
+    seen_hashes = set()
+    blogs = []
+
+    for blog in Blog.objects.all().order_by('-created_at'):
+        h = _image_hash(blog)
+        if h is not None:
+            if h in seen_hashes:
+                continue
+            seen_hashes.add(h)
+        blogs.append(blog)
+
     return render(request, 'blogs.html', {'blogs': blogs})
 
 
@@ -521,8 +556,109 @@ def projects_page(request):
     return render(request, 'projects.html', {'projects': projects})
 
 def report_list(request):
+    """
+    Public Annual Reports page.
+
+    Shows every Annual Report on record -- including older years that were
+    never uploaded (2004-05 .. 2020-21). Those simply show "Unable to load
+    report" when opened, same as before; we don't hide them, we just don't
+    want to hide correct years either.
+
+    The one thing we clean up here is duplicate rows for the SAME year that a
+    couple of old data migrations accidentally created (e.g. "2024-25",
+    "2024-25_ZVvb9sh", "2024-25_uZ2Hnwy" all pointing at copies of the same
+    file) -- for those we keep a single, working entry per year. We also fall
+    back to the report PDFs shipped in media/reports/ for the current years
+    in case the DB row for one of them is missing entirely.
+    """
+    import os
+    import re
+    from django.conf import settings
     from .models import Report
-    reports = Report.objects.all().order_by('-published_date')
+
+    # Report years that ship with the project, newest first.
+    # (title shown on the site, filename under media/reports/)
+    BUNDLED_REPORTS = [
+        ("2024-25", "2024-25.pdf"),
+        ("2023-24", "2023-24.pdf"),
+        ("2022-23", "2022-23.pdf"),
+        ("2021-22", "2021-22.pdf"),
+    ]
+
+    class _FileStub:
+        """Minimal stand-in exposing .url, so the template can stay unchanged."""
+
+        def __init__(self, url):
+            self.url = url
+
+    class _ReportStub:
+        def __init__(self, title, url):
+            self.title = title
+            self.file = _FileStub(url)
+
+    def _file_exists(report):
+        if not report.file:
+            return False
+        try:
+            return report.file.storage.exists(report.file.name)
+        except Exception:
+            return False
+
+    def _year_label(title):
+        """
+        Turn stored titles into the clean 'YYYY-YY' label the page shows.
+        Handles 'Annual Report 2023-24' and auto-generated names such as
+        '2023-24_ZJp6HXy' that older data migrations created from filenames.
+        """
+        label = (title or "").strip()
+        match = re.search(r'(\d{4}-\d{2})', label)
+        return match.group(1) if match else label
+
+    # Keep every year, but collapse duplicate rows for the same year down to
+    # one entry -- preferring one whose file actually exists on disk.
+    by_year = {}
+    order = []
+
+    for report in Report.objects.all().order_by('-published_date', '-id'):
+        year = _year_label(report.title)
+
+        if year not in by_year:
+            by_year[year] = report
+            order.append(year)
+        elif not _file_exists(by_year[year]) and _file_exists(report):
+            by_year[year] = report
+
+    # Only keep years whose report file actually exists on disk -- years
+    # with no real report uploaded should not appear on the public page.
+    seen_years = set()
+    db_reports = []
+    for year in order:
+        report = by_year[year]
+        if _file_exists(report):
+            seen_years.add(year)
+            db_reports.append(_ReportStub(year, report.file.url))
+
+    media_url = settings.MEDIA_URL.rstrip('/')
+
+    # Fill in any bundled report year that has no DB row at all yet.
+    fallback_reports = []
+    for title, filename in BUNDLED_REPORTS:
+        if title in seen_years:
+            continue
+        path = os.path.join(settings.MEDIA_ROOT, 'reports', filename)
+        if os.path.exists(path):
+            seen_years.add(title)
+            fallback_reports.append(
+                _ReportStub(title, f"{media_url}/reports/{filename}")
+            )
+
+    def _sort_key(report):
+        # Years look like "2024-25" or "2004-05" and sort correctly as
+        # strings; anything odd (no year found) sorts to the bottom.
+        return report.title if re.match(r'^\d{4}-\d{2}$', report.title) else ''
+
+    reports = sorted(db_reports + fallback_reports, key=_sort_key, reverse=True)
+
     return render(request, 'annual_reports.html', {'reports': reports})
 
 def blog_detail(request, id):
@@ -644,8 +780,49 @@ def personal_notes_api(request):
     return JsonResponse({'content': note.content, 'updated_at': str(note.updated_at)})
 
 def resources_page(request):
-    """Render the resources page"""
-    return render(request, "resources.html")
+    """
+    Public Resources page.
+
+    Each entry renders as a card with a single "View" action. Set "file" to the
+    path under static/documents/ ; leave it as None when the document is not
+    available yet and the card will show a disabled state instead.
+
+    Note: only the "top" everyday-facing policies live here (Whistle Blower,
+    POSH Training, POSH Policy). Risk Management and Social & Environmental
+    policies are intentionally NOT duplicated here -- they live on the full
+    "Our Policies" page instead.
+    """
+    resources = [
+        {
+            "title": "Whistle Blower Policy",
+            "icon": "fa-solid fa-bullhorn",
+            "description": (
+                "Enables employees and stakeholders to report unethical conduct, "
+                "malpractice, or violations in a confidential and protected manner."
+            ),
+            "file": "documents/whistle-blower-policy.pdf",
+        },
+        {
+            "title": "POSH Training (TRG)",
+            "icon": "fa-solid fa-person-chalkboard",
+            "description": (
+                "Awareness and training material under the Sexual Harassment of "
+                "Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013."
+            ),
+            "file": None,
+        },
+        {
+            "title": "POSH Policy",
+            "icon": "fa-solid fa-scale-balanced",
+            "description": (
+                "Policy outlining prevention, prohibition, and redressal mechanisms "
+                "for sexual harassment at the workplace as per Indian law."
+            ),
+            "file": "documents/posh-policy.pdf",
+        },
+    ]
+
+    return render(request, "resources.html", {"resources": resources})
 
 @login_required
 def appointment_list(request):
@@ -1509,19 +1686,54 @@ def contact_us(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('message')
-        
+
         if first_name and email and message:
+
+            # Save message to database
             ContactMessage.objects.create(
                 first_name=first_name,
                 email=email,
                 subject=subject,
                 message=message
             )
-            messages.success(request, "Your message has been sent successfully!")
+
+            # Send email notification to UDAAN
+            try:
+                send_mail(
+                    subject=f"Contact Us: {subject or 'General Query'}",
+                    message=(
+                        f"New message received from UDAAN Contact Us form.\n\n"
+                        f"Name: {first_name}\n"
+                        f"Email: {email}\n"
+                        f"Subject: {subject or 'General Query'}\n\n"
+                        f"Message:\n{message}"
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=['mail@udaansociety.org'],
+                    fail_silently=False,
+                )
+
+                messages.success(
+                    request,
+                    "Your message has been sent successfully!"
+                )
+
+            except Exception as e:
+                print(f"Contact email error: {e}")
+
+                messages.warning(
+                    request,
+                    "Your message was saved successfully, but the email notification could not be sent."
+                )
+
             return redirect('contact_us')
+
         else:
-            messages.error(request, "Please fill out all required fields.")
-            
+            messages.error(
+                request,
+                "Please fill out all required fields."
+            )
+
     return render(request, "contact_us.html")
 
 def faq(request):

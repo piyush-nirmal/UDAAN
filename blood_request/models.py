@@ -614,10 +614,17 @@ class PersonalNote(models.Model):
     def __str__(self):
         return f"Note for {self.user.username}"
 class Blog(models.Model):
+    CATEGORY_CHOICES = [
+        ('blog', 'Blog'),
+        ('water', 'Water'),
+        ('education', 'Education'),
+    ]
+
     title = models.CharField(max_length=200)
     content = CKEditor5Field(config_name='extends')
     description = models.TextField()
     image = models.ImageField(upload_to='blogs/')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='blog')
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

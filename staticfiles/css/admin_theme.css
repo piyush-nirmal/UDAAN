@@ -233,3 +233,41 @@ select {
     padding: 8px;
     border-radius: 4px;
 }
+
+/* Highlight fieldsets (sections) in change forms */
+form fieldset.module {
+    border: 1px solid #c9d7e4 !important; /* light blue-grey border */
+    border-radius: 8px !important;
+    padding: 15px !important;
+    margin-bottom: 25px !important;
+    background-color: #fbfcfd !important; /* very soft background */
+    box-shadow: 0 2px 8px rgba(29, 53, 87, 0.04) !important;
+}
+
+/* Style the fieldset headers (h2) to sit nicely on top and be highlighted */
+form fieldset.module h2 {
+    background-color: #eef4f9 !important; /* soft highlighted header background */
+    color: #1d3557 !important;
+    border-bottom: 1px solid #c9d7e4 !important;
+    margin: -15px -15px 15px -15px !important;
+    padding: 10px 15px !important;
+    border-top-left-radius: 7px !important;
+    border-top-right-radius: 7px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Dark mode overrides for fieldsets */
+[data-theme="dark"] form fieldset.module {
+    border: 1px solid #374151 !important;
+    background-color: #1f2937 !important;
+    box-shadow: none !important;
+}
+
+[data-theme="dark"] form fieldset.module h2 {
+    background-color: #111827 !important;
+    color: #f3f4f6 !important;
+    border-bottom: 1px solid #374151 !important;
+}

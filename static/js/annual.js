@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tab.classList.add("active");
       
       const year = tab.dataset.year;
-      if(activeTitle) activeTitle.textContent = `FY ${year} Audited Report`;
+      if(activeTitle) activeTitle.textContent = `Annual Report ${year}`;
 
       // Reset zoom
       currentZoom = 1.0;

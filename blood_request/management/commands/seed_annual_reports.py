@@ -22,6 +22,7 @@ from blood_request.models import Report
 
 # (report title as it should appear on the site, filename under media/reports/, published_date)
 REPORTS_TO_FIX = [
+    ("2021-22", "2021-22.pdf", date(2022, 4, 1)),
     ("2022-23", "2022-23.pdf", date(2023, 4, 1)),
     ("2023-24", "2023-24.pdf", date(2024, 4, 1)),
     ("2024-25", "2024-25.pdf", date(2025, 4, 1)),

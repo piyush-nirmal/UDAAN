@@ -216,6 +216,7 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
 
     <!-- =====================================================
          RESOURCES GRID
+         Cards are defined in blood_request.views.resources_page
     ====================================================== -->
     <div
       class="grid
@@ -224,10 +225,8 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
              lg:grid-cols-3
              gap-8">
 
+      {% for resource in resources %}
 
-      <!-- =================================================
-           RESOURCE CARD 1
-      ================================================== -->
       <article
         class="resource-card
                group
@@ -266,7 +265,7 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
                    group-hover:bg-[#0B6B3A]
                    group-hover:text-white">
 
-            <i class="fa-solid fa-bullhorn"></i>
+            <i class="{{ resource.icon }}"></i>
 
           </div>
 
@@ -281,7 +280,7 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
                    transition-colors
                    duration-300">
 
-            Whistle Blower Policy
+            {{ resource.title }}
 
           </h3>
 
@@ -290,55 +289,25 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
                    text-gray-500
                    leading-relaxed">
 
-            Enables employees and stakeholders to report unethical conduct,
-            malpractice, or violations in a confidential and protected manner.
+            {{ resource.description }}
 
           </p>
 
         </div>
 
 
-        <!-- Buttons -->
+        <!-- Action -->
         <div
           class="flex
-                 flex-col
-                 sm:flex-row
-                 gap-3
                  mt-8
                  pt-5
                  border-t
                  border-gray-100">
 
-          <a
-            href="{% static 'documents/whistle-blower-policy.pdf' %}" target="_blank" rel="noopener"
-            class="flex-1
-                   flex
-                   items-center
-                   justify-center
-                   gap-2
-                   px-4
-                   py-3
-                   rounded-xl
-                   border
-                   border-gray-200
-                   text-gray-700
-                   text-sm
-                   font-bold
-                   hover:bg-gray-50
-                   hover:border-[#0B6B3A]
-                   hover:text-[#0B6B3A]
-                   transition-all
-                   duration-300">
-
-            <i class="fa-regular fa-eye"></i>
-
-            View
-
-          </a>
-
+          {% if resource.file %}
 
           <a
-            href="{% static 'documents/whistle-blower-policy.pdf' %}" download
+            href="{% static resource.file %}" target="_blank" rel="noopener"
             class="flex-1
                    flex
                    items-center
@@ -357,304 +326,56 @@ UDAAN Society resources including Whistle Blower Policy, POSH Training, POSH Pol
                    transition-all
                    duration-300">
 
-            <i class="fa-solid fa-download"></i>
+            <i class="fa-regular fa-eye"></i>
 
-            Download
+            View
 
           </a>
 
-        </div>
+          {% else %}
 
-      </article>
-
-
-      <!-- =================================================
-           RESOURCE CARD 2
-      ================================================== -->
-      <article
-        class="resource-card
-               group
-               bg-white
-               rounded-2xl
-               border
-               border-gray-100
-               p-8
-               flex
-               flex-col
-               justify-between
-               shadow-sm
-               transition-all
-               duration-500
-               hover:-translate-y-3
-               hover:shadow-2xl
-               hover:border-[#0B6B3A]/30">
-
-        <div>
-
-          <!-- Icon -->
           <div
-            class="w-14 h-14
-                   rounded-2xl
-                   bg-[#EEF8F1]
-                   text-[#0B6B3A]
+            class="flex-1
                    flex
                    items-center
                    justify-center
-                   text-xl
-                   mb-6
-                   transition-all
-                   duration-500
-                   group-hover:scale-110
-                   group-hover:rotate-3
-                   group-hover:bg-[#0B6B3A]
-                   group-hover:text-white">
+                   gap-2
+                   px-4
+                   py-3
+                   rounded-xl
+                   bg-gray-50
+                   text-gray-400
+                   text-sm
+                   font-medium
+                   italic">
 
-            <i class="fa-solid fa-person-chalkboard"></i>
+            Not available yet
 
           </div>
 
-
-          <h3
-            class="text-xl
-                   font-bold
-                   text-gray-900
-                   mb-3
-                   group-hover:text-[#0B6B3A]
-                   transition-colors
-                   duration-300">
-
-            POSH Training (TRG)
-
-          </h3>
-
-
-          <p
-            class="text-sm
-                   text-gray-500
-                   leading-relaxed">
-
-            Awareness and training material under the Sexual Harassment
-            of Women at Workplace (Prevention, Prohibition and Redressal)
-            Act, 2013.
-
-          </p>
-
-        </div>
-
-
-        <!-- Buttons -->
-        <div
-          class="flex
-                 flex-col
-                 sm:flex-row
-                 gap-3
-                 mt-8
-                 pt-5
-                 border-t
-                 border-gray-100">
-
-          <a
-            href="{% static 'documents/posh-training.pdf' %}" target="_blank" rel="noopener"
-            class="flex-1
-                   flex
-                   items-center
-                   justify-center
-                   gap-2
-                   px-4
-                   py-3
-                   rounded-xl
-                   border
-                   border-gray-200
-                   text-gray-700
-                   text-sm
-                   font-bold
-                   hover:bg-gray-50
-                   hover:border-[#0B6B3A]
-                   hover:text-[#0B6B3A]
-                   transition-all
-                   duration-300">
-
-            <i class="fa-regular fa-eye"></i>
-
-            View
-
-          </a>
-
-
-          <a
-            href="{% static 'documents/posh-training.pdf' %}" download
-            class="flex-1
-                   flex
-                   items-center
-                   justify-center
-                   gap-2
-                   px-4
-                   py-3
-                   rounded-xl
-                   bg-[#0B6B3A]
-                   text-white
-                   text-sm
-                   font-bold
-                   hover:bg-[#084f2a]
-                   hover:shadow-lg
-                   hover:shadow-green-900/20
-                   transition-all
-                   duration-300">
-
-            <i class="fa-solid fa-download"></i>
-
-            Download
-
-          </a>
+          {% endif %}
 
         </div>
 
       </article>
 
+      {% empty %}
 
-      <!-- =================================================
-           RESOURCE CARD 3
-      ================================================== -->
-      <article
-        class="resource-card
-               group
-               bg-white
-               rounded-2xl
-               border
-               border-gray-100
-               p-8
-               flex
-               flex-col
-               justify-between
-               shadow-sm
-               transition-all
-               duration-500
-               hover:-translate-y-3
-               hover:shadow-2xl
-               hover:border-[#0B6B3A]/30">
+      <div
+        class="col-span-full
+               text-center
+               text-gray-400
+               text-sm
+               font-bold
+               py-16">
 
-        <div>
+        <i class="fa-regular fa-folder-open text-3xl block mb-3 opacity-50"></i>
 
-          <!-- Icon -->
-          <div
-            class="w-14 h-14
-                   rounded-2xl
-                   bg-[#EEF8F1]
-                   text-[#0B6B3A]
-                   flex
-                   items-center
-                   justify-center
-                   text-xl
-                   mb-6
-                   transition-all
-                   duration-500
-                   group-hover:scale-110
-                   group-hover:rotate-3
-                   group-hover:bg-[#0B6B3A]
-                   group-hover:text-white">
+        No resources available at the moment.
 
-            <i class="fa-solid fa-scale-balanced"></i>
+      </div>
 
-          </div>
-
-
-          <h3
-            class="text-xl
-                   font-bold
-                   text-gray-900
-                   mb-3
-                   group-hover:text-[#0B6B3A]
-                   transition-colors
-                   duration-300">
-
-            POSH Policy
-
-          </h3>
-
-
-          <p
-            class="text-sm
-                   text-gray-500
-                   leading-relaxed">
-
-            Policy outlining prevention, prohibition, and redressal
-            mechanisms for sexual harassment at the workplace as per
-            Indian law.
-
-          </p>
-
-        </div>
-
-
-        <!-- Buttons -->
-        <div
-          class="flex
-                 flex-col
-                 sm:flex-row
-                 gap-3
-                 mt-8
-                 pt-5
-                 border-t
-                 border-gray-100">
-
-          <a
-            href="{% static 'documents/posh-policy.pdf' %}" target="_blank" rel="noopener"
-            class="flex-1
-                   flex
-                   items-center
-                   justify-center
-                   gap-2
-                   px-4
-                   py-3
-                   rounded-xl
-                   border
-                   border-gray-200
-                   text-gray-700
-                   text-sm
-                   font-bold
-                   hover:bg-gray-50
-                   hover:border-[#0B6B3A]
-                   hover:text-[#0B6B3A]
-                   transition-all
-                   duration-300">
-
-            <i class="fa-regular fa-eye"></i>
-
-            View
-
-          </a>
-
-
-          <a
-            href="{% static 'documents/posh-policy.pdf' %}" download
-            class="flex-1
-                   flex
-                   items-center
-                   justify-center
-                   gap-2
-                   px-4
-                   py-3
-                   rounded-xl
-                   bg-[#0B6B3A]
-                   text-white
-                   text-sm
-                   font-bold
-                   hover:bg-[#084f2a]
-                   hover:shadow-lg
-                   hover:shadow-green-900/20
-                   transition-all
-                   duration-300">
-
-            <i class="fa-solid fa-download"></i>
-
-            Download
-
-          </a>
-
-        </div>
-
-      </article>
-
+      {% endfor %}
 
     </div>
 

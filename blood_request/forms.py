@@ -45,9 +45,10 @@ from .models import Blog
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ['title', 'content', 'description', 'image']
+        fields = ['title', 'category', 'content', 'description', 'image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue'}),
+            'category': forms.Select(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue'}),
             'description': forms.Textarea(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue', 'rows': 3}),
             'content': CKEditor5Widget(config_name='extends'),
             'image': forms.FileInput(attrs={'class': 'w-full px-4 py-2 border rounded-lg focus:ring-brand-red focus:border-brand-blue'}),

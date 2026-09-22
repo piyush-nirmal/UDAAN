@@ -359,125 +359,38 @@
   <!-- Apply Here Section -->
   <section class="max-w-5xl mx-auto pt-10 reveal-bottom">
     <div class="text-center mb-8 reveal-top">
-      <h2 class="text-3xl font-extrabold text-gray-900 uppercase tracking-tight" style="font-family: 'Inter', sans-serif;">Apply Here</h2>
-      <p class="text-[15px] text-gray-500 mt-2">Fill out the form below to join our Campus Ambassador network.</p>
+      <h2
+        class="text-3xl font-extrabold text-gray-900 uppercase tracking-tight"
+        style="font-family: 'Inter', sans-serif;"
+      >
+        Apply Here
+      </h2>
+
+      <p class="text-[15px] text-gray-500 mt-2">
+        Fill out the form below to join our Campus Ambassador network.
+      </p>
     </div>
-    
+
     <div class="glass-card rounded-3xl p-6 md:p-10 overflow-hidden bg-white shadow-sm reveal-scale">
-      
-      {% if messages %}
-        {% for message in messages %}
-          <div class="bg-[#EEF8F1] border border-[#0B6B3A] text-[#0B6B3A] px-4 py-3 rounded relative mb-6 font-medium text-sm" role="alert">
-            <span class="block sm:inline">{{ message }}</span>
-          </div>
-        {% endfor %}
-      {% endif %}
 
-      <form method="POST" enctype="multipart/form-data" class="space-y-6">
-        {% csrf_token %}
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Google Campus Ambassador Application Form -->
+      <div class="w-full overflow-hidden rounded-xl">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdLHxXQgqBmtMfRuAWUvgPcf5pOqvdf_w1UZhTZuWo_piAm_Q/viewform?embedded=true"
+          width="100%"
+          height="1100"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+          title="UDAAN Campus Ambassador Application Form"
+          style="border: none; display: block;"
+        >
+          Loading…
+        </iframe>
+      </div>
 
-  <!-- Full Name -->
-  <div class="form-reveal">
-    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">
-      Full Name *
-    </label>
-
-    <input
-      type="text"
-      name="full_name"
-      required
-      placeholder="Jane Doe"
-      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"
-    >
-  </div>
-
-  <!-- Email -->
-  <div class="form-reveal reveal-delay-1">
-    <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">
-      Email Address *
-    </label>
-
-    <input
-      type="email"
-      name="email"
-      required
-      placeholder="jane@example.com"
-      class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"
-    >
-  </div>
-
-</div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 form-row animate-fade-up delay-100">
-          <div class="form-reveal reveal-delay-2">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone Number *</label>
-            <input type="tel" name="phone" required placeholder="9876543210"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
-          </div>
-          <div class="form-reveal reveal-delay-3">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
-            <input type="date" name="dob" required
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 form-row animate-fade-up delay-200">
-          <div class="form-reveal reveal-delay-1">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Father's Name *</label>
-            <input type="text" name="father_name" required placeholder="John Doe"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
-          </div>
-          <div class="form-reveal reveal-delay-2">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Name of Institution *</label>
-            <input type="text" name="institution" required placeholder="University Name"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
-          </div>
-        </div>
-
-        <div class="form-reveal reveal-delay-3">
-  <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Address *</label>
-          <textarea name="address" required placeholder="Your full address..." rows="2"
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 form-row animate-fade-up delay-400">
-          <div class="form-reveal">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Technical Skills *</label>
-            <textarea name="technical_skills" required placeholder="e.g. Python, Video Editing, Social Media..." rows="3"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
-          </div>
-          <div class="form-reveal reveal-delay-1">
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">General Skills *</label>
-            <textarea name="general_skills" required placeholder="e.g. Leadership, Public Speaking..." rows="3"
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
-          </div>
-        </div>
-
-        <div class="form-reveal reveal-delay-2">
-  <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">
-    Why do you want to be a Campus Ambassador? *
-  </label>
-          <textarea name="motivation" required placeholder="Share your motivation..." rows="3"
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]"></textarea>
-        </div>
-
-        <div class="form-reveal reveal-delay-3">
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV / Resume (PDF) *</label>
-          <input type="file" name="cv" accept=".pdf" required
-            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0B6B3A] focus:ring-1 focus:ring-[#0B6B3A] text-sm transition-all bg-[#FAFAFA]">
-        </div>
-
-        <div class="pt-4 form-reveal reveal-delay-4">
-          <button type="submit" class="w-full bg-[#0B6B3A] hover:bg-[#084e2a] text-white rounded-xl py-3.5 text-sm font-bold uppercase tracking-wide transition-all shadow-md hover:shadow-lg">
-            Submit Application
-          </button>
-        </div>
-      </form>
     </div>
   </section>
-
 </div>
 
 <script>

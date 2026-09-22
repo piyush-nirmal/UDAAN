@@ -444,9 +444,10 @@ class BloodRequestAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at')
+    list_display = ('title', 'category', 'created_at')
     search_fields = ('title', 'description', 'content')
-    list_filter = ('created_at',)
+    list_filter = ('category', 'created_at')
+    list_editable = ('category',)
     formfield_overrides = {
         models.TextField: {'widget': CKEditor5Widget(config_name='extends')},
     }

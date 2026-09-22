@@ -62,9 +62,23 @@ field activities, and events working towards meaningful social impact.
         transform: translateY(-2px);
     }
 
+    .oa-modal {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
     .oa-modal.active {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+    }
+
+    .oa-modal-content {
+        transform: scale(0.95) translateY(16px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
     }
 
     .oa-modal.active .oa-modal-content {

@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".year-tab").forEach(tab => {
     tab.addEventListener("click", () => {
       if (activeTitleEl) {
-        activeTitleEl.textContent = `FY ${tab.dataset.year} Audited Report`;
+        activeTitleEl.textContent = `Annual Report ${tab.dataset.year}`;
       }
 
       scale = 1;

@@ -393,7 +393,7 @@
                 <h5
                   class="text-sm font-bold text-gray-900 leading-tight"
                 >
-                  FY {{ report.title }}
+                  Annual Report {{ report.title }}
                 </h5>
 
                 <p class="text-xs text-gray-500 mt-0.5">
@@ -491,15 +491,13 @@
               id="activeReportTitle"
             >
 
-              FY
+              Annual Report
 
               {% if reports %}
                 {{ reports.0.title }}
               {% else %}
                 --
               {% endif %}
-
-              Audited Report
 
             </h2>
 
