@@ -15,76 +15,8 @@
   }
 
   /* =====================================================
-     ANIMATION KEYFRAMES
+     ANIMATION KEYFRAMES (loading skeleton only)
   ====================================================== */
-
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(35px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideRight {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes floatLeaf {
-    0%,
-    100% {
-      transform: translate(25%, -25%) rotate(0deg);
-    }
-
-    50% {
-      transform: translate(25%, -22%) rotate(2deg);
-    }
-  }
-
-  @keyframes pulseSoft {
-    0%,
-    100% {
-      opacity: 0.05;
-    }
-
-    50% {
-      opacity: 0.09;
-    }
-  }
 
   @keyframes shimmer {
     0% {
@@ -94,20 +26,6 @@
     100% {
       background-position: 1000px 0;
     }
-  }
-
-  /* =====================================================
-     HERO ANIMATION
-  ====================================================== */
-
-  .annual-hero-content {
-    animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .annual-hero-leaf {
-    animation:
-      floatLeaf 7s ease-in-out infinite,
-      pulseSoft 4s ease-in-out infinite;
   }
 
   /* =====================================================
@@ -133,14 +51,6 @@
     box-shadow:
       0 12px 35px -10px rgba(11, 107, 58, 0.08),
       0 4px 12px -4px rgba(0, 0, 0, 0.03);
-  }
-
-  /* =====================================================
-     REPORT SIDEBAR
-  ====================================================== */
-
-  .reports-sidebar {
-    animation: slideLeft 0.8s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   /* =====================================================
@@ -196,40 +106,8 @@
   }
 
   /* =====================================================
-     STAGGER ANIMATION
-  ====================================================== */
-
-  .report-card-modern:nth-child(1) {
-    animation: fadeUp 0.6s 0.2s both;
-  }
-
-  .report-card-modern:nth-child(2) {
-    animation: fadeUp 0.6s 0.3s both;
-  }
-
-  .report-card-modern:nth-child(3) {
-    animation: fadeUp 0.6s 0.4s both;
-  }
-
-  .report-card-modern:nth-child(4) {
-    animation: fadeUp 0.6s 0.5s both;
-  }
-
-  .report-card-modern:nth-child(5) {
-    animation: fadeUp 0.6s 0.6s both;
-  }
-
-  .report-card-modern:nth-child(6) {
-    animation: fadeUp 0.6s 0.7s both;
-  }
-
-  /* =====================================================
      PDF VIEWER
   ====================================================== */
-
-  #reportViewer {
-    animation: slideRight 0.8s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
 
   #reportViewer {
     transition:
@@ -264,16 +142,10 @@
   }
 
   /* =====================================================
-     PDF PAGE ANIMATION
+     PDF PAGE HOVER
   ====================================================== */
 
   #pdfPagesContainer canvas {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-
-    animation:
-      pdfPageReveal 0.6s ease forwards;
-
     box-shadow:
       0 4px 15px rgba(0, 0, 0, 0.08);
 
@@ -286,13 +158,6 @@
     transform: translateY(-2px);
     box-shadow:
       0 10px 25px rgba(0, 0, 0, 0.12);
-  }
-
-  @keyframes pdfPageReveal {
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
   }
 
   /* =====================================================
@@ -331,14 +196,6 @@
   }
 
   /* =====================================================
-     ERROR STATE
-  ====================================================== */
-
-  #pdfError {
-    animation: fadeIn 0.5s ease both;
-  }
-
-  /* =====================================================
      CUSTOM SCROLLBAR
   ====================================================== */
 
@@ -361,23 +218,6 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #D1D5DB;
-  }
-
-  /* =====================================================
-     MOBILE
-  ====================================================== */
-
-  @media (max-width: 1023px) {
-
-    .reports-sidebar,
-    #reportViewer {
-      animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-    .report-card-modern:hover {
-      transform: translateY(-3px);
-    }
-
   }
 
   /* =====================================================
@@ -407,15 +247,81 @@
      HERO SECTION
 ====================================================== -->
 
-<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/annual_reports_hero.jpg' %}');" data-aos="fade-up">
-    <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-        <span class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            Financial Transparency
-        </span>
-        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white" style="font-family: 'Inter', sans-serif;">Audited Statements & <br class="hidden sm:block"/> Financial Reports</h1>
-        <p class="text-lg text-gray-200 leading-relaxed">Explore our commitment to financial transparency. Browse through our certified annual reports and audited statements detailing resource allocation.</p>
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+
+  <!-- Decorative Leaf -->
+
+  <div
+    class="absolute right-0 top-0 opacity-5 pointer-events-none"
+  >
+
+    <svg
+      width="400"
+      height="400"
+      viewBox="0 0 240 360"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+
+      <path
+        d="M-40,320 C40,280 80,180 60,80
+        C110,130 140,220 120,300
+        C150,230 200,160 260,140
+        C210,200 170,270 120,320"
+        fill="#0B6B3A"
+      />
+
+      <path
+        d="M-80,240 C0,200 40,120 20,40
+        C60,85 90,160 70,230"
+        fill="#0B6B3A"
+      />
+
+    </svg>
+
+  </div>
+
+
+  <!-- Hero Content -->
+
+  <div
+    class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
+  >
+
+    <div class="max-w-2xl space-y-4">
+
+      <span
+        class="inline-flex items-center gap-2 text-[#0B6B3A] text-xs font-bold uppercase tracking-wider"
+      >
+        <span class="w-2 h-2 rounded-full bg-[#0B6B3A]"></span>
+        Financial Transparency
+      </span>
+
+      <h1
+        class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"
+        style="font-family: 'Inter', sans-serif;"
+      >
+
+        Audited Statements &
+
+        <br class="hidden sm:block"/>
+
+        Financial Reports
+
+      </h1>
+
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
+
+        Explore our commitment to financial transparency.
+        Browse through our certified annual reports and audited
+        statements detailing resource allocation.
+
+      </p>
+
     </div>
+
+  </div>
+
 </section>
 
 
@@ -433,7 +339,7 @@
     ================================================== -->
 
     <div
-      class="reports-sidebar lg:col-span-4 space-y-6 lg:sticky lg:top-32"
+      class="lg:col-span-4 space-y-6 lg:sticky lg:top-32"
     >
 
       <div class="glass-card rounded-2xl p-4 flex flex-col">
@@ -487,7 +393,7 @@
                 <h5
                   class="text-sm font-bold text-gray-900 leading-tight"
                 >
-                  FY {{ report.title }}
+                  Annual Report {{ report.title }}
                 </h5>
 
                 <p class="text-xs text-gray-500 mt-0.5">
@@ -585,15 +491,13 @@
               id="activeReportTitle"
             >
 
-              FY
+              Annual Report
 
               {% if reports %}
                 {{ reports.0.title }}
               {% else %}
                 --
               {% endif %}
-
-              Audited Report
 
             </h2>
 
@@ -882,11 +786,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  /*
-   * Add smooth click feedback to report cards.
-   * Your annual.js will continue handling the actual PDF loading.
-   */
-
   const reportCards =
     document.querySelectorAll(".report-card-modern");
 
@@ -907,48 +806,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
-  /*
-   * PDF viewer page animation.
-   * Works when annual.js adds canvas elements.
-   */
-
   const pdfContainer =
     document.getElementById("pdfPagesContainer");
-
-  if (pdfContainer) {
-
-    const observer =
-      new MutationObserver(function (mutations) {
-
-        const canvases =
-          pdfContainer.querySelectorAll("canvas");
-
-        canvases.forEach(function (canvas, index) {
-
-          if (!canvas.dataset.animated) {
-
-            canvas.dataset.animated = "true";
-
-            canvas.style.animationDelay =
-              `${Math.min(index * 0.08, 0.8)}s`;
-
-          }
-
-        });
-
-      });
-
-    observer.observe(pdfContainer, {
-      childList: true,
-      subtree: true
-    });
-
-  }
-
-
-  /*
-   * Hide loading skeleton when PDF pages appear.
-   */
 
   const loading =
     document.getElementById("pdfLoading");
@@ -958,13 +817,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadingObserver =
       new MutationObserver(function () {
 
-        if (
-          pdfContainer.querySelector("canvas")
-        ) {
+        if (pdfContainer.querySelector("canvas")) {
 
-          loading.classList.add(
-            "loading-hidden"
-          );
+          loading.classList.add("loading-hidden");
 
         }
 
