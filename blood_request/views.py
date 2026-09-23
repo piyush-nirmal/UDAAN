@@ -15,7 +15,7 @@ from .schemas import DonorSchema, BloodRequestSchema
 from pydantic import ValidationError
 from django_ratelimit.decorators import ratelimit
 # from django.shortcuts import render
-from .models import Blog, Project, Task, SubTask, Team
+from .models import Blog, Project, Task, SubTask, Team, TaskComment
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from .models import CampusAmbassador, CampusAmbassadorApplication
@@ -856,12 +856,42 @@ def calendar_events_api(request):
     return JsonResponse(events, safe=False)
 
 
-def workplace_living(request):
-    return render(request, 'workplace_living.html')
+def workplace_giving(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        organization = request.POST.get('organization')
+        designation = request.POST.get('designation')
+        working_days = request.POST.getlist('working_days')
+        interests = request.POST.get('interests')
+
+        if first_name and last_name and phone and organization and designation:
+            subject = f"New Workplace Giving Registration: {first_name} {last_name}"
+            days_str = ", ".join(working_days) if working_days else "None specified"
+            
+            body = (
+                f"A new Workplace Giving Registration has been submitted.\n\n"
+                f"Name: {first_name} {last_name}\n"
+                f"Email: {email or 'Not provided'}\n"
+                f"Phone: {phone}\n"
+                f"Organization: {organization}\n"
+                f"Designation: {designation}\n"
+                f"Working Days Available: {days_str}\n"
+                f"Interests:\n{interests or 'None specified'}"
+            )
+            
+            send_application_email(subject, body)
+            messages.success(request, 'Your Workplace Giving registration has been submitted successfully!')
+        else:
+            messages.error(request, 'Please fill all required fields.')
+
+    return render(request, 'workplace_giving.html')
 
 
 # --- Phase 17: Team Views ---
-from .models import Team, SharedNote
+from .models import Team, SharedNote, Workspace
 from django.contrib import messages
 
 @login_required
@@ -1201,6 +1231,41 @@ def user_edit_portal(request, pk):
 
     return render(request, 'blood_request/user_edit.html', context)
 
+
+def send_application_email(subject, body, cv_file=None):
+    from django.core.mail import EmailMessage
+    from django.conf import settings
+    
+    recipients = []
+    if getattr(settings, 'CONTACT_EMAIL_1', None):
+        recipients.append(settings.CONTACT_EMAIL_1)
+    if getattr(settings, 'CONTACT_EMAIL_2', None):
+        recipients.append(settings.CONTACT_EMAIL_2)
+        
+    # Remove empty strings if any
+    recipients = [r for r in recipients if r and r.strip()]
+
+    if not recipients:
+        print("No recipients configured for application emails.")
+        return False
+        
+    try:
+        email = EmailMessage(
+            subject=subject,
+            body=body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=recipients,
+        )
+        if cv_file:
+            cv_file.seek(0)
+            email.attach(cv_file.name, cv_file.read(), cv_file.content_type)
+            
+        email.send(fail_silently=False)
+        return True
+    except Exception as e:
+        print(f"Error sending application email: {e}")
+        return False
+
 def volunteering(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -1223,6 +1288,22 @@ def volunteering(request):
                 residence=residence,
                 cv=cv
             )
+            
+            # Send Email
+            subject = f"New Volunteer Application: {name}"
+            body = (
+                f"A new volunteer application has been submitted.\n\n"
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Phone: {phone}\n"
+                f"Gender: {gender}\n"
+                f"Education: {education}\n"
+                f"Employment Status: {employment}\n"
+                f"Residence: {residence}\n\n"
+                f"Please find the CV attached."
+            )
+            send_application_email(subject, body, cv_file=cv)
+            
             messages.success(request, 'Your volunteer application has been submitted successfully!')
         else:
             messages.error(request, 'Please fill all required fields and upload your CV.')
@@ -1259,6 +1340,20 @@ def campus_ambassador(request):
                 email=email,
                 cv=cv
             )
+            
+            # Send Email
+            subject = f"New Campus Ambassador Application: {full_name}"
+            body = (
+                f"A new Campus Ambassador application has been submitted.\n\n"
+                f"Name: {full_name}\n"
+                f"Email: {email}\n"
+                f"Phone: {phone}\n"
+                f"Institution: {institution}\n"
+                f"Motivation: {motivation}\n\n"
+                f"Please find the CV attached."
+            )
+            send_application_email(subject, body, cv_file=cv)
+            
             messages.success(request, 'Your Campus Ambassador application has been submitted successfully!')
         else:
             messages.error(request, 'Please fill all required fields and upload your CV.')
@@ -1318,6 +1413,20 @@ def internships(request):
                 duration_months=duration_months,
                 cv=cv,
             )
+            
+            # Send Email
+            subject = f"New Internship Application: {name}"
+            body = (
+                f"A new internship application has been submitted.\n\n"
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Phone: {contact_number}\n"
+                f"Area: {internship_area}\n"
+                f"Start Date: {start_date} ({duration_months} months)\n\n"
+                f"Please find the CV attached."
+            )
+            send_application_email(subject, body, cv_file=cv)
+            
             messages.success(request, 'Your internship request has been successfully submitted! We will contact you soon.')
         except Exception as e:
             messages.error(request, 'There was an error submitting your request. Please check your inputs.')
@@ -1523,7 +1632,10 @@ def contact_us(request):
                         f"Message:\n{message}"
                     ),
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=['mail@udaansociety.org'],
+                    recipient_list=[
+                        settings.CONTACT_EMAIL_1,
+                        settings.CONTACT_EMAIL_2,
+                    ],
                     fail_silently=False,
                 )
 

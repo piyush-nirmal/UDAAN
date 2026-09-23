@@ -248,6 +248,8 @@ EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'mail@udaansociety.org')
 EMAIL_HOST_PASSWORD = _email_password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CONTACT_EMAIL_1 = os.environ.get('CONTACT_EMAIL_1')
+CONTACT_EMAIL_2 = os.environ.get('CONTACT_EMAIL_2')
 
 # Media Files (Uploaded content)
 MEDIA_URL = '/media/'

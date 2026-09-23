@@ -8,7 +8,7 @@
 {% block content %}
 
 <!-- Hero Banner -->
-<section class="subpage-hero" data-aos="fade-down">
+<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/internships_hero.jpg' %}');" data-aos="fade-down">
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Academic Outreach</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Internship Program</h1>
@@ -64,19 +64,113 @@
       </p>
     </div>
 
-    <div class="w-full overflow-hidden rounded-xl">
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeEztmO0eMQK3bRAO2ow4bgk_R7m8K2R1FV-lFsTLlj1zgHHA/viewform?embedded=true"
-        width="100%"
-        height="1100"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title="UDAAN Internship Application Form"
-        style="border: none; display: block;"
-      >
-        Loading…
-      </iframe>
+    <div class="w-full">
+      <form method="POST" action="{% url 'internships' %}" enctype="multipart/form-data" class="space-y-5 text-left">
+        {% csrf_token %}
+
+        {% if messages %}
+        <div class="space-y-2">
+          {% for message in messages %}
+          <div class="p-4 rounded-xl text-xs font-bold {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-600{% endif %}">
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Full Name *</label>
+            <input type="text" name="name" required placeholder="John Doe"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Father's Name</label>
+            <input type="text" name="father_name" placeholder="Optional"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Date of Birth *</label>
+            <input type="date" name="dob" required
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all text-gray-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Gender *</label>
+            <select name="gender" required
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all text-gray-600">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Contact Number *</label>
+            <input type="text" name="contact_number" required placeholder="+91 9876543210"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Address *</label>
+            <input type="email" name="email" required placeholder="john@example.com"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Educational Qualification *</label>
+          <input type="text" name="educational_qualification" required placeholder="e.g. B.Tech / MSW"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Permanent Address *</label>
+          <textarea name="permanent_address" required placeholder="Full Address" rows="3"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Internship Area *</label>
+            <input type="text" name="internship_area" required placeholder="e.g. Field Work, Tech, HR"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Other Interests</label>
+            <input type="text" name="other_interest" placeholder="Any specific interests"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Start Date *</label>
+            <input type="date" name="start_date" required
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all text-gray-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Duration (Months) *</label>
+            <input type="number" name="duration_months" required min="1" max="12" value="3"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all text-gray-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Upload CV *</label>
+          <input type="file" name="cv" required accept=".pdf,.doc,.docx"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary file:text-white hover:file:bg-primary-dark">
+        </div>
+
+        <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
+          Submit Application
+        </button>
+
+      </form>
     </div>
   </div>
   <!-- Do's & Dont's Section -->

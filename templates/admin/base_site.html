@@ -354,8 +354,13 @@
     <div class="sidebar-section-title">CONTENT & COMMUNICATIONS</div>
     
     <a href="{% url 'admin:blood_request_blog_changelist' %}" class="sidebar-link">
+      <i class="fas fa-blog sidebar-icon"></i>
+      <span class="sidebar-text">Blogs</span>
+    </a>
+
+    <a href="{% url 'admin:blood_request_newsclipping_changelist' %}" class="sidebar-link">
       <i class="fas fa-newspaper sidebar-icon"></i>
-      <span class="sidebar-text">Blogs & News</span>
+      <span class="sidebar-text">News Clippings</span>
     </a>
 
     <a href="{% url 'admin:blood_request_activity_changelist' %}" class="sidebar-link">
