@@ -39,33 +39,10 @@
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* ========================================
-   SCROLL REVEAL ANIMATIONS
-======================================== */
-
-.reveal {
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .reveal.active {
   opacity: 1;
   visibility: visible;
   transform: translate(0, 0) scale(1);
-}
-
-
-/* From Left */
-.reveal-left {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-80px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal-left.active {
@@ -74,49 +51,16 @@
   transform: translateX(0);
 }
 
-
-/* From Right */
-.reveal-right {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(80px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .reveal-right.active {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
 }
 
-
-/* From Bottom */
-.reveal-bottom {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(70px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .reveal-bottom.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
-
-
-/* Scale */
-.reveal-scale {
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.85);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .reveal-scale.active {
@@ -166,14 +110,28 @@
 
 {% block content %}
 <!-- Modern Hero Section -->
-<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/blogs_hero.jpg' %}');" data-aos="fade-up">
-    <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wide uppercase mb-4">
-            <i class="fa-solid fa-book-open"></i> NGO Journal
-        </div>
-        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 text-white" style="font-family: 'Inter', sans-serif;">Our Blog</h1>
-        <p class="text-lg md:text-xl leading-relaxed text-gray-200">Read stories of impact, project field diaries, and operational updates from our campaigns.</p>
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
+  <!-- Decorative Leaf SVG (Low Opacity) -->
+  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
+    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
+      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <div class="max-w-3xl space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase reveal-left">
+        <i class="fa-solid fa-book-open"></i> NGO Journal
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight reveal-left" style="font-family: 'Inter', sans-serif;">
+        Our Blog
+      </h1>
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl reveal-left">
+        Read stories of impact, project field diaries, and operational updates from our campaigns.
+      </p>
     </div>
+  </div>
 </section>
 
 <!-- Breadcrumb -->
@@ -207,95 +165,50 @@
     </div>
   </div>
 
-  <!-- Blogs Cards Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
-    {% for blog in blogs %}
-    
-    <!-- Blog Card -->
-    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card reveal-bottom" data-title="{{ blog.title|lower }}" data-desc="{{ blog.description|lower }}">
-      <a href="{% url 'blog_detail' blog.id %}" class="block h-full flex flex-col justify-between">
-        <div>
-          <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8] reveal-scale">
-            {% if blog.image %}
-            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
-            {% else %}
-            <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-4xl opacity-50">
-              <i class="fa-solid fa-newspaper"></i>
-            </div>
-            {% endif %}
-          </div>
-          
-          <div class="p-6 pb-4 space-y-3 reveal-bottom">
-            <span class="text-[#0B6B3A] font-bold text-[11px] uppercase tracking-widest block">Update</span>
-            <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ blog.title }}</h3>
-            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{{ blog.description }}</p>
-          </div>
-        </div>
 
-        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto reveal-bottom">
-          <div class="flex items-center gap-2 text-xs font-medium text-gray-400">
-            <i class="fa-regular fa-calendar"></i>
-            <span>{{ blog.created_at|date:"F d, Y" }}</span>
-          </div>
-          <div class="text-gray-400 transition-colors icon-chevron transition-transform duration-300">
-            <i class="fa-solid fa-chevron-right text-xs"></i>
-          </div>
-        </div>
-      </a>
-    </article>
-    
-    {% empty %}
-    <div class="col-span-full flex flex-col items-center justify-center py-24 text-center bg-white rounded-2xl border border-[#E8E8E8] reveal-scale">
-      <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 text-2xl mb-4">
-        <i class="fa-regular fa-folder-open"></i>
-      </div>
-      <h3 class="text-lg font-bold text-gray-900 mb-1">No Blogs Found</h3>
-      <p class="text-sm text-gray-500">Check back later for new stories and updates.</p>
-    </div>
-    {% endfor %}
-  </div>
 
 </div>
 
+
 <!-- Filter Javascript -->
 <script>
-  function filterBlogs(query) {
-    const cleanQuery = query.toLowerCase().trim();
+  // Keeps the search box and the category tabs in sync with each other,
+  // instead of each one overwriting what the other just did.
+  let activeCategory = 'all';
+  let activeQuery = '';
+
+  function applyFilters() {
     document.querySelectorAll('.blog-card').forEach(card => {
       const title = card.getAttribute('data-title');
       const desc = card.getAttribute('data-desc');
-      if (title.includes(cleanQuery) || desc.includes(cleanQuery)) {
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
+      const cardCategory = card.getAttribute('data-category');
+
+      const matchesCategory = (activeCategory === 'all') || (cardCategory === activeCategory);
+      const matchesQuery = !activeQuery || title.includes(activeQuery) || desc.includes(activeQuery);
+
+      card.style.display = (matchesCategory && matchesQuery) ? 'flex' : 'none';
     });
   }
 
+  function filterBlogs(query) {
+    activeQuery = query.toLowerCase().trim();
+    applyFilters();
+  }
+
   function filterCategory(cat) {
+    activeCategory = cat;
+
     // Styling tags active states
     document.querySelectorAll('.category-btn').forEach(btn => {
       btn.classList.remove('bg-[#EEF8F1]', 'text-[#0B6B3A]', 'border-[#0B6B3A]');
       btn.classList.add('border-gray-200', 'text-gray-600');
     });
-    
+
     // Add active styling back to selected target
     event.currentTarget.classList.add('bg-[#EEF8F1]', 'text-[#0B6B3A]', 'border-[#0B6B3A]');
     event.currentTarget.classList.remove('border-gray-200', 'text-gray-600');
 
-    if (cat === 'all') {
-      document.querySelectorAll('.blog-card').forEach(c => c.style.display = 'flex');
-    } else {
-      document.querySelectorAll('.blog-card').forEach(c => {
-        const title = c.getAttribute('data-title');
-        const desc = c.getAttribute('data-desc');
-        if (title.includes(cat) || desc.includes(cat)) {
-          c.style.display = 'flex';
-        } else {
-          c.style.display = 'none';
-        }
-      });
-    }
+    applyFilters();
   }
 </script>
 
