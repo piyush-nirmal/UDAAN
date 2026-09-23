@@ -166,54 +166,9 @@
   </div>
 
 
-  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
-    {% for blog in blogs %}
-    
-
-    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card reveal-bottom" data-title="{{ blog.display_title|lower }}" data-desc="{{ blog.description|lower }}" data-category="{{ blog.category }}">
-      <a href="{% url 'blog_detail' blog.id %}" class="block h-full flex flex-col justify-between">
-        <div>
-          <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8] reveal-scale">
-            {% if blog.image %}
-            <img src="{{ blog.image.url }}" alt="{{ blog.display_title }}" class="w-full h-full object-cover">
-            {% else %}
-            <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-4xl opacity-50">
-              <i class="fa-solid fa-newspaper"></i>
-            </div>
-            {% endif %}
-          </div>
-          
-          <div class="p-6 pb-4 space-y-3 reveal-bottom">
-            <span class="text-[#0B6B3A] font-bold text-[11px] uppercase tracking-widest block">{{ blog.get_category_display }}</span>
-            <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ blog.display_title }}</h3>
-            <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{{ blog.description }}</p>
-          </div>
-        </div>
-
-        <div class="px-6 py-5 border-t border-[#E8E8E8] flex items-center justify-between mt-auto reveal-bottom">
-          <div class="flex items-center gap-2 text-xs font-medium text-gray-400">
-            <i class="fa-regular fa-calendar"></i>
-            <span>{{ blog.created_at|date:"F d, Y" }}</span>
-          </div>
-          <div class="text-gray-400 transition-colors icon-chevron transition-transform duration-300">
-            <i class="fa-solid fa-chevron-right text-xs"></i>
-          </div>
-        </div>
-      </a>
-    </article>
-    
-    {% empty %}
-    <div class="col-span-full flex flex-col items-center justify-center py-24 text-center bg-white rounded-2xl border border-[#E8E8E8] reveal-scale">
-      <div class="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 text-2xl mb-4">
-        <i class="fa-regular fa-folder-open"></i>
-      </div>
-      <h3 class="text-lg font-bold text-gray-900 mb-1">No Blogs Found</h3>
-      <p class="text-sm text-gray-500">Check back later for new stories and updates.</p>
-    </div>
-    {% endfor %}
-  </div> -->
 
 </div>
+
 
 <!-- Filter Javascript -->
 <script>
