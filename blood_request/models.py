@@ -617,11 +617,44 @@ class Blog(models.Model):
     title = models.CharField(max_length=200)
     content = CKEditor5Field(config_name='extends')   # <-- RichTextEditor
     description = models.TextField()
-    image = models.ImageField(upload_to='blogs/')
+    image = models.ImageField(upload_to='blogs/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
+
+    @property
+    def cover_image(self):
+        """Returns the primary image: self.image or the first BlogImage if available."""
+        if self.image:
+            return self.image
+        first_gallery = self.images.first()
+        if first_gallery and first_gallery.image:
+            return first_gallery.image
+        return None
+
+    @property
+    def cover_image_url(self):
+        """Returns the URL of the cover image or None."""
+        img = self.cover_image
+        if img:
+            return img.url
+        return None
+
+
+class BlogImage(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='blogs/gallery/')
+    caption = models.CharField(max_length=255, blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return f"Image for {self.blog.title} ({self.id})"
+
 
 # --- Phase 17: Team Spaces & Knowledge Sharing ---
 

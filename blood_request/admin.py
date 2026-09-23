@@ -4,9 +4,11 @@ from django.contrib.auth.models import User, Group
 from django_ckeditor_5.widgets import CKEditor5Widget
 from django.db import models
 
+from django.utils.safestring import mark_safe
+
 from .models import (
     PolicyReport, Report, Testimonial, StaffProfile, Announcement,
-    Interaction, BloodDonor, Project, BloodRequest, Blog, Campaign,
+    Interaction, BloodDonor, Project, BloodRequest, Blog, BlogImage, Campaign,
     CampusAmbassador, CampusAmbassadorApplication, NewsClipping, ContactMessage,
     Activity, JobPosting, Donation, SubTask, TaskComment, Team, SharedNote,
     Workspace, WorkspaceMember, Expense, TaskAutomationRule, NewsletterSubscription, Task,
@@ -442,14 +444,41 @@ class BloodRequestAdmin(admin.ModelAdmin):
                 self.message_user(request, f"Error closing {obj}: {str(e)}", level='ERROR')
     close_request.short_description = "Close selected blood requests"
 
+class BlogImageInline(admin.TabularInline):
+    model = BlogImage
+    extra = 1
+    fields = ('image', 'caption', 'order', 'image_preview')
+    readonly_fields = ('image_preview',)
+
+    def image_preview(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" style="max-height: 50px; max-width: 80px; border-radius: 4px; object-fit: cover;" />')
+        return "-"
+    image_preview.short_description = "Preview"
+
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created_at')
+    list_display = ('title', 'image_preview', 'gallery_count', 'created_at')
     search_fields = ('title', 'description', 'content')
     list_filter = ('created_at',)
+    readonly_fields = ('image_preview',)
+    inlines = [BlogImageInline]
     formfield_overrides = {
         models.TextField: {'widget': CKEditor5Widget(config_name='extends')},
     }
+
+    def image_preview(self, obj):
+        img_url = obj.cover_image_url
+        if img_url:
+            return mark_safe(f'<img src="{img_url}" style="max-height: 50px; max-width: 80px; border-radius: 4px; object-fit: cover;" />')
+        return "-"
+    image_preview.short_description = "Cover Preview"
+
+    def gallery_count(self, obj):
+        count = obj.images.count()
+        return f"{count} gallery image(s)"
+    gallery_count.short_description = "Gallery"
+
 
 
 
