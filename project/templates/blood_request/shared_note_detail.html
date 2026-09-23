@@ -1,0 +1,507 @@
+{% extends "portal_layout.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-8 mb-12 px-4 sm:px-0">
+    <!-- Breadcrumbs & Share/Private Badge -->
+    <div class="flex justify-between items-center mb-10">
+        <div>
+            <!-- Breadcrumbs -->
+            {% if breadcrumbs %}
+            <nav class="flex text-sm text-gray-500 space-x-2" aria-label="Breadcrumb">
+                <a href="{% url 'staff_dashboard' %}" class="hover:text-gray-900 transition"><i
+                        class="fa-solid fa-home"></i></a>
+                {% for bnote in breadcrumbs %}
+                <span class="text-gray-300">/</span>
+                <a href="{% url 'shared_note_detail' bnote.pk %}"
+                    class="hover:text-gray-900 transition max-w-[150px] truncate inline-block align-bottom">{{
+                    bnote.title }}</a>
+                {% endfor %}
+                <span class="text-gray-300">/</span>
+            </nav>
+            {% else %}
+            <nav class="flex text-sm text-gray-500 space-x-2" aria-label="Breadcrumb">
+                <a href="{% url 'staff_dashboard' %}" class="hover:text-gray-900 transition"><i
+                        class="fa-solid fa-home"></i></a>
+                <span class="text-gray-300">/</span>
+            </nav>
+            {% endif %}
+        </div>
+        <div class="flex items-center space-x-3 text-sm">
+            {% if note.shared_with_teams.exists or note.shared_with_users.exists %}
+            <span class="flex items-center text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md"
+                title="This page is shared">
+                <i class="fa-solid fa-globe text-gray-400 mr-2 text-xs"></i> Shared
+            </span>
+            {% else %}
+            <span class="flex items-center text-gray-600 bg-gray-100 px-2.5 py-1 rounded-md"
+                title="This page is private to you">
+                <i class="fa-solid fa-lock text-gray-400 mr-2 text-xs"></i> Private
+            </span>
+            {% endif %}
+
+            {% if request.user == note.owner or request.user.is_superuser %}
+            <a href="{% url 'shared_note_delete' note.pk %}"
+                class="text-red-400 hover:text-red-600 hover:bg-red-50 px-2 py-1 rounded transition text-xs font-medium border border-transparent hover:border-red-100"
+                title="Delete Page">
+                <i class="fa-regular fa-trash-can"></i>
+            </a>
+            {% endif %}
+
+            <a href="{% url 'staff_dashboard' %}" class="text-gray-400 hover:text-gray-800 transition pl-1">
+                <i class="fas fa-times text-lg"></i>
+            </a>
+        </div>
+    </div>
+
+    {% if can_edit %}
+    <form method="post" id="note-form" class="mb-10">
+        {% csrf_token %}
+        {{ form.media }}
+
+        <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-100">
+            <div class="flex items-center space-x-4 text-sm text-gray-400">
+                <span class="flex items-center"><i class="fas fa-user mr-1.5 opacity-70"></i> {{ note.owner.username
+                    }}</span>
+                <span class="flex items-center"><i class="fas fa-history mr-1.5 opacity-70"></i> Updated {{
+                    note.updated_at|timesince }} ago</span>
+            </div>
+            <button type="submit"
+                class="bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded hover:bg-gray-800 transition shadow-sm">
+                Save Changes
+            </button>
+        </div>
+
+        <div class="mb-6">
+            {{ form.title }}
+        </div>
+        <div class="prose max-w-none w-full border-none pb-12 editor-container">
+            {{ form.content }}
+        </div>
+    </form>
+    {% else %}
+    <!-- Title and Metadata -->
+    <div class="mb-10">
+        <h1 class="text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4"
+            style="letter-spacing: -0.02em;">{{ note.title }}</h1>
+        <div class="flex items-center space-x-4 text-sm text-gray-400 border-b border-gray-100 pb-6">
+            <span class="flex items-center"><i class="fas fa-user mr-1.5 opacity-70"></i> {{ note.owner.username
+                }}</span>
+            <span class="flex items-center"><i class="far fa-clock mr-1.5 opacity-70"></i> {{ note.created_at|date:"M d,
+                Y" }}</span>
+            <span class="flex items-center"><i class="fas fa-history mr-1.5 opacity-70"></i> Updated {{
+                note.updated_at|timesince }} ago</span>
+        </div>
+    </div>
+
+    <!-- Note Content -->
+    <div class="prose prose-lg max-w-none text-gray-800 mb-16 leading-relaxed">
+        {{ note.content|safe }}
+    </div>
+    {% endif %}
+
+    <!-- Details footer -->
+    <div class="pt-8 border-t border-gray-100">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+            <!-- Shared with explicitly -->
+            {% if note.shared_with_teams.exists %}
+            <div class="text-sm">
+                <span class="font-medium text-gray-500 mr-2">Shared with Teams:</span>
+                <div class="flex flex-wrap gap-2 mt-2 inline-flex">
+                    {% for team in note.shared_with_teams.all %}
+                    <span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-md text-xs font-medium">
+                        {{ team.name }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Add Child Page button -->
+            <a href="{% url 'shared_note_create' %}?parent={{ note.pk }}"
+                class="flex items-center text-sm text-gray-500 hover:text-gray-900 transition font-medium bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-md border border-gray-200 ml-auto group">
+                <i class="fa-solid fa-plus mr-2 text-gray-400 group-hover:text-gray-700 transition"></i> Add Sub-Page
+            </a>
+        </div>
+
+        <!-- Sub-pages (Wiki Children) section -->
+        {% if note.child_notes.exists %}
+        <div class="mt-8">
+            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Sub-Pages</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {% for child in note.child_notes.all %}
+                <a href="{% url 'shared_note_detail' child.pk %}"
+                    class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-transparent hover:border-gray-200">
+                    <div
+                        class="w-8 h-8 rounded shrink-0 bg-gray-100 text-gray-400 flex items-center justify-center mr-3 group-hover:bg-brand-blue group-hover:text-white transition-colors">
+                        <i class="fa-regular fa-file-lines"></i>
+                    </div>
+                    <div class="truncate">
+                        <h4 class="text-sm font-medium text-gray-900 truncate">{{ child.title }}</h4>
+                        <p class="text-[11px] text-gray-400 truncate mt-0.5">By {{ child.owner.username }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<style>
+    .prose a {
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    .prose a:hover {
+        text-decoration: underline;
+    }
+
+    .prose h1,
+    .prose h2,
+    .prose h3 {
+        color: #111827;
+        letter-spacing: -0.01em;
+        font-weight: 700;
+    }
+
+    .prose code {
+        color: #eb5757;
+        background: rgba(135, 131, 120, 0.15);
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+    }
+
+    /* Notion Editor Overrides */
+    input[name="title"] {
+        width: 100%;
+        font-size: 2.75rem;
+        line-height: 1.2;
+        font-weight: 800;
+        border: none;
+        padding: 0;
+        background: transparent;
+        color: #111827;
+        letter-spacing: -0.02em;
+    }
+
+    input[name="title"]:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: transparent !important;
+        --tw-ring-color: transparent !important;
+    }
+
+    input[name="title"]::placeholder {
+        color: #d1d5db;
+    }
+
+    .django-ckeditor-widget {
+        width: 100% !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+        border-color: transparent !important;
+    }
+
+    .ck.ck-editor__main>.ck-editor__editable {
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        min-height: 50vh;
+        font-size: 1.05rem;
+        color: #374151;
+        line-height: 1.6;
+    }
+
+    .ck.ck-toolbar {
+        border: none !important;
+        border-bottom: 1px solid #f3f4f6 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin-bottom: 8px;
+    }
+
+    /* Slash Command Menu */
+    #slash-menu {
+        position: absolute;
+        z-index: 10000;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        width: 250px;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        flex-direction: column;
+        padding: 0.5rem 0;
+    }
+
+    .slash-menu-item {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: background-color 0.1s;
+    }
+
+    .slash-menu-item:hover,
+    .slash-menu-item.active {
+        background-color: #f3f4f6;
+    }
+
+    .slash-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+    }
+
+    .slash-text h4 {
+        margin: 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #111827;
+    }
+
+    .slash-text p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #6b7280;
+    }
+</style>
+
+<!-- Custom Slash Command Menu HTML -->
+<div id="slash-menu">
+    <div class="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Basic Blocks</div>
+
+    <div class="slash-menu-item active" data-command="heading1">
+        <div class="slash-icon"><i class="fas fa-heading"></i></div>
+        <div class="slash-text">
+            <h4>Heading 1</h4>
+            <p>Big section heading.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="heading2">
+        <div class="slash-icon"><i class="fas fa-heading" style="font-size: 0.875rem"></i></div>
+        <div class="slash-text">
+            <h4>Heading 2</h4>
+            <p>Medium section heading.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="heading3">
+        <div class="slash-icon"><i class="fas fa-heading" style="font-size: 0.75rem"></i></div>
+        <div class="slash-text">
+            <h4>Heading 3</h4>
+            <p>Small section heading.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="bulletedList">
+        <div class="slash-icon"><i class="fas fa-list-ul"></i></div>
+        <div class="slash-text">
+            <h4>Bulleted List</h4>
+            <p>Create a simple bulleted list.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="todoList">
+        <div class="slash-icon"><i class="far fa-check-square"></i></div>
+        <div class="slash-text">
+            <h4>To-do List</h4>
+            <p>Track tasks with a to-do list.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="blockQuote">
+        <div class="slash-icon"><i class="fas fa-quote-right"></i></div>
+        <div class="slash-text">
+            <h4>Quote</h4>
+            <p>Capture a quote.</p>
+        </div>
+    </div>
+
+    <div class="px-3 py-1 mt-2 border-t border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+        Advanced</div>
+
+    <div class="slash-menu-item" data-command="insertTable">
+        <div class="slash-icon"><i class="fas fa-table"></i></div>
+        <div class="slash-text">
+            <h4>Table</h4>
+            <p>Add simple tabular content.</p>
+        </div>
+    </div>
+
+    <div class="slash-menu-item" data-command="codeBlock">
+        <div class="slash-icon"><i class="fas fa-code"></i></div>
+        <div class="slash-text">
+            <h4>Code</h4>
+            <p>Capture a code snippet.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Find the CKEditor instance 
+        let slashMenu = document.getElementById('slash-menu');
+        let menuItems = Array.from(document.querySelectorAll('.slash-menu-item'));
+        let selectedIndex = 0;
+        let isMenuOpen = false;
+        let ckeEditor = null;
+
+        let slashMarkerElement = null;
+
+        function updateMenuSelection() {
+            menuItems.forEach((item, index) => {
+                if (index === selectedIndex) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        function closeMenu() {
+            slashMenu.style.display = 'none';
+            isMenuOpen = false;
+            selectedIndex = 0;
+            updateMenuSelection();
+        }
+
+        function openMenu(x, y) {
+            slashMenu.style.display = 'flex';
+            slashMenu.style.left = `${x}px`;
+            slashMenu.style.top = `${y + 25}px`;
+            isMenuOpen = true;
+            selectedIndex = 0;
+            updateMenuSelection();
+        }
+
+        function executeCommand(commandName) {
+            if (!ckeEditor) return;
+
+            // Re-focus editor to execute command properly
+            ckeEditor.editing.view.focus();
+
+            // First, remove the '/' that triggered the menu. 
+            // In CKEditor 5 we delete the last character typed.
+            ckeEditor.model.change(writer => {
+                const position = ckeEditor.model.document.selection.getFirstPosition();
+                // Move 1 position back and range to current position
+                const startPos = position.getShiftedBy(-1);
+                // If taking 1 step back is valid...
+                if (startPos) {
+                    const range = writer.createRange(startPos, position);
+                    // Check if it's actually our slash
+                    const textNode = Array.from(range.getItems()).find(item => item.is('$text'));
+                    if (textNode && textNode.data === '/') {
+                        writer.remove(range);
+                    }
+                }
+            });
+
+            // Execute the selected native command
+            if (commandName === 'heading1') {
+                ckeEditor.execute('heading', { value: 'heading1' });
+            } else if (commandName === 'heading2') {
+                ckeEditor.execute('heading', { value: 'heading2' });
+            } else if (commandName === 'heading3') {
+                ckeEditor.execute('heading', { value: 'heading3' });
+            } else {
+                ckeEditor.execute(commandName);
+            }
+
+            closeMenu();
+        }
+
+        // Wait for CKEditor to initialize (since window.editors is populated asynchronously)
+        const checkEditorInterval = setInterval(() => {
+            if (window.editors && window.editors['id_content']) {
+                clearInterval(checkEditorInterval);
+                ckeEditor = window.editors['id_content'];
+
+                // Grab the actual contenteditable container in the DOM
+                const editableElement = ckeEditor.ui.view.editable.element;
+
+                // Listen for keydown (for navigation and preventing default behaviors)
+                editableElement.addEventListener('keydown', (e) => {
+                    if (isMenuOpen) {
+                        if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            selectedIndex = (selectedIndex + 1) % menuItems.length;
+                            updateMenuSelection();
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            selectedIndex = (selectedIndex - 1 + menuItems.length) % menuItems.length;
+                            updateMenuSelection();
+                        } else if (e.key === 'Enter') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const command = menuItems[selectedIndex].getAttribute('data-command');
+                            executeCommand(command);
+                        } else if (e.key === 'Escape' || e.key === 'Backspace') {
+                            // Close menu on escape or if they hit backspace to delete the slash
+                            closeMenu();
+                        } else if (e.key === ' ') {
+                            // If they type a space after slash, they probably just want to type a slash.
+                            closeMenu();
+                        }
+                    }
+                });
+
+                // Listen for text input 
+                editableElement.addEventListener('keyup', (e) => {
+                    if (e.key === '/') {
+                        // Quick positioning hack: fetch window selection bounding rect
+                        const selection = window.getSelection();
+                        if (selection.rangeCount > 0) {
+                            const range = selection.getRangeAt(0).cloneRange();
+                            const rect = range.getBoundingClientRect();
+                            if (rect.x === 0 && rect.y === 0) {
+                                // Fallback positioning
+                                openMenu(e.clientX, e.clientY);
+                            } else {
+                                // Use rect relative to viewport, adjusted for scroll
+                                openMenu(rect.left + window.scrollX, rect.bottom + window.scrollY);
+                            }
+                        }
+                    }
+                });
+            }
+        }, 500);
+
+        // Click handlers for menu items
+        menuItems.forEach((item, index) => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const command = item.getAttribute('data-command');
+                executeCommand(command);
+            });
+            item.addEventListener('mouseenter', () => {
+                selectedIndex = index;
+                updateMenuSelection();
+            });
+        });
+
+        // Close menu if clicking outside
+        document.addEventListener('click', (e) => {
+            if (isMenuOpen && !slashMenu.contains(e.target) && !e.target.closest('.ck-editor')) {
+                closeMenu();
+            }
+        });
+    });
+</script>
+{% endblock %}

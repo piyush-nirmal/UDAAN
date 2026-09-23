@@ -1,0 +1,1066 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}News Clippings & Media Coverage - UDAAN Society{% endblock %}
+
+{% block meta_description %}
+Explore UDAAN Society's news clippings, media coverage, community campaigns,
+field audits, groundwater interventions, and social impact stories featured in newspapers.
+{% endblock %}
+
+{% block extra_css %}
+<style>
+
+    .nc-news-card:hover .nc-card-image {
+        transform: scale(1.06);
+    }
+
+    .nc-card-overlay {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .nc-zoom-icon {
+        opacity: 0;
+        transform: scale(0.8);
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .nc-news-card:hover .nc-card-overlay {
+        opacity: 1;
+    }
+
+    .nc-news-card:hover .nc-zoom-icon {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .nc-card-image {
+        transition:
+            transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Smooth scrollbar */
+    .nc-modal::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .nc-modal::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .nc-modal::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+    }
+
+    /* Prevent image selection */
+    .nc-card-image,
+    #modalImage {
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 640px) {
+        .nc-hero-title {
+            font-size: 2.5rem;
+        }
+
+        .nc-modal-content {
+            border-radius: 1.5rem;
+        }
+    }
+
+    /* Reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+
+        .nc-reveal,
+        .nc-news-card {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =====================================================
+     HERO SECTION
+====================================================== -->
+
+<section class="relative overflow-hidden bg-white border-b border-gray-100">
+
+    <!-- Decorative Background -->
+    <div class="absolute right-0 top-0 opacity-5 pointer-events-none nc-floating-decoration">
+
+        <svg
+            width="420"
+            height="420"
+            viewBox="0 0 240 360"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M-40,320 C40,280 80,180 60,80
+                C110,130 140,220 120,300
+                C150,230 200,160 260,140
+                C210,200 170,270 120,320"
+                fill="#0B6B3A"
+            />
+
+            <path
+                d="M-80,240 C0,200 40,120 20,40
+                C60,85 90,160 70,230"
+                fill="#0B6B3A"
+            />
+        </svg>
+
+    </div>
+
+
+    <!-- Hero Content -->
+
+    <div
+        class="
+            max-w-7xl
+            mx-auto
+            px-6
+            lg:px-8
+            py-16
+            md:py-20
+            relative
+            z-10
+        "
+    >
+
+        <div class="max-w-3xl">
+
+            <!-- Badge -->
+
+            <div
+                class="
+                    nc-hero-content
+                    nc-hero-badge
+                    inline-flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-full
+                    bg-[#EEF8F1]
+                    text-[#0B6B3A]
+                    text-xs
+                    font-bold
+                    tracking-widest
+                    uppercase
+                    shadow-sm
+                "
+            >
+
+                <i class="fa-solid fa-newspaper"></i>
+
+                <span>
+                    Media Hub
+                </span>
+
+            </div>
+
+
+            <!-- Title -->
+
+            <h1
+                class="
+                    nc-hero-content
+                    nc-hero-title
+                    mt-6
+                    text-4xl
+                    sm:text-5xl
+                    lg:text-6xl
+                    font-extrabold
+                    text-gray-900
+                    tracking-tight
+                    leading-tight
+                "
+            >
+                News Clippings
+            </h1>
+
+
+            <!-- Description -->
+
+            <p
+                class="
+                    nc-hero-content
+                    nc-hero-description
+                    mt-5
+                    text-lg
+                    md:text-xl
+                    text-gray-500
+                    leading-relaxed
+                    max-w-2xl
+                "
+            >
+                A curated collection of UDAAN Society's campaigns,
+                field audits, and milestones featured in leading
+                national newspapers.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BREADCRUMB
+====================================================== -->
+
+<div class="bg-gray-50 border-b border-gray-100">
+
+    <div
+        class="
+            max-w-7xl
+            mx-auto
+            px-6
+            lg:px-8
+            py-4
+            flex
+            items-center
+            gap-3
+            text-sm
+            font-medium
+        "
+    >
+
+        <a
+            href="{% url 'home' %}"
+            class="
+                text-gray-400
+                hover:text-[#0B6B3A]
+                transition-colors
+                duration-300
+            "
+        >
+            Home
+        </a>
+
+        <span class="text-gray-300">
+            /
+        </span>
+
+        <span class="text-[#0B6B3A]">
+            News Clippings
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main
+    class="
+        max-w-7xl
+        mx-auto
+        px-6
+        lg:px-8
+        py-14
+        md:py-20
+    "
+>
+
+
+    <!-- Section Heading -->
+
+    <div class="nc-reveal max-w-3xl mb-12">
+
+        <div class="flex items-center gap-3 mb-4">
+
+            <span class="w-10 h-[2px] bg-[#0B6B3A]"></span>
+
+            <span
+                class="
+                    text-[#0B6B3A]
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-widest
+                "
+            >
+                Media Coverage
+            </span>
+
+        </div>
+
+
+        <h2
+            class="
+                text-3xl
+                md:text-4xl
+                font-extrabold
+                text-gray-900
+                tracking-tight
+            "
+        >
+            UDAAN in the Headlines
+        </h2>
+
+
+        <p
+            class="
+                mt-4
+                text-gray-500
+                text-base
+                md:text-lg
+                leading-relaxed
+                max-w-2xl
+            "
+        >
+            Glimpses of community updates, groundwater interventions,
+            and leadership statements covered in national newspapers.
+        </p>
+
+    </div>
+
+
+    <!-- =================================================
+         NEWS GRID
+    ================================================== -->
+
+    <div
+        id="news-grid"
+        class="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-7
+            lg:gap-8
+        "
+    >
+
+        {% for clipping in clippings %}
+
+        <!-- News Card -->
+
+        <article
+            class="
+                nc-news-card
+                group
+                bg-white
+                rounded-2xl
+                overflow-hidden
+                border
+                border-gray-100
+                shadow-sm
+                hover:shadow-xl
+                hover:-translate-y-2
+                transition-all
+                duration-500
+                cursor-zoom-in
+                flex
+                flex-col
+            "
+            style="--card-delay: {{ forloop.counter0|add:'0' }}00ms;"
+            onclick="
+                openClippingModal(
+                    '{{ clipping.image.url|escapejs }}',
+                    '{{ clipping.title|escapejs }}',
+                    '{{ clipping.summary|escapejs }}',
+                    '{{ clipping.newspaper|escapejs }}',
+                    '{{ clipping.date_display|escapejs }}'
+                )
+            "
+        >
+
+
+            <!-- Image -->
+
+            <div
+                class="
+                    relative
+                    h-56
+                    overflow-hidden
+                    bg-gray-100
+                "
+            >
+
+                <img
+                    src="{{ clipping.image.url }}"
+                    alt="{{ clipping.title }}"
+                    loading="lazy"
+                    class="
+                        nc-card-image
+                        w-full
+                        h-full
+                        object-cover
+                    "
+                >
+
+
+                <!-- Overlay -->
+
+                <div
+                    class="
+                        nc-card-overlay
+                        absolute
+                        inset-0
+                        bg-black/10
+                        flex
+                        items-center
+                        justify-center
+                    "
+                >
+
+                    <div
+                        class="
+                            nc-zoom-icon
+                            w-12
+                            h-12
+                            rounded-full
+                            bg-white/95
+                            backdrop-blur
+                            shadow-lg
+                            text-[#0B6B3A]
+                            flex
+                            items-center
+                            justify-center
+                        "
+                    >
+
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Card Content -->
+
+            <div
+                class="
+                    p-6
+                    flex
+                    flex-col
+                    flex-1
+                "
+            >
+
+                <!-- Newspaper -->
+
+                <span
+                    class="
+                        text-[#0B6B3A]
+                        text-[11px]
+                        font-bold
+                        uppercase
+                        tracking-[0.18em]
+                    "
+                >
+                    {{ clipping.newspaper }}
+                </span>
+
+
+                <!-- Title -->
+
+                <h3
+                    class="
+                        mt-3
+                        text-lg
+                        font-bold
+                        text-gray-900
+                        leading-snug
+                        line-clamp-2
+                        group-hover:text-[#0B6B3A]
+                        transition-colors
+                        duration-300
+                    "
+                >
+                    {{ clipping.title }}
+                </h3>
+
+
+                <!-- Summary -->
+
+                {% if clipping.summary %}
+
+                <p
+                    class="
+                        mt-3
+                        text-sm
+                        text-gray-500
+                        leading-relaxed
+                        line-clamp-3
+                    "
+                >
+                    {{ clipping.summary }}
+                </p>
+
+                {% endif %}
+
+
+                <!-- Bottom Meta -->
+
+                <div
+                    class="
+                        mt-auto
+                        pt-5
+                        mt-5
+                        border-t
+                        border-gray-100
+                        flex
+                        items-center
+                        justify-between
+                    "
+                >
+
+                    <span
+                        class="
+                            text-xs
+                            text-gray-400
+                            font-medium
+                        "
+                    >
+
+                        <i class="fa-regular fa-calendar mr-1"></i>
+
+                        {{ clipping.date_display }}
+
+                    </span>
+
+
+                    <span
+                        class="
+                            text-xs
+                            font-bold
+                            text-[#0B6B3A]
+                            opacity-0
+                            group-hover:opacity-100
+                            translate-x-2
+                            group-hover:translate-x-0
+                            transition-all
+                            duration-300
+                        "
+                    >
+                        View
+                        <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        {% empty %}
+
+        <!-- Empty State -->
+
+        <div
+            class="
+                nc-reveal
+                col-span-full
+                flex
+                flex-col
+                items-center
+                justify-center
+                py-24
+                px-6
+                text-center
+                bg-white
+                rounded-2xl
+                border
+                border-gray-100
+                shadow-sm
+            "
+        >
+
+            <div
+                class="
+                    w-20
+                    h-20
+                    rounded-full
+                    bg-gray-50
+                    flex
+                    items-center
+                    justify-center
+                    text-gray-300
+                    text-3xl
+                    mb-6
+                "
+            >
+                <i class="fa-regular fa-newspaper"></i>
+            </div>
+
+
+            <h3
+                class="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                "
+            >
+                No News Clippings Found
+            </h3>
+
+
+            <p
+                class="
+                    mt-2
+                    text-sm
+                    text-gray-500
+                    max-w-md
+                "
+            >
+                Check back later for updates on UDAAN Society's
+                media coverage and community initiatives.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     CLIPPING DETAIL MODAL
+====================================================== -->
+
+<div
+    id="nc-modal"
+    class="
+        nc-modal
+        fixed
+        inset-0
+        bg-gray-950/90
+        backdrop-blur-md
+        z-[100]
+        hidden
+        items-center
+        justify-center
+        p-4
+        sm:p-6
+        overflow-y-auto
+    "
+    onclick="closeClippingModal(false, event)"
+>
+
+
+    <!-- Modal Content -->
+
+    <div
+        class="
+            nc-modal-content
+            bg-white
+            rounded-2xl
+            sm:rounded-3xl
+            max-w-3xl
+            w-full
+            shadow-2xl
+            relative
+            overflow-hidden
+            border
+            border-gray-100
+        "
+        onclick="event.stopPropagation()"
+    >
+
+
+        <!-- Close Button -->
+
+        <button
+            type="button"
+            class="
+                absolute
+                top-4
+                right-4
+                z-20
+                w-10
+                h-10
+                rounded-full
+                bg-white/95
+                hover:bg-gray-100
+                text-gray-600
+                shadow-md
+                flex
+                items-center
+                justify-center
+                text-xl
+                transition-all
+                duration-300
+                hover:rotate-90
+            "
+            onclick="closeClippingModal(true)"
+            aria-label="Close modal"
+        >
+            &times;
+        </button>
+
+
+        <!-- Modal Image -->
+
+        <div
+            class="
+                w-full
+                bg-gray-100
+                max-h-[60vh]
+                overflow-hidden
+            "
+        >
+
+            <img
+                id="modalImage"
+                src=""
+                alt="News Clipping"
+                class="
+                    w-full
+                    max-h-[60vh]
+                    object-contain
+                    mx-auto
+                "
+            >
+
+        </div>
+
+
+        <!-- Modal Caption -->
+
+        <div
+            id="modalCaption"
+            class="
+                p-6
+                sm:p-8
+            "
+        >
+            <!-- Content inserted using JavaScript -->
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /*
+    ==========================================
+    SCROLL REVEAL ANIMATION
+    ==========================================
+    */
+
+    const revealElements = document.querySelectorAll(
+        ".nc-reveal, .nc-news-card"
+    );
+
+
+    const revealObserver = new IntersectionObserver(
+
+        (entries) => {
+
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("is-visible");
+
+                    revealObserver.unobserve(entry.target);
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12,
+            rootMargin: "0px 0px -50px 0px"
+        }
+
+    );
+
+
+    revealElements.forEach((element) => {
+
+        revealObserver.observe(element);
+
+    });
+
+});
+
+
+/*
+==========================================
+OPEN MODAL
+==========================================
+*/
+
+function openClippingModal(
+    imgUrl,
+    title,
+    summary,
+    newspaper,
+    date
+) {
+
+    const modal =
+        document.getElementById("nc-modal");
+
+    const modalImg =
+        document.getElementById("modalImage");
+
+    const modalCaption =
+        document.getElementById("modalCaption");
+
+
+    if (
+        !modal ||
+        !modalImg ||
+        !modalCaption
+    ) {
+        return;
+    }
+
+
+    /*
+    Remove closing animation
+    */
+
+    modal.classList.remove("closing");
+
+
+    /*
+    Show modal
+    */
+
+    modal.classList.remove("hidden");
+
+    modal.classList.add("flex");
+
+
+    /*
+    Set image
+    */
+
+    modalImg.src = imgUrl;
+
+    modalImg.alt = title;
+
+
+    /*
+    Set content
+    */
+
+    modalCaption.innerHTML = `
+
+        <div
+            class="
+                flex
+                flex-col
+                sm:flex-row
+                sm:items-center
+                sm:justify-between
+                gap-3
+                pb-4
+                border-b
+                border-gray-100
+            "
+        >
+
+            <span
+                class="
+                    text-[#0B6B3A]
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-widest
+                "
+            >
+                <i class="fa-regular fa-newspaper mr-1"></i>
+
+                ${newspaper}
+            </span>
+
+
+            <span
+                class="
+                    text-xs
+                    text-gray-400
+                    font-medium
+                "
+            >
+                <i class="fa-regular fa-calendar mr-1"></i>
+
+                ${date}
+            </span>
+
+        </div>
+
+
+        <h3
+            class="
+                mt-5
+                text-2xl
+                sm:text-3xl
+                font-extrabold
+                text-gray-900
+                leading-tight
+            "
+        >
+            ${title}
+        </h3>
+
+
+        ${
+            summary
+                ? `
+                    <p
+                        class="
+                            mt-4
+                            text-sm
+                            sm:text-base
+                            text-gray-600
+                            leading-relaxed
+                        "
+                    >
+                        ${summary}
+                    </p>
+                  `
+                : ""
+        }
+
+    `;
+
+
+    /*
+    Lock body scroll
+    */
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+/*
+==========================================
+CLOSE MODAL
+==========================================
+*/
+
+function closeClippingModal(
+    force = false,
+    clickEvent = null
+) {
+
+    const modal =
+        document.getElementById("nc-modal");
+
+
+    if (!modal) {
+        return;
+    }
+
+
+    /*
+    Close only when:
+    1. Close button clicked
+    2. Background clicked
+    */
+
+    if (
+        !force &&
+        (
+            !clickEvent ||
+            clickEvent.target !== modal
+        )
+    ) {
+        return;
+    }
+
+
+    /*
+    Add closing animation
+    */
+
+    modal.classList.add("closing");
+
+
+    /*
+    Wait for animation
+    */
+
+    setTimeout(() => {
+
+        modal.classList.remove("flex");
+
+        modal.classList.add("hidden");
+
+        modal.classList.remove("closing");
+
+        document.body.style.overflow = "";
+
+    }, 200);
+
+}
+
+
+/*
+==========================================
+ESCAPE KEY
+==========================================
+*/
+
+window.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (event.key === "Escape") {
+
+            const modal =
+                document.getElementById("nc-modal");
+
+
+            if (
+                modal &&
+                !modal.classList.contains("hidden")
+            ) {
+
+                closeClippingModal(true);
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

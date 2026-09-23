@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>UDAAN Tasks Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 22px;
+            color: #1D3557;
+            border-bottom: 3px solid #E63946;
+            padding-bottom: 10px;
+        }
+
+        .meta {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #1D3557;
+            color: white;
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .critical {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .high {
+            background: #fef3e2;
+            color: #e67e22;
+        }
+
+        .medium {
+            background: #e8f0fe;
+            color: #2980b9;
+        }
+
+        .low {
+            background: #f0f0f0;
+            color: #888;
+        }
+
+        .done {
+            color: #27ae60;
+        }
+
+        .in-progress {
+            color: #e67e22;
+        }
+
+        .to-do {
+            color: #c0392b;
+        }
+
+        .overdue {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 11px;
+            color: #aaa;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📋 UDAAN Society — Tasks Report</h1>
+    <div class="meta">
+        Generated on {{ today|date:"F d, Y" }} by {{ generated_by.get_full_name|default:generated_by.username }}
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Assigned To</th>
+                <th>Project</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><strong>{{ task.title }}</strong></td>
+                <td>
+                    <span
+                        class="{% if task.status == 'Done' %}done{% elif task.status == 'In Progress' %}in-progress{% else %}to-do{% endif %}">
+                        {{ task.status }}
+                    </span>
+                </td>
+                <td>
+                    <span
+                        class="badge {% if task.priority == 'Critical' %}critical{% elif task.priority == 'High' %}high{% elif task.priority == 'Medium' %}medium{% else %}low{% endif %}">
+                        {{ task.priority }}
+                    </span>
+                </td>
+                <td>{{ task.assigned_to.get_full_name|default:task.assigned_to.username|default:"Unassigned" }}</td>
+                <td>{{ task.project.title|default:"General" }}</td>
+                <td class="{% if task.is_overdue %}overdue{% endif %}">
+                    {{ task.due_date|date:"M d, Y"|default:"—" }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="footer">
+        UDAAN Society Portal — Confidential Report | Total Tasks: {{ tasks|length }}
+    </div>
+
+</body>
+
+</html>

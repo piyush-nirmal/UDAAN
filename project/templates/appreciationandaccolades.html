@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Appreciation & Accolades - Honors - UDAAN Society{% endblock %}
+
+{% block meta_description %}Discover the awards and accolades received by UDAAN Society NGO, including the Governor Award, Commissioner Award, and recognitions for TB eradication and blood donation.{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Honors</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase font-heading">Appreciation & Accolades</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Celebrating the milestones, citations, and official recognitions that inspire us to expand our social impacts.
+    </p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">Appreciation & Accolades</span>
+  </div>
+</div>
+
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-24">
+  
+  <!-- Intro Context -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <!-- Left: Image -->
+    <div class="lg:col-span-5 relative">
+      <div class="absolute -top-4 -left-4 w-24 h-24 bg-accent-light rounded-2xl -z-10 opacity-70"></div>
+      <img src="https://udaansociety.org/wp-content/uploads/2024/01/Governor-Award.jpeg" 
+        alt="Governor Award Presentation" class="rounded-3xl shadow-premium w-full object-cover max-h-[380px] border border-gray-100 bg-gray-50">
+    </div>
+
+    <!-- Right: Text -->
+    <div class="lg:col-span-7 space-y-6">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs block">Recognized Excellence</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">UDAAN Society's Journey of Honors</h2>
+      <p class="text-gray-600 leading-relaxed text-sm">
+        UDAAN Society takes deep pride in its journey of community empowerment and resource mobilization, marked by prestigious regional and state awards. Our dedication has been honored by leading state ministers, IAS officials, municipal organizations, and medical institutions.
+      </p>
+      <p class="text-gray-600 leading-relaxed text-sm">
+        These achievements serve as direct validation of our fieldwork and inspire our team of coordinators and volunteers to continue pushing barriers.
+      </p>
+      <div class="pt-4">
+        <a href="{% url 'our_partners' %}" class="btn-primary rounded-full px-8 py-3 text-sm font-bold shadow-soft">Explore Our Partnerships</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Awards Section -->
+  <div class="space-y-16">
+    <div class="text-center max-w-2xl mx-auto space-y-4">
+      <span class="text-secondary font-bold uppercase tracking-wider text-xs">Milestones</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">Distinguished Citations & Awards</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Award 1 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Governor-Award.jpeg" alt="Governor Award" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Governor Award</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Honored by the Honorable Governor of Uttar Pradesh for outstanding contributions and fieldwork in TB Eradication.
+          </p>
+        </div>
+      </article>
+
+      <!-- Award 2 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Commissioner-Award.jpg" alt="Commissioner Award" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Commissioner Award</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Exemplary service award presented by the then Divisional Commissioner Shri G.S. Priyadarshi (IAS) in Aligarh.
+          </p>
+        </div>
+      </article>
+
+      <!-- Award 3 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Pantagon-Award.jpg" alt="Pentagon Award" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Pentagon Award</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Presented at Aligarh Muslim University (AMU) by the Dr. Zakir Husain Foundation for local welfare execution.
+          </p>
+        </div>
+      </article>
+
+      <!-- Award 4 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Swami-Vievakanad-Samman.png.webp" alt="Swami Vivekananda Samman" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Swami Vivekananda Samman</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Awarded the prestigious Swami Vivekananda Smriti Samman in 2021 for consistent youth community outreach programs.
+          </p>
+        </div>
+      </article>
+
+      <!-- Award 5 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Nagar-Nigam-Award.jpg" alt="Nagar Nigam Award" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Nagar Nigam Award</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Presented by the Municipal Commissioner, Aligarh for outstanding community contribution in the Swachh Bharat Mission.
+          </p>
+        </div>
+      </article>
+
+      <!-- Award 6 -->
+      <article class="card-premium flex flex-col justify-between h-full hover-lift">
+        <div class="h-52 overflow-hidden bg-gray-100">
+          <img src="https://udaansociety.org/wp-content/uploads/2024/01/Award-for-Blood-Donation.jpg" alt="Award for Blood Donation" class="w-full h-full object-cover">
+        </div>
+        <div class="p-6 space-y-2 text-center">
+          <h3 class="text-lg font-bold text-neutral-dark font-heading">Award for Blood Donation</h3>
+          <p class="text-xs text-gray-500 leading-relaxed">
+            Exceptional Contribution citation in public health campaigns and local emergency blood donation camps.
+          </p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

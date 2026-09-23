@@ -1,0 +1,837 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Job Openings - Careers at UDAAN Society
+{% endblock %}
+
+{% block meta_description %}
+View active job openings and work on impactful NGO projects at UDAAN Society. Browse details, roles, salaries, and apply via email.
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .job-card.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .job-card:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      0 25px 50px rgba(0, 0, 0, 0.1),
+      0 10px 20px rgba(0, 0, 0, 0.05);
+    border-color: rgba(220, 38, 38, 0.15);
+  }
+
+  .job-card-image {
+    transition:
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.5s ease;
+  }
+
+  .job-card:hover .job-card-image {
+    transform: scale(1.07);
+  }
+
+  .job-card-content {
+    transition: transform 0.35s ease;
+  }
+
+  .job-card:hover .job-card-content {
+    transform: translateY(-2px);
+  }
+
+  /* =====================================================
+     JOB CARD ARROW
+  ====================================================== */
+
+  .job-details-arrow {
+    transition:
+      transform 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .job-card:hover .job-details-arrow {
+    transform: translateX(5px);
+  }
+
+  
+
+  /* =====================================================
+     MODAL ANIMATION
+  ====================================================== */
+
+  .job-modal {
+    transition:
+      opacity 0.35s ease,
+      visibility 0.35s ease;
+  }
+
+  .job-modal.modal-open .job-modal-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  /* =====================================================
+     MODAL IMAGE
+  ====================================================== */
+
+  .job-modal-image {
+    transition: transform 0.7s ease;
+  }
+
+  .job-modal-card:hover .job-modal-image {
+    transform: scale(1.02);
+  }
+
+  /* =====================================================
+     BUTTON ANIMATION
+  ====================================================== */
+
+  .smooth-button {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .smooth-button:hover {
+    transform: translateY(-2px);
+  }
+
+  .smooth-button:active {
+    transform: translateY(0);
+  }
+
+  /* =====================================================
+     TAG ANIMATION
+  ====================================================== */
+
+  .job-tag {
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .job-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  /* =====================================================
+     MODAL CLOSE BUTTON
+  ====================================================== */
+
+  .modal-close-btn {
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .modal-close-btn:hover {
+    transform: rotate(90deg);
+  }
+
+  /* =====================================================
+     CONTACT BOX
+  ====================================================== */
+
+  .contact-box {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .contact-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  /* =====================================================
+     REDUCED MOTION ACCESSIBILITY
+  ====================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+
+{% endblock %} {% block content %}
+
+<!-- =====================================================
+     HERO BANNER
+====================================================== -->
+
+<section class="subpage-hero">
+  <div
+    class="max-w-4xl mx-auto px-6 relative z-10 space-y-4 text-center jobs-hero-content"
+  >
+    <span
+      class="hero-badge inline-block bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm"
+    >
+      Recruitment
+    </span>
+
+    <h1
+      class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase"
+    >
+      Job Openings
+    </h1>
+
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Explore open professional opportunities to build a better future with
+      UDAAN Society.
+    </p>
+  </div>
+</section>
+
+<!-- =====================================================
+     BREADCRUMB
+====================================================== -->
+
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div
+    class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2 jobs-breadcrumb"
+  >
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">
+      Home
+    </a>
+
+    <span>»</span>
+
+    <a
+      href="{% url 'career_fellowship' %}"
+      class="hover:text-primary transition-colors"
+    >
+      Careers & Fellowships
+    </a>
+
+    <span>»</span>
+
+    <span class="text-gray-400"> Jobs </span>
+  </div>
+</div>
+
+<!-- =====================================================
+     MAIN BODY
+====================================================== -->
+
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+  <!-- =====================================================
+       JOB CARDS
+  ====================================================== -->
+
+  {% if job_postings %}
+
+  <div
+    id="job-grid"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+  >
+    {% for job in job_postings %}
+
+    <!-- JOB CARD -->
+
+    <div
+      class="job-card card-premium flex flex-col justify-between h-full cursor-pointer overflow-hidden"
+      onclick="openJobModal({{ job.pk }})"
+      tabindex="0"
+      role="button"
+      aria-label="View details for {{ job.title }}"
+      onkeydown="if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openJobModal({{ job.pk }}); }"
+    >
+      <div>
+        <!-- Job Image -->
+
+        {% if job.image %}
+
+        <div class="h-48 overflow-hidden bg-gray-100">
+          <img
+            src="{{ job.image.url }}"
+            alt="{{ job.title }}"
+            loading="lazy"
+            class="job-card-image w-full h-full object-cover"
+          />
+        </div>
+
+        {% else %}
+
+        <div
+          class="h-48 bg-primary-light flex items-center justify-center text-primary text-4xl"
+        >
+          <i class="fas fa-briefcase"></i>
+        </div>
+
+        {% endif %}
+
+        <!-- Card Content -->
+
+        <div class="job-card-content p-6 space-y-4">
+          <h3 class="text-lg font-bold text-neutral-dark leading-snug">
+            {{ job.title }}
+          </h3>
+
+          <!-- Tags -->
+
+          <div class="flex flex-wrap gap-2 text-xs font-semibold">
+            <span
+              class="job-tag bg-secondary-light text-secondary px-3 py-1 rounded-full"
+            >
+              {{ job.get_job_type_display }}
+            </span>
+
+            {% if job.location %}
+
+            <span
+              class="job-tag bg-accent-light text-accent-dark px-3 py-1 rounded-full"
+            >
+              📍 {{ job.location }}
+            </span>
+
+            {% endif %} {% if job.salary %}
+
+            <span
+              class="job-tag bg-primary-light text-primary px-3 py-1 rounded-full"
+            >
+              💰 {{ job.salary }}
+            </span>
+
+            {% endif %}
+          </div>
+
+          <!-- Description -->
+
+          <p class="text-gray-500 text-xs leading-relaxed line-clamp-3">
+            {{ job.description }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Card Footer -->
+
+      <div>
+        <hr class="border-gray-100 mx-6" />
+
+        <div
+          class="p-6 flex items-center justify-between text-xs font-semibold"
+        >
+          {% if job.application_deadline %}
+
+          <span class="text-gray-400">
+            📅 Apply by {{ job.application_deadline|date:"M d, Y" }}
+          </span>
+
+          {% else %}
+
+          <span class="text-gray-400"> 📅 Open until filled </span>
+
+          {% endif %}
+
+          <span class="job-details-arrow text-primary flex items-center gap-1">
+            Details
+
+            <i class="fas fa-arrow-right text-[10px]"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+  {% else %}
+
+  <!-- =====================================================
+       EMPTY STATE
+  ====================================================== -->
+
+  <div class="text-center py-20 max-w-md mx-auto space-y-4 scroll-reveal">
+    <div class="text-6xl text-gray-300 empty-job-state">💼</div>
+
+    <h3 class="text-xl font-bold text-neutral-dark font-heading">
+      No Open Positions Right Now
+    </h3>
+
+    <p class="text-sm text-gray-500">
+      Please check back later or subscribe to our newsletter for notification on
+      upcoming job openings at UDAAN Society.
+    </p>
+  </div>
+
+  {% endif %}
+</div>
+
+<!-- =====================================================
+     JOB DETAIL MODALS
+====================================================== -->
+
+{% for job in job_postings %}
+
+<div
+  class="job-modal fixed inset-0 bg-black/60 z-[100] flex items-start justify-center hidden opacity-0 transition-opacity duration-300 overflow-y-auto py-12"
+  id="job-modal-{{ job.pk }}"
+  onclick="closeJobModal({{ job.pk }}, false, event)"
+>
+  <div
+    class="job-modal-card bg-white rounded-3xl max-w-2xl w-full mx-4 shadow-premium relative overflow-hidden"
+    onclick="event.stopPropagation()"
+  >
+    <!-- Close Button -->
+
+    <button
+      class="modal-close-btn absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/90 hover:bg-gray-100 text-neutral-dark font-bold flex items-center justify-center text-xl cursor-pointer shadow-md"
+      onclick="closeJobModal({{ job.pk }}, true, event)"
+      aria-label="Close job details"
+    >
+      &times;
+    </button>
+
+    <!-- Modal Image -->
+
+    {% if job.image %}
+
+    <div class="w-full h-56 overflow-hidden">
+      <img
+        src="{{ job.image.url }}"
+        alt="{{ job.title }}"
+        class="job-modal-image w-full h-full object-cover"
+      />
+    </div>
+
+    {% else %}
+
+    <div
+      class="w-full h-56 bg-primary-light flex items-center justify-center text-primary text-5xl"
+    >
+      <i class="fas fa-briefcase"></i>
+    </div>
+
+    {% endif %}
+
+    <!-- Modal Content -->
+
+    <div class="p-8 space-y-6">
+      <!-- Title -->
+
+      <div>
+        <h2
+          class="text-2xl font-bold text-neutral-dark font-heading leading-snug"
+        >
+          {{ job.title }}
+        </h2>
+
+        <!-- Tags -->
+
+        <div class="flex flex-wrap gap-2 text-xs font-semibold mt-3">
+          <span
+            class="job-tag bg-secondary-light text-secondary px-3 py-1 rounded-full"
+          >
+            {{ job.get_job_type_display }}
+          </span>
+
+          {% if job.location %}
+
+          <span
+            class="job-tag bg-accent-light text-accent-dark px-3 py-1 rounded-full"
+          >
+            📍 {{ job.location }}
+          </span>
+
+          {% endif %} {% if job.salary %}
+
+          <span
+            class="job-tag bg-primary-light text-primary px-3 py-1 rounded-full"
+          >
+            💰 {{ job.salary }}
+          </span>
+
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- About Role -->
+
+      <div class="space-y-2 text-sm text-gray-600 leading-relaxed">
+        <h4
+          class="text-xs font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-1.5 inline-block"
+        >
+          About the Role
+        </h4>
+
+        <p>{{ job.description|linebreaksbr }}</p>
+      </div>
+
+      <!-- Responsibilities -->
+
+      {% if job.responsibilities %}
+
+      <div class="space-y-2 text-sm text-gray-600 leading-relaxed">
+        <h4
+          class="text-xs font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-1.5 inline-block"
+        >
+          Key Responsibilities
+        </h4>
+
+        <ul class="list-disc list-inside space-y-1 pl-2">
+          {% for line in job.responsibilities.splitlines %} {% if line.strip %}
+
+          <li>{{ line }}</li>
+
+          {% endif %} {% endfor %}
+        </ul>
+      </div>
+
+      {% endif %}
+
+      <!-- Desired Profile -->
+
+      {% if job.desired_profile %}
+
+      <div class="space-y-2 text-sm text-gray-600 leading-relaxed">
+        <h4
+          class="text-xs font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-1.5 inline-block"
+        >
+          Desired Profile
+        </h4>
+
+        <ul class="list-disc list-inside space-y-1 pl-2">
+          {% for line in job.desired_profile.splitlines %} {% if line.strip %}
+
+          <li>{{ line }}</li>
+
+          {% endif %} {% endfor %}
+        </ul>
+      </div>
+
+      {% endif %}
+
+      <!-- Project Duration -->
+
+      {% if job.project_duration %}
+
+      <div class="space-y-1 text-sm text-gray-600">
+        <h4
+          class="text-xs font-bold text-neutral-dark uppercase tracking-wider border-b border-gray-100 pb-1.5 inline-block"
+        >
+          Project Duration
+        </h4>
+
+        <p class="font-medium mt-1">{{ job.project_duration }}</p>
+      </div>
+
+      {% endif %}
+
+      <!-- Contact Information -->
+
+      <div
+        class="contact-box space-y-3 bg-neutral-light rounded-2xl p-6 border border-gray-100/50"
+      >
+        <h4
+          class="text-xs font-bold text-neutral-dark uppercase tracking-wider"
+        >
+          Contact Information
+        </h4>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          {% if job.contact_person %}
+
+          <div>
+            <span
+              class="text-gray-400 block uppercase font-bold tracking-wider mb-1"
+            >
+              Contact Person
+            </span>
+
+            <span class="font-bold text-neutral-dark">
+              {{ job.contact_person }}
+            </span>
+          </div>
+
+          {% endif %}
+
+          <div>
+            <span
+              class="text-gray-400 block uppercase font-bold tracking-wider mb-1"
+            >
+              Email Application
+            </span>
+
+            <a
+              href="mailto:{{ job.contact_email }}"
+              class="font-bold text-primary hover:text-primary-dark underline"
+            >
+              {{ job.contact_email }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+
+      <div class="flex gap-4 pt-4 border-t border-gray-100">
+        <a
+          href="mailto:{{ job.contact_email }}?subject=Application for {{ job.title }}"
+          class="smooth-button w-2/3 btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft flex items-center"
+        >
+          <i class="fas fa-paper-plane mr-2"></i>
+
+          Apply via Email
+        </a>
+
+        <button
+          class="smooth-button w-1/3 border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold rounded-xl py-3.5 text-sm transition-all flex items-center justify-center gap-2"
+          onclick="shareJob('{{ job.title|escapejs }}', {{ job.pk }})"
+        >
+          <i class="fas fa-share-alt"></i>
+
+          Share
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    /* =====================================================
+     SCROLL REVEAL
+  ====================================================== */
+
+    const revealElements = document.querySelectorAll(
+      ".scroll-reveal, .job-card",
+    );
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        function (entries, observer) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("revealed");
+
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.12,
+          rootMargin: "0px 0px -60px 0px",
+        },
+      );
+
+      revealElements.forEach(function (element, index) {
+        /* Stagger only job cards */
+
+        if (element.classList.contains("job-card")) {
+          element.style.transitionDelay = index * 0.08 + "s";
+        }
+
+        observer.observe(element);
+      });
+    } else {
+      /* Fallback for older browsers */
+
+      revealElements.forEach(function (element) {
+        element.classList.add("revealed");
+      });
+    }
+
+    /* =====================================================
+     ESC KEY CLOSE MODAL
+  ====================================================== */
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        const openModal = document.querySelector(".job-modal.modal-open");
+
+        if (openModal) {
+          const id = openModal.id.replace("job-modal-", "");
+
+          closeJobModal(id, true, event);
+        }
+      }
+    });
+  });
+
+  /* =====================================================
+   OPEN JOB MODAL
+====================================================== */
+
+  function openJobModal(id) {
+    const modal = document.getElementById("job-modal-" + id);
+
+    if (!modal) return;
+
+    /* Remove hidden */
+
+    modal.classList.remove("hidden");
+
+    modal.classList.add("flex");
+
+    /* Force browser reflow */
+
+    void modal.offsetWidth;
+
+    /* Open animation */
+
+    modal.classList.remove("opacity-0");
+
+    modal.classList.add("opacity-100", "modal-open");
+
+    /* Lock background scrolling */
+
+    document.body.style.overflow = "hidden";
+  }
+
+  /* =====================================================
+   CLOSE JOB MODAL
+====================================================== */
+
+  function closeJobModal(id, force = false, event = null) {
+    const modal = document.getElementById("job-modal-" + id);
+
+    if (!modal) return;
+
+    /* Only close when clicking overlay */
+
+    if (!force && event && event.target !== modal) {
+      return;
+    }
+
+    /* Close animation */
+
+    modal.classList.remove("opacity-100", "modal-open");
+
+    modal.classList.add("opacity-0");
+
+    /* Wait for animation */
+
+    setTimeout(function () {
+      modal.classList.remove("flex");
+
+      modal.classList.add("hidden");
+
+      document.body.style.overflow = "";
+    }, 350);
+  }
+
+  /* =====================================================
+   SHARE JOB
+====================================================== */
+
+  function shareJob(title, id) {
+    const url =
+      window.location.origin + window.location.pathname + "#job-" + id;
+
+    /* Native Share */
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: title + " - UDAAN Society",
+
+          text: "Check out this job opening at UDAAN Society.",
+
+          url: url,
+        })
+        .catch(function (error) {
+          console.log("Share cancelled:", error);
+        });
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+
+    /* Clipboard fallback */
+      navigator.clipboard
+        .writeText(url)
+        .then(function () {
+          showShareNotification("Job link copied to clipboard!");
+        })
+        .catch(function () {
+          fallbackCopy(url);
+        });
+    } else {
+      fallbackCopy(url);
+    }
+  }
+
+  /* =====================================================
+   FALLBACK COPY
+====================================================== */
+
+  function fallbackCopy(url) {
+    const textArea = document.createElement("textarea");
+
+    textArea.value = url;
+
+    textArea.style.position = "fixed";
+
+    textArea.style.opacity = "0";
+
+    document.body.appendChild(textArea);
+
+    textArea.focus();
+
+    textArea.select();
+
+    try {
+      document.execCommand("copy");
+
+      showShareNotification("Job link copied to clipboard!");
+    } catch (error) {
+      alert("Unable to copy link. Please copy it manually.");
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  /* =====================================================
+   SHARE NOTIFICATION
+====================================================== */
+
+  function showShareNotification(message) {
+    const notification = document.createElement("div");
+
+    notification.textContent = message;
+
+    notification.className =
+      "fixed bottom-6 left-1/2 -translate-x-1/2 z-[200] bg-gray-900 text-white px-5 py-3 rounded-xl shadow-xl text-sm font-semibold opacity-0 translate-y-4 transition-all duration-300";
+
+    document.body.appendChild(notification);
+
+    /* Trigger animation */
+
+    requestAnimationFrame(function () {
+      notification.classList.remove("opacity-0", "translate-y-4");
+    });
+
+    /* Remove notification */
+
+    setTimeout(function () {
+      notification.classList.add("opacity-0", "translate-y-4");
+
+      setTimeout(function () {
+        notification.remove();
+      }, 300);
+    }, 2200);
+  }
+</script>
+
+{% endblock %}

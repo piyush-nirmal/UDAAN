@@ -1,0 +1,41 @@
+{% if notes %}
+<div class="pl-2 pr-1 mt-0.5 space-y-0.5 border-l border-gray-100 ml-3 group-[.collapsed]/sidebar:hidden">
+    {% for note in notes %}
+    <div>
+        <div
+            class="flex items-center justify-between px-1.5 py-1 rounded-md text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer group/item">
+            {% if note.child_notes.exists %}
+            <button type="button"
+                class="text-gray-400 hover:text-gray-600 focus:outline-none w-5 h-5 flex items-center justify-center rounded-sm hover:bg-gray-200 transition-colors mr-1 shrink-0"
+                onclick="toggleTree('note-tree-{{ note.pk }}', this); event.preventDefault();">
+                <i class="fa-solid fa-caret-right text-xs transition-transform duration-200"
+                    id="icon-{{ note.pk }}"></i>
+            </button>
+            {% else %}
+            <!-- Spacer if no children to align titles -->
+            <div class="w-5 h-5 mr-1 shrink-0"></div>
+            {% endif %}
+
+            <a href="{% url 'shared_note_detail' note.pk %}" class="flex-1 truncate inline-flex items-center"
+                title="{{ note.title }}">
+                <i class="fa-regular fa-file-lines text-xs opacity-70 mr-2"></i>
+                <span class="truncate">{{ note.title }}</span>
+            </a>
+
+            <!-- Quick Add child page invisible until hover -->
+            <a href="{% url 'shared_note_create' %}?parent={{ note.pk }}"
+                class="opacity-0 group-hover/item:opacity-100 text-gray-400 hover:text-gray-600 transition-opacity p-1 rounded-sm hover:bg-gray-200 ml-1"
+                title="Add Page Inside">
+                <i class="fa-solid fa-plus text-[10px]"></i>
+            </a>
+        </div>
+
+        {% if note.child_notes.exists %}
+        <div id="note-tree-{{ note.pk }}" class="hidden">
+            {% include "blood_request/sidebar_note_tree.html" with notes=note.child_notes.all %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

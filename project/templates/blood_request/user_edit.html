@@ -1,0 +1,80 @@
+{% extends "portal_layout.html" %}
+
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Edit User: {{ target_user.username }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                <input type="text" name="first_name" value="{{ target_user.first_name }}"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+                <input type="text" name="last_name" value="{{ target_user.last_name }}"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+            <input type="email" name="email" value="{{ target_user.email }}"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+            <input type="text" name="phone" value="{{ target_user.profile.phone_number|default:'' }}"
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        {% if request.user.is_superuser %}
+        <div class="mb-8 pt-4 border-t border-gray-200">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Permissions & Roles</h3>
+            <p class="text-sm text-gray-500 mb-4">Warning: Granting Staff or Superuser status provides access to sensitive backend systems. Only Superusers can view this section.</p>
+            
+            <div class="space-y-3 mb-6">
+                <!-- Portal Access -->
+                <label class="flex items-center space-x-3">
+                    <input type="checkbox" name="is_staff" class="form-checkbox h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" {% if target_user.is_staff %}checked{% endif %}>
+                    <span class="text-gray-700 font-medium">Portal Access (Staff Status) - Required to log in to this portal</span>
+                </label>
+                
+                <!-- Superuser Access -->
+                <label class="flex items-center space-x-3">
+                    <input type="checkbox" name="is_superuser" class="form-checkbox h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500" {% if target_user.is_superuser %}checked{% endif %}>
+                    <span class="text-gray-700 font-medium">Full Admin (Superuser) - Unrestricted access to everything</span>
+                </label>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-3">User Groups (Select multiple)</label>
+                <div class="grid grid-cols-2 gap-3 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    {% for group in all_groups %}
+                    <label class="flex items-center space-x-3">
+                        <input type="checkbox" name="groups" value="{{ group.id }}" class="form-checkbox h-4 w-4 text-indigo-600 rounded border-gray-300" 
+                        {% if group in target_user.groups.all %}checked{% endif %}>
+                        <span class="text-gray-700">{{ group.name }}</span>
+                    </label>
+                    {% empty %}
+                    <p class="text-sm text-gray-500 italic">No groups defined in the system yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="flex justify-end space-x-4">
+            <a href="{% url 'user_list' %}" class="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</a>
+            <button type="submit"
+                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 shadow-md transition">
+                Update User
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

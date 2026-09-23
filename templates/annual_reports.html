@@ -15,6 +15,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      ANIMATION KEYFRAMES
   ====================================================== */
 
@@ -86,6 +87,11 @@
     }
   }
 
+=======
+     ANIMATION KEYFRAMES (loading skeleton only)
+  ====================================================== */
+
+>>>>>>> origin/mohit-soni
   @keyframes shimmer {
     0% {
       background-position: -1000px 0;
@@ -97,6 +103,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      HERO ANIMATION
   ====================================================== */
 
@@ -111,6 +118,8 @@
   }
 
   /* =====================================================
+=======
+>>>>>>> origin/mohit-soni
      GLASS CARD
   ====================================================== */
 
@@ -136,6 +145,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      REPORT SIDEBAR
   ====================================================== */
 
@@ -144,6 +154,8 @@
   }
 
   /* =====================================================
+=======
+>>>>>>> origin/mohit-soni
      REPORT CARDS
   ====================================================== */
 
@@ -196,6 +208,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      STAGGER ANIMATION
   ====================================================== */
 
@@ -224,14 +237,19 @@
   }
 
   /* =====================================================
+=======
+>>>>>>> origin/mohit-soni
      PDF VIEWER
   ====================================================== */
 
   #reportViewer {
+<<<<<<< HEAD
     animation: slideRight 0.8s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   #reportViewer {
+=======
+>>>>>>> origin/mohit-soni
     transition:
       box-shadow 0.4s ease,
       transform 0.4s ease;
@@ -264,6 +282,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      PDF PAGE ANIMATION
   ====================================================== */
 
@@ -274,6 +293,12 @@
     animation:
       pdfPageReveal 0.6s ease forwards;
 
+=======
+     PDF PAGE HOVER
+  ====================================================== */
+
+  #pdfPagesContainer canvas {
+>>>>>>> origin/mohit-soni
     box-shadow:
       0 4px 15px rgba(0, 0, 0, 0.08);
 
@@ -288,6 +313,7 @@
       0 10px 25px rgba(0, 0, 0, 0.12);
   }
 
+<<<<<<< HEAD
   @keyframes pdfPageReveal {
     to {
       opacity: 1;
@@ -295,6 +321,8 @@
     }
   }
 
+=======
+>>>>>>> origin/mohit-soni
   /* =====================================================
      PDF LOADING
   ====================================================== */
@@ -331,6 +359,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      ERROR STATE
   ====================================================== */
 
@@ -339,6 +368,8 @@
   }
 
   /* =====================================================
+=======
+>>>>>>> origin/mohit-soni
      CUSTOM SCROLLBAR
   ====================================================== */
 
@@ -364,6 +395,7 @@
   }
 
   /* =====================================================
+<<<<<<< HEAD
      MOBILE
   ====================================================== */
 
@@ -381,6 +413,8 @@
   }
 
   /* =====================================================
+=======
+>>>>>>> origin/mohit-soni
      REDUCED MOTION ACCESSIBILITY
   ====================================================== */
 
@@ -407,6 +441,7 @@
      HERO SECTION
 ====================================================== -->
 
+<<<<<<< HEAD
 <section class="subpage-hero" style="background-image: url('{% static 'images/heroes/annual_reports_hero.jpg' %}');" data-aos="fade-up">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
         <span class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
@@ -415,7 +450,83 @@
         </span>
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-white" style="font-family: 'Inter', sans-serif;">Audited Statements & <br class="hidden sm:block"/> Financial Reports</h1>
         <p class="text-lg text-gray-200 leading-relaxed">Explore our commitment to financial transparency. Browse through our certified annual reports and audited statements detailing resource allocation.</p>
+=======
+<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden">
+
+  <!-- Decorative Leaf -->
+
+  <div
+    class="absolute right-0 top-0 opacity-5 pointer-events-none"
+  >
+
+    <svg
+      width="400"
+      height="400"
+      viewBox="0 0 240 360"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+
+      <path
+        d="M-40,320 C40,280 80,180 60,80
+        C110,130 140,220 120,300
+        C150,230 200,160 260,140
+        C210,200 170,270 120,320"
+        fill="#0B6B3A"
+      />
+
+      <path
+        d="M-80,240 C0,200 40,120 20,40
+        C60,85 90,160 70,230"
+        fill="#0B6B3A"
+      />
+
+    </svg>
+
+  </div>
+
+
+  <!-- Hero Content -->
+
+  <div
+    class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
+  >
+
+    <div class="max-w-2xl space-y-4">
+
+      <span
+        class="inline-flex items-center gap-2 text-[#0B6B3A] text-xs font-bold uppercase tracking-wider"
+      >
+        <span class="w-2 h-2 rounded-full bg-[#0B6B3A]"></span>
+        Financial Transparency
+      </span>
+
+      <h1
+        class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight"
+        style="font-family: 'Inter', sans-serif;"
+      >
+
+        Audited Statements &
+
+        <br class="hidden sm:block"/>
+
+        Financial Reports
+
+      </h1>
+
+      <p class="text-lg text-gray-500 leading-relaxed max-w-xl">
+
+        Explore our commitment to financial transparency.
+        Browse through our certified annual reports and audited
+        statements detailing resource allocation.
+
+      </p>
+
+>>>>>>> origin/mohit-soni
     </div>
+
+  </div>
+
 </section>
 
 
@@ -433,7 +544,11 @@
     ================================================== -->
 
     <div
+<<<<<<< HEAD
       class="reports-sidebar lg:col-span-4 space-y-6 lg:sticky lg:top-32"
+=======
+      class="lg:col-span-4 space-y-6 lg:sticky lg:top-32"
+>>>>>>> origin/mohit-soni
     >
 
       <div class="glass-card rounded-2xl p-4 flex flex-col">
@@ -487,7 +602,11 @@
                 <h5
                   class="text-sm font-bold text-gray-900 leading-tight"
                 >
+<<<<<<< HEAD
                   FY {{ report.title }}
+=======
+                  Annual Report {{ report.title }}
+>>>>>>> origin/mohit-soni
                 </h5>
 
                 <p class="text-xs text-gray-500 mt-0.5">
@@ -585,7 +704,11 @@
               id="activeReportTitle"
             >
 
+<<<<<<< HEAD
               FY
+=======
+              Annual Report
+>>>>>>> origin/mohit-soni
 
               {% if reports %}
                 {{ reports.0.title }}
@@ -593,8 +716,11 @@
                 --
               {% endif %}
 
+<<<<<<< HEAD
               Audited Report
 
+=======
+>>>>>>> origin/mohit-soni
             </h2>
 
             <p class="text-xs text-gray-500 mt-0.5">
@@ -882,6 +1008,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
+<<<<<<< HEAD
   /*
    * Add smooth click feedback to report cards.
    * Your annual.js will continue handling the actual PDF loading.
@@ -900,6 +1027,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
       });
 
+=======
+  const reportCards =
+    document.querySelectorAll(".report-card-modern");
+
+  reportCards.forEach(function (card) {
+
+    card.addEventListener("click", function () {
+
+      reportCards.forEach(function (item) {
+
+        item.classList.remove("active");
+
+      });
+
+>>>>>>> origin/mohit-soni
       card.classList.add("active");
 
     });
@@ -907,6 +1049,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
+<<<<<<< HEAD
   /*
    * PDF viewer page animation.
    * Works when annual.js adds canvas elements.
@@ -950,6 +1093,11 @@ document.addEventListener("DOMContentLoaded", function () {
    * Hide loading skeleton when PDF pages appear.
    */
 
+=======
+  const pdfContainer =
+    document.getElementById("pdfPagesContainer");
+
+>>>>>>> origin/mohit-soni
   const loading =
     document.getElementById("pdfLoading");
 
@@ -958,6 +1106,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadingObserver =
       new MutationObserver(function () {
 
+<<<<<<< HEAD
         if (
           pdfContainer.querySelector("canvas")
         ) {
@@ -965,6 +1114,11 @@ document.addEventListener("DOMContentLoaded", function () {
           loading.classList.add(
             "loading-hidden"
           );
+=======
+        if (pdfContainer.querySelector("canvas")) {
+
+          loading.classList.add("loading-hidden");
+>>>>>>> origin/mohit-soni
 
         }
 

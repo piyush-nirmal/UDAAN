@@ -1,0 +1,215 @@
+/* ----------------------------------------------------
+   UDAAN Society Design System & Global Styles
+   ---------------------------------------------------- */
+
+:root {
+  --color-primary: #dc2626;       /* Red */
+  --color-primary-hover: #991b1b;
+  --color-secondary: #1565C0;     /* Trust Blue */
+  --color-secondary-hover: #0d47a1;
+  --color-accent: #FFB300;        /* Urgency Yellow/Amber */
+  --color-accent-hover: #ff8f00;
+  --color-bg-light: #FAFAFA;
+  --color-card-bg: #FFFFFF;
+  --color-text-dark: #1F2937;
+  --color-success: #2E7D32;
+  --color-error: #D32F2F;
+
+  --font-family-headings: 'Manrope', 'Poppins', sans-serif;
+  --font-family-base: 'Outfit', sans-serif;
+
+  --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
+  --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.08), 0 15px 25px -10px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 30px 60px -15px rgba(220, 38, 38, 0.12), 0 20px 35px -10px rgba(0, 0, 0, 0.06);
+
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+}
+
+/* Global Focus Styles for WCAG AA Accessibility */
+*:focus-visible {
+  outline: 3px solid var(--color-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Base Body Style Overrides */
+body {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+  font-family: var(--font-family-base);
+  overflow-x: hidden;
+  padding-top: 68px; /* Offset for sticky navbar */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-headings);
+  font-weight: 700;
+}
+
+/* Premium Card Components */
+.card-premium {
+  background: var(--color-card-bg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.card-premium:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-premium);
+  border-color: rgba(46, 125, 50, 0.1);
+}
+
+/* Interactive Hover Lift */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+/* Buttons System */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px 0 rgba(46, 125, 50, 0.25);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(46, 125, 50, 0.35);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px 0 rgba(21, 101, 192, 0.25);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(21, 101, 192, 0.35);
+}
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: var(--color-text-dark);
+  padding: 12px 28px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px 0 rgba(255, 179, 0, 0.25);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-accent:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(255, 179, 0, 0.35);
+}
+
+/* Glassmorphism Accents */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Micro-animations */
+.animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skeleton Loading Screens for Fast FMP Experience */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading-skeleton 1.5s infinite;
+}
+
+@keyframes loading-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Premium Sub-Page Hero Banner with Parallax Scroll Effect */
+.subpage-hero {
+  position: relative;
+  background-image: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1600&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center 0px;
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* Handled dynamically by JS for smooth cross-browser parallax */
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  text-align: center;
+  color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.subpage-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(31, 41, 55, 0.65); /* Dark multiply mask */
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+.subpage-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to top, rgba(31, 41, 55, 0.8), transparent, rgba(0, 0, 0, 0.3));
+  z-index: 2;
+}
+
+.subpage-hero > * {
+  position: relative;
+  z-index: 10;
+}

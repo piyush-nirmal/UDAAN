@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us - UDAAN Society{% endblock %}
+
+{% block meta_description %}Learn about UDAAN Society, a leading NGO working in Uttar Pradesh. Discover our history, mission, values, and our commitment to groundwater recharge, child safety, and shelter homes.{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Who We Are</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">About UDAAN Society</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      A registered non-profit organization dedicated to restoring dignity, livelihood, equality, and justice for underserved communities since 2004.
+    </p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <span class="text-gray-400">About Us</span>
+  </div>
+</div>
+
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-24">
+  
+  <!-- Who We Are Intro -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <!-- Left Column: Story -->
+    <div class="lg:col-span-7 space-y-6">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs block">Our Story</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">UDAAN Society</h2>
+      <p class="text-lg font-semibold text-gray-600 leading-relaxed italic border-l-4 border-primary pl-4">
+        "We succor in restoration of lost dignity, livelihood, equality, justice and peace in favor of downtrodden communities."
+      </p>
+      <p class="text-gray-600 leading-relaxed">
+        UDAAN Society is registered under the Societies Registration Act 1860 in December 2004 in Aligarh, Uttar Pradesh. Over the past two decades, we have supported critical governmental programs dealing with child labor, routine immunization, pulse polio, and HIV/AIDS awareness campaigns.
+      </p>
+      <p class="text-gray-600 leading-relaxed">
+        Our core areas of operational emphasis include rural health camps, groundwater recharge under <strong>Atal Bhujal Yojna</strong>, support services under the <strong>Jal Jeevan Mission</strong>, 24/7 children rescue lines, and running urban shelter homes for vulnerable individuals.
+      </p>
+    </div>
+
+    <!-- Right Column: Visual -->
+    <div class="lg:col-span-5 relative">
+      <div class="absolute -top-4 -left-4 w-24 h-24 bg-accent-light rounded-2xl -z-10 opacity-70"></div>
+      <img src="{% static 'images/aboutIMAGE.jpg' %}" 
+        alt="UDAAN Society Team Operations" class="rounded-3xl shadow-premium w-full object-cover max-h-[380px] border border-gray-100 bg-gray-50">
+    </div>
+  </div>
+
+  <!-- Mission Vision Values -->
+  <div class="space-y-16">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="text-secondary font-bold uppercase tracking-wider text-xs">Foundation Rules</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">Mission, Vision & Core Values</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Mission Card -->
+      <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100 hover:border-primary/20 transition-all duration-300">
+        <div class="text-3xl mb-4">🎯</div>
+        <h3 class="text-xl font-bold text-neutral-dark mb-4">Our Mission</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          To ensure all children and young people get the mentorship, education, healthcare, and safe spaces they require to regain hope, escape cycles of poverty, and thrive in life.
+        </p>
+      </div>
+
+      <!-- Vision Card -->
+      <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100 hover:border-secondary/20 transition-all duration-300">
+        <div class="text-3xl mb-4">👁️</div>
+        <h3 class="text-xl font-bold text-neutral-dark mb-4">Our Vision</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          To construct a modern, inclusive, and equitable society where basic needs like clean drinking water, health services, and shelter are guaranteed to all, regardless of background.
+        </p>
+      </div>
+
+      <!-- Values Card -->
+      <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100 hover:border-accent/20 transition-all duration-300">
+        <div class="text-3xl mb-4">⭐</div>
+        <h3 class="text-xl font-bold text-neutral-dark mb-4">Our Core Values</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Service, Social Responsibility, Professional Determination, Compassion, Integrity, and Community Contribution drive every project and fieldwork campaign we execute.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational Areas Section -->
+  <div class="bg-neutral-light rounded-3xl p-8 md:p-12 border border-gray-100 space-y-12">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs">Our Scope</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading">Key Working Geographical Focus</h2>
+      <p class="text-gray-600 text-sm">Empowering vulnerable communities across key administrative zones of Uttar Pradesh, India.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
+      <div class="bg-white p-6 rounded-2xl text-center shadow-soft border border-gray-100">
+        <div class="text-2xl font-bold text-primary mb-1">Aligarh</div>
+        <span class="text-xs text-gray-400 font-semibold uppercase">Headquarters</span>
+      </div>
+      <div class="bg-white p-6 rounded-2xl text-center shadow-soft border border-gray-100">
+        <div class="text-2xl font-bold text-secondary mb-1">Banda</div>
+        <span class="text-xs text-gray-400 font-semibold uppercase">Atal Bhujal DIP</span>
+      </div>
+      <div class="bg-white p-6 rounded-2xl text-center shadow-soft border border-gray-100">
+        <div class="text-2xl font-bold text-secondary mb-1">Bulandshahr</div>
+        <span class="text-xs text-gray-400 font-semibold uppercase">Jal Jeevan ISA</span>
+      </div>
+      <div class="bg-white p-6 rounded-2xl text-center shadow-soft border border-gray-100">
+        <div class="text-2xl font-bold text-neutral-dark mb-1">Firozabad</div>
+        <span class="text-xs text-gray-400 font-semibold uppercase">Community Camps</span>
+      </div>
+      <div class="bg-white p-6 rounded-2xl text-center shadow-soft border border-gray-100">
+        <div class="text-2xl font-bold text-neutral-dark mb-1">Mahoba</div>
+        <span class="text-xs text-gray-400 font-semibold uppercase">Outreach Hub</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust CTA Section -->
+  <div class="bg-neutral-dark rounded-3xl p-8 md:p-12 text-white text-center space-y-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-primary/30 to-secondary/30"></div>
+    <div class="relative z-10 max-w-2xl mx-auto space-y-6">
+      <h3 class="text-3xl font-bold font-heading">Partner with UDAAN Society</h3>
+      <p class="text-gray-200 text-sm leading-relaxed">
+        Our impact metrics are built on transparency, registered documentation, and community participation. Help us scale our outreach today.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="{% url 'donate' %}" class="btn-accent text-neutral-dark rounded-full px-8 py-3 shadow-md hover:shadow-lg">Support Campaigns</a>
+        <a href="{% url 'contact_us' %}" class="border border-white hover:bg-white/10 text-white font-bold rounded-full px-8 py-3 transition-all">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

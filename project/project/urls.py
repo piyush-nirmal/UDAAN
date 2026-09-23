@@ -1,0 +1,111 @@
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic.base import TemplateView
+from blood_request.views import home_view, staff_dashboard, update_task_status, manager_dashboard, campaign_list, project_list, project_detail, report_list, blogs_page, resources_page, profile_edit, export_donors_csv, export_requests_csv, portal_timeline
+from blood_request import views
+from blood_request import workspace_views # NEW
+
+from django.conf import settings
+from django.shortcuts import render
+from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import StaticViewSitemap, BlogSitemap, CampaignSitemap, ProjectSitemap
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    'blog': BlogSitemap,
+    'campaign': CampaignSitemap,
+    'project': ProjectSitemap,
+}
+
+urlpatterns = [
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path("admin/portal/manager/", manager_dashboard, name="manager_dashboard"), # New Team View
+    path("admin/portal/timeline/", portal_timeline, name="portal_timeline"), # Unified Timeline View
+    path("admin/portal/users/", views.user_list, name="user_list"),
+    path("admin/portal/users/add/", views.user_add, name="user_add"),
+    path("admin/portal/users/<int:pk>/", views.user_edit_portal, name="user_edit_portal"),
+    path("admin/portal/teams/", views.team_list, name="team_list"),
+    path("admin/portal/teams/create/", views.team_create, name="team_create"),
+    path("admin/portal/teams/<int:pk>/", views.team_detail, name="team_detail"),
+    path("admin/portal/teams/<int:pk>/edit-settings/", views.TeamUpdateView.as_view(), name="team_update_portal"),
+    path("admin/portal/teams/<int:pk>/add-member/", views.team_add_member, name="team_add_member"),
+    path("admin/portal/teams/<int:team_pk>/remove-member/<int:user_pk>/", views.team_remove_member, name="team_remove_member"),
+    path("admin/portal/notes/create/", views.shared_note_create, name="shared_note_create"),
+    path("admin/portal/notes/<int:pk>/", views.shared_note_detail, name="shared_note_detail"),
+    
+    path("admin/portal/tasks/", views.TaskListView.as_view(), name="task_list_portal"),
+    path("admin/portal/tasks/create/", views.TaskCreateView.as_view(), name="task_create_portal"),
+    path("admin/portal/tasks/<int:pk>/edit/", views.TaskUpdateView.as_view(), name="task_update_portal"),
+    
+    path("admin/portal/subtasks/", views.SubTaskListView.as_view(), name="subtask_list_portal"),
+    path("admin/portal/subtasks/create/", views.SubTaskCreateView.as_view(), name="subtask_create_portal"),
+    path("admin/portal/subtasks/<int:pk>/edit/", views.SubTaskUpdateView.as_view(), name="subtask_update_portal"),
+    
+    path("admin/portal/task/<int:pk>/", views.task_detail, name="task_detail"),
+    path("admin/portal/task/<int:pk>/comment/", views.add_task_comment, name="add_task_comment"),
+    path("admin/portal/task/<int:pk>/update/", update_task_status, name="update_task_status"),
+    path("admin/portal/task/<int:pk>/subtask/add/", views.subtask_add, name="subtask_add"),
+    path("admin/portal/subtask/<int:sub_pk>/update/", views.subtask_update, name="subtask_update"),
+    
+    path("admin/portal/expenses/", views.ExpenseListView.as_view(), name="expense_list_portal"),
+    path("admin/portal/expenses/create/", views.ExpenseCreateView.as_view(), name="expense_create_portal"),
+    path("admin/portal/expenses/<int:pk>/edit/", views.ExpenseUpdateView.as_view(), name="expense_update_portal"),
+    
+    path("admin/portal/automations/", views.AutomationRuleListView.as_view(), name="automation_rule_list"),
+    path("admin/portal/automations/create/", views.AutomationRuleCreateView.as_view(), name="automation_rule_create"),
+    path("admin/portal/automations/<int:pk>/edit/", views.AutomationRuleUpdateView.as_view(), name="automation_rule_update"),
+    path("admin/portal/automations/<int:pk>/delete/", views.automation_rule_delete, name="automation_rule_delete"),
+    path("admin/portal/digest/", views.send_digest_portal, name="send_digest_portal"),
+    path("admin/portal/export/tasks/", views.export_tasks_pdf, name="export_tasks_pdf"),
+    
+    path("admin/portal/", staff_dashboard, name="staff_dashboard"),
+    path("admin/portal/profile/", profile_edit, name="profile_edit"),
+    path("admin/export/donors/", export_donors_csv, name="export_donors_csv"),
+    path("admin/export/requests/", export_requests_csv, name="export_requests_csv"),
+    path("api/calendar/events/", views.calendar_events_api, name="calendar_events_api"),
+    path("api/notifications/", views.notifications_api, name="notifications_api"),
+    path("api/notifications/mark-read/", views.mark_notifications_read, name="mark_notifications_read"),
+
+    path("admin/", admin.site.urls),
+    path("", home_view, name="home"),
+    path("donate/", views.donate_page, name="donate"),
+    path("campaigns/start/", views.start_campaign_wizard, name="start_campaign_wizard"),
+    path("api/campaigns/autosave/", views.campaign_autosave_api, name="campaign_autosave_api"),
+    path("api/campaigns/submit/", views.campaign_submit_api, name="campaign_submit_api"),
+    path("api/campaigns/ai-assist/", views.ai_campaign_assist_api, name="ai_campaign_assist_api"),
+    path("api/verify-ifsc/", views.ifsc_verify_api, name="ifsc_verify_api"),
+    path("campaigns/", campaign_list, name="campaign_list"),
+    path("campaigns/<slug:slug>/status/", views.campaign_status_view, name="campaign_status"),
+    path("campaigns/<slug:slug>/dashboard/", views.campaign_dashboard_view, name="campaign_dashboard"),
+    path("campaigns/<slug:slug>/", views.campaign_detail, name="campaign_detail"),
+    path("projects/", project_list, name="project_list"),
+    path("projects/<slug:slug>/", project_detail, name="project_detail"),
+    path("blogs/", blogs_page, name="blogs"),
+    path("resources/", resources_page, name="resources"),
+    path("reports/", report_list, name="report_list"),
+    path("blood-request/", include("blood_request.urls")),
+    path('', include('blood_request.urls')),
+    path('workplace-living/', views.workplace_living, name='workplace_living'),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
+     path('volunteering/', views.volunteering, name='volunteering'),
+    
+    # Workspace URLs
+    path('workspaces/', workspace_views.workspace_list, name='workspace_list'),
+    path('workspaces/create/', workspace_views.workspace_create, name='workspace_create'),
+    path('w/<slug:slug>/', workspace_views.workspace_detail, name='workspace_detail'),
+    path('w/<slug:slug>/invite/', workspace_views.workspace_invite, name='workspace_invite'),
+    
+    path('shared-notes/', views.shared_note_list, name='shared_note_list'),
+    path('shared-notes/create/', views.shared_note_create, name='shared_note_create'),
+    path('shared-notes/<int:pk>/delete/', views.shared_note_delete, name='shared_note_delete'),
+    path('tasks/create/', views.task_create, name='task_create'),
+    path('blogs/create/', views.blog_create, name='blog_create'),
+
+    path('news-clippings/', views.news_clippings, name='news_clippings'),
+    path("policies/", views.our_policies, name="our_policies"),
+    path("our-policies/", views.our_policies),  # alias — resolves /our-policies/ to same view
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

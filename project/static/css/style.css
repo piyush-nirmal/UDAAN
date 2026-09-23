@@ -1,0 +1,82 @@
+/* ============================================================
+   UDAAN Society — JJM ISA Portal — Global Design Tokens
+   ============================================================ */
+
+/* Import Inter from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* JJM Corporate Palette */
+  --color-primary:     #0A3663;
+  --color-secondary:   #1E3A8A;
+  --color-accent:      #0EA5E9;
+  --color-accent-dk:   #0284C7;
+  --color-bg:          #F8F9FA;
+  --color-white:       #FFFFFF;
+  --color-border:      #DDE3EC;
+  --color-text:        #1A2B3C;
+  --color-muted:       #64748B;
+  --color-success:     #16A34A;
+}
+
+/* Hard reset — removes all browser default margins/padding */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', sans-serif !important;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Custom visual polish */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+}
+/* Mouse Glow Effect */
+
+.mouse-glow{
+    position: fixed;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle,
+        rgba(225, 32, 32, 0.565) 0%,
+    rgba(240, 68, 25, 0.827) 40%,
+        transparent 70%);
+    filter:blur(5px);
+    z-index:1;
+
+
+
+
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    /* background: black; */
+    border-radius: 50%;
+    left: 100px;
+    top: 100px;
+    z-index: 999999;
+}

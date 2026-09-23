@@ -1,0 +1,795 @@
+/* Basic Reset & Global Styles */
+:root {
+    --primary-color: #e74c3c;
+    /* Red, matching the main site */
+    --secondary-color: #c0392b;
+    /* Darker red for accents/hover */
+    --text-color: #333;
+    --light-gray: #f8f9fa;
+    --border-color: #e0e0e0;
+    --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --font-poppins: 'Poppins', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-poppins);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-gray);
+    scroll-behavior: smooth;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+ul li {
+    margin-bottom: 8px;
+    position: relative;
+}
+
+ul li::before {
+    content: '';
+    /* Using default bullet for now, can be customized */
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+strong {
+    font-weight: 600;
+}
+
+.emoji {
+    font-size: 1.2em;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Header */
+.main-header {
+    background-color: #fff;
+    padding: 15px 0;
+    box-shadow: var(--box-shadow-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo img {
+    height: 30px;
+    vertical-align: middle;
+}
+
+.main-nav ul {
+    display: flex;
+    padding-left: 0;
+}
+
+.main-nav ul li {
+    margin: 0 15px;
+    position: relative;
+}
+
+.main-nav ul li::before {
+    /* Remove default bullet for nav items */
+    display: none;
+}
+
+.main-nav ul li a {
+    color: var(--text-color);
+    font-weight: 400;
+    padding: 5px 0;
+    display: block;
+    position: relative;
+}
+
+.main-nav ul li a:hover {
+    color: var(--primary-color);
+}
+
+/* Dropdown specific styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border-radius: 4px;
+    padding: 10px 0;
+    top: 100%;
+    /* Position below the parent link */
+    left: 0;
+}
+
+.dropdown-content li {
+    margin: 0;
+}
+
+.dropdown-content a {
+    color: var(--text-color);
+    padding: 8px 15px;
+    display: block;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Donate Button */
+.donate-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 0.9em;
+}
+
+.donate-btn i {
+    font-size: 1.1em;
+}
+
+.donate-btn:hover {
+    background-color: #218838;
+    /* Darker green */
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.razorpay-text {
+    font-size: 0.7em;
+    opacity: 0.8;
+    margin-left: 5px;
+}
+
+/* Hero Section */
+.hero-section {
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 100px 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    /* Dark overlay for better text readability */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content h1 {
+    font-size: 3.5em;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    opacity: 0.9;
+    color: #fff;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    padding: 15px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9em;
+}
+
+.breadcrumbs p {
+    margin: 0;
+}
+
+.breadcrumbs a {
+    color: var(--text-color);
+}
+
+.breadcrumbs a:hover {
+    color: var(--primary-color);
+}
+
+/* Project Detail Layout */
+.project-detail-layout {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    /* Main content wider than sidebar */
+    gap: 40px;
+    padding-top: 40px;
+    padding-bottom: 60px;
+    align-items: start;
+    /* Align items to the top */
+}
+
+.project-main-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-light);
+}
+
+.project-title {
+    font-size: 2.2em;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    line-height: 1.2;
+}
+
+.project-image-wrapper {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.project-main-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.project-main-image:hover {
+    transform: scale(1.01);
+}
+
+.project-main-content h3 {
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    margin-top: 30px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.project-main-content .section-text {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--primary-color);
+    margin-top: 25px;
+}
+
+.program-poster img,
+.qr-code-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.registration-info {
+    margin-top: 40px;
+    background-color: #fcfcfc;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--box-shadow-light);
+}
+
+.registration-info h3 {
+    font-size: 1.8em;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.highlights-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.highlights-content ul {
+    list-style: none;
+    padding-left: 0;
+    flex: 1 1 45%;
+    /* Allow wrapping */
+    min-width: 280px;
+    margin-bottom: 0;
+}
+
+.highlights-content ul li {
+    font-weight: 500;
+    color: #555;
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+}
+
+.highlights-content ul li i {
+    color: var(--primary-color);
+    font-size: 0.8em;
+    position: absolute;
+    left: 0;
+    top: 5px;
+}
+
+.qr-code-section {
+    text-align: center;
+    flex: 1 1 45%;
+    /* Allow wrapping */
+    min-width: 250px;
+}
+
+.qr-code-section .scan-text {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.qr-code-section img {
+    width: 200px;
+    /* Specific width for QR code for better display */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.contact-details {
+    margin-top: 30px;
+    text-align: center;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 20px;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.contact-details p {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.contact-details p i {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.contact-details .bold {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.1em;
+    margin-top: 15px;
+}
+
+/* Sidebar */
+.project-sidebar {
+    position: sticky;
+    top: 100px;
+    /* Height of header + some margin */
+    align-self: flex-start;
+    /* Ensures it sticks to the top of its grid cell */
+}
+
+.sidebar-block {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-light);
+    margin-bottom: 20px;
+}
+
+.sidebar-block h3 {
+    font-size: 1.4em;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-block ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar-block ul li {
+    margin-bottom: 10px;
+    font-size: 0.95em;
+    position: relative;
+    padding-left: 0;
+    /* Remove default padding from main ul li */
+}
+
+.sidebar-block ul li::before {
+    display: none;
+    /* Remove default bullet for sidebar lists */
+}
+
+.sidebar-block p {
+    font-size: 0.95em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-block .icon {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.sidebar-block .map-container iframe {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.share-project .share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.share-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2em;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    /* Ensure text color remains white on hover */
+}
+
+.share-btn.facebook {
+    background-color: #3b5998;
+}
+
+.share-btn.twitter {
+    background-color: #1da1f2;
+}
+
+.share-btn.whatsapp {
+    background-color: #25d366;
+}
+
+.share-btn.email {
+    background-color: #ea4335;
+}
+
+/* Google Form Embedding */
+.contact-form-section {
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--box-shadow-light);
+}
+
+.contact-form-section h3 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.google-form-embed {
+    width: 100%;
+    overflow: hidden;
+    /* Hide potential scrollbars from iframe if styled */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.google-form-embed iframe {
+    display: block;
+    /* Remove extra space below iframe */
+}
+
+/* Lightbox styles */
+.lightbox {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 2000;
+    /* Sit on top */
+    padding-top: 60px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.9);
+    /* Black w/ opacity */
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+#lightbox-caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .main-nav ul li {
+        margin: 0 10px;
+    }
+
+    .donate-btn {
+        padding: 8px 15px;
+        font-size: 0.85em;
+    }
+
+    .razorpay-text {
+        display: none;
+        /* Hide on smaller screens to save space */
+    }
+
+    .hero-content h1 {
+        font-size: 2.8em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .project-detail-layout {
+        grid-template-columns: 1fr;
+        /* Stack columns on smaller screens */
+        gap: 30px;
+    }
+
+    .project-sidebar {
+        position: static;
+        /* Disable sticky sidebar on mobile */
+        top: auto;
+    }
+
+    .project-title {
+        font-size: 1.8em;
+    }
+
+    .registration-info h3,
+    .contact-form-section h3 {
+        font-size: 1.5em;
+    }
+
+    .highlights-content {
+        flex-direction: column;
+        /* Stack highlights and QR code */
+    }
+
+    .highlights-content ul,
+    .qr-code-section {
+        flex: none;
+        width: 100%;
+        text-align: left;
+    }
+
+    .qr-code-section img {
+        margin: 0 auto 20px auto;
+    }
+
+    .contact-details p {
+        justify-content: flex-start;
+    }
+
+    .share-buttons {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .main-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .main-nav ul li {
+        margin: 0 5px;
+    }
+
+    .donate-btn {
+        width: fit-content;
+    }
+
+    .hero-section {
+        padding: 60px 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2em;
+    }
+
+    .hero-content p {
+        font-size: 0.9em;
+    }
+
+    .project-main-content,
+    .sidebar-block {
+        padding: 20px;
+    }
+
+    .project-title {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+
+    .sidebar-block h3 {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .main-nav ul li {
+        margin: 5px 0;
+    }
+
+    .dropdown-content {
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: unset;
+        width: 100%;
+        text-align: center;
+    }
+
+    .header-container {
+        padding: 0 10px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    .hero-section {
+        padding: 40px 15px;
+    }
+
+    .hero-content h1 {
+        font-size: 1.8em;
+    }
+
+    .project-title {
+        font-size: 1.4em;
+    }
+
+    .registration-info h3,
+    .contact-form-section h3 {
+        font-size: 1.3em;
+    }
+}

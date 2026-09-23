@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Internships - UDAAN Society{% endblock %}
+
+{% block meta_description %}Apply for social work and community development internship programs at UDAAN Society. Gain real-world field experience and project management skills.{% endblock %}
+
+{% block content %}
+
+<!-- Hero Banner -->
+<section class="subpage-hero">
+  <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
+    <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Academic Outreach</span>
+    <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Internship Program</h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
+      Gain real-world experience, develop critical field skills, and collaborate on professional social campaigns.
+    </p>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<div class="bg-neutral-light border-b border-gray-100 py-4">
+  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
+    <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
+    <span>»</span>
+    <a href="{% url 'career_fellowship' %}" class="hover:text-primary transition-colors">Careers & Fellowships</a>
+    <span>»</span>
+    <span class="text-gray-400">Internships</span>
+  </div>
+</div>
+
+<!-- Main Body -->
+<div class="max-w-7xl mx-auto px-6 py-16 lg:py-24 space-y-24">
+  
+  <!-- Intro: Why Intern? -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <div class="lg:col-span-5">
+      <img src="{% static 'assets/internship-banner.png' %}" alt="Internship Banner" class="rounded-3xl shadow-soft border border-gray-100 w-full object-cover">
+    </div>
+    <div class="lg:col-span-7 space-y-6">
+      <span class="text-primary font-bold uppercase tracking-wider text-xs block">Professional Growth</span>
+      <h2 class="text-3xl font-extrabold text-neutral-dark font-heading leading-tight">Sharpen Social & Field Operations Skills</h2>
+      <p class="text-gray-600 leading-relaxed text-sm">
+        UDAAN Society provides exciting, structured internship opportunities for undergraduate and postgraduate students across India throughout the year. As an intern, you will directly work with field directors on campaigns dealing with water security, community health, or child protection.
+      </p>
+      <p class="text-gray-600 leading-relaxed text-sm">
+        Interns receive verified project experience certificates, build valuable professional networks, and get a real head start in competitive careers in development sectors.
+      </p>
+    </div>
+  </div>
+
+  <!-- Interactive Application Form -->
+  <div class="max-w-3xl mx-auto bg-white shadow-premium rounded-3xl p-8 border border-gray-100/50 space-y-6">
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl font-bold text-neutral-dark font-heading">Internship Application</h2>
+      <p class="text-sm text-gray-500">Fill in details to submit your application. We will issue a confirmation letter on selection.</p>
+    </div>
+
+    <form id="internship-form" method="POST" enctype="multipart/form-data" class="space-y-6">
+      {% csrf_token %}
+      
+      <!-- Display Messages -->
+      {% if messages %}
+      <div class="mb-4">
+        {% for message in messages %}
+          <div class="p-4 mb-2 rounded-lg text-sm font-bold {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label
+  class="block text-xs font-bold text-gray-500 mb-2 uppercase"
+>
+  Full Name *
+</label>
+          <input type="text" name="name" required placeholder="John Doe"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email *</label>
+          <input type="email" name="email" required placeholder="john@example.com"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone No. *</label>
+          <input type="tel" name="contact_number" required placeholder="9876543210"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Date of Birth *</label>
+          <input type="date" name="dob" required
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Gender *</label>
+          <select name="gender" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">College Name *</label>
+          <input type="text" name="educational_qualification" required placeholder="University Name"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Internship Start Date *</label>
+          <input type="date" name="start_date" required
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Duration of Internship *</label>
+          <select name="duration_months" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="1">One Month</option>
+            <option value="2">Two Months</option>
+            <option value="3">Three Months</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Field of Interest *</label>
+          <select name="internship_area" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
+            <option value="Field Work">Field Work (Only for those based in Aligarh)</option>
+            <option value="Research Work">Research Work</option>
+            <option value="Social Media and Communication">Social Media and Communication</option>
+            <option value="Fundraising">Fundraising</option>
+            <option value="Content Creation">Content Creation</option>
+            <option value="Digital Marketing">Digital Marketing</option>
+            <option value="Website and App Development">Website and App Development</option>
+            <option value="Any Other">Any Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Mention (Any Other)</label>
+          <input type="text" name="other_interest" placeholder="If 'Any Other' selected, please mention"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Residence (City, State) *</label>
+        <textarea name="permanent_address" required placeholder="e.g. Aligarh, Uttar Pradesh" rows="2"
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV (Upload PDF) *</label>
+        <input type="file" name="cv" accept=".pdf" required
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary hover:file:bg-primary hover:file:text-white transition-all cursor-pointer">
+      </div>
+
+      <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
+        Submit Internship Request
+      </button>
+    </form>
+  </div>
+
+  <!-- Do's & Dont's Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <!-- Do's Card -->
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6">
+      <div class="flex items-center gap-3">
+        <span class="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center font-bold text-lg">✓</span>
+        <h3 class="text-xl font-bold text-neutral-dark font-heading">Recommended Guidelines (Do's)</h3>
+      </div>
+      <ul class="space-y-4 text-sm text-gray-600 leading-relaxed pl-2">
+        <li><strong>Be Prepared:</strong> Professional attire and mindset establish excellent first impressions in field centers.</li>
+        <li><strong>Ask Questions:</strong> Clarify tasks with your field coordinator without hesitation.</li>
+        <li><strong>Be Proactive:</strong> Support other project associates and take initiative on tasks.</li>
+        <li><strong>Build Connections:</strong> Participate in local gatherings and network with block workers.</li>
+      </ul>
+    </div>
+
+    <!-- Dont's Card -->
+    <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-soft space-y-6">
+      <div class="flex items-center gap-3">
+        <span class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-lg">×</span>
+        <h3 class="text-xl font-bold text-neutral-dark font-heading">Behavioral Constraints (Don'ts)</h3>
+      </div>
+      <ul class="space-y-4 text-sm text-gray-600 leading-relaxed pl-2">
+        <li><strong>Don't Be Unprofessional:</strong> Avoid casual absences or delays without notifying directors.</li>
+        <li><strong>Don't Ignore Feedback:</strong> Take reviews constructively to strengthen operational capabilities.</li>
+        <li><strong>Don't Hesitate:</strong> Don't keep field challenges to yourself; seek timely guidance from program managers.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Execution & Certification Procedures -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <!-- Procedure -->
+    <div class="space-y-6">
+      <h3 class="text-2xl font-bold text-neutral-dark font-heading border-b border-gray-100 pb-3">Execution Procedure</h3>
+      <ol class="space-y-4 text-sm text-gray-600 leading-relaxed">
+        <li>
+          <strong>Step 1: Application</strong>
+          <p class="text-xs text-gray-500 mt-1">Submit the online request form or email your cover letter to <strong>mail@udaansociety.org</strong>.</p>
+        </li>
+        <li>
+          <strong>Step 2: Slot Allocation</strong>
+          <p class="text-xs text-gray-500 mt-1">We allocate slots under ongoing projects and issue an official Offer/Confirmation Letter.</p>
+        </li>
+        <li>
+          <strong>Step 3: Direct Mentorship</strong>
+          <p class="text-xs text-gray-500 mt-1">Report to Dr. Gyanendra Mishra (Director) for briefing and field alignments.</p>
+        </li>
+        <li>
+          <strong>Step 4: Report Submission</strong>
+          <p class="text-xs text-gray-500 mt-1">Submit your final social project report at the end of the term to qualify for certification.</p>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Certification Mockup -->
+    <div class="bg-neutral-light p-8 rounded-3xl border border-gray-200/50 space-y-4 relative font-serif">
+      <div class="absolute -top-3 right-6 bg-accent text-neutral-dark font-sans text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">Sample Document</div>
+      <h4 class="text-center font-bold text-neutral-dark border-b border-gray-300 pb-4 text-sm tracking-wider uppercase">To Whomsoever It May Concern</h4>
+      <p class="text-xs text-gray-500 leading-relaxed pt-2">
+        This is to certify that <strong>[Student Name]</strong> from <strong>[University / College]</strong> has successfully completed their Social Internship at UDAAN Society, Aligarh, from [Start Date] to [End Date] as part of their academic course fulfillment.
+      </p>
+      <p class="text-xs text-gray-500 leading-relaxed">
+        During this period, they performed office documentation work as well as field campaigns. We congratulate them on their success.
+      </p>
+      <div class="pt-6 text-right text-xs">
+        <p class="font-bold text-neutral-dark">(Dr. Gyanendra Mishra)</p>
+        <p class="text-gray-400">President, UDAAN Society</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promo cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
+    <a href="{% url 'blood_donation' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100">
+      <img src="{% static 'assets/blood-card.jpg' %}" alt="Donate Blood Promo" class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102">
+    </a>
+    <a href="{% url 'campus_ambassador' %}" class="group rounded-3xl overflow-hidden shadow-soft hover:shadow-premium transition-all duration-300 border border-gray-100">
+      <img src="{% static 'assets/campus-card.jpg' %}" alt="Campus Ambassador Promo" class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102">
+    </a>
+  </div>
+
+</div>
+
+
+{% endblock %}

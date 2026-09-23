@@ -1,0 +1,656 @@
+/* ===============================
+   VOLUNTEERING PAGE STYLES
+================================ */
+/* ================= HERO ================= */
+
+.hero{
+    position:relative;
+    height:500px;
+    overflow:hidden;
+}
+
+.hero-image{
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+.hero-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(0.7);
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+}
+
+.hero-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    width:100%;
+}
+
+.hero-content h1{
+    color:#fff;
+    font-size:64px;
+    font-weight:900;
+    letter-spacing:2px;
+    text-shadow:2px 2px 6px rgba(0,0,0,.6);
+}
+
+
+
+/* ===============================
+   WHY VOLUNTEER - EXACT MATCH
+================================ */
+
+.why-volunteer{
+    background:#fff;
+    padding:90px 0 100px;
+}
+
+.why-volunteer .container{
+    max-width:1100px;
+    margin:auto;
+    padding:0 25px;
+    text-align:center;
+}
+
+
+/* TITLE */
+
+.why-title{
+    font-size:42px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:35px;
+    color:#000;
+}
+
+.why-title span{
+    color:#ef4444;
+}
+
+
+/* PARAGRAPH */
+
+.why-text{
+    font-size:18px;
+    line-height:2;
+    color:#374151;
+    font-weight:400;
+}
+
+
+/* LINK */
+
+.why-link{
+    color:#ef4444;
+    font-weight:500;
+    text-decoration:none;
+}
+
+.why-link:hover{
+    text-decoration:underline;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1024px){
+
+    .why-title{
+        font-size:36px;
+    }
+
+    .why-text{
+        font-size:17px;
+    }
+}
+
+
+@media(max-width:768px){
+
+    .why-volunteer{
+        padding:60px 0 70px;
+    }
+
+    .why-title{
+        font-size:30px;
+    }
+
+    .why-text{
+        font-size:16px;
+        line-height:1.8;
+    }
+}
+
+
+@media(max-width:480px){
+
+    .why-title{
+        font-size:26px;
+    }
+
+    .why-text{
+        font-size:15px;
+    }
+}
+
+
+
+/* ================= ANIMATION ================= */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.why-title,
+.why-text{
+    animation:fadeUp .8s ease;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1024px){
+
+    .hero-content h1{
+        font-size:48px;
+    }
+
+    .why-title{
+        font-size:34px;
+    }
+
+}
+
+
+@media(max-width:768px){
+
+    .hero{
+        height:280px;
+    }
+
+    .hero-content h1{
+        font-size:36px;
+    }
+
+    .why-volunteer{
+        padding:60px 0;
+    }
+
+    .why-title{
+        font-size:28px;
+    }
+
+    .why-text{
+        font-size:16px;
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .hero-content h1{
+        font-size:30px;
+    }
+
+    .why-title{
+        font-size:24px;
+    }
+
+}
+
+/* ================= GOOGLE FORM STYLE ================= */
+
+.volunteer-form-section{
+    background:#f5f5f5;
+    padding:60px 0 80px;
+}
+
+.form-card{
+    max-width:750px;
+    margin:auto;
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    overflow:hidden;
+}
+
+
+/* Header */
+
+.form-header{
+    border-top:8px solid #673ab7;
+    padding:25px 30px;
+}
+
+.form-header h2{
+    font-size:28px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.form-header p{
+    font-size:15px;
+    color:#444;
+    line-height:1.6;
+}
+
+
+/* Info */
+
+.form-info{
+    padding:15px 30px;
+    border-top:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
+    font-size:14px;
+}
+
+.form-info a{
+    color:#1a73e8;
+    text-decoration:none;
+}
+
+.form-info a:hover{
+    text-decoration:underline;
+}
+
+.required{
+    display:block;
+    color:#d93025;
+    margin-top:6px;
+}
+
+
+/* Fields */
+
+.google-form-style{
+    padding:30px;
+}
+
+.form-field{
+    border:1px solid #dadce0;
+    border-radius:8px;
+    padding:18px 20px;
+    margin-bottom:20px;
+}
+
+.form-field label{
+    display:block;
+    font-size:15px;
+    font-weight:500;
+    margin-bottom:10px;
+}
+
+.form-field span{
+    color:#d93025;
+}
+
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="url"]{
+    width:100%;
+    border:none;
+    border-bottom:1px solid #ccc;
+    padding:8px 4px;
+    font-size:15px;
+    outline:none;
+}
+
+.form-field input:focus{
+    border-color:#673ab7;
+}
+
+
+/* Checkbox */
+
+.check-group{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    font-size:15px;
+}
+
+.check-group input{
+    margin-right:8px;
+}
+
+.other-input{
+    border:none;
+    border-bottom:1px solid #ccc;
+    margin-left:10px;
+    width:200px;
+}
+
+
+/* Buttons */
+
+.form-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:25px;
+}
+
+.submit-btn{
+    background:#673ab7;
+    color:#fff;
+    border:none;
+    padding:10px 24px;
+    border-radius:4px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#5e35b1;
+}
+
+.clear-btn{
+    color:#673ab7;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.clear-btn:hover{
+    text-decoration:underline;
+}
+
+/* ================= GOOGLE FORM FOOTER ================= */
+
+.google-form-footer{
+    max-width:750px;
+    margin:15px auto 0;
+    padding:15px 25px 25px;
+    background:#fff;
+    border-radius:0 0 10px 10px;
+    font-size:13px;
+    color:#5f6368;
+}
+
+.form-warning{
+    text-align:center;
+    margin-bottom:12px;
+    font-size:13px;
+}
+
+
+.form-footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+
+.form-left{
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+
+.question-icon{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    border:1px solid #9aa0a6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+}
+
+
+.google-text{
+    font-weight:500;
+    color:#202124;
+}
+
+
+.form-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+
+.dots{
+    font-size:18px;
+    cursor:pointer;
+}
+
+
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    .form-footer-bottom{
+        flex-direction:column;
+        gap:8px;
+        text-align:center;
+    }
+
+}
+
+
+/* ================= VOLUNTEER BENEFITS ================= */
+
+.volunteer-benefits{
+    background:transparent;   /* REMOVE WHITE BACKGROUND */
+    padding:90px 20px;
+}
+
+.benefits-grid{
+    display:grid;
+    grid-template-columns:1fr 1.3fr;
+    gap:60px;
+    align-items:center;
+}
+
+
+/* IMAGE BOX (ONLY THIS IS WHITE) */
+
+.benefits-image{
+    background:#fff;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+.benefits-image img{
+    width:100%;
+    max-width:380px;
+    display:block;
+    margin:auto;
+}
+
+
+/* CONTENT */
+
+.benefits-content h2{
+    font-size:32px;
+    font-weight:800;
+    color:#ef4444;
+    margin-bottom:25px;
+}
+
+
+.benefits-content ol{
+    padding-left:20px;
+}
+
+
+.benefits-content li{
+    font-size:16px;
+    line-height:1.9;
+    color:#374151;
+    margin-bottom:18px;
+}
+
+
+.benefits-content li b{
+    color:#111;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1024px){
+
+    .benefits-grid{
+        grid-template-columns:1fr;
+        text-align:center;
+    }
+
+    .benefits-content ol{
+        text-align:left;
+        max-width:700px;
+        margin:auto;
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .benefits-content h2{
+        font-size:26px;
+    }
+
+    .benefits-content li{
+        font-size:15px;
+    }
+
+}
+
+/* ================= BREADCRUMB ================= */
+
+.volunteer-breadcrumb{
+    background: #f8f9fa;
+    padding: 15px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.volunteer-breadcrumb .container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0px 20px;
+}
+
+.volunteer-breadcrumb .container a{
+    color: #6b21a8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.volunteer-breadcrumb .container .sep {
+    color: black;
+    font-weight: 500;
+}
+
+.volunteer-breadcrumb .container .current{
+    color: #6b21a8;
+    font-weight: 500;
+}
+
+
+
+/* ================= NEW HERO ================= */
+
+.volunteer-hero{
+    position:relative;
+    width:100%;
+    height:500px;
+    overflow:hidden;
+}
+
+/* Background image using CSS (NO IMG TAG) */
+
+.volunteer-hero-bg{
+    position:absolute;
+    inset:0;
+    background:url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&h=900&fit=crop") center/cover no-repeat;
+    z-index:1;
+}
+
+/* Dark overlay */
+
+.volunteer-hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.55);
+    z-index:2;
+}
+
+/* Text */
+
+.volunteer-hero-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    color:#fff;
+    z-index:3;
+    width:90%;
+}
+
+.volunteer-hero-content h1{
+    font-size:64px;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:15px;
+}
+
+.volunteer-hero-content p{
+    font-size:18px;
+    max-width:700px;
+    margin:auto;
+    line-height:1.6;
+    opacity:.95;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .volunteer-hero{
+        height:320px;
+    }
+
+    .volunteer-hero-content h1{
+        font-size:36px;
+    }
+
+    .volunteer-hero-content p{
+        font-size:14px;
+    }
+}
