@@ -15,7 +15,7 @@ from .schemas import DonorSchema, BloodRequestSchema
 from pydantic import ValidationError
 from django_ratelimit.decorators import ratelimit
 # from django.shortcuts import render
-from .models import Blog, Project, Task, SubTask, Team
+from .models import Blog, Project, Task, SubTask, Team, TaskComment
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import permission_required, user_passes_test, login_required
 from .models import CampusAmbassador, CampusAmbassadorApplication
@@ -891,7 +891,7 @@ def workplace_giving(request):
 
 
 # --- Phase 17: Team Views ---
-from .models import Team, SharedNote
+from .models import Team, SharedNote, Workspace
 from django.contrib import messages
 
 @login_required

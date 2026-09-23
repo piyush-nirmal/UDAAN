@@ -531,6 +531,9 @@
 
 <!-- Modern Hero Section -->
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/tushar
 <section class="subpage-hero" style="background-image: url('{% static 'images/heroes/campus_ambassador_hero.jpg' %}');" data-aos="fade-up">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wide uppercase mb-4">
@@ -538,6 +541,7 @@
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight uppercase mb-4 text-white" style="font-family: 'Inter', sans-serif;">Campus Ambassador</h1>
         <p class="text-lg text-gray-200 leading-relaxed max-w-xl mx-auto">Be the voice of UDAAN Society on your campus and lead social responsibility initiatives.</p>
+<<<<<<< HEAD
 =======
 <section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
   <!-- Decorative Leaf SVG (Low Opacity) -->
@@ -561,8 +565,9 @@
   Be the voice of UDAAN Society on your campus and lead social responsibility initiatives.
 </p>
 >>>>>>> origin/mohit-soni
+=======
+>>>>>>> origin/tushar
     </div>
-  </div>
 </section>
 
 <!-- Breadcrumb -->
@@ -707,20 +712,96 @@
 
     <div class="glass-card rounded-3xl p-6 md:p-10 overflow-hidden bg-white shadow-sm reveal-scale">
 
-      <!-- Google Campus Ambassador Application Form -->
-      <div class="w-full overflow-hidden rounded-xl">
-        <iframe
-          src="https://docs.google.com/forms/d/e/1FAIpQLSdLHxXQgqBmtMfRuAWUvgPcf5pOqvdf_w1UZhTZuWo_piAm_Q/viewform?embedded=true"
-          width="100%"
-          height="1100"
-          frameborder="0"
-          marginheight="0"
-          marginwidth="0"
-          title="UDAAN Campus Ambassador Application Form"
-          style="border: none; display: block;"
-        >
-          Loading…
-        </iframe>
+      <!-- Native Campus Ambassador Application Form -->
+      <div class="w-full">
+        <form method="POST" action="{% url 'campus_ambassador' %}" enctype="multipart/form-data" class="space-y-5 text-left">
+          {% csrf_token %}
+
+          {% if messages %}
+          <div class="space-y-2">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl text-xs font-bold {% if message.tags == 'success' %}bg-green-50 text-green-700{% else %}bg-red-50 text-red-600{% endif %}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Full Name *</label>
+              <input type="text" name="full_name" required placeholder="John Doe"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Father's Name *</label>
+              <input type="text" name="father_name" required placeholder="Full Name"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Phone Number *</label>
+              <input type="text" name="phone" required placeholder="+91 9876543210"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Address *</label>
+              <input type="email" name="email" required placeholder="john@example.com"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Date of Birth *</label>
+              <input type="date" name="dob" required
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all text-gray-600">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Institution / College *</label>
+              <input type="text" name="institution" required placeholder="Name of your institution"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Full Address *</label>
+            <textarea name="address" required placeholder="Complete Residential Address" rows="3"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Technical Skills *</label>
+              <input type="text" name="technical_skills" required placeholder="e.g. Graphic Design, Video Editing, Python"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">General Skills *</label>
+              <input type="text" name="general_skills" required placeholder="e.g. Communication, Event Management"
+                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Motivation *</label>
+            <textarea name="motivation" required placeholder="Why do you want to be a Campus Ambassador?" rows="4"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Upload CV *</label>
+            <input type="file" name="cv" required accept=".pdf,.doc,.docx"
+              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary file:text-white hover:file:bg-primary-dark">
+          </div>
+
+          <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
+            Submit Application
+          </button>
+
+        </form>
       </div>
 
 >>>>>>> origin/mohit-soni
