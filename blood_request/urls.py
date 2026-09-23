@@ -4,7 +4,7 @@ urlpatterns = [
     path('donor-search/', views.index, name='index'),
     path('api/register/', views.register_donor, name='register_donor'),
     path('api/search/', views.search_donors, name='search_donors'),
-    path('api/certificate/lookup/', views.certificate_lookup, name='certificate_lookup'),
+
     path('api/notes/', views.personal_notes_api, name='personal_notes_api'),
     path('projects/', views.projects_page, name='projects'),
 
@@ -49,10 +49,4 @@ urlpatterns = [
     path('appreciation-and-accolades/', views.appreciationandaccolades, name='appreciationandaccolades'),
     path('our-activities/', views.our_activities, name='our_activities'),
      path("blood-donation/", views.blood_donation, name="blood_donation"),
-     path("api/ngo/register/", views.ngo_register, name="ngo_register"),
-    path("api/bloodbank/register/", views.bloodbank_register, name="bloodbank_register"),
-    path("api/camp-rsvp/", views.camp_rsvp, name="camp_rsvp"),
-    path("api/alerts/subscribe/", views.alerts_subscribe, name="alerts_subscribe"),
-    path("api/blood-request/", views.blood_request_submit, name="blood_request_submit"),
-     path("api/newsletter/subscribe/", views.newsletter_subscribe, name="newsletter_subscribe"),
 ]
