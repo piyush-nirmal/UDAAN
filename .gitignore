@@ -1,2 +1,5 @@
-﻿.env
+.env
 ai_chatbot/.env
+udaan.db
+__pycache__/
+*.pyc
