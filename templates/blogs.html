@@ -39,7 +39,6 @@
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-<<<<<<< HEAD
   /* ========================================
    SCROLL REVEAL ANIMATIONS
 ======================================== */
@@ -52,15 +51,12 @@
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-=======
->>>>>>> origin/mohit-soni
 .reveal.active {
   opacity: 1;
   visibility: visible;
   transform: translate(0, 0) scale(1);
 }
 
-<<<<<<< HEAD
 
 /* From Left */
 .reveal-left {
@@ -72,15 +68,12 @@
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-=======
->>>>>>> origin/mohit-soni
 .reveal-left.active {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
 }
 
-<<<<<<< HEAD
 
 /* From Right */
 .reveal-right {
@@ -92,15 +85,12 @@
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-=======
->>>>>>> origin/mohit-soni
 .reveal-right.active {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
 }
 
-<<<<<<< HEAD
 
 /* From Bottom */
 .reveal-bottom {
@@ -112,15 +102,12 @@
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-=======
->>>>>>> origin/mohit-soni
 .reveal-bottom.active {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-<<<<<<< HEAD
 
 /* Scale */
 .reveal-scale {
@@ -132,8 +119,6 @@
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-=======
->>>>>>> origin/mohit-soni
 .reveal-scale.active {
   opacity: 1;
   visibility: visible;
@@ -181,10 +166,6 @@
 
 {% block content %}
 <!-- Modern Hero Section -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/tushar
 <section class="subpage-hero" style="background-image: url('{% static 'images/heroes/blogs_hero.jpg' %}');" data-aos="fade-up">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 relative z-10 text-center">
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wide uppercase mb-4">
@@ -192,31 +173,6 @@
         </div>
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-4 text-white" style="font-family: 'Inter', sans-serif;">Our Blog</h1>
         <p class="text-lg md:text-xl leading-relaxed text-gray-200">Read stories of impact, project field diaries, and operational updates from our campaigns.</p>
-<<<<<<< HEAD
-=======
-<section class="relative bg-white border-b border-[#E8E8E8] pt-12 pb-16 overflow-hidden reveal-bottom">
-  <!-- Decorative Leaf SVG (Low Opacity) -->
-  <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
-    <svg width="400" height="400" viewBox="0 0 240 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M-40,320 C40,280 80,180 60,80 C110,130 140,220 120,300 C150,230 200,160 260,140 C210,200 170,270 120,320" fill="#0B6B3A" />
-      <path d="M-80,240 C0,200 40,120 20,40 C60,85 90,160 70,230" fill="#0B6B3A" />
-    </svg>
-  </div>
-
-  <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-    <div class="max-w-3xl space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF8F1] text-[#0B6B3A] text-xs font-bold tracking-wide uppercase reveal-left">
-        <i class="fa-solid fa-book-open"></i> NGO Journal
-      </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight reveal-left" style="font-family: 'Inter', sans-serif;">
-        Our Blog
-      </h1>
-      <p class="text-lg text-gray-500 leading-relaxed max-w-xl reveal-left">
-        Read stories of impact, project field diaries, and operational updates from our campaigns.
-      </p>
->>>>>>> origin/mohit-soni
-=======
->>>>>>> origin/tushar
     </div>
 </section>
 
@@ -251,30 +207,17 @@
     </div>
   </div>
 
-<<<<<<< HEAD
   <!-- Blogs Cards Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
     {% for blog in blogs %}
     
     <!-- Blog Card -->
     <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card reveal-bottom" data-title="{{ blog.title|lower }}" data-desc="{{ blog.description|lower }}">
-=======
-
-  <!-- <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
-    {% for blog in blogs %}
-    
-
-    <article class="glass-card flex flex-col justify-between h-full rounded-2xl overflow-hidden group blog-card reveal-bottom" data-title="{{ blog.display_title|lower }}" data-desc="{{ blog.description|lower }}" data-category="{{ blog.category }}">
->>>>>>> origin/mohit-soni
       <a href="{% url 'blog_detail' blog.id %}" class="block h-full flex flex-col justify-between">
         <div>
           <div class="h-48 overflow-hidden bg-gray-50 relative blog-image-container border-b border-[#E8E8E8] reveal-scale">
             {% if blog.image %}
-<<<<<<< HEAD
             <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover">
-=======
-            <img src="{{ blog.image.url }}" alt="{{ blog.display_title }}" class="w-full h-full object-cover">
->>>>>>> origin/mohit-soni
             {% else %}
             <div class="w-full h-full bg-[#EEF8F1] flex items-center justify-center text-[#0B6B3A] text-4xl opacity-50">
               <i class="fa-solid fa-newspaper"></i>
@@ -283,13 +226,8 @@
           </div>
           
           <div class="p-6 pb-4 space-y-3 reveal-bottom">
-<<<<<<< HEAD
             <span class="text-[#0B6B3A] font-bold text-[11px] uppercase tracking-widest block">Update</span>
             <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ blog.title }}</h3>
-=======
-            <span class="text-[#0B6B3A] font-bold text-[11px] uppercase tracking-widest block">{{ blog.get_category_display }}</span>
-            <h3 class="text-lg font-bold text-gray-900 leading-snug line-clamp-2" style="font-family: 'Inter', sans-serif;">{{ blog.display_title }}</h3>
->>>>>>> origin/mohit-soni
             <p class="text-gray-500 text-sm leading-relaxed line-clamp-3">{{ blog.description }}</p>
           </div>
         </div>
@@ -315,17 +253,12 @@
       <p class="text-sm text-gray-500">Check back later for new stories and updates.</p>
     </div>
     {% endfor %}
-<<<<<<< HEAD
   </div>
-=======
-  </div> -->
->>>>>>> origin/mohit-soni
 
 </div>
 
 <!-- Filter Javascript -->
 <script>
-<<<<<<< HEAD
   function filterBlogs(query) {
     const cleanQuery = query.toLowerCase().trim();
     document.querySelectorAll('.blog-card').forEach(card => {
@@ -340,49 +273,16 @@
   }
 
   function filterCategory(cat) {
-=======
-  // Keeps the search box and the category tabs in sync with each other,
-  // instead of each one overwriting what the other just did.
-  let activeCategory = 'all';
-  let activeQuery = '';
-
-  function applyFilters() {
-    document.querySelectorAll('.blog-card').forEach(card => {
-      const title = card.getAttribute('data-title');
-      const desc = card.getAttribute('data-desc');
-      const cardCategory = card.getAttribute('data-category');
-
-      const matchesCategory = (activeCategory === 'all') || (cardCategory === activeCategory);
-      const matchesQuery = !activeQuery || title.includes(activeQuery) || desc.includes(activeQuery);
-
-      card.style.display = (matchesCategory && matchesQuery) ? 'flex' : 'none';
-    });
-  }
-
-  function filterBlogs(query) {
-    activeQuery = query.toLowerCase().trim();
-    applyFilters();
-  }
-
-  function filterCategory(cat) {
-    activeCategory = cat;
-
->>>>>>> origin/mohit-soni
     // Styling tags active states
     document.querySelectorAll('.category-btn').forEach(btn => {
       btn.classList.remove('bg-[#EEF8F1]', 'text-[#0B6B3A]', 'border-[#0B6B3A]');
       btn.classList.add('border-gray-200', 'text-gray-600');
     });
-<<<<<<< HEAD
     
-=======
-
->>>>>>> origin/mohit-soni
     // Add active styling back to selected target
     event.currentTarget.classList.add('bg-[#EEF8F1]', 'text-[#0B6B3A]', 'border-[#0B6B3A]');
     event.currentTarget.classList.remove('border-gray-200', 'text-gray-600');
 
-<<<<<<< HEAD
     if (cat === 'all') {
       document.querySelectorAll('.blog-card').forEach(c => c.style.display = 'flex');
     } else {
@@ -396,9 +296,6 @@
         }
       });
     }
-=======
-    applyFilters();
->>>>>>> origin/mohit-soni
   }
 </script>
 

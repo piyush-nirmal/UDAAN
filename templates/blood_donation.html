@@ -2026,643 +2026,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
     cursor: not-allowed;
     transform: none !important;
   }
-<<<<<<< HEAD
-=======
-
-  /* =========================================================
-     BLOOD DONATION PAGE POLISH / RESPONSIVE FIXES
-  ========================================================= */
-  .req-reg {
-    width: 100%;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 18px 28px 40px;
-    gap: 28px;
-    background: #f8efeb;
-  }
-  .donor-section,
-  .request-section {
-    min-width: 0;
-    flex: 1 1 0;
-    padding: 58px 0 54px;
-    background: transparent;
-  }
-  .blood-form {
-    box-sizing: border-box;
-    max-width: none;
-    width: 100%;
-    min-height: 100%;
-    padding: 28px;
-    border-radius: 22px;
-    background: #fffdfb;
-    border: 1px solid #eadbd6;
-    box-shadow: 0 14px 35px rgba(55,16,29,.08);
-  }
-  .form-grid {
-    gap: 16px;
-  }
-  .input-group input,
-  .input-group select {
-    height: 56px;
-    box-sizing: border-box;
-    background: #fff;
-  }
-  .input-group select {
-    appearance: auto;
-    cursor: pointer;
-  }
-  .consent {
-    align-items: flex-start;
-  }
-  .form-btn {
-    min-height: 50px;
-  }
-
-  /* Cleaner page backgrounds */
-  .camps-section,
-  .requests-board,
-  .how-section,
-  .faq-section,
-  .newsletter-section,
-  .alerts-section {
-    background: #fbf5f1;
-  }
-  .certificate-section {
-    background: #f7eee9;
-    padding-top: 72px;
-    padding-bottom: 72px;
-  }
-  .certificate-panel {
-    max-width: 860px;
-    padding: 42px;
-    background: #fffaf7;
-    box-shadow: 0 18px 45px rgba(55,16,29,.08);
-  }
-
-  /* How it works: clear interactive cards */
-  .how-container {
-    gap: 18px;
-  }
-  .how-step {
-    width: 205px;
-    min-height: 220px;
-    margin: 0;
-    padding: 28px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .how-step:focus-visible {
-    outline: 3px solid rgba(200,32,63,.25);
-    outline-offset: 3px;
-  }
-  .how-step::after {
-    content: "Click to learn more";
-    display: block;
-    margin-top: 14px;
-    color: var(--crimson);
-    font-size: 10px;
-    font-weight: 700;
-    opacity: .75;
-  }
-
-  /* Professional popup */
-  .custom-modal,
-  .eligibility-modal {
-    padding: 20px;
-    box-sizing: border-box;
-    backdrop-filter: blur(7px);
-  }
-  .custom-card,
-  .eligibility-card {
-    max-height: min(86vh, 680px);
-    overflow-y: auto;
-    border: 1px solid #eadbd6;
-    box-shadow: 0 30px 80px rgba(36,16,22,.25);
-  }
-  .custom-card {
-    width: min(520px, 100%);
-    padding: 38px 34px 34px;
-  }
-  .eligibility-card {
-    max-width: 500px;
-    padding: 38px 34px 34px;
-  }
-  .close {
-    width: 38px;
-    height: 38px;
-    top: 14px;
-    right: 14px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: #f8eeea;
-    color: var(--wine);
-    font-size: 24px;
-    transition: .2s ease;
-  }
-  .close:hover {
-    background: #fbe0e4;
-    color: var(--crimson);
-    transform: rotate(90deg);
-  }
-  .modal-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 18px;
-    border-radius: 20px;
-    display: grid;
-    place-items: center;
-    background: #fbe5e9;
-    color: var(--crimson);
-    font-size: 27px;
-  }
-  .custom-card h2,
-  .eligibility-card h3 {
-    color: var(--ink);
-    font-size: 24px;
-    font-weight: 800;
-  }
-  .search-form button,
-  .custom-card button {
-    min-height: 48px;
-  }
-  .donor-results {
-    margin-top: 18px;
-    max-height: 280px;
-    overflow-y: auto;
-  }
-  .donor-card {
-    background: #fff;
-  }
-  .donor-card .donor-distance {
-    color: var(--mint);
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .donor-card button {
-    margin-top: 0;
-    white-space: nowrap;
-  }
-  .eligibility-card .answers button {
-    min-width: 105px;
-    min-height: 46px;
-  }
-  .result-area p {
-    color: var(--ink-soft) !important;
-    line-height: 1.6;
-  }
-
-  /* Certificate preview */
-  .cert-preview {
-    padding: 18px;
-    background: #fff;
-  }
-  .cert-preview .cert-frame {
-    position: relative;
-    padding: 42px 28px;
-    border: 4px solid var(--crimson);
-    border-radius: 16px;
-    background: linear-gradient(135deg,#fff,#fff8f3);
-    box-shadow: inset 0 0 0 7px #fff, inset 0 0 0 9px #efd7cc;
-  }
-  .cert-preview .cert-frame::before,
-  .cert-preview .cert-frame::after {
-    content: "✦";
-    position: absolute;
-    color: var(--gold);
-    font-size: 28px;
-  }
-  .cert-preview .cert-frame::before { top: 18px; left: 24px; }
-  .cert-preview .cert-frame::after { bottom: 18px; right: 24px; }
-  .cert-preview .cert-heading {
-    font-size: 27px;
-    color: var(--wine);
-  }
-  .cert-preview .cert-name {
-    font-family: var(--font-display);
-    font-size: 30px;
-    color: var(--crimson-dark);
-    margin: 18px 0 12px;
-  }
-  .download-cert-btn {
-    margin-top: 16px;
-    min-height: 48px;
-  }
-
-  @media (max-width: 980px) {
-    .req-reg { padding: 10px 18px 28px; }
-    .donor-section,
-    .request-section { flex: 1 1 100%; padding: 42px 0 28px; }
-  }
-  @media (max-width: 640px) {
-    .req-reg { padding: 0 12px 24px; gap: 0; }
-    .blood-form { padding: 20px 16px; }
-    .form-title { font-size: 22px; }
-    .how-step { width: min(100%, 330px); }
-    .certificate-panel { padding: 28px 18px; }
-    .cert-preview .cert-frame { padding: 34px 14px; }
-    .cert-preview .cert-heading { font-size: 22px; }
-    .cert-preview .cert-name { font-size: 24px; }
-  }
-
-
-  .requests-board {
-    padding: 58px 24px 52px;
-    background: #fbf5f1;
-  }
-  .requests-board .request-card {
-    min-height: 118px;
-  }
-  .requests-board .requests-grid > div[style*="grid-column"] {
-    max-width: 560px;
-    margin: 8px auto 0;
-    padding: 30px 28px !important;
-    background: #fffaf7;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    box-shadow: var(--shadow-soft);
-    grid-column: 1 / -1;
-  }
-  .requests-board .requests-grid > div[style*="grid-column"] i {
-    display: inline-grid;
-    place-items: center;
-    width: 54px;
-    height: 54px;
-    margin-bottom: 12px !important;
-    border-radius: 50%;
-    background: var(--mint-soft);
-  }
-  .requests-board .requests-grid > div[style*="grid-column"] p {
-    margin: 0;
-    color: var(--ink-soft);
-    font-size: 13px;
-  }
-  .section.alert {
-    width: min(820px, calc(100% - 40px));
-    box-sizing: border-box;
-    margin: 34px auto 72px;
-    padding: 38px 34px;
-    background: linear-gradient(135deg, #fff8f6, #ffe9eb);
-  }
-  .section.alert h2 {
-    font-size: 28px;
-    margin-bottom: 12px;
-  }
-  .section.alert p {
-    max-width: 650px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
-  }
-  .section.alert .btn {
-    min-width: 175px;
-  }
-  .search-loading,
-  .empty-donors {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    padding: 24px 12px;
-    color: var(--ink-soft);
-    text-align: center;
-  }
-  .search-loading i,
-  .empty-donors > i {
-    color: var(--crimson);
-    font-size: 22px;
-  }
-  .empty-donors strong { color: var(--ink); }
-  .empty-donors span { font-size: 12px; }
-
-
-  /* =========================================================
-     FINAL BLOOD DONATION UI — CLEAN, LIGHT, RESPONSIVE
-  ========================================================= */
-  :root {
-    --ui-red: #d21f3c;
-    --ui-red-dark: #a9152f;
-    --ui-rose: #fff2f4;
-    --ui-bg: #fffaf8;
-    --ui-card: #ffffff;
-    --ui-border: #f1d9dc;
-    --ui-text: #24151a;
-    --ui-muted: #7b6870;
-    --ui-green: #16a46f;
-  }
-
-  body { background: #fffaf8 !important; }
-  .breadcrumb { display: none; }
-  .header-action-bar {
-    background: linear-gradient(135deg, #4a0c1d 0%, #651126 100%) !important;
-    border: 0 !important;
-    box-shadow: 0 8px 28px rgba(55,16,29,.14) !important;
-    padding: 14px 0 !important;
-  }
-  .header-action-container { max-width: 1440px !important; padding: 0 34px !important; }
-  .din-tracker {
-    background: #fff !important;
-    border: 0 !important;
-    border-radius: 999px !important;
-    height: 56px !important;
-    max-width: 385px !important;
-    box-shadow: 0 4px 16px rgba(0,0,0,.08) !important;
-  }
-  .din-tracker i { color: var(--ui-red) !important; font-size: 16px !important; min-width: 42px; text-align: center; }
-  .din-tracker input { color: var(--ui-text) !important; height: 100%; }
-  .din-tracker button {
-    background: var(--ui-red) !important; border-radius: 999px !important; margin: 5px !important;
-    min-width: 104px; height: 46px; justify-content: center; font-size: 14px !important;
-  }
-  .din-tracker button:hover { background: var(--ui-red-dark) !important; }
-  .header-cta { gap: 12px !important; }
-  .cta-btn { border-radius: 999px !important; padding: 12px 24px !important; }
-  .request-btn { background: var(--ui-red) !important; }
-  .donor-btn { background: transparent !important; border: 1px solid rgba(255,255,255,.55) !important; }
-
-  .req-reg {
-    max-width: 1440px !important; padding: 56px 34px 42px !important; gap: 28px !important;
-    background: linear-gradient(180deg,#fff8f5 0%,#fffaf8 100%) !important;
-    align-items: stretch !important;
-  }
-  .donor-section, .request-section {
-    flex: 1 1 0 !important; padding: 26px 0 30px !important; min-width: 0 !important;
-  }
-  .donor-section { padding-right: 0 !important; }
-  .request-section { padding-left: 0 !important; }
-  .req-reg .eyebrow { margin-bottom: 10px !important; }
-  .form-title { font-size: 27px !important; margin: 0 0 26px !important; }
-  .blood-form {
-    width: 100% !important; min-height: 0 !important; padding: 30px !important;
-    background: rgba(255,255,255,.96) !important; border: 1px solid var(--ui-border) !important;
-    border-radius: 22px !important; box-shadow: 0 16px 40px rgba(92,31,45,.08) !important;
-  }
-  .form-grid { grid-template-columns: repeat(2,minmax(0,1fr)) !important; gap: 14px !important; }
-  .input-group input, .input-group select {
-    height: 54px !important; border: 1px solid #eedcdf !important; border-radius: 12px !important;
-    background: #fff !important; color: var(--ui-text) !important;
-  }
-  .input-group input:focus, .input-group select:focus { border-color: #e33a55 !important; box-shadow: 0 0 0 4px rgba(210,31,60,.08) !important; }
-  .input-group i { color: var(--ui-red) !important; }
-  .consent { color: #6f5d63 !important; line-height: 1.5 !important; font-size: 12.5px !important; }
-  .form-btn { width: 100% !important; min-height: 50px !important; border-radius: 12px !important; background: linear-gradient(135deg,#d91e3e,#c41435) !important; }
-  .toggle-row { background: #fff7f8 !important; border: 1px solid #f1dce0 !important; border-radius: 12px !important; padding: 11px 14px !important; }
-
-  /* Emergency alert: full-width instead of narrow side panel */
-  .section.alert.emergency-alert-card {
-    width: min(1368px, calc(100% - 68px)) !important; margin: 8px auto 34px !important;
-    padding: 24px 28px !important; display: grid !important;
-    grid-template-columns: 112px minmax(0,1.5fr) minmax(340px,1fr) !important;
-    align-items: center !important; gap: 24px !important; text-align: left !important;
-    background: linear-gradient(135deg,#fff1f2 0%,#fff9f8 100%) !important;
-    border: 1px solid #f1bcc5 !important; border-left: 5px solid var(--ui-red) !important;
-    border-radius: 22px !important; box-shadow: 0 14px 34px rgba(160,30,55,.08) !important;
-  }
-  .emergency-alert-icon { width: 94px; height: 94px; border-radius: 24px; display:grid; place-items:center; font-size: 50px; background:#fff; box-shadow:0 8px 22px rgba(210,31,60,.12); }
-  .emergency-badge { display:inline-flex; padding:5px 10px; border-radius:999px; background:#d21f3c; color:#fff; font-size:10px; font-weight:800; letter-spacing:.08em; }
-  .emergency-alert-copy h2 { margin:8px 0 6px !important; font-size:25px !important; color:#3a111b !important; }
-  .emergency-alert-copy p { margin:0 !important; color:#735d64 !important; line-height:1.55 !important; }
-  .emergency-alert-meta { display:flex; flex-wrap:wrap; gap:12px 18px; margin-top:12px; color:#735d64; font-size:11.5px; font-weight:700; }
-  .emergency-alert-meta i { color:var(--ui-red); margin-right:5px; }
-  .emergency-alert-actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; align-items:center; }
-  .emergency-alert-actions .btn { margin:0 !important; min-height:48px; border-radius:12px !important; padding:12px 18px !important; }
-  .emergency-primary { background:var(--ui-red) !important; color:#fff !important; border:0 !important; }
-  .emergency-secondary { background:#fff !important; color:var(--ui-red) !important; border:1px solid #e3a8b2 !important; }
-  #alertMsg { width:100%; color:var(--ui-green); font-size:12px; font-weight:700; text-align:right; }
-
-  /* Alerts subscription panel */
-  .alerts-section { padding: 34px 34px 48px !important; background:#fffaf8 !important; }
-  .alerts-panel { max-width:1120px !important; padding:28px !important; display:grid; grid-template-columns: 72px 1fr; gap:6px 18px; text-align:left; background:#fff !important; border:1px solid var(--ui-border) !important; box-shadow:0 14px 34px rgba(92,31,45,.07) !important; }
-  .alerts-panel .alerts-icon { width:62px !important; height:62px !important; margin:0 !important; grid-row:1/4; background:#e9fbf2 !important; color:#16a46f !important; }
-  .alerts-panel h2 { color:#3a111b !important; margin:4px 0 2px !important; }
-  .alerts-panel p { color:var(--ui-muted) !important; max-width:none !important; margin:0 0 12px !important; }
-  .alerts-form { grid-column:1/-1; grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:12px !important; }
-  .alerts-channels { grid-column:1/-1; justify-content:flex-start !important; color:#5f4e55 !important; }
-  .alerts-channels label { color:#5f4e55 !important; }
-  .alerts-submit { grid-column:1/-1; border-radius:12px !important; background:#20c96a !important; min-height:48px !important; font-weight:800 !important; }
-
-  /* Impact section — lighter, more readable */
-  .impact { padding:58px 34px 64px !important; background:linear-gradient(135deg,#7b1230,#4a0c1d) !important; }
-  .impact-wrapper { gap:16px !important; }
-  .impact-card { width:min(220px,100%) !important; background:rgba(255,255,255,.09) !important; border-color:rgba(255,255,255,.18) !important; }
-
-  /* How it works */
-  .how-section { padding:62px 34px !important; background:#fffaf8 !important; }
-  .how-container { max-width:1100px !important; gap:14px !important; }
-  .how-step { width:calc(25% - 11px) !important; min-height:225px !important; background:#fff !important; border-radius:18px !important; }
-  .how-step::after { content:"Open details →" !important; }
-
-  /* Modals: reliable close + polished UI */
-  .custom-modal, .eligibility-modal { z-index:2000 !important; background:rgba(40,12,20,.42) !important; backdrop-filter:blur(10px) !important; }
-  .custom-card, .eligibility-card { position:relative !important; width:min(540px,calc(100% - 24px)) !important; border-radius:24px !important; background:#fff !important; }
-  .close { z-index:10 !important; cursor:pointer !important; user-select:none !important; }
-  .close:hover { transform:rotate(90deg) scale(1.04) !important; }
-  .search-form select, .search-form input { min-height:50px !important; border:1px solid #efdce0 !important; border-radius:12px !important; }
-  .search-form button, .custom-card button:not(.close), .eligibility-card .answers button { border-radius:12px !important; background:var(--ui-red) !important; color:#fff !important; border:0 !important; }
-  .eligibility-card .answers button:last-child { background:#fff1f3 !important; color:var(--ui-red) !important; }
-
-  /* Certificate: visible default certificate */
-  .certificate-section { padding:60px 34px !important; background:#fffaf8 !important; }
-  .certificate-panel { max-width:1040px !important; padding:34px !important; background:#fff !important; border:1px solid var(--ui-border) !important; border-radius:24px !important; }
-  .certificate-panel h2 { color:#35121b !important; }
-  .certificate-panel > p { color:var(--ui-muted) !important; max-width:760px; margin-left:auto; margin-right:auto; }
-  .cert-form { max-width:720px; margin:20px auto 0; }
-  .cert-preview { display:block !important; margin-top:26px !important; border:0 !important; background:#fffaf8 !important; border-radius:18px !important; }
-  .cert-frame { min-height:280px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
-  .download-cert-btn { background:var(--ui-red) !important; border-radius:12px !important; padding:13px 24px !important; }
-
-  @media (max-width: 1050px) {
-    .section.alert.emergency-alert-card { grid-template-columns:90px 1fr; }
-    .emergency-alert-actions { grid-column:1/-1; justify-content:flex-start; }
-    .how-step { width:calc(50% - 8px) !important; }
-    .alerts-form { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
-  }
-  @media (max-width: 760px) {
-    .header-action-container { padding:0 14px !important; }
-    .header-action-container, .header-cta { flex-direction:column !important; align-items:stretch !important; }
-    .din-tracker { max-width:none !important; width:100% !important; }
-    .header-cta { display:grid !important; grid-template-columns:1fr 1fr; }
-    .cta-btn { justify-content:center !important; }
-    .req-reg { padding:30px 14px !important; gap:8px !important; }
-    .donor-section, .request-section { padding:22px 0 !important; }
-    .form-grid { grid-template-columns:1fr !important; }
-    .blood-form { padding:20px !important; }
-    .section.alert.emergency-alert-card { width:calc(100% - 28px) !important; grid-template-columns:1fr !important; text-align:center !important; padding:22px 18px !important; }
-    .emergency-alert-icon { margin:auto; }
-    .emergency-alert-actions { grid-column:auto; justify-content:center; }
-    #alertMsg { text-align:center; }
-    .alerts-section, .certificate-section, .how-section { padding-left:14px !important; padding-right:14px !important; }
-    .alerts-panel { display:block !important; padding:22px !important; }
-    .alerts-panel .alerts-icon { margin:0 auto 12px !important; }
-    .alerts-panel h2, .alerts-panel p { text-align:center; }
-    .alerts-form { grid-template-columns:1fr !important; }
-    .how-step { width:100% !important; }
-    .cert-form { grid-template-columns:1fr !important; }
-  }
-
-
-/* ===== FINAL BLOOD DONATION FRONTEND POLISH ===== */
-.din-tracker .din-icon, .din-tracker .track-icon {
-  width: 22px !important; height: 22px !important; min-width: 22px !important;
-  display: inline-flex !important; align-items:center !important; justify-content:center !important;
-  flex: 0 0 22px !important;
-}
-.din-tracker .din-icon svg, .din-tracker .track-icon svg {
-  width: 19px !important; height: 19px !important; display:block !important;
-  fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;
-  stroke-linecap: round !important; stroke-linejoin: round !important;
-}
-.din-tracker .din-icon { color: var(--ui-red) !important; margin-left: 15px !important; }
-.din-tracker .track-icon { color:#fff !important; margin-right:7px !important; }
-.din-tracker button { display:inline-flex !important; align-items:center !important; gap:4px !important; }
-
-/* Light, balanced impact area */
-.impact-light { background:linear-gradient(180deg,#fff8f6 0%,#fff 100%) !important; color:var(--ui-text) !important; padding:64px 34px 70px !important; }
-.impact-light .eyebrow { color:var(--ui-red) !important; }
-.impact-light .section-title h2 { color:#35121b !important; margin-bottom:8px !important; }
-.impact-light .section-title p { max-width:720px; margin:0 auto 30px; color:var(--ui-muted); line-height:1.65; }
-.impact-light .impact-wrapper { display:grid !important; grid-template-columns:repeat(4,minmax(0,1fr)) !important; max-width:1100px !important; margin:0 auto !important; gap:16px !important; }
-.impact-light .impact-card { width:auto !important; min-height:180px !important; background:#fff !important; color:#35121b !important; border:1px solid #f0dfe1 !important; border-radius:20px !important; box-shadow:0 12px 30px rgba(80,25,40,.07) !important; padding:24px 18px !important; }
-.impact-light .impact-card i { color:var(--ui-red) !important; }
-.impact-light .impact-card h3 { color:#c8203f !important; margin:12px 0 4px !important; }
-.impact-light .impact-card p { color:#3f2930 !important; font-weight:800 !important; margin:0 0 5px !important; }
-.impact-light .impact-card span { color:#8b747a !important; font-size:11px !important; }
-
-/* Community section */
-.community-section { padding:56px 34px 70px !important; background:#fffaf8 !important; }
-.community-panel { max-width:1200px !important; margin:auto !important; display:grid !important; grid-template-columns:minmax(0,1.15fr) minmax(360px,1fr) !important; align-items:center !important; gap:42px !important; padding:28px 32px !important; border:1px solid #f0cfd4 !important; border-radius:24px !important; background:linear-gradient(135deg,#fff1f3 0%,#fffaf8 100%) !important; box-shadow:0 14px 36px rgba(80,25,40,.07) !important; text-align:left !important; }
-.community-visual { width:96px; height:96px; border-radius:28px; display:grid; place-items:center; background:#fff; box-shadow:0 10px 24px rgba(210,31,60,.10); font-size:48px; }
-.community-badge { display:inline-flex; padding:5px 10px; border-radius:999px; background:#d21f3c; color:#fff; font-size:10px; font-weight:800; letter-spacing:.06em; }
-.community-copy h2 { margin:10px 0 10px !important; color:#35121b !important; font-size:clamp(27px,3vw,36px) !important; line-height:1.18 !important; }
-.community-copy p { margin:0 !important; max-width:600px !important; color:#735d64 !important; line-height:1.7 !important; font-size:14px !important; }
-.community-points { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; color:#6d565e; font-size:11.5px; font-weight:700; }
-.community-points i { color:var(--ui-red); margin-right:5px; }
-.community-form-wrap { min-width:0 !important; }
-.community-form-wrap label { display:block; margin-bottom:10px; color:#4a3038; font-size:12px; font-weight:800; }
-.community-form-wrap .newsletter-box { display:flex !important; gap:9px !important; margin:0 !important; }
-.community-form-wrap .newsletter-box input { flex:1; min-width:0; height:50px; border:1px solid #ecd9dd; border-radius:12px; padding:0 14px; background:#fff; }
-.community-form-wrap .newsletter-box button { white-space:nowrap; height:50px; border:0; border-radius:12px; padding:0 17px; background:var(--ui-red); color:#fff; font-weight:800; cursor:pointer; }
-#newsletterMsg { margin-top:8px !important; font-size:12px !important; }
-
-/* Emergency alert: readable content and proper hierarchy */
-.section.alert.emergency-alert-card { grid-template-columns:110px minmax(0,1.5fr) 270px !important; min-height:150px !important; }
-.emergency-alert-icon { width:96px !important; height:96px !important; font-size:48px !important; }
-.emergency-alert-copy { min-width:0 !important; }
-.emergency-alert-copy h2 { font-size:27px !important; line-height:1.2 !important; }
-.emergency-alert-copy p { max-width:650px !important; font-size:13px !important; }
-.emergency-alert-actions { align-self:center !important; }
-.emergency-alert-actions .btn { width:100% !important; }
-#alertMsg { text-align:center !important; min-height:18px !important; }
-
-/* Make every modal close control clickable and visible */
-.custom-modal .close, .eligibility-modal .close { position:absolute !important; top:14px !important; right:16px !important; width:38px !important; height:38px !important; display:grid !important; place-items:center !important; border-radius:50% !important; background:#fff3f5 !important; color:#a9152f !important; font-size:27px !important; line-height:1 !important; cursor:pointer !important; z-index:9999 !important; pointer-events:auto !important; }
-
-@media (max-width:900px){
-  .impact-light .impact-wrapper { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
-  .community-panel { grid-template-columns:1fr !important; gap:24px !important; }
-  .community-form-wrap { grid-column:auto; }
-}
-@media (max-width:600px){
-  .impact-light .impact-wrapper { grid-template-columns:1fr !important; }
-  .community-panel { grid-template-columns:1fr !important; text-align:center !important; padding:24px 18px !important; }
-  .community-visual { margin:auto; }
-  .community-points { grid-template-columns:1fr; justify-items:center; }
-  .community-form-wrap .newsletter-box { flex-direction:column !important; }
-  .community-form-wrap .newsletter-box button { width:100%; }
-  .section.alert.emergency-alert-card { grid-template-columns:1fr !important; text-align:center !important; }
-  .emergency-alert-icon { margin:auto; }
-}
-
-/* INLINE CAMPS V3 FIX */
-/* =========================================================
-   CAMPS / EVENTS — V3 POLISHED NO-IMAGE UI
-   Explicitly resets legacy camp styles to prevent layout collisions.
-========================================================= */
-.camps-section-v3 {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 86px 28px 76px !important;
-  background: #fffaf7 !important;
-  text-align: center;
-}
-.camps-section-v3 * { box-sizing: border-box; }
-.camps-heading-v3 { max-width: 820px; margin: 0 auto 40px; }
-.camps-eyebrow-v3 { justify-content: center; color: #d21f3c !important; letter-spacing: .18em; font-weight: 800; font-size: 13px; }
-.camps-heading-v3 h2 {
-  margin: 10px 0 12px !important;
-  color: #24121a !important;
-  font-size: clamp(30px, 4vw, 44px) !important;
-  line-height: 1.15 !important;
-  font-weight: 800 !important;
-}
-.camps-heading-v3 h2 i { color: #d21f3c; margin-right: 8px; }
-.camps-heading-v3 p { margin: 0 auto; max-width: 680px; color: #765f67; font-size: 15px; line-height: 1.7; }
-.camps-grid-v3 {
-  width: 100%; max-width: 1180px; margin: 0 auto;
-  display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 24px !important; align-items: stretch !important;
-}
-.camp-card-v3 {
-  width: 100% !important; min-width: 0 !important; min-height: 0 !important;
-  display: flex !important; flex-direction: column !important;
-  padding: 28px 26px 22px !important;
-  margin: 0 !important; background: #fff !important;
-  border: 1px solid #f1dadd !important; border-radius: 22px !important;
-  box-shadow: 0 14px 35px rgba(78, 25, 40, .07) !important;
-  text-align: left !important; overflow: hidden !important;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease !important;
-}
-.camp-card-v3:hover { transform: translateY(-6px); border-color: #e99baa !important; box-shadow: 0 20px 42px rgba(78,25,40,.12) !important; }
-.camp-card-v3.featured-camp-v3 { border-color: #ed9aaa !important; box-shadow: 0 18px 42px rgba(210,31,60,.10) !important; }
-.camp-main-v3 { display: grid !important; grid-template-columns: 92px minmax(0,1fr) !important; gap: 20px !important; align-items: start !important; }
-.camp-date-v3 {
-  width: 92px !important; height: 112px !important; flex: none !important;
-  display: flex !important; flex-direction: column !important; justify-content: center !important; align-items: center !important;
-  border-radius: 18px !important; background: linear-gradient(145deg,#a90f2c,#d21f3c) !important;
-  color: #fff !important; box-shadow: 0 10px 22px rgba(169,15,44,.20) !important;
-}
-.camp-date-v3 .day { display:block !important; font-size: 32px !important; line-height: 1 !important; font-weight: 800 !important; color:#fff !important; }
-.camp-date-v3 .month { display:block !important; margin-top: 7px !important; font-size: 13px !important; font-weight: 800 !important; letter-spacing: .08em !important; color:#fff !important; }
-.camp-content-v3 { min-width: 0 !important; }
-.camp-type-v3 { display:inline-flex !important; align-items:center !important; gap:6px !important; padding:6px 10px !important; border-radius:999px !important; background:#fff0f2 !important; color:#c71e3b !important; font-size:10px !important; font-weight:800 !important; letter-spacing:.05em !important; white-space:nowrap !important; }
-.camp-content-v3 h3 { margin: 12px 0 18px !important; color:#24121a !important; font-size:20px !important; line-height:1.28 !important; font-weight:800 !important; }
-.camp-detail-v3 { display:flex !important; align-items:flex-start !important; gap:10px !important; margin:11px 0 !important; color:#5f5056 !important; font-size:13px !important; line-height:1.45 !important; }
-.camp-detail-v3 i { flex:0 0 17px !important; width:17px !important; color:#d21f3c !important; text-align:center !important; margin-top:2px !important; }
-.camp-footer-v3 { display:flex !important; align-items:center !important; justify-content:space-between !important; gap:10px !important; margin-top: auto !important; padding-top:18px !important; border-top:1px dashed #eadcdf !important; }
-.camp-slots-v3 { display:inline-flex !important; align-items:center !important; gap:6px !important; padding:7px 11px !important; border-radius:999px !important; background:#e8f7f0 !important; color:#137752 !important; font-size:11px !important; font-weight:800 !important; white-space:nowrap !important; }
-.camp-slots-v3.low { background:#fff1dc !important; color:#a85b00 !important; }
-.camp-urgent-v3 { color:#d21f3c !important; font-size:11px !important; font-weight:800 !important; }
-.rsvp-btn-v3 { width:100% !important; min-height:50px !important; margin:18px 0 0 !important; border:0 !important; border-radius:13px !important; background:#d21f3c !important; color:#fff !important; font-size:14px !important; font-weight:800 !important; box-shadow:0 9px 20px rgba(210,31,60,.16) !important; cursor:pointer !important; }
-.rsvp-btn-v3:hover { background:#b81834 !important; transform:translateY(-1px) !important; }
-.camp-details-btn-v3 { display:flex !important; align-items:center !important; justify-content:center !important; gap:7px !important; width:100% !important; margin:12px 0 0 !important; padding:7px !important; border:0 !important; background:transparent !important; color:#d21f3c !important; font-size:13px !important; font-weight:700 !important; cursor:pointer !important; }
-.camp-details-btn-v3:hover { text-decoration:underline !important; }
-.camp-benefits-v3 { width:100%; max-width:1180px; margin:30px auto 0; display:grid; grid-template-columns:repeat(3,1fr); border:1px solid #f0dadd; border-radius:18px; overflow:hidden; background:#fff6f5; }
-.camp-benefits-v3 > div { display:flex; align-items:center; gap:15px; padding:20px 22px; background:#fffafa; text-align:left; }
-.camp-benefits-v3 > div + div { border-left:1px solid #f0dadd; }
-.camp-benefits-v3 i { flex:0 0 auto; color:#d21f3c; font-size:27px; }
-.camp-benefits-v3 span { display:flex; flex-direction:column; gap:4px; }
-.camp-benefits-v3 b { color:#2f1720; font-size:13px; }
-.camp-benefits-v3 small { color:#786a70; font-size:11px; line-height:1.4; }
-@media (max-width: 980px) {
-  .camps-grid-v3 { grid-template-columns:1fr !important; max-width:620px; }
-  .camp-card-v3 { min-height:0 !important; }
-  .camp-benefits-v3 { grid-template-columns:1fr; max-width:620px; }
-  .camp-benefits-v3 > div + div { border-left:0; border-top:1px solid #f0dadd; }
-}
-@media (max-width: 600px) {
-  .camps-section-v3 { padding:60px 16px 54px !important; }
-  .camp-card-v3 { padding:20px 18px 18px !important; }
-  .camp-main-v3 { grid-template-columns:72px minmax(0,1fr) !important; gap:14px !important; }
-  .camp-date-v3 { width:72px !important; height:92px !important; border-radius:15px !important; }
-  .camp-date-v3 .day { font-size:27px !important; }
-  .camp-date-v3 .month { font-size:11px !important; }
-  .camp-content-v3 h3 { font-size:18px !important; }
-  .camp-type-v3 { font-size:9px !important; max-width:100%; overflow:hidden; text-overflow:ellipsis; }
-}
-
-/* END INLINE CAMPS V3 FIX */
->>>>>>> origin/mohit-soni
 </style>
 
 {% endblock %} {% block content %}
@@ -2726,13 +2089,7 @@ UDAAN Society{% endblock %} {% block extra_css %}
     <!-- DIN TRACKER -->
 
     <div class="din-tracker">
-<<<<<<< HEAD
       <i class="fa-solid fa-id-card"></i>
-=======
-      <span class="din-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" role="img"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm2 4v2h5V8H6Zm0 4v2h8v-2H6Zm0 4v2h5v-2H6Zm9-8v6h5V8h-5Z"/></svg>
-      </span>
->>>>>>> origin/mohit-soni
 
       <input
         type="text"
@@ -2742,13 +2099,7 @@ UDAAN Society{% endblock %} {% block extra_css %}
       />
 
       <button type="button" id="din-track-btn" onclick="trackDIN()">
-<<<<<<< HEAD
         <i class="fa-solid fa-magnifying-glass"></i>
-=======
-        <span class="track-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" role="img"><path d="m21 21-4.35-4.35a7 7 0 1 0-1.41 1.41L19.59 22 21 21ZM10.5 16a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z"/></svg>
-        </span>
->>>>>>> origin/mohit-soni
         Track
       </button>
     </div>
@@ -3026,35 +2377,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
             name="pin_code"
             id="req-pin"
             placeholder="PIN Code *"
-<<<<<<< HEAD
-=======
-            required
-          />
-        </div>
-
-        <div class="input-group">
-          <i class="fa-solid fa-user-shield"></i>
-          <input
-            type="text"
-            name="contact_person"
-            id="req-contact-person"
-            placeholder="Contact Person *"
-            required
-          />
-        </div>
-
-        <div class="input-group">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <input
-            type="number"
-            name="units"
-            id="req-units"
-            min="1"
-            max="20"
-            value="1"
-            placeholder="Units / Bags *"
-            required
->>>>>>> origin/mohit-soni
           />
         </div>
       </div>
@@ -3080,7 +2402,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
 </div>
 
 <!-- ================= CAMPS / EVENTS ================= -->
-<<<<<<< HEAD
 <section class="camps-section">
   <div class="eyebrow" style="justify-content: center">
     <i class="fa-solid fa-star"></i> Get Involved
@@ -3181,95 +2502,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
       </div>
     </div>
     {% endfor %}
-=======
-<section class="camps-section camps-section-v3" aria-labelledby="campsTitle">
-  <div class="camps-heading-v3">
-    <div class="eyebrow camps-eyebrow-v3">GET INVOLVED</div>
-    <h2 id="campsTitle"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Upcoming Blood Donation Camps</h2>
-    <p>Choose a nearby camp, reserve your slot and help make sure patients get the blood they need on time.</p>
-  </div>
-
-  <div class="camps-grid-v3" id="campsGrid">
-    {% for camp in upcoming_camps %}
-    <article class="camp-card-v3{% if forloop.counter == 2 %} featured-camp-v3{% endif %}">
-      <div class="camp-main-v3">
-        <div class="camp-date-v3" aria-label="{{ camp.date|date:'d M Y' }}">
-          <span class="day">{{ camp.date|date:"d" }}</span>
-          <span class="month">{{ camp.date|date:"M"|upper }}</span>
-        </div>
-        <div class="camp-content-v3">
-          <span class="camp-type-v3"><i class="fa-solid fa-droplet" aria-hidden="true"></i> BLOOD DONATION CAMP</span>
-          <h3>{{ camp.title }}</h3>
-          <div class="camp-detail-v3"><i class="fa-solid fa-location-dot"></i><span>{{ camp.location }}</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-clock"></i><span>{{ camp.time }}</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-people-group"></i><span>{{ camp.organizer }}</span></div>
-        </div>
-      </div>
-      <div class="camp-footer-v3">
-        <span class="camp-slots-v3 {% if camp.slots_left <= 10 %}low{% endif %}"><i class="fa-solid fa-ticket"></i> {{ camp.slots_left }} slots left</span>
-        {% if camp.slots_left <= 10 %}<span class="camp-urgent-v3">Filling fast!</span>{% endif %}
-      </div>
-      <button class="rsvp-btn-v3" onclick="openRSVP('{{ camp.title|escapejs }}', '{{ camp.date|date:"d M Y"|escapejs }}', '{{ camp.location|escapejs }}')">
-        <i class="fa-solid fa-calendar-check"></i> Reserve My Slot
-      </button>
-      <button class="camp-details-btn-v3" type="button" onclick="openRSVP('{{ camp.title|escapejs }}', '{{ camp.date|date:"d M Y"|escapejs }}', '{{ camp.location|escapejs }}')">
-        <i class="fa-solid fa-circle-info"></i> View Details
-      </button>
-    </article>
-    {% empty %}
-    <article class="camp-card-v3">
-      <div class="camp-main-v3">
-        <div class="camp-date-v3"><span class="day">14</span><span class="month">AUG</span></div>
-        <div class="camp-content-v3">
-          <span class="camp-type-v3"><i class="fa-solid fa-droplet"></i> COMMUNITY CAMP</span>
-          <h3>Independence Day Blood Drive</h3>
-          <div class="camp-detail-v3"><i class="fa-solid fa-location-dot"></i><span>Community Hall, Jaipur</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-clock"></i><span>9:00 AM – 3:00 PM</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-people-group"></i><span>UDAAN Society</span></div>
-        </div>
-      </div>
-      <div class="camp-footer-v3"><span class="camp-slots-v3"><i class="fa-solid fa-ticket"></i> 40 slots left</span></div>
-      <button class="rsvp-btn-v3" onclick="openRSVP('Independence Day Blood Drive','14 Aug 2026','Community Hall, Jaipur')"><i class="fa-solid fa-calendar-check"></i> Reserve My Slot</button>
-      <button class="camp-details-btn-v3" type="button" onclick="openRSVP('Independence Day Blood Drive','14 Aug 2026','Community Hall, Jaipur')"><i class="fa-solid fa-circle-info"></i> View Details</button>
-    </article>
-    <article class="camp-card-v3 featured-camp-v3">
-      <div class="camp-main-v3">
-        <div class="camp-date-v3"><span class="day">22</span><span class="month">AUG</span></div>
-        <div class="camp-content-v3">
-          <span class="camp-type-v3"><i class="fa-solid fa-hospital"></i> HOSPITAL CAMP</span>
-          <h3>Metro Hospital Donation Camp</h3>
-          <div class="camp-detail-v3"><i class="fa-solid fa-location-dot"></i><span>Metro Hospital, Jaipur</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-clock"></i><span>10:00 AM – 4:00 PM</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-people-group"></i><span>Metro Hospital &amp; UDAAN Society</span></div>
-        </div>
-      </div>
-      <div class="camp-footer-v3"><span class="camp-slots-v3 low"><i class="fa-solid fa-ticket"></i> 8 slots left</span><span class="camp-urgent-v3">Filling fast!</span></div>
-      <button class="rsvp-btn-v3" onclick="openRSVP('Metro Hospital Donation Camp','22 Aug 2026','Metro Hospital, Jaipur')"><i class="fa-solid fa-calendar-check"></i> Reserve My Slot</button>
-      <button class="camp-details-btn-v3" type="button" onclick="openRSVP('Metro Hospital Donation Camp','22 Aug 2026','Metro Hospital, Jaipur')"><i class="fa-solid fa-circle-info"></i> View Details</button>
-    </article>
-    <article class="camp-card-v3">
-      <div class="camp-main-v3">
-        <div class="camp-date-v3"><span class="day">05</span><span class="month">SEP</span></div>
-        <div class="camp-content-v3">
-          <span class="camp-type-v3"><i class="fa-solid fa-building-columns"></i> COLLEGE CAMP</span>
-          <h3>College Campus Blood Drive</h3>
-          <div class="camp-detail-v3"><i class="fa-solid fa-location-dot"></i><span>Rajasthan University, Jaipur</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-clock"></i><span>11:00 AM – 5:00 PM</span></div>
-          <div class="camp-detail-v3"><i class="fa-solid fa-people-group"></i><span>UDAAN Society &amp; Student Council</span></div>
-        </div>
-      </div>
-      <div class="camp-footer-v3"><span class="camp-slots-v3"><i class="fa-solid fa-ticket"></i> 60 slots left</span></div>
-      <button class="rsvp-btn-v3" onclick="openRSVP('College Campus Blood Drive','05 Sep 2026','Rajasthan University, Jaipur')"><i class="fa-solid fa-calendar-check"></i> Reserve My Slot</button>
-      <button class="camp-details-btn-v3" type="button" onclick="openRSVP('College Campus Blood Drive','05 Sep 2026','Rajasthan University, Jaipur')"><i class="fa-solid fa-circle-info"></i> View Details</button>
-    </article>
-    {% endfor %}
-  </div>
-
-  <div class="camp-benefits-v3">
-    <div><i class="fa-solid fa-shield-heart"></i><span><b>Safe &amp; Verified</b><small>All camps follow safety protocols.</small></span></div>
-    <div><i class="fa-solid fa-clock"></i><span><b>Quick Reservation</b><small>Reserve your slot before you visit.</small></span></div>
-    <div><i class="fa-solid fa-heart"></i><span><b>Make an Impact</b><small>One donation can help save lives.</small></span></div>
->>>>>>> origin/mohit-soni
   </div>
 </section>
 
@@ -3539,7 +2771,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
   </div>
 </section>
 
-<<<<<<< HEAD
 <section id="alert" class="section alert">
   <h2>🚨 Emergency Blood Alert</h2>
   <p>
@@ -3551,25 +2782,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
     Get Instant Alerts
   </button>
   <div id="alertMsg"></div>
-=======
-<section id="alert" class="section alert emergency-alert-card" aria-labelledby="emergencyAlertTitle">
-  <div class="emergency-alert-icon" aria-hidden="true">🚨</div>
-  <div class="emergency-alert-copy">
-    <span class="emergency-badge">EMERGENCY BLOOD REQUEST</span>
-    <h2 id="emergencyAlertTitle">Emergency Blood Alert</h2>
-    <p><strong>Someone nearby may need blood urgently.</strong> When a critical request is verified, eligible donors can respond quickly and help a patient get the right blood group in time.</p>
-    <div class="emergency-alert-meta">
-      <span><i class="fa-solid fa-shield-heart"></i> Verified requests</span>
-      <span><i class="fa-solid fa-location-dot"></i> Nearby eligible donors</span>
-      <span><i class="fa-solid fa-bolt"></i> Fast response</span>
-    </div>
-  </div>
-  <div class="emergency-alert-actions">
-    <button type="button" class="btn emergency-primary" onclick="respondAlert(this)"><i class="fa-solid fa-hand-holding-heart"></i> I'm Ready to Help</button>
-    <button type="button" class="btn secondary emergency-secondary" onclick="subscribeAlert()"><i class="fa-solid fa-bell"></i> Get Instant Alerts</button>
-    <div id="alertMsg" role="status" aria-live="polite"></div>
-  </div>
->>>>>>> origin/mohit-soni
 </section>
 
 <!-- ================= WHATSAPP / SMS ALERTS ================= -->
@@ -3646,7 +2858,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
 </section>
 
 <!-- our impact -->
-<<<<<<< HEAD
 <section class="impact">
   <div class="eyebrow" style="justify-content: center">
     <i class="fa-solid fa-star"></i> Our Impact
@@ -3679,21 +2890,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
       <h3>4</h3>
       <p>Cities Covered</p>
     </div>
-=======
-<section class="impact impact-light" aria-labelledby="impactTitle">
-  <div class="eyebrow" style="justify-content:center">
-    <i class="fa-solid fa-heart-pulse"></i> Together, We Make a Difference
-  </div>
-  <div class="section-title">
-    <h2 id="impactTitle">Our Impact</h2>
-    <p>Every donor, every request and every successful match moves our community closer to a world where no patient waits for blood.</p>
-  </div>
-  <div class="impact-wrapper">
-    <div class="impact-card ic-1"><i class="fas fa-heart"></i><h3>{{ total_donations|default:"0" }}</h3><p>Lives Saved</p><span>Through successful donations</span></div>
-    <div class="impact-card ic-2"><i class="fas fa-user"></i><h3>{{ total_donors|default:"0" }}</h3><p>Registered Donors</p><span>People ready to help</span></div>
-    <div class="impact-card ic-3"><i class="fas fa-hospital"></i><h3>{{ total_requests|default:"0" }}</h3><p>Blood Requests</p><span>Patients supported</span></div>
-    <div class="impact-card ic-4"><i class="fas fa-map-marker-alt"></i><h3>4</h3><p>Cities Covered</p><span>Growing our reach</span></div>
->>>>>>> origin/mohit-soni
   </div>
 </section>
 
@@ -3794,7 +2990,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
 
         <button onclick="showDonors()">Search Donors</button>
 
-<<<<<<< HEAD
         <div id="donorResults" style="display: none; margin-top: 20px">
           <div class="donor-card">
             <i class="fa-solid fa-user"></i>
@@ -3826,13 +3021,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
     </div>
   </div>
 
-=======
-        <div id="donorResults" class="donor-results" style="display: none"></div>
-      </div>
-    </div>
-  </div>
-
->>>>>>> origin/mohit-soni
   <!-- Donate Blood Modal -->
   <div class="custom-modal" id="donateModal">
     <div class="custom-card">
@@ -3967,17 +3155,10 @@ UDAAN Society{% endblock %} {% block extra_css %}
 <section class="certificate-section">
   <div class="certificate-panel">
     <div class="cert-icon"><i class="fa-solid fa-award"></i></div>
-<<<<<<< HEAD
     <h2>Download Your Donation Certificate</h2>
     <p>
       Enter your DIN (Donation ID Number) or registered mobile number to
       generate your personalised certificate of appreciation.
-=======
-    <h2>Download Your Donor Certificate</h2>
-    <p>
-      Enter your DIN (Donation ID Number) or registered mobile number to
-      generate a personalised certificate of appreciation for your donor record. If you do not have a DIN yet, you can preview and download the default UDAAN certificate below.
->>>>>>> origin/mohit-soni
     </p>
 
     <form
@@ -4001,30 +3182,18 @@ UDAAN Society{% endblock %} {% block extra_css %}
       style="margin-top: 12px; text-align: center; display: none"
     ></div>
 
-<<<<<<< HEAD
     <div class="cert-preview" id="certPreview">
-=======
-    <div class="cert-preview show" id="certPreview">
->>>>>>> origin/mohit-soni
       <div class="cert-frame" id="certFrame">
         <div class="cert-brand">UDAAN Society</div>
         <div class="cert-heading">Certificate of Appreciation</div>
         <p style="color: #888; font-size: 12.5px; margin: 6px 0">
           This certificate is proudly presented to
         </p>
-<<<<<<< HEAD
         <div class="cert-name" id="cert-donor-name">—</div>
         <div class="cert-meta">
           Blood Group: <strong id="cert-blood-group">—</strong><br />
           Donation Date: <strong id="cert-date">—</strong><br />
           DIN: <strong id="cert-din-display">—</strong>
-=======
-        <div class="cert-name" id="cert-donor-name">UDAAN Blood Donor</div>
-        <div class="cert-meta">
-          Blood Group: <strong id="cert-blood-group">—</strong><br />
-          <span class="cert-date-label">Donation Date</span>: <strong id="cert-date">—</strong><br />
-          DIN: <strong id="cert-din-display">UDAAN-DEMO</strong>
->>>>>>> origin/mohit-soni
         </div>
       </div>
       <button class="download-cert-btn" onclick="downloadCertificate()">
@@ -4098,7 +3267,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
   </div>
 </section>
 
-<<<<<<< HEAD
 <!-- newsletters section -->
 
 <section class="newsletter-section">
@@ -4123,30 +3291,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
       id="newsletterMsg"
       style="margin-top: 10px; text-align: center; display: none"
     ></div>
-=======
-<!-- Join the Blood Donor Community -->
-<section class="newsletter-section community-section" aria-labelledby="communityTitle">
-  <div class="newsletter-panel community-panel">
-    
-    <div class="community-copy">
-      <span class="community-badge">BE PART OF THE CHANGE</span>
-      <h2 id="communityTitle">Join the Blood Donor Community</h2>
-      <p>Be part of a caring community of lifesavers. Get updates about blood donation drives, verified emergency needs and simple ways to help more patients.</p>
-      <div class="community-points">
-        <span><i class="fa-solid fa-bell"></i> Donation updates</span>
-        <span><i class="fa-solid fa-heart"></i> Save more lives</span>
-        <span><i class="fa-solid fa-users"></i> Grow the donor network</span>
-      </div>
-    </div>
-    <div class="community-form-wrap">
-      <label for="newsletter-email">Get updates in your inbox</label>
-      <div class="newsletter-box" id="newsletterBox">
-        <input type="email" id="newsletter-email" placeholder="Enter your email address" required />
-        <button type="button" onclick="subscribeNewsletter()"><i class="fa-solid fa-arrow-right"></i> Join Community</button>
-      </div>
-      <div id="newsletterMsg" role="status" aria-live="polite"></div>
-    </div>
->>>>>>> origin/mohit-soni
   </div>
 </section>
 
@@ -4328,13 +3472,7 @@ UDAAN Society{% endblock %} {% block extra_css %}
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     btn.disabled = true;
 
-<<<<<<< HEAD
     fetch("/api/certificate/lookup/?q=" + encodeURIComponent(value))
-=======
-    fetch("/api/certificate/lookup/?q=" + encodeURIComponent(value), {
-      headers: { "Accept": "application/json" },
-    })
->>>>>>> origin/mohit-soni
       .then((r) => r.json())
       .then((res) => {
         if (res.success) {
@@ -4378,7 +3516,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
   }
 
   // ================= CONTACT A DONOR =================
-<<<<<<< HEAD
   function contactDonor(btn, donorName) {
     const original = btn.innerHTML;
     btn.disabled = true;
@@ -4390,19 +3527,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
         "Contact request sent to " + donorName + ". They'll be notified right away.",
       );
     }, 700);
-=======
-  function contactDonor(btn, donorName, phone) {
-    if (!phone) {
-      showToast("This donor has not enabled direct contact.", true);
-      return;
-    }
-    const cleanPhone = String(phone).replace(/[^0-9+]/g, "");
-    const message = encodeURIComponent(`Hello ${donorName}, I found your donor profile through UDAAN Society. We need blood support for a patient. Are you available to help?`);
-    window.open(`https://wa.me/${cleanPhone.replace(/^\+/, "")}?text=${message}`, "_blank", "noopener,noreferrer");
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> Opened';
-    btn.disabled = true;
-    showToast(`Opening a secure WhatsApp conversation with ${donorName}.`);
->>>>>>> origin/mohit-soni
   }
 
   // ================= OUR IMPACT COUNTER =================
@@ -4433,7 +3557,6 @@ UDAAN Society{% endblock %} {% block extra_css %}
 
   const questions = [
     "Are you between 18 and 65 years old?",
-<<<<<<< HEAD
     "Is your weight above 50kg?",
     "Are you feeling healthy today?",
     "Have you slept well in the last 24 hours?",
@@ -4441,26 +3564,13 @@ UDAAN Society{% endblock %} {% block extra_css %}
     "Do you have no major illness?",
     "Have you not taken antibiotics recently?",
     "Is your blood pressure normal?",
-=======
-    "Do you weigh at least 50 kg?",
-    "Are you feeling healthy today, without fever or infection?",
-    "Have you had a good night's sleep recently?",
-    "Has it been at least 3 months since your last donation?",
-    "Have you not been advised by a doctor to avoid donating blood?",
-    "Are you not currently taking antibiotics for an infection?",
-    "Are you feeling well enough to donate today?",
->>>>>>> origin/mohit-soni
   ];
 
   let current = 0;
   let score = 0;
 
   function startEligibility() {
-<<<<<<< HEAD
     document.getElementById("eligibilityModal").style.display = "flex";
-=======
-    setModalState("eligibilityModal", true);
->>>>>>> origin/mohit-soni
 
     current = 0;
     score = 0;
@@ -4475,11 +3585,7 @@ UDAAN Society{% endblock %} {% block extra_css %}
   function showQuestion() {
     document.getElementById("question").innerText = questions[current];
 
-<<<<<<< HEAD
     let progress = (current / questions.length) * 100;
-=======
-    let progress = ((current + 1) / questions.length) * 100;
->>>>>>> origin/mohit-soni
 
     document.getElementById("progress").style.width = progress + "%";
   }
@@ -4508,11 +3614,7 @@ UDAAN Society{% endblock %} {% block extra_css %}
     document.getElementById("resultArea").innerHTML = `
 <div class="result-meter">${percent}%</div>
 <p style="margin-top:15px;font-size:16px;color:#555;">
-<<<<<<< HEAD
 ${percent >= 70 ? "You meet the basic eligibility requirements to donate blood." : "You may not be eligible to donate blood right now."}
-=======
-${percent >= 70 ? "Based on your answers, you appear to meet the basic screening criteria. Final eligibility must be confirmed by qualified medical staff at the donation centre." : "Based on your answers, you may not be eligible today. Please speak with qualified medical staff before attempting to donate."}
->>>>>>> origin/mohit-soni
 </p>
 `;
   }
@@ -4632,19 +3734,11 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
       blood_group: document.getElementById("req-blood-group").value,
       hospital_name: document.getElementById("req-hospital").value,
       contact_phone: document.getElementById("req-phone").value,
-<<<<<<< HEAD
       contact_person: document.getElementById("req-patient").value,
-=======
-      contact_person: document.getElementById("req-contact-person").value,
->>>>>>> origin/mohit-soni
       city: document.getElementById("req-city").value,
       state: document.getElementById("req-state").value,
       pin_code: document.getElementById("req-pin").value,
       is_emergency: document.getElementById("req-emergency").checked,
-<<<<<<< HEAD
-=======
-      units: Number(document.getElementById("req-units").value || 1),
->>>>>>> origin/mohit-soni
     };
 
     fetch("/api/blood-request/", {
@@ -4802,7 +3896,6 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
       .catch(() => showMsg("newsletterMsg", "❌ Network error.", false));
   }
 
-<<<<<<< HEAD
   function openFindMatch() {
     document.getElementById("findMatchModal").style.display = "flex";
   }
@@ -4836,96 +3929,6 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
       });
 
       document.getElementById("eligibilityModal").style.display = "none";
-=======
-  function setModalState(id, open) {
-    const modal = document.getElementById(id);
-    if (!modal) return;
-    modal.style.display = open ? "flex" : "none";
-    modal.setAttribute("aria-hidden", open ? "false" : "true");
-    document.body.classList.toggle("modal-open", open);
-  }
-
-  function openFindMatch() { setModalState("findMatchModal", true); }
-
-  function closeModal(id) { setModalState(id, false); }
-
-  async function showDonors() {
-    const modal = document.getElementById("findMatchModal");
-    const select = modal?.querySelector(".search-form select");
-    const cityInput = modal?.querySelector(".search-form input");
-    const results = document.getElementById("donorResults");
-    const bloodGroup = select?.value || "";
-    const city = cityInput?.value.trim() || "";
-
-    if (!bloodGroup || bloodGroup === "Select Blood Group") {
-      showToast("Please select a blood group first.", true);
-      select?.focus();
-      return;
-    }
-    if (!city) {
-      showToast("Please enter the city to find nearby donors.", true);
-      cityInput?.focus();
-      return;
-    }
-
-    results.style.display = "block";
-    results.innerHTML = '<div class="search-loading"><i class="fa-solid fa-spinner fa-spin"></i> Finding available donors...</div>';
-
-    try {
-      const response = await fetch(`/api/search/?blood_group=${encodeURIComponent(bloodGroup)}&city=${encodeURIComponent(city)}`);
-      const res = await response.json();
-      if (!response.ok) throw new Error(res.error || "Unable to search donors.");
-
-      if (!res.results?.length) {
-        results.innerHTML = `
-          <div class="empty-donors">
-            <i class="fa-regular fa-face-frown"></i>
-            <strong>No matching donors found</strong>
-            <span>Try another nearby city or blood group.</span>
-          </div>`;
-        return;
-      }
-
-      results.innerHTML = res.results.map(donor => `
-        <div class="donor-card">
-          <i class="fa-solid fa-user-check"></i>
-          <div class="donor-main">
-            <h4>${escapeHTML(donor.name)}</h4>
-            <p>${escapeHTML(donor.blood_group)} • ${escapeHTML(donor.city)}, ${escapeHTML(donor.state || "")}</p>
-            <span class="donor-distance">Available donor</span>
-          </div>
-          ${donor.phone ? `<button type="button" data-phone="${escapeHTML(donor.phone)}" data-name="${escapeHTML(donor.name)}" onclick="contactDonor(this, this.dataset.name, this.dataset.phone)">Contact</button>` : ""}
-        </div>`).join("");
-    } catch (error) {
-      results.innerHTML = `<div class="empty-donors"><i class="fa-solid fa-triangle-exclamation"></i><strong>Search failed</strong><span>${escapeHTML(error.message)}</span></div>`;
-    }
-  }
-
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
-  }
-
-  function openDonateModal() { setModalState("donateModal", true); }
-
-  function openSaveLifeModal() { setModalState("saveLifeModal", true); }
-
-  document.addEventListener("click", function (event) {
-    const closeButton = event.target.closest(".custom-modal .close, .eligibility-modal .close");
-    if (closeButton) {
-      const modal = closeButton.closest(".custom-modal, .eligibility-modal");
-      if (modal) setModalState(modal.id, false);
-      return;
-    }
-    const backdrop = event.target.closest(".custom-modal, .eligibility-modal");
-    if (backdrop && event.target === backdrop) setModalState(backdrop.id, false);
-  });
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      document.querySelectorAll(".custom-modal, .eligibility-modal").forEach(function (modal) {
-        setModalState(modal.id, false);
-      });
->>>>>>> origin/mohit-soni
     }
   });
 
@@ -4990,13 +3993,7 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
 
     const query = document.getElementById("cert-din").value;
 
-<<<<<<< HEAD
     fetch("/api/certificate/lookup/?q=" + encodeURIComponent(query))
-=======
-    fetch("/api/certificate/lookup/?q=" + encodeURIComponent(query), {
-      headers: { "Accept": "application/json" },
-    })
->>>>>>> origin/mohit-soni
       .then((r) => r.json())
       .then((res) => {
         if (res.success) {
@@ -5005,7 +4002,6 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
             res.blood_group;
           document.getElementById("cert-date").innerText = res.donation_date;
           document.getElementById("cert-din-display").innerText = res.din;
-<<<<<<< HEAD
           document.getElementById("certPreview").classList.add("show");
           document.getElementById("certMsg").style.display = "none";
         } else {
@@ -5020,25 +4016,6 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
           false,
         ),
       )
-=======
-          const certDateLabel = document.querySelector("#certPreview .cert-date-label");
-          if (certDateLabel) certDateLabel.textContent = res.date_label || "Donation Date";
-          document.getElementById("certPreview").classList.add("show");
-          document.getElementById("certMsg").style.display = "none";
-        } else {
-          showMsg("certMsg", "❌ " + res.error + " You can still download the default UDAAN certificate below.", false);
-          document.getElementById("certPreview").classList.add("show");
-        }
-      })
-      .catch(() => {
-        showMsg(
-          "certMsg",
-          "❌ No record found. Please check your DIN or mobile number. The default certificate remains available below.",
-          false,
-        );
-        document.getElementById("certPreview").classList.add("show");
-      })
->>>>>>> origin/mohit-soni
       .finally(() => {
         btn.innerHTML = originalText;
         btn.disabled = false;
@@ -5050,18 +4027,10 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
 
-<<<<<<< HEAD
     const name = document.getElementById("cert-donor-name").innerText;
     const bg = document.getElementById("cert-blood-group").innerText;
     const date = document.getElementById("cert-date").innerText;
     const din = document.getElementById("cert-din-display").innerText;
-=======
-    const name = document.getElementById("cert-donor-name").innerText || "UDAAN Blood Donor";
-    const bg = document.getElementById("cert-blood-group").innerText || "—";
-    const date = document.getElementById("cert-date").innerText || "—";
-    const dateLabel = document.querySelector("#certPreview .cert-date-label")?.textContent || "Donation Date";
-    const din = document.getElementById("cert-din-display").innerText || "UDAAN-DEMO";
->>>>>>> origin/mohit-soni
 
     const w = doc.internal.pageSize.getWidth();
 
@@ -5104,28 +4073,12 @@ ${percent >= 70 ? "Based on your answers, you appear to meet the basic screening
 
     doc.setFontSize(11);
     doc.text(
-<<<<<<< HEAD
       `Blood Group: ${bg}   |   Donation Date: ${date}   |   DIN: ${din}`,
-=======
-      `Blood Group: ${bg}   |   ${dateLabel}: ${date}   |   DIN: ${din}`,
->>>>>>> origin/mohit-soni
       w / 2,
       285,
       { align: "center" },
     );
 
-<<<<<<< HEAD
-=======
-    doc.setFontSize(10);
-    doc.setTextColor(124, 98, 102);
-    doc.text("UDAAN Society • Blood Donation Initiative", w / 2, 335, { align: "center" });
-    doc.text("Thank you for helping build a healthier community.", w / 2, 355, { align: "center" });
-
-    doc.setFontSize(9);
-    doc.text(`Issued: ${new Date().toLocaleDateString("en-IN")}`, 55, 390);
-    doc.text("UDAAN Society", w - 55, 390, { align: "right" });
-
->>>>>>> origin/mohit-soni
     doc.save(`UDAAN_Certificate_${din}.pdf`);
   }
 

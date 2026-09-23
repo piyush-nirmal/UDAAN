@@ -1,4 +1,4 @@
-E{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Volunteer with UDAAN Society - Make an Impact{% endblock %}
@@ -8,15 +8,7 @@ E{% extends 'base.html' %}
 {% block content %}
 
 <!-- Hero Banner -->
-<<<<<<< HEAD
-<<<<<<< HEAD
 <section class="subpage-hero" style="background-image: url('{% static 'images/heroes/volunteering_hero.jpg' %}');" data-aos="fade-down">
-=======
-<section class="subpage-hero">
->>>>>>> origin/mohit-soni
-=======
-<section class="subpage-hero" style="background-image: url('{% static 'images/heroes/volunteering_hero.jpg' %}');" data-aos="fade-down">
->>>>>>> origin/tushar
   <div class="max-w-4xl mx-auto px-6 relative z-10 space-y-4">
     <span class="bg-accent text-neutral-dark text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">Get Involved</span>
     <h1 class="text-4xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight uppercase">Volunteer with UDAAN</h1>
@@ -28,11 +20,7 @@ E{% extends 'base.html' %}
 
 <!-- Breadcrumb -->
 <div class="bg-neutral-light border-b border-gray-100 py-4">
-<<<<<<< HEAD
   <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2"  data-aos="fade-down" data-aos-delay="100">
-=======
-  <div class="max-w-7xl mx-auto px-6 text-sm text-gray-500 flex items-center gap-2">
->>>>>>> origin/mohit-soni
     <a href="{% url 'home' %}" class="hover:text-primary transition-colors">Home</a>
     <span>»</span>
     <span class="text-gray-400">Volunteering</span>
@@ -46,11 +34,7 @@ E{% extends 'base.html' %}
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
     
     <!-- Left: Why Volunteer Information -->
-<<<<<<< HEAD
     <div class="lg:col-span-5 space-y-6" data-aos="fade-right">
-=======
-    <div class="lg:col-span-5 space-y-6">
->>>>>>> origin/mohit-soni
       <span class="text-primary font-bold uppercase tracking-wider text-xs block">Join the Mission</span>
       <h2 class="text-3xl font-extrabold text-neutral-dark leading-tight font-heading">Why Volunteer with Us?</h2>
       <p class="text-gray-600 leading-relaxed">
@@ -66,7 +50,6 @@ E{% extends 'base.html' %}
       </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Right: Google Volunteer Form -->
     <div
       class="lg:col-span-7 bg-white shadow-premium rounded-2xl p-4 sm:p-6 border border-gray-100/50"
@@ -103,82 +86,12 @@ E{% extends 'base.html' %}
           <div>
             <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Email Address *</label>
             <input type="email" name="email" required placeholder="john@example.com"
-<<<<<<< HEAD
-=======
-    <!-- Right: Native Onboarding Form -->
-    <div
-      class="lg:col-span-7 bg-white shadow-premium rounded-2xl p-8 border border-gray-100/50"
-      data-aos="fade-left"
-      data-aos-delay="150"
-    >
-      <h2 class="text-2xl font-bold text-neutral-dark mb-2 font-heading">Volunteer Onboarding Form</h2>
-      <p class="text-sm text-gray-500 mb-8">Fill out your details to register. Our coordinator will contact you shortly.</p>
-
-      <!-- Display Messages -->
-      {% if messages %}
-      <div class="mb-4">
-        {% for message in messages %}
-          <div class="p-4 mb-2 rounded-lg text-sm font-bold {% if message.tags == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
-      {% endif %}
-
-      <form id="volunteer-form" method="POST" enctype="multipart/form-data" class="space-y-6">
-        {% csrf_token %}
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Full Name *</label>
-            <input type="text" name="name" required placeholder="John Doe"
-              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Email *</label>
-            <input type="email" name="email" required placeholder="john@example.com"
-=======
->>>>>>> origin/tushar
               class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-<<<<<<< HEAD
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Phone No. *</label>
-            <input type="tel" name="phone" required placeholder="9876543210"
-              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Gender *</label>
-            <select name="gender" required class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all font-semibold">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Education *</label>
-            <input type="text" name="education" required placeholder="e.g. B.A. Social Work"
-              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Current Employment *</label>
-            <input type="text" name="employment" required placeholder="e.g. Student / Employed / Freelancer"
->>>>>>> origin/mohit-soni
-              class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
-          </div>
-        </div>
-
-<<<<<<< HEAD
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-=======
->>>>>>> origin/tushar
             <label class="block text-xs font-bold text-gray-400 mb-2 uppercase">Phone Number *</label>
             <input type="text" name="phone" required placeholder="+91 9876543210"
               class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all">
@@ -230,33 +143,12 @@ E{% extends 'base.html' %}
           Submit Application
         </button>
 
-<<<<<<< HEAD
-=======
-        <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">Residence (City, State) *</label>
-          <textarea name="residence" required placeholder="e.g. Aligarh, Uttar Pradesh" rows="2"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all"></textarea>
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-gray-500 mb-2 uppercase">CV (Upload PDF) *</label>
-          <input type="file" name="cv" accept=".pdf" required
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-neutral-light transition-all bg-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary hover:file:bg-primary hover:file:text-white transition-all cursor-pointer">
-        </div>
-
-        <button type="submit" class="w-full btn-primary justify-center rounded-xl py-3.5 text-sm font-bold shadow-soft">
-          Submit Volunteer Application
-        </button>
->>>>>>> origin/mohit-soni
-=======
->>>>>>> origin/tushar
       </form>
     </div>
   </div>
   <!-- Section 2: Benefits Section -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center pt-8">
     <!-- Left: Image -->
-<<<<<<< HEAD
     <div class="lg:col-span-5 relative" data-aos="fade-right">
       <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-light rounded-2xl -z-10 opacity-70"></div>
       <img src="{% static 'assets/join-volunteer.png' %}" alt="Join UDAAN Volunteers" class="rounded-3xl shadow-soft w-full object-contain max-h-[460px] bg-white p-6 border border-gray-100/50">
@@ -284,35 +176,6 @@ E{% extends 'base.html' %}
         </li>
       </ol>
     </div>
-=======
-    <div class="lg:col-span-5 relative">
-      <div class="absolute -top-4 -left-4 w-24 h-24 bg-primary-light rounded-2xl -z-10 opacity-70"></div>
-      <img src="{% static 'assets/join-volunteer.png' %}" alt="Join UDAAN Volunteers" class="rounded-3xl shadow-soft w-full object-contain max-h-[460px] bg-white p-6 border border-gray-100/50">
-    </div>
-
-    <!-- Right: Structured Benefits List -->
-   <div class="lg:col-span-7 space-y-6">
-      <h3 class="text-2xl font-bold text-neutral-dark font-heading">Benefits of Joining UDAAN Society</h3>
-      
-      <ol class="space-y-4 list-decimal list-inside text-gray-600 leading-relaxed text-sm">
-        <li class="pl-2">
-          <strong class="text-neutral-dark">Make a Real Difference:</strong> Directly impact critical groundwater levels, child safety programs, and rural classroom infrastructure.
-        </li>
-        <li class="pl-2">
-          <strong class="text-neutral-dark">Gain Practical Skills:</strong> Gain experience in project execution, event planning, and communication workflows.
-        </li>
-        <li class="pl-2">
-          <strong class="text-neutral-dark">Expand Your Network:</strong> Connect with dedicated professionals, local panchayat leaders, and fellow social changemakers.
-        </li>
-        <li class="pl-2">
-          <strong class="text-neutral-dark">Boost Your Resume:</strong> Strengthen your career portfolio with recognized, verified field credentials.
-        </li>
-        <li class="pl-2">
-          <strong class="text-neutral-dark">Promote Personal Growth:</strong> Grow empathy, local understanding, self-confidence, and a sense of shared purpose.
-        </li>
-      </ol>
-    </div>
->>>>>>> origin/mohit-soni
   </div>
 
 </div>

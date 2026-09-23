@@ -9,20 +9,213 @@ field audits, groundwater interventions, and social impact stories featured in n
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/news_clippings.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    /* =========================================
+       NEWS CLIPPINGS PAGE ANIMATIONS
+    ========================================= */
+
+    @keyframes heroFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floatLeaf {
+        0%,
+        100% {
+            transform: translate(25%, -25%) rotate(0deg);
+        }
+
+        50% {
+            transform: translate(25%, -28%) rotate(3deg);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes modalScaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.92) translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    .nc-hero-content {
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease-out forwards;
+    }
+
+    .nc-hero-badge {
+        animation-delay: 0.1s;
+    }
+
+    .nc-hero-title {
+        animation-delay: 0.2s;
+    }
+
+    .nc-hero-description {
+        animation-delay: 0.35s;
+    }
+
+    .nc-floating-decoration {
+        animation: floatLeaf 7s ease-in-out infinite;
+    }
+
+    .nc-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+            opacity 0.7s ease,
+            transform 0.7s ease;
+    }
+
+    .nc-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .nc-news-card {
+        opacity: 0;
+        transform: translateY(45px);
+    }
+
+    .nc-news-card.is-visible {
+        animation: fadeInUp 0.7s ease forwards;
+        animation-delay: var(--card-delay, 0ms);
+    }
+
+    .nc-news-card:hover .nc-card-image {
+        transform: scale(1.06);
+    }
+
+    .nc-news-card:hover .nc-card-overlay {
+        opacity: 1;
+    }
+
+    .nc-news-card:hover .nc-zoom-icon {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .nc-card-image {
+        transition:
+            transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nc-card-overlay {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .nc-zoom-icon {
+        opacity: 0;
+        transform: scale(0.8);
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .nc-modal {
+        animation: modalFadeIn 0.25s ease forwards;
+    }
+
+    .nc-modal-content {
+        animation: modalScaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .nc-modal.closing {
+        animation: modalFadeIn 0.2s ease reverse forwards;
+    }
+
+    .nc-modal.closing .nc-modal-content {
+        animation: modalScaleIn 0.2s ease reverse forwards;
+    }
+
+    /* Smooth scrollbar */
+    .nc-modal::-webkit-scrollbar {
+        width: 7px;
+    }
+
+    .nc-modal::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .nc-modal::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+    }
+
+    /* Prevent image selection */
+    .nc-card-image,
+    #modalImage {
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    /* Mobile optimization */
+    @media (max-width: 640px) {
+        .nc-hero-title {
+            font-size: 2.5rem;
+        }
+
+        .nc-modal-content {
+            border-radius: 1.5rem;
+        }
+    }
+
+    /* Reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+
+        .nc-reveal,
+        .nc-news-card {
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>
 {% endblock %}
 
 
 {% block content %}
 
-<<<<<<< HEAD
-<section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1>NEWS CLIPPINGS</h1>
-=======
 <!-- =====================================================
      HERO SECTION
 ====================================================== -->
@@ -34,7 +227,6 @@ field audits, groundwater interventions, and social impact stories featured in n
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-4 text-white">News Clippings</h1>
         <p class="text-lg md:text-xl leading-relaxed text-gray-200">A curated collection of UDAAN Society's campaigns, field audits, and milestones featured in leading national newspapers.</p>
->>>>>>> origin/tushar
     </div>
 </section>
 
