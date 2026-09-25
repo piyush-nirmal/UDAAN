@@ -1524,6 +1524,16 @@ def our_policies(request):
     posh = PolicyReport.objects.filter(category="posh", published=True).first()
     policies = PolicyReport.objects.filter(published=True).order_by('display_order', '-uploaded_at')
 
+    # Static-document fallbacks keep the public policy page working on a fresh
+    # clone even when the SQLite database has no PolicyReport rows yet.
+    policy_fallbacks = {
+        "ethical": "/static/documents/ethical-policy.pdf",
+        "finance": "/static/documents/hr-finance-procurement-policy.pdf",
+        "hr": "/static/documents/hr-finance-procurement-policy.pdf",
+        "travel": "/static/documents/hr-finance-procurement-policy.pdf",
+        "posh": "/static/documents/posh-policy.pdf",
+    }
+
     context = {
         "ethical": ethical,
         "finance": finance,
@@ -1531,6 +1541,7 @@ def our_policies(request):
         "travel": travel,
         "posh": posh,
         "policies": policies,
+        "policy_fallbacks": policy_fallbacks,
     }
 
     return render(request,"our_policies.html",context)

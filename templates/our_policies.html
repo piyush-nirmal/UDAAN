@@ -51,7 +51,7 @@
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% else %}
-      <a href="{% static 'documents/ethical-policy.pdf' %}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+      <a href="{{ policy_fallbacks.ethical }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% endif %}
@@ -71,7 +71,7 @@
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% else %}
-      <a href="{% static 'documents/hr-finance-procurement-policy.pdf' %}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+      <a href="{{ policy_fallbacks.finance }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% endif %}
@@ -91,7 +91,7 @@
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% else %}
-      <a href="{% static 'documents/hr-finance-procurement-policy.pdf' %}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+      <a href="{{ policy_fallbacks.hr }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% endif %}
@@ -107,11 +107,11 @@
       </div>
       <p class="text-gray-500 text-sm mb-8 leading-relaxed">Our robust framework for the Prevention of Sexual Harassment at the workplace.</p>
       {% if posh %}
-      <a href="{{ posh.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+      <a href="{{ posh.pdf_file.url }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50   text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% else %}
-      <a href="{% static 'documents/posh-policy.pdf' %}" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
+      <a href="{{ policy_fallbacks.posh }}" target="_blank" class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-gray-50 text-gray-700 font-semibold text-sm hover:bg-[#0B6B3A] hover:text-white transition-colors">
         <i class="fa-regular fa-file-pdf"></i> View PDF
       </a>
       {% endif %}
